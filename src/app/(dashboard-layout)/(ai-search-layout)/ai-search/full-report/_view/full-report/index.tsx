@@ -44,6 +44,8 @@ import {SocialAndWeb} from './social-web';
 import {ThreatAssessment} from './threat-assessment';
 import {VehicleOwnership} from './vehicle-ownership';
 import {AIResponseDetail} from "../../../_view/conversation/type";
+import { useState } from 'react';
+import { toEnhancedTitleCase } from '@/lib/utils/title-case';
 
 type Props = {
     editable?: boolean;
@@ -56,19 +58,68 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
     const pathname = usePathname();
     const router = useRouter();
     const {openModal, closeModal} = useModal();
+    const [showTooltip, setShowTooltip] = useState(false);
 
     const isDossierAssistantTop = pathname === ROUTES.AI_SEARCH.BUILD;
 
     const buildPathname = parsePathnameWithQuery(ROUTES.AI_SEARCH.BUILD, queryParams);
 
+    const getLocations = () => {
+        if (!details) return [];
+
+        const locations = new Set<string>();
+        const records = [
+            details?.education,
+            details?.rv,
+            details?.motorcycles,
+            details?.national_drivers_license,
+            details?.bankruptcy,
+            details?.automobile,
+            details?.foreign_movers,
+            details?.cell_records,
+            details?.drunk_drivings,
+            details?.voip,
+            details?.vets
+        ];
+
+        if (details?.STATE && (details?.CITY || details?.City)) {
+            locations.add(`${details.CITY || details.City}, ${details.ST || details.STATE}`);
+        }
+        records.forEach(record => {
+            if (record && (record?.STATE || record?.ST || record?.State) && (record?.CITY || record?.City)) {
+                locations.add(`${record.CITY || record.City}, ${record.ST || record.STATE || record.State}`);
+            }
+        });
+
+        return Array.from(locations).slice(0, 3);
+    };
+
     function handleCloseFullReport() {
-        // router.push(parsePathnameWithQuery(ROUTES.AI_SEARCH.INDEX, { ...queryParams, open_current_record_drawer: 'true' }));
         if (typeof window !== 'undefined') {
             window.location.href = parsePathnameWithQuery(ROUTES.AI_SEARCH.INDEX, {
                 ...queryParams,
                 open_current_record_drawer: 'true'
             });
         }
+    }
+
+    function handleInfoClick() {
+        openModal({
+            view: (
+                <div className="p-6">
+                    <h3 className="text-lg font-bold mb-2">Report Information</h3>
+                    <p className="text-sm text-gray-600">
+                        This report is generated using data from our comprehensive criminals database, providing detailed and accurate information for investigative purposes.
+                    </p>
+                    <div className="flex justify-end mt-4">
+                        <Button onClick={() => closeModal()} size="sm">
+                            Close
+                        </Button>
+                    </div>
+                </div>
+            ),
+            containerClassName: 'w-[400px]',
+        });
     }
 
     function handleArchive() {
@@ -113,11 +164,26 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
                 <div className="flex gap-6 items-center">
                     <Image src="/men.png" alt="men" width={124} height={124}
                            className={cn('w-[124px] aspect-square h-auto', isDrawer && 'w-24')}/>
-                    <div className=" w-[140px] space-y-1.5">
-                        <h1 className="text-black text-lg font-bold leading-6">{details?.FULL_NAME}</h1>
-                        <div className="flex items-center gap-1">
-                            <LocationIcon/>
-                            <p className="text-[#616166] text-xs font-normal">International Fugitive</p>
+                    <div>
+                        <h1 className="text-black text-lg font-bold leading-6">{`${toEnhancedTitleCase(details?.FIRST || '')} ${toEnhancedTitleCase(details?.MID || '')} ${toEnhancedTitleCase(details?.LAST || '')}`.trim() || 'N/A'}</h1>
+                        <div className="flex items-start gap-2">
+                            <LocationIcon className="mt-0.5 flex-shrink-0"/>
+                            <p className="text-[#616166] text-xs font-normal leading-relaxed" style={{marginLeft:"-6px"}}>
+                                {getLocations().length > 0 ? (
+                                    <span className="flex flex-wrap gap-0.5">
+                                        {getLocations().map((location, index) => (
+                                            <span key={index} className="inline-block">
+                                                {location}
+                                                {index < getLocations().length - 1 && (
+                                                    <span className="mx-1 text-gray-400">|</span>
+                                                )}
+                                            </span>
+                                        ))}
+                                    </span>
+                                ) : (
+                                    'N/A'
+                                )}
+                            </p>
                         </div>
 
                         {pathname !== ROUTES.AI_SEARCH.BUILD &&
@@ -125,10 +191,25 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
                     </div>
                 </div>
                 <div className="flex gap-3">
-          <span>
-            <CountryIcon/>
-          </span>
-                    <ExclamationIcon className="mt-2 hover:cursor-pointer"/>
+                    <div className="relative">
+                        <CountryIcon
+                            className="hover:cursor-pointer"
+                            onMouseEnter={() => setShowTooltip(true)}
+                            onMouseLeave={() => setShowTooltip(false)}
+                        />
+                        {showTooltip && (
+                            <div className="absolute z-[9999] left-[-5px] top-[-10px] transform -translate-x-full px-4 py-2 bg-gray-900 text-white text-sm rounded-lg shadow-lg w-[200px]">
+                                <p className="whitespace-normal">
+                                    This report is generated using data from our comprehensive criminals database, providing detailed and accurate information for investigative purposes.
+                                </p>
+                            </div>
+                        )}
+                    </div>
+                    <ExclamationIcon
+                        className="mt-2 hover:cursor-pointer"
+                        onMouseEnter={() => setShowTooltip(true)}
+                        onMouseLeave={() => setShowTooltip(false)}
+                    />
                 </div>
             </div>
             {/* {editable && (
@@ -139,34 +220,30 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
         </div>
       )} */}
             <div className={cn('pt-4 space-y-4', isDrawer && 'block')}>
-                <ThreatAssessment isEditable={editable}/>
+                {/* <ThreatAssessment isEditable={editable}/> */}
                 <PersonalInfo isEditable={editable} isDrawer={isDrawer} details={details}/>
                 <PersonalAppearanceProfile isEditable={editable} isDrawer={isDrawer}/>
-                <IdentificationAndContact isEditable={editable} isDrawer={isDrawer}/>
+                <IdentificationAndContact isEditable={editable} isDrawer={isDrawer} details={details}/>
+                <DeviceInfo isEditable={editable} isDrawer={isDrawer}/>
                 <AssociationsConnection isEditable={editable} isDrawer={isDrawer}/>
                 <CitizenesAbroad isEditable={editable}/>
-                <VehicleOwnership isEditable={editable} isDrawer={isDrawer}/>
+                <VehicleOwnership isEditable={editable} isDrawer={isDrawer} details={details}/>
                 <Employment isEditable={editable} isDrawer={isDrawer}/>
-                <Education isEditable={editable} isDrawer={isDrawer}/>
+                <Education isEditable={editable} isDrawer={isDrawer} details={details}/>
                 <FinancialBackground isEditable={editable} isDrawer={isDrawer}/>
                 <ConsumerInfo isEditable={editable} isDrawer={isDrawer}/>
                 <SocialAndWeb isEditable={editable} isDrawer={isDrawer}/>
                 <PhotographicArchive isEditable={editable} isDrawer={isDrawer}/>
-                <DeviceInfo isEditable={editable} isDrawer={isDrawer}/>
                 <CriminalAndLegal isEditable={editable} isDrawer={isDrawer}/>
                 <HighRisk isEditable={editable} isDrawer={isDrawer}/>
                 <GeospatialTrace isEditable={editable} isDrawer={isDrawer}/>
-                <AiDriven isEditable={editable} isDrawer={isDrawer}/>
-                <LogBookEntries isEditable={editable} isDrawer={isDrawer}/>
-                <Notes isEditable={editable}/>
+                {/* <AiDriven isEditable={editable} isDrawer={isDrawer}/> */}
+                {/* <LogBookEntries isEditable={editable} isDrawer={isDrawer}/> */}
+                {/* <Notes isEditable={editable}/> */}
                 <DossierCollaboration isEditable={editable} isDrawer={isDrawer}/>
-                <UserActivityTracking/>
-                <VersionHistory/>
-                <AuditTrail/>
-                {/* <Collapse duration={300} header={({ toggle }) => <p onClick={toggle}>Column header</p>}>
-          <h1>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ad, necessitatibus?</h1>
-        </Collapse> */}
-                {/* <PersonalInformation /> */}
+                {/* <UserActivityTracking/> */}
+                {/* <VersionHistory/> */}
+                {/* <AuditTrail/> */}
 
                 {editable && (
                     <div className="flex justify-start">

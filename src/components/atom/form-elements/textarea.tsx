@@ -1,6 +1,7 @@
 import { useInteractiveEvent } from '@/lib/hooks/use-interactive-event';
 import cn from '@/lib/utils/cn';
 import React, { forwardRef } from 'react';
+import { toEnhancedTitleCase } from '@/lib/utils/title-case';
 import { inputLabelStyles } from './styles/label-styles';
 import { FieldHelperText } from './field-helper-text';
 import { FieldError } from './field-error-text';
@@ -118,6 +119,9 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
       onMouseLeave,
     });
 
+    // Apply title case to label if it's a string
+    const processedLabel = typeof label === 'string' ? toEnhancedTitleCase(label) : label;
+
     return (
       <div className={cn(`textarea-root`, 'flex flex-col', className)}>
         <label className="block">
@@ -132,7 +136,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
                 labelClassName
               )}
             >
-              {label} {isRequired && <span className="text-red-500"> *</span>}
+              {processedLabel} {isRequired && <span className="text-red-500"> *</span>}
             </span>
           ) : null}
 

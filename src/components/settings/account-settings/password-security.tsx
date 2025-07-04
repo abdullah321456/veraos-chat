@@ -10,6 +10,8 @@ import { ModalHeader } from '@/components/atom/modal-header';
 import { useModal } from '@/components/modal-views/use-modal';
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { userService } from '@/services/userService';
+import { useUser } from '@/lib/hooks/use-user';
 
 export function PasswordSecurity() {
   const { openModal } = useModal();
@@ -49,9 +51,25 @@ function ChangePasswordModal() {
   const [passwordFillable, setPasswordFillable] = useState(false);
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { updatePassword } = useUser();
 
   const radioChildClassName =
     'peer-checked:text-primary peer-checked:font-semibold border rounded px-4 py-2 text-center cursor-pointer ring-0 peer-checked:ring-[2px] peer-checked:ring-primary text-sm duration-300';
+
+  const handleSubmit = async (data: any) => {
+    const success = await updatePassword({
+      currentPassword: data.currentPassword,
+      newPassword: data.newPassword,
+      confirmPassword: data.confirmPassword,
+    });
+    
+    if (success) {
+      closeModal();
+    }
+  };
+
   return (
     <div className="p-6 pt-3">
       {!securityCodeSent && (
@@ -78,6 +96,11 @@ function ChangePasswordModal() {
 
       {passwordFillable && (
         <div className="space-y-4">
+          <PasswordInput 
+            label="Current Password" 
+            placeholder="Enter current password" 
+            onChange={(e) => setCurrentPassword(e.target.value)} 
+          />
           <PasswordInput label="New Password" placeholder="Enter new password" onChange={(e) => setNewPassword(e.target.value)} />
           <PasswordInput
             label="Confirm Password"
@@ -120,20 +143,10 @@ function ChangePasswordModal() {
         )}
         {passwordFillable && securityCodeSent && (
           <Button
-            onClick={() => {
-              if (!newPassword || !confirmPassword) {
-                toast.error('Please enter new password and confirm password');
-                return;
-              }
-              if (newPassword !== confirmPassword) {
-                toast.error('New password and confirm password do not match');
-                return;
-              }
-              toast.success('Password changed successfully');
-              closeModal();
-            }}
+            onClick={() => handleSubmit({ currentPassword, newPassword, confirmPassword })}
+            disabled={isSubmitting}
           >
-            Save
+            {isSubmitting ? 'Updating...' : 'Save'}
           </Button>
         )}
       </div>

@@ -11,6 +11,7 @@ export const ROUTES = {
   FAQ: {
     INDEX: '/faq',
     HELP_CENTER: '/help-center',
+    TERMS_OF_USE: '/terms-of-use',
   },
   SETTINGS: {
     ACCOUNT: '/settings/account',
@@ -33,10 +34,11 @@ export const MAP_PAGE_HEADER_TITLE = {
   [ROUTES.AUTH.LOGIN]: 'Login to your account',
   [ROUTES.AUTH.SIGNUP]: 'Create a new account',
   [ROUTES.AUTH.FORGOT_PASSWORD]: 'Forgot password',
-  [ROUTES.HOME]: 'Home',
+  [ROUTES.HOME]: 'Overwatch AI',
   [ROUTES.REPORTS]: 'Archive',
   [ROUTES.FAQ.INDEX]: 'Faq',
   [ROUTES.FAQ.HELP_CENTER]: 'Help Center',
+  [ROUTES.FAQ.TERMS_OF_USE]: 'Terms of Use',
   [ROUTES.SETTINGS.ACCOUNT]: 'Account Settings',
   [ROUTES.SETTINGS.SEARCH_PREFERENCE]: 'Search Preferences',
   [ROUTES.SETTINGS.PRIVACY_SECURITY]: 'Privacy & Security',
@@ -45,5 +47,7 @@ export const MAP_PAGE_HEADER_TITLE = {
   [ROUTES.SETTINGS.DATA_VISUALIZATION]: 'Data Visualization',
   [ROUTES.TECH_SUPPORT]: 'Tech Support',
   [ROUTES.BILLING]: 'Billing',
-  [ROUTES.AI_SEARCH.INDEX]: 'Search history',
+  [ROUTES.AI_SEARCH.INDEX]: 'Overwatch AI',
+  [ROUTES.AI_SEARCH.FULL_REPORT]: 'Full Report',
+  [ROUTES.AI_SEARCH.BUILD]: 'Build Dossier',
 };

@@ -1,13 +1,14 @@
 'use client';
 import cn from '@/lib/utils/cn';
-import { SVGProps } from 'react';
-import { PiArrowRight } from 'react-icons/pi';
-import { AIResponseDetail } from './type';
-import { useDrawer } from '@/components/drawer-views/use-drawer';
-import { DrawerHeader } from './cta';
-import { FullReport } from '../../full-report/_view/full-report';
+import {SVGProps} from 'react';
+import {PiArrowRight} from 'react-icons/pi';
+import {AIResponseDetail} from './type';
+import {useDrawer} from '@/components/drawer-views/use-drawer';
+import {DrawerHeader} from './cta';
+import {FullReport} from '../../full-report/_view/full-report';
+import { toEnhancedTitleCase } from '@/lib/utils/title-case';
 
-export function AiResponseDetails({ detailsData }: { detailsData: AIResponseDetail[] }) {
+export function AiResponseDetails({detailsData}: { detailsData: AIResponseDetail[] }) {
   return (
     <div className="grid grid-cols-3 gap-3 pl-1 pr-6 py-6">
       {detailsData?.map((item) => (
@@ -18,54 +19,133 @@ export function AiResponseDetails({ detailsData }: { detailsData: AIResponseDeta
 }
 
 function SingleDetails(props: AIResponseDetail) {
-  const { openDrawer } = useDrawer();
+    const {openDrawer} = useDrawer();
+
+    const calculateAge = (birthdate: string) => {
+        const today = new Date();
+        const birthDate = new Date(birthdate);
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const monthDiff = today.getMonth() - birthDate.getMonth();
+
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+
+        return age;
+    };
+
+    const getLocations = () => {
+        const locations = new Set<string>();
+        const records = [
+            props.education,
+            props.rv,
+            props.motorcycles,
+            props.national_drivers_license,
+            props.bankruptcy,
+            props.automobile,
+            props.foreign_movers,
+            props.cell_records,
+            props.drunk_drivings,
+            props.voip,
+            props.vets
+        ];
+
+        if (props?.STATE && (props?.CITY || props?.City)) {
+            locations.add(`${props.CITY}, ${props.ST || props.STATE}`);
+        }
+        records.forEach(record => {
+            if ((record?.STATE || record?.ST || record?.State) && (record?.CITY || record?.City)) {
+                locations.add(`${record.CITY || record.City}, ${record.ST || record.STATE || record.State}`);
+            }
+        });
+
+        return Array.from(locations).slice(0, 3);
+    };
+
+    const getEmailCount = () => {
+        const records = [
+            props.education,
+            props.rv,
+            props.motorcycles,
+            props.national_drivers_license,
+            props.bankruptcy,
+            props.automobile,
+            props.foreign_movers,
+            props.cell_records,
+            props.drunk_drivings,
+            props.voip,
+            props.vets
+        ];
+
+        return records.filter(record => (record?.email || record?.Email || record?.EMAIL || "").length>0).length;
+    };
+
+    const getPhoneCount = () => {
+        const records = [
+            props.education,
+            props.rv,
+            props.motorcycles,
+            props.national_drivers_license,
+            props.bankruptcy,
+            props.automobile,
+            props.foreign_movers,
+            props.cell_records,
+            props.drunk_drivings,
+            props.voip,
+            props.vets
+        ];
+
+        records.push({PHONE:props.PHONE})
+        return records.filter(record => (record?.phone || record?.Phone || record?.Phone1 || record?.Phone2
+           || record?.HOMEPHONE || record?.WORKPHONE || record?.CELL || record?.PHONE || "").length>0).length;
+    };
 
   function handleFullReport(props: AIResponseDetail) {
-
-
     openDrawer({
       closeOnPathnameChange: true,
       containerClassName: 'w-[470px]',
       view: (
         <div className="h-screen">
-          {/* <Link href={parsePathnameWithQuery(ROUTES.AI_SEARCH.FULL_REPORT, queryParams)}>Click here</Link>
-            <br />
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cupiditate impedit ab architecto soluta. Natus quod illum assumenda
-            consequatur error cum hic, vel dolor nulla a exercitationem modi iste optio facere! */}
-          <DrawerHeader />
+                    <DrawerHeader/>
           <div className="h-[calc(100vh-56px)] overflow-y-auto">
-            <FullReport isDrawer details={props} />
+                        <FullReport isDrawer details={props}/>
           </div>
         </div>
       ),
     });
   }
+
   return (
     <div className="px-3 py-3 shadow-lg shadow-gray-200/70 border border-gray-100 rounded-xl">
       <div className="flex justify-between items-center mb-3">
-        <p className="font-bold">{props.FULL_NAME}</p>
-        <span className={cn('text-[#C51FA0] text-xs py-1.5 px-2.5 bg-[#C51FA0]/10 rounded-md', !props.isExactMatch && 'invisible')}>
+                <p className="font-bold">{`${toEnhancedTitleCase(props.FIRST)} ${toEnhancedTitleCase(props.MID)} ${toEnhancedTitleCase(props.LAST)}`}</p>
+                <span
+                    className={cn('text-[#C51FA0] text-xs py-1.5 px-2.5 bg-[#C51FA0]/10 rounded-md', !props.isExactMatch && 'invisible')}>
           Exact Match
         </span>
       </div>
       <div className="text-xs space-y-2.5">
         <div className="flex items-center gap-2">
-          <CalendarIcon className="w-4 h-4" /> Age : {props.DOB}/Y
-        </div>
-        <div className="flex items-center gap-2">
-          <LocationIcon className="w-4 h-4" /> {props.ADDRESS}
-        </div>
+                    <CalendarIcon className="w-4 h-4"/> Age: {props.DOB ? `${calculateAge(props.DOB)} Years Old`:' N/A' }
+                </div>
+                <div className="flex items-center gap-2">
+                    <LocationIcon className="w-4 h-4"/>
+                    <div className="text-xs">
+                        {getLocations().length > 0 ? getLocations().join(' | ') : 'No location data'}
+                    </div>
+                </div>
         <div className="grid grid-cols-2 gap-5 text-[11px] whitespace-nowrap">
           <div className="flex items-center gap-2">
-            <CellPhoneIcon className="w-4 h-4" /> {props.mobileNumbers?.length} Mobile Numbers
+            <CellPhoneIcon className="w-4 h-4"/> {getPhoneCount()} Mobile Numbers
           </div>
           <div className="flex items-center gap-2">
-            {<EnvelopIcon className="w-4 h-4" />} {props.emails?.length} Email Addresses
+            <EnvelopIcon className="w-4 h-4"/> {getEmailCount()} Email Addresses
           </div>
         </div>
       </div>
-      <button onClick={(e)=>handleFullReport(props)} className="inline-flex gap-1 font-bold text-xs text-primary cursor-pointer items-center mt-4">
-        View Reports <PiArrowRight className="w-4 h-4 text-primary-dark" />
+            <button onClick={(e) => handleFullReport(props)}
+                    className="inline-flex gap-1 font-bold text-xs text-primary cursor-pointer items-center mt-4">
+                View Report <PiArrowRight className="w-4 h-4 text-primary-dark"/>
       </button>
     </div>
   );

@@ -6,29 +6,33 @@ import { useConversationSidebarSelectionState } from './utils';
 import { InboxNavigationData } from './types';
 import { Checkbox } from '@/components/atom/form-elements/checkbox';
 import { useEffect } from 'react';
+import { ROUTES } from '@/config/routes';
 
 export function InboxSelection({ data }: { data: InboxNavigationData[] }) {
   const { isSelectable } = useConversationSidebarSelectionState();
   const { setQueryParams, queryParams } = useQueryParams();
 
-  useEffect(() => {
-    if (data.length > 0 && !queryParams?.chatId) {
-      setQueryParams({ chatId: data[0].id.toString() });
-    }
-  }, [data, queryParams?.chatId, setQueryParams]);
+  // useEffect(() => {
+  //
+  //     console.log("InboxSelection = ",data);
+  //
+  //   if (data.length > 0 && !queryParams?.chatId) {
+  //     setQueryParams({ chatId: data[0].id.toString() });
+  //   }
+  // }, [data, queryParams?.chatId, setQueryParams]);
 
   const handleConversationClick = (id: string) => {
     if (!isSelectable) {
-      setQueryParams({ chatId: id });
+      setQueryParams({ chatId: id, route: ROUTES.AI_SEARCH.INDEX });
     }
   };
 
   return (
-    <div className={cn('mt-2 -mx-4 overflow-y-auto h-[calc(100%-190px)]', isSelectable && 'h-[calc(100%-240px)]')}>
+    <div className={cn('mt-2 -mx-4 overflow-y-auto')}>
       {data.map((item) => (
-        <SingleInboxSelect 
-          key={item.id} 
-          {...item} 
+        <SingleInboxSelect
+          key={item.id}
+          {...item}
           onClick={() => handleConversationClick(item.id.toString())}
         />
       ))}

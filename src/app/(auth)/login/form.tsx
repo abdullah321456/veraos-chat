@@ -36,6 +36,9 @@ export function LoginForm() {
       if (response.access_token) {
         // Save the access token
         authUtils.setToken(response.access_token);
+        
+        // Set flag to indicate coming from login
+        sessionStorage.setItem('fromLogin', 'true');
 
         toast.success('Login successful!', {
           duration: 2000,
@@ -48,7 +51,6 @@ export function LoginForm() {
       toast.error(response.message || 'Invalid credentials');
       return false;
     } catch (error: any) {
-      console.log(error);
       if (error?.response?.data?.message) {
         toast.error(error.response.data.message);
       } else {
@@ -61,6 +63,7 @@ export function LoginForm() {
   return (
       <form onSubmit={handleSubmit(onSubmit)} className="w-[420px]">
           <div className="space-y-4">
+
               <Input {...register('email')} isRequired label="Email Address" type="email" placeholder="Enter your email" error={errors.email?.message} />
               <div className="relative">
                   <Link href={ROUTES.AUTH.FORGOT_PASSWORD} className="absolute -top-0.5 text-sm font-normal right-0 underline text-primary">

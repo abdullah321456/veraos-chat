@@ -62,10 +62,7 @@ export function DataAccessForm() {
   // Watch form values for debugging
   const formValues = watch();
   useEffect(() => {
-    console.log('Form values:', formValues);
-    console.log('Is valid:', isValid);
-    console.log('Errors:', errors);
-    console.log('Dirty fields:', dirtyFields);
+    // Form values are being watched for validation
   }, [formValues, isValid, errors, dirtyFields]);
 
   const handleNeedSelection = (need: string) => {

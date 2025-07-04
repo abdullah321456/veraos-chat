@@ -47,9 +47,9 @@ export const apiService = {
     },
 
     // DELETE request example
-    deleteData: async (endpoint) => {
+    deleteData: async (endpoint, data) => {
         try {
-            const response = await axiosInstance.delete(endpoint);
+            const response = await axiosInstance.delete(endpoint, { data });
             return response.data;
         } catch (error) {
             throw error;

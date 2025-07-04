@@ -6,6 +6,7 @@ import {AccordionActionButton} from "../../../_components/accordion-action-butto
 import {InputDataCell} from "../../../_components/input-data-cell";
 import {Accordion} from "../../_components/accordion";
 import {AIResponseDetail} from "../../../_view/conversation/type";
+import { toEnhancedTitleCase } from '@/lib/utils/title-case';
 
 type PersonalInfoProps = {
     isEditable?: boolean;
@@ -21,6 +22,40 @@ export function PersonalInfo({
     const [isLocalEdit] = useState(isEditable);
     const [editable, setEditable] = useState(false);
 
+    const calculateAge = (birthdate: string) => {
+        if (!birthdate) return null;
+        
+        const today = new Date();
+        const birthDate = new Date(birthdate);
+        
+        // Check if the date is valid
+        if (isNaN(birthDate.getTime())) return null;
+        
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const monthDiff = today.getMonth() - birthDate.getMonth();
+
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+
+        return age;
+    };
+
+    const formatDateToMMDDYYYY = (dateString: string) => {
+        if (!dateString) return undefined;
+        
+        const date = new Date(dateString);
+        
+        // Check if the date is valid
+        if (isNaN(date.getTime())) return dateString;
+        
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const year = date.getFullYear();
+        
+        return `${month}/${day}/${year}`;
+    };
+
     const actionButtonMode = isLocalEdit && !editable ? "edit" : "save";
 
     function handleActionButtonClick() {
@@ -32,10 +67,13 @@ export function PersonalInfo({
         }
     }
 
+    const formattedDOB = formatDateToMMDDYYYY(details?.DOB || '');
+    const calculatedAge = calculateAge(details?.DOB || '');
+
     return (
         <Accordion
             translateButton={isEditable}
-            title="Personal information"
+            title="Personal Information"
             {...(isLocalEdit && {
                 actionButton: (
                     <AccordionActionButton
@@ -58,29 +96,37 @@ export function PersonalInfo({
                     <div className="grid grid-cols-3 gap-3">
                         <InputDataCell
                             label="First Name"
-                            value={details?.FIRST}
+                            value={details?.FIRST ? toEnhancedTitleCase(details.FIRST) : undefined}
                             editable={editable}
                         />
                         <InputDataCell
                             label="Middle Name"
-                            value={details?.MID}
+                            value={details?.MID ? toEnhancedTitleCase(details.MID) : undefined}
                             editable={editable}
                         />
-                        <InputDataCell label="Last Name" value={details?.LAST} editable={editable}/>
+                        <InputDataCell 
+                            label="Last Name" 
+                            value={details?.LAST ? toEnhancedTitleCase(details.LAST) : undefined} 
+                            editable={editable}
+                        />
                     </div>
                 ) : (
                     <>
                         <InputDataCell
                             label="First Name"
-                            value={details?.FIRST}
+                            value={details?.FIRST ? toEnhancedTitleCase(details.FIRST) : undefined}
                             editable={editable}
                         />
                         <InputDataCell
                             label="Middle Name"
-                            value={details?.MID}
+                            value={details?.MID ? toEnhancedTitleCase(details.MID) : undefined}
                             editable={editable}
                         />
-                        <InputDataCell label="Last Name" value={details?.LAST} editable={editable}/>
+                        <InputDataCell 
+                            label="Last Name" 
+                            value={details?.LAST ? toEnhancedTitleCase(details.LAST) : undefined} 
+                            editable={editable}
+                        />
                     </>
                 )}
 
@@ -103,10 +149,14 @@ export function PersonalInfo({
                 />
                 <InputDataCell
                     label="Date of Birth"
-                    value={details?.DOB}
+                    value={formattedDOB || "N/A"}
                     editable={editable}
                 />
-                <InputDataCell label="Gender" value={details?.GENDER} editable={editable}/>
+                <InputDataCell 
+                    label="Age" 
+                    value={calculatedAge ? `${calculatedAge} years` : "N/A"} 
+                    editable={editable}
+                />
             </div>
             <div className="grid grid-cols-3 gap-4 mt-3">
                 <InputDataCell
@@ -114,7 +164,10 @@ export function PersonalInfo({
                     value="Married"
                     editable={editable}
                 />
+                <InputDataCell label="Gender" value={details?.GENDER} editable={editable}/>
                 <InputDataCell label="Religion" value="Christian" editable={editable}/>
+            </div>
+            <div className="grid grid-cols-3 gap-4 mt-3">
                 <InputDataCell label="No. of Children" value="3" editable={editable}/>
             </div>
             <div

@@ -4,6 +4,7 @@ import React, { forwardRef } from 'react';
 
 import { useInteractiveEvent } from '@/lib/hooks/use-interactive-event';
 import cn from '@/lib/utils/cn';
+import { toEnhancedTitleCase } from '@/lib/utils/title-case';
 
 import { FieldClearButton } from './field-clear-button';
 import { FieldError } from './field-error-text';
@@ -130,6 +131,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       onFocus,
     });
 
+    // Apply title case to label if it's a string
+    const processedLabel = typeof label === 'string' ? toEnhancedTitleCase(label) : label;
+
     return (
       <div className={cn('flex flex-col', className)}>
         <label className="block">
@@ -145,7 +149,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                 labelClassName
               )}
             >
-              {label}
+              {processedLabel}
               <>{isRequired && <span className="text-red-500">&nbsp;*</span>}</>
             </span>
           ) : null}

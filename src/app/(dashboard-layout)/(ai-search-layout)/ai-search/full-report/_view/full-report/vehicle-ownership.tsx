@@ -7,10 +7,12 @@ import { PiTrash } from 'react-icons/pi';
 import { toast } from 'sonner';
 import { AccordionActionButton } from '../../../_components/accordion-action-button';
 import { Accordion } from '../../_components/accordion';
+import { AIResponseDetail } from '../../../_view/conversation/type';
 
 type VehicleOwnershipProps = {
   isEditable?: boolean;
   isDrawer?: boolean;
+  details?: AIResponseDetail;
 };
 
 type Car = {
@@ -23,31 +25,12 @@ type Car = {
   image: string;
 };
 
-const DUMMY_DATA: Car[] = [
-  {
-    name: 'Car 1',
-    make: 'Honda',
-    model: 'Civic',
-    year: '2020',
-    color: 'Silver',
-    vin: '1FTRX18W1XCA98765',
-    image: '/red-car.png',
-  },
-  {
-    name: 'Car 2',
-    make: 'Ford',
-    model: 'Mustang',
-    year: '2018',
-    color: 'Red',
-    vin: '2FTRX18W1XCA98765',
-    image: '/black-car.png',
-  },
-];
-
-export function VehicleOwnership({ isEditable = false, isDrawer }: VehicleOwnershipProps) {
+export function VehicleOwnership({ isEditable = false, isDrawer, details }: VehicleOwnershipProps) {
   const [isLocalEdit] = useState(isEditable);
   const [editable, setEditable] = useState(false);
   const [newVehicle, setNewVehicle] = useState(false);
+
+  console.log("VehicleOwnership details:", details);
 
   const actionButtonMode = isLocalEdit && !editable ? 'edit' : 'save';
 
@@ -59,7 +42,19 @@ export function VehicleOwnership({ isEditable = false, isDrawer }: VehicleOwners
       toast.success('Successfully saved');
     }
     if (newVehicle) setNewVehicle(false);
-  } 
+  }
+
+  const vehicleData: Car[] = details?.automobile ? [{
+    name: `${details.automobile.MAKE} ${details.automobile.MODEL}`,
+    make: details.automobile.MAKE || '',
+    model: details.automobile.MODEL || '',
+    year: details.automobile.YEAR?.toString() || '',
+    color: 'N/A',
+    vin: details.automobile.VIN || '',
+    image: '/red-car.png',
+  }] : [];
+
+  console.log("VehicleOwnership vehicleData:", vehicleData);
 
   return (
     <Accordion
@@ -69,9 +64,9 @@ export function VehicleOwnership({ isEditable = false, isDrawer }: VehicleOwners
         actionButton: <AccordionActionButton setEditable={setEditable} mode={actionButtonMode} onClick={handleActionButtonClick} />,
       })}
     >
-      <div className={cn(isDrawer ? 'grid grid-cols-2 gap-2' : 'grid grid-cols-2 gap-3')}>
-        {DUMMY_DATA.map((car) => (
-          <RenderExistingVehicle key={car.name} {...car} isEditable={editable} isDrawer={isDrawer} />
+      <div className={cn(isDrawer ? 'grid grid-cols-1 gap-2' : 'grid grid-cols-1 gap-3')}>
+        {vehicleData.map((car) => (
+          <RenderExistingVehicle key={car.vin} {...car} isEditable={editable} isDrawer={isDrawer} />
         ))}
         {newVehicle && editable && <AddNewVehicleForm setNewVehicle={setNewVehicle} />}
       </div>
@@ -98,34 +93,34 @@ function RenderExistingVehicle({
   isDrawer,
 }: Car & { isEditable: boolean; isDrawer?: boolean }) {
   return (
-    <div className="border rounded-lg py-1.5 px-2.5">
+    <div className="border rounded-lg py-3 px-4 w-full">
       <div className="flex items-center justify-between">
-        <p className="text-xs">{name}</p>
+        <p className="text-sm font-medium">{name}</p>
         {isEditable && (
           <button className="text-red-500">
             <PiTrash />
           </button>
         )}
       </div>
-      <div className="space-y-2 mt-2 flex justify-between">
-        <div>
-          <p className="text-black font-medium text-xs leading-5">
-            Make: <span className="text-black text-xs font-normal leading-4">{make}</span>
+      <div className="space-y-2 mt-3 flex justify-between">
+        <div className="w-full">
+          <p className="text-black font-medium text-sm leading-5">
+            Make: <span className="text-black text-sm font-normal leading-4">{make}</span>
           </p>
-          <p className="text-black font-medium text-xs leading-5">
-            Model: <span className="text-black text-xs font-normal leading-4">{model}</span>
+          <p className="text-black font-medium text-sm leading-5">
+            Model: <span className="text-black text-sm font-normal leading-4">{model}</span>
           </p>
-          <p className="text-black font-medium text-xs leading-5">
-            Year: <span className="text-black text-xs font-normal leading-4">{year}</span>
+          <p className="text-black font-medium text-sm leading-5">
+            Year: <span className="text-black text-sm font-normal leading-4">{year}</span>
           </p>
-          <p className="text-black font-medium text-xs leading-5">
-            Color: <span className="text-black text-xs font-normal leading-4">{color}</span>
+          <p className="text-black font-medium text-sm leading-5">
+            Color: <span className="text-black text-sm font-normal leading-4">{color}</span>
           </p>
-          <p className="text-black font-medium text-xs leading-5">
-            VIN Number: <span className="text-black text-xs font-normal leading-4">{vin}</span>
+          <p className="text-black font-medium text-sm leading-5">
+            VIN Number: <span className="text-black text-sm font-normal leading-4">{vin}</span>
           </p>
         </div>
-        <>{!isDrawer && <Image src={image} alt="black-car" width={202} height={118} />}</>
+        {!isDrawer && <Image src={image} alt="black-car" width={202} height={118} />}
       </div>
     </div>
   );

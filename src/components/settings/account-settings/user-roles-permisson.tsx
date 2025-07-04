@@ -277,13 +277,13 @@ function AddEditUserModal({ value, onSave }: { value?: FormInputType; onSave: (i
 
   const watchedRole = useWatch({ control, name: 'role' });
 
-  function onSubmit(inputs: any) {
-    console.log(inputs);
-    onSave(inputs);
-    closeModal();
+  async function onSubmit(inputs: FormInputType) {
+    try {
+      // Handle form submission
+    } catch (error) {
+      // Handle error
+    }
   }
-
-  console.log('errors', errors);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="p-6 pt-3 ">

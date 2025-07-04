@@ -4,6 +4,7 @@
 import { PiCaretDownBold } from 'react-icons/pi';
 
 import cn from '@/lib/utils/cn';
+import { toEnhancedTitleCase } from '@/lib/utils/title-case';
 
 import { Dropdown } from '@/components/atom/dropdown/dropdown';
 
@@ -64,13 +65,16 @@ export function Select({
   }
 
   const display = formatDisplay ? formatDisplay(selected) : selected?.name;
+  
+  // Apply title case to label if it's a string
+  const processedLabel = typeof label === 'string' ? toEnhancedTitleCase(label) : label;
 
   return (
     <>
       <div>
         {label ? (
           <span className={cn(`input-label`, 'mb-2 block text-xs font-medium text-[#6D6F73]', labelClassName)}>
-            {label} {isRequired && <span className="text-red-500">*</span>}{' '}
+            {processedLabel} {isRequired && <span className="text-red-500">*</span>}{' '}
           </span>
         ) : null}
         <Dropdown
@@ -105,6 +109,9 @@ export function Select({
               {options.map((opt) => {
                 const isSelected = opt === selected;
                 const option = (formatOption ? formatOption(opt) : opt.name) as React.ReactNode;
+                
+                // Apply title case to option name if it's a string
+                const processedOption = typeof option === 'string' ? toEnhancedTitleCase(option) : option;
 
                 return (
                   <Dropdown.Item
@@ -118,7 +125,7 @@ export function Select({
                       dropdownOptionClassName
                     )}
                   >
-                    {option}
+                    {processedOption}
                   </Dropdown.Item>
                 );
               })}

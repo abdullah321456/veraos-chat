@@ -11,36 +11,36 @@ import { AccordionActionButton } from '../../../../_components/accordion-action-
 import { Accordion } from '../../../_components/accordion';
 import { AddOrEditModal } from './add-or-edit-modal';
 import { FormInputType } from './validation';
+import { AIResponseDetail } from '../../../../_view/conversation/type';
 
 type Props = {
   isEditable?: boolean;
   isDrawer?: boolean;
+  details?: AIResponseDetail;
 };
 
 type DataType = FormInputType & { id: number };
 
-const DUMMY_DATA: DataType[] = [
-  {
-    id: 1,
-    institution: 'University of Illinois',
-    degree: 'Bachelor of Arts in Marketing',
-    graduationDate: dayJs().add(-1, 'year').toDate(),
-    gpa: '3.8/4.0',
-  },
-  {
-    id: 1,
-    institution: 'Springfield Community College',
-    degree: 'Associate Degree in Business Administration',
-    graduationDate: dayJs().add(-1, 'year').toDate(),
-    gpa: '3.6 /4.0',
-  },
-];
-
-export function Education({ isEditable = false, isDrawer }: Props) {
+export function Education({ isEditable = false, isDrawer, details }: Props) {
   const { openModal } = useModal();
   const [isLocalEdit] = useState(isEditable);
   const [editable, setEditable] = useState(false);
-  const [valuesState, setValuesState] = useState(DUMMY_DATA);
+
+  console.log("Education details:", details);
+
+  const [valuesState, setValuesState] = useState<DataType[]>(() => {
+    console.log("Initializing education state with details:", details);
+    if (details) {
+      return [{
+        id: 1,
+        institution: details.CITY || 'Unknown Institution',
+        degree: 'High School Diploma',
+        graduationDate: new Date(),
+        gpa: 'N/A',
+      }];
+    }
+    return [];
+  });
 
   const actionButtonMode = isLocalEdit && !editable ? 'edit' : 'save';
 

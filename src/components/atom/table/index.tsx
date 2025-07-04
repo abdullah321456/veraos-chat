@@ -35,6 +35,7 @@ type TableProps<T> = {
   loaderClassName?: string;
   rowClassName?: string | ((data: T) => string);
   getTable?: (table: Row<T>[]) => void;
+  onRowClick?: (row: any) => void;
 };
 
 export function Table<T>({
@@ -48,6 +49,7 @@ export function Table<T>({
   rowClassName,
 
   getTable,
+  onRowClick,
 }: TableProps<T>) {
   const [sorting, setSorting] = useState<SortingState>([]);
 
@@ -91,6 +93,12 @@ export function Table<T>({
 
   // accessing meta data
   // console.log(table.getAllLeafColumns().map((col) => col.columnDef));
+
+  const handleRowClick = (row: any) => {
+    if (onRowClick) {
+      onRowClick(row);
+    }
+  };
 
   return (
     <div className={cn('relative rounded-xl border p-5', loading && 'pointer-events-none', className)}>

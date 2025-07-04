@@ -39,10 +39,10 @@ export function ConversationCta() {
 
   return (
     <div className="flex gap-3 px-16 pt-3">
-      <Button variant="outline" size="md">
+      <Button variant="outline" size="md" disableTitleCase>
         View Matching Records
       </Button>
-      <Button onClick={handleFullReport} size="md">
+      <Button onClick={handleFullReport} size="md" disableTitleCase>
         Full Report
       </Button>
     </div>

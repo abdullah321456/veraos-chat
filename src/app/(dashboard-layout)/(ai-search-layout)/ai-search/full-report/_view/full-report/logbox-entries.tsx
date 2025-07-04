@@ -17,6 +17,7 @@ import { z } from 'zod';
 import { zodUtils } from '@/lib/utils/zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { PiPencil, PiTrash } from 'react-icons/pi';
+import { formatPhoneNumber } from '@/lib/utils/phone-formatter';
 
 const AddressInputSchema = z.object({
   address: zodUtils.getStringSchema({ name: 'Address', minErrorMessage: 'Address is required', min: 1 }),
@@ -190,7 +191,7 @@ function Single({
           Relationship: <span className="text-black text-xs font-normal leading-4">{data.relationship}</span>
         </p>
         <p className="text-black font-medium text-xs leading-5">
-          Phone Number: <span className="text-black text-xs font-normal leading-4">{data.phone}</span>
+          Phone Number: <span className="text-black text-xs font-normal leading-4">{formatPhoneNumber(data.phone)}</span>
         </p>
         <p className="text-black font-medium text-xs leading-5">
           Email: <span className="text-black text-xs font-normal leading-4">{data.email}</span>

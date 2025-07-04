@@ -66,7 +66,6 @@ export function FinalSubmissionForm() {
             setIsUploading(true);
             const loadingToast = toast.loading('Uploading documents...');
 
-            console.log(documents);
             // Upload documents
             const formData = new FormData();
             documents.forEach((file) => {
@@ -89,6 +88,8 @@ export function FinalSubmissionForm() {
             // Save access token
             if (response.data?.access_token) {
                 authUtils.setToken(response.data.access_token);
+                // Set flag to indicate coming from registration
+                sessionStorage.setItem('fromLogin', 'true');
             }
 
             toast.dismiss(loadingToast);

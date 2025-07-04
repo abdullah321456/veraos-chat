@@ -18,3 +18,29 @@ body {
   color: var(--foreground);
   background: var(--background);
 }
+
+/* Title Case Styling - Consistent Capitalization */
+/* Utility class for title case text */
+.title-case {
+  text-transform: none;
+}
+
+/* Override for specific elements that should not be title case */
+.no-title-case {
+  text-transform: none;
+}
+
+/* Email addresses and URLs should not be title case */
+input[type="email"], input[type="url"], a[href^="mailto:"], a[href^="http"] {
+  text-transform: none;
+}
+
+/* Code and technical content should not be title case */
+code, pre, .code, .technical {
+  text-transform: none;
+}
+
+/* JavaScript-based title case utility */
+.title-case-js {
+  text-transform: none;
+}

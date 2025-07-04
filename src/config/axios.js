@@ -12,7 +12,7 @@ const axiosInstance = axios.create({
     headers: {
         'Content-Type': 'application/json',
     },
-    timeout: 10000, // 10 seconds timeout
+    timeout: 30000, // 30 seconds timeout
 });
 
 // Add token to requests
@@ -28,11 +28,11 @@ axiosInstance.interceptors.request.use((config) => {
 axiosInstance.interceptors.response.use(
     (response) => response,
     (error) => {
-        if (error.response?.status === 401) {
+        if (error.response?.status === 403) {
             authUtils.handleUnauthorized();
         }
         return Promise.reject(error);
     }
 );
 
-export default axiosInstance; 
+export default axiosInstance;

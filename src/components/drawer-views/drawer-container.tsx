@@ -33,7 +33,6 @@ export default function DrawerContainer() {
   }, [pathname]);
 
   function handleClose() {
-    console.log('testing...');
     closeDrawer()
     onCloseHandler?.();
     // if (onTopOfModal) {

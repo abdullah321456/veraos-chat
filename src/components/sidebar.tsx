@@ -33,10 +33,10 @@ export function DashboardSidebar({ isExpanded }: Props) {
 
   const menuItems = [
     {
-      href: parsePathnameWithQuery(ROUTES.AI_SEARCH.INDEX, queryParams),
+      href: ROUTES.AI_SEARCH.INDEX,
       icon: SearchStarIcon,
-      activePathnames: [ROUTES.AI_SEARCH.INDEX, ROUTES.AI_SEARCH.FULL_REPORT],
-      name: 'AI Search',
+      activePathnames: [ROUTES.AI_SEARCH.INDEX],
+      name: 'Overwatch AI',
     },
     {
       href: ROUTES.REPORTS,
@@ -47,7 +47,7 @@ export function DashboardSidebar({ isExpanded }: Props) {
     {
       href: ROUTES.FAQ.INDEX,
       icon: QuestionIcon,
-      activePathnames: [ROUTES.FAQ.INDEX, ROUTES.FAQ.HELP_CENTER],
+      activePathnames: [ROUTES.FAQ.INDEX],
       name: 'Faq',
     },
     {
@@ -56,11 +56,6 @@ export function DashboardSidebar({ isExpanded }: Props) {
       icon: SettingIcon,
       activePathnames: [
         ROUTES.SETTINGS.ACCOUNT,
-        ROUTES.SETTINGS.SEARCH_PREFERENCE,
-        ROUTES.SETTINGS.PRIVACY_SECURITY,
-        ROUTES.SETTINGS.NOTIFICATIONS_ALERTS,
-        ROUTES.SETTINGS.ADVANCED_AI_ANALYSIS,
-        ROUTES.SETTINGS.DATA_VISUALIZATION,
       ],
     },
     { separator: true },
@@ -105,7 +100,7 @@ export function DashboardSidebar({ isExpanded }: Props) {
     >
       <div className="mb-10">
         <Link href={ROUTES.HOME}>
-          <Image src="/logo.png" alt="logo" width={100} height={100} quality={100} className="w-[52px] h-[52px]" />
+          <Image src="/logo.png" alt="logo" width={100} height={100} quality={100} className="w-[52px] h-[52px] brightness-0 invert" />
         </Link>
       </div>
       <div className="flex flex-col gap-2 w-full">

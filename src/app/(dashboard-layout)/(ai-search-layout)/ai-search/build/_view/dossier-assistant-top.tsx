@@ -17,18 +17,6 @@ export function DossierAssistantTop() {
   }
   return (
     <div className="mb-6">
-      <div className="flex items-center gap-3 mb-4">
-        <AiIcon />
-        <h4 className="text-black  font-bold">Dossier Assistant</h4>
-      </div>
-      <SearchInput defaultValue="lLorem Ipsum is simply dummy text of the printing and typesetting industry." />
-      <div className="flex items-center text-xs mt-3">
-        <PiInfo className="text-yellow-600 me-1" />
-        <p>New Employment Record Found | Oct 21, 2024, 11:45 AM. </p> &nbsp;&nbsp;
-        <span className="underline text-primary cursor-pointer" onClick={handleViewUpdate}>
-          View update
-        </span>
-      </div>
       <CustomCaseForm />
     </div>
   );

@@ -1,18 +1,18 @@
 'use client';
 
 import cn from '@/lib/utils/cn';
-
-import { SVGProps } from 'react';
+import { SVGProps, ReactNode } from 'react';
 import { Avatar } from './avatar';
 // import { ConversationCta } from './cta';
 import dynamic from 'next/dynamic';
 const ConversationCta = dynamic(() => import('./cta').then((mod) => mod.ConversationCta), { ssr: false });
 import { AiResponseDetails } from './response-details';
 import { AIResponseDetail, OnImageSearchHandlerParam, Sender } from './type';
+import React from 'react';
 
 type SingleConversationProps = {
   sender: Sender;
-  message?: string;
+  message?: string | ReactNode;
   images?: OnImageSearchHandlerParam;
   cta: boolean;
   aiResponseDetails?: AIResponseDetail[];
@@ -20,13 +20,28 @@ type SingleConversationProps = {
 
 export function SingleConversation({ sender, message, cta, aiResponseDetails, images }: SingleConversationProps) {
   const isLeft = sender === 'ai';
+  const questionId = `question-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  const [localImages, setLocalImages] = React.useState<OnImageSearchHandlerParam>(images || []);
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files) {
+      const newImages = Array.from(files).map(file => ({
+        file,
+        url: URL.createObjectURL(file)
+      }));
+      setLocalImages([...localImages, ...newImages]);
+    }
+  };
+
+  console.log("aiResponseDetails = ",aiResponseDetails)
   return (
-    <div className="pt-1 pb-3 pr-3 group">
-      <p className={cn('px-16 mb-1.5 text-sm font-medium', isLeft ? 'text-left' : 'text-right')}>{isLeft ? 'Veraos' : 'You'}</p>
-      <div className={cn('flex w-full items-end gap-4', isLeft ? 'justify-start' : 'flex-row-reverse')}>
+    <div id={questionId} className="pt-1 pb-3 pr-3 group">
+      <p className={cn('px-16 mb-1.5 text-sm font-medium', isLeft ? 'text-left' : 'text-right')}>{isLeft ? 'Tin Man' : 'You'}</p>
+      <div className={cn('flex w-full items-center gap-4', isLeft ? 'justify-start' : 'flex-row-reverse')}>
         <Avatar sender={sender} />
         <div className="flex items-center">
-          <RenderMessageOrImages message={message} isLeft={isLeft} images={images} />
+          <RenderMessageOrImages message={message} isLeft={isLeft} images={localImages} />
         </div>
       </div>
       {cta && <ConversationCta />}
@@ -36,7 +51,7 @@ export function SingleConversation({ sender, message, cta, aiResponseDetails, im
 }
 
 type RenderMessageOrImagesProps = {
-  message?: string;
+  message?: string | ReactNode;
   images?: OnImageSearchHandlerParam;
   isLeft: boolean;
 };
@@ -52,18 +67,16 @@ function RenderMessageOrImages({ message, isLeft, images }: RenderMessageOrImage
     !isLeft ? '-left-10' : '-right-10'
   );
 
-  const ActionIcon = !isLeft ? PencilIcon : DotsIcon;
+  // Only show action icon for AI messages (isLeft = true)
+  const ActionIcon = isLeft ? DotsIcon : null;
 
   if (message) {
     return (
       <div className={className}>
         {message}
-        <button className={actionButtonClassName}>{<ActionIcon className="w-5 h-5" />}</button>
       </div>
     );
   }
-
-  console.log('images', images);
 
   return (
     <div className={cn(className, 'flex gap-4 flex-wrap')}>
@@ -71,7 +84,7 @@ function RenderMessageOrImages({ message, isLeft, images }: RenderMessageOrImage
         // eslint-disable-next-line @next/next/no-img-element
         <img key={index} src={item.url} alt="" className="min-w-32 inline-block max-w-32 h-auto" />
       ))}
-      <button className={actionButtonClassName}>{<ActionIcon className="w-5 h-5" />}</button>
+      {ActionIcon && <button className={actionButtonClassName}>{<ActionIcon className="w-5 h-5" />}</button>}
     </div>
   );
 }

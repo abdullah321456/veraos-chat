@@ -3,6 +3,7 @@
 import React, { forwardRef } from 'react';
 
 import cn from '@/lib/utils/cn';
+import { toEnhancedTitleCase } from '@/lib/utils/title-case';
 
 // import { Loader } from '../loader';
 
@@ -72,6 +73,7 @@ export type ButtonProps = {
   color?: keyof (typeof buttonStyles.variant)['solid']['color'];
   disabled?: boolean;
   className?: string;
+  disableTitleCase?: boolean;
 } & React.ButtonHTMLAttributes<HTMLButtonElement> &
   React.HTMLAttributes<HTMLSpanElement>;
 
@@ -87,12 +89,19 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       size = 'md',
       color = 'primary',
       disabled,
+      disableTitleCase = false,
       ...buttonProps
     },
     ref
   ) => {
     const Component = as;
     const variantStyle = buttonStyles.variant[variant];
+    
+    // Apply title case to children if it's a string and title case is not disabled
+    const processedChildren = typeof children === 'string' && !disableTitleCase 
+      ? toEnhancedTitleCase(children) 
+      : children;
+    
     return (
       <Component
         ref={ref}
@@ -111,7 +120,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       >
         {isLoading ? (
           <>
-            <span className="opacity-30">{children}</span>
+            <span className="opacity-30">{processedChildren}</span>
             <span
               className={cn(
                 // `button-loader`,
@@ -122,7 +131,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             </span>
           </>
         ) : (
-          <>{children}</>
+          <>{processedChildren}</>
         )}
       </Component>
     );

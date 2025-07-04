@@ -1,26 +1,48 @@
 'use client';
 import { ReactNode, SVGProps, useState } from 'react';
 import cn from '@/lib/utils/cn';
+import { usePathname } from 'next/navigation';
+import { MAP_PAGE_HEADER_TITLE } from '@/config/routes';
 
 export function DashboardHeader() {
+  const pathname = usePathname();
+  
+  // Get the current page title from the mapping
+  const getCurrentPageTitle = () => {
+    // Check for exact matches in the mapping
+    if (MAP_PAGE_HEADER_TITLE[pathname as keyof typeof MAP_PAGE_HEADER_TITLE]) {
+      return MAP_PAGE_HEADER_TITLE[pathname as keyof typeof MAP_PAGE_HEADER_TITLE];
+    }
+    
+    // Default fallback
+    return 'Overwatch AI';
+  };
+
+  const currentPageTitle = getCurrentPageTitle();
+
   return (
-    <div className="fixed top-0 left-0 right-0 z-20 bg-white border-b border-gray-200 h-16 flex justify-end pr-6 items-center gap-4">
-      <AdvanceSwitch
-        positiveIcon={<LightModeIcon className="w-[18px] h-[18px]" />}
-        negativeIcon={<DarkModeIcon className="w-[18px] h-[18px]" />}
-      />
-      <AdvanceSwitch
-        positiveIcon={<CameraActiveIcon className="w-[18px] h-[18px]" />}
-        negativeIcon={<CameraInActiveIcon className="w-[18px] h-[18px]" />}
-      />
-      <AdvanceSwitch
-        positiveIcon={<MicActiveIcon className="w-[18px] h-[18px]" />}
-        negativeIcon={<MicInActiveIcon className="w-[18px] h-[18px]" />}
-      />
-      <AdvanceSwitch
-        positiveIcon={<SoundActiveIcon className="w-[18px] h-[18px]" />}
-        negativeIcon={<SoundInActiveIcon className="w-[18px] h-[18px]" />}
-      />
+    <div className="fixed top-0 left-0 right-0 z-20 bg-white border-b border-gray-200 h-16 flex justify-start items-center px-6">
+      <h1 className="text-xl font-bold text-gray-900 ml-[200px]">{currentPageTitle}</h1>
+      <div className="flex items-center gap-4">
+        {/* Temporarily hidden - buttons don't work currently
+        <AdvanceSwitch
+          positiveIcon={<LightModeIcon className="w-[18px] h-[18px]" />}
+          negativeIcon={<DarkModeIcon className="w-[18px] h-[18px]" />}
+        />
+        <AdvanceSwitch
+          positiveIcon={<CameraActiveIcon className="w-[18px] h-[18px]" />}
+          negativeIcon={<CameraInActiveIcon className="w-[18px] h-[18px]" />}
+        />
+        <AdvanceSwitch
+          positiveIcon={<MicActiveIcon className="w-[18px] h-[18px]" />}
+          negativeIcon={<MicInActiveIcon className="w-[18px] h-[18px]" />}
+        />
+        <AdvanceSwitch
+          positiveIcon={<SoundActiveIcon className="w-[18px] h-[18px]" />}
+          negativeIcon={<SoundInActiveIcon className="w-[18px] h-[18px]" />}
+        />
+        */}
+      </div>
     </div>
   );
 }

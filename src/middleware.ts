@@ -14,9 +14,20 @@ export function middleware(request: NextRequest) {
         ROUTES.HOME,
         ROUTES.FAQ.INDEX,
         ROUTES.FAQ.HELP_CENTER,
+        ROUTES.FAQ.TERMS_OF_USE,
     ];
 
     const path = request.nextUrl.pathname;
+
+    // Skip middleware for static files and API routes
+    if (
+        path.startsWith('/_next') || // Next.js static files
+        path.startsWith('/api') || // API routes
+        path.startsWith('/static') || // Static files
+        path.includes('.') // Files with extensions (e.g., .png, .jpg)
+    ) {
+        return NextResponse.next();
+    }
 
     const isPublic = publicPaths.some((publicPath) => path === publicPath);
     const isProtected = !isPublic;
@@ -30,7 +41,7 @@ export function middleware(request: NextRequest) {
 
 export const config = {
     matcher: [
-        // Match everything except static files and API
-        '/((?!_next/static|_next/image|favicon.ico|api).*)',
+        // Match all paths except those that start with /_next, /api, /static, or contain a file extension
+        '/((?!_next/static|_next/image|favicon.ico|api|static|.*\\..*).*)',
     ],
 };

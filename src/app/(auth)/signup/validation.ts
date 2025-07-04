@@ -18,7 +18,7 @@ export const SignupFormSchema = z.object({
   // Organization Details
   organizationName: z.string().min(1, 'Organization name is required'),
   organizationType: z.string().min(1, 'Organization type is required'),
-  organizationWebsite: z.string().url('Please enter a valid website URL').optional(),
+  organizationWebsite: z.string().optional(),
   address: z.string().min(1, 'Address is required'),
   addressLine2: z.string().optional(),
   city: z.string().min(1, 'City is required'),
