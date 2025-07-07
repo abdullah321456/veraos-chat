@@ -10,7 +10,7 @@ export const authUtils = {
     setToken: (token: string) => {
         Cookies.set(TOKEN_KEY, token, {
             expires: 1, // 1 day
-            secure: process.env.NODE_ENV === 'production',
+            secure: false,
             sameSite: 'Lax',
             path: '/',
         });
