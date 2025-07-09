@@ -148,7 +148,7 @@ export function Sidebar({ isExpanded, lastMessage }: Props) {
     try {
       const response = await apiService.postData('/chat', {});
       const newChatId = response.data._id;
-      //setQueryParams({ chatId: newChatId, route: ROUTES.AI_SEARCH.INDEX });
+      setQueryParams({ chatId: newChatId, route: ROUTES.AI_SEARCH.INDEX });
 
       // Add the new chat to the conversations list directly
       const newChat: InboxNavigationData = {
