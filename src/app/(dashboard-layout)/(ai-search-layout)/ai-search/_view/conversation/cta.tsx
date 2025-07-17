@@ -49,7 +49,7 @@ export function ConversationCta() {
   );
 }
 
-export function DrawerHeader() {
+export function DrawerHeader({ details }: { details?: any } = {}) {
   const { closeDrawer } = useDrawer();
   const { queryParams, removeQueryParams } = useQueryParams();
 
@@ -60,11 +60,21 @@ export function DrawerHeader() {
     closeDrawer();
   }
 
+  function handleExpand() {
+    if (details) {
+      try {
+        localStorage.setItem('fullReportDetails', JSON.stringify(details));
+      } catch (e) {
+        // fallback: ignore
+      }
+    }
+  }
+
   return (
     <div className="h-14 bg-gray-100 flex items-center justify-between px-4 py-2">
       <span className="font-bold text-lg text-gray-500">Current Record</span>
       <div className="flex items-center gap-5">
-        <Link href={parsePathnameWithQuery(ROUTES.AI_SEARCH.FULL_REPORT, queryParams)}>
+        <Link href={parsePathnameWithQuery(ROUTES.AI_SEARCH.FULL_REPORT, queryParams)} onClick={handleExpand}>
           <DrawerHeaderExpandIcon className="w-5 h-5 text-gray-600" />
         </Link>
         <button onClick={handleClose} className="border-2 border-gray-500 rounded-full">

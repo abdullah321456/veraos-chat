@@ -8,9 +8,10 @@ import { Accordion } from "../../_components/accordion";
 type DeviceInfoProps = {
   isEditable?: boolean;
   isDrawer?: boolean;
+  details?: any;
 };
 
-export function DeviceInfo({ isEditable = false, isDrawer }: DeviceInfoProps) {
+export function DeviceInfo({ isEditable = false, isDrawer, details }: DeviceInfoProps) {
   const [isLocalEdit] = useState(isEditable);
   const [editable, setEditable] = useState(false);
 
@@ -24,6 +25,11 @@ export function DeviceInfo({ isEditable = false, isDrawer }: DeviceInfoProps) {
       toast.success("Successfully saved");
     }
   }
+
+  // Only show voip->CARRIER and voip->TYPE if they exist
+  const carrier = details?.voip?.CARRIER;
+  const type = details?.voip?.TYPE;
+
   return (
     <Accordion
       translateButton={isEditable}
@@ -37,48 +43,29 @@ export function DeviceInfo({ isEditable = false, isDrawer }: DeviceInfoProps) {
           />
         ),
       })}>
-      <div
-        className={cn(isDrawer ? "grid mt-3 gap-3" : "grid grid-cols-3 gap-3")}>
-        <InputArrayDataCell
-          label="UDID (Unique Device Identifier)"
-          editable={editable}
-          onDone={(value) => console.log("value", value)}
-          values={[
-            "iPhone 14 Pro (UDID: 00008110-001D3E2E0222001E)",
-            "iPad Air 4th Gen (UDID: 00008020-00154F222C9003F2)",
-          ]}
-          rowClassName="bg-transparent px-0 py-0"
-          rowWrapperClassName="space-y-1.5"
-          rowTextClassName="font-medium"
-        />
-        <InputArrayDataCell
-          label="Device Types"
-          editable={editable}
-          onDone={(value) => console.log("value", value)}
-          values={[
-            "Mobile Phone: iPhone 14 Pro (Primary device)",
-            "Tablet: iPad Air 4th Generation",
-            "Laptop: MacBook Pro (2021)",
-            "Smartwatch: Apple Watch Series 8",
-          ]}
-          rowClassName="bg-transparent px-0 py-0"
-          rowWrapperClassName="space-y-1.5"
-          rowTextClassName="font-medium"
-        />
-        <InputArrayDataCell
-          label="Device Usage History"
-          editable={editable}
-          onDone={(value) => console.log("value", value)}
-          values={[
-            "iPhone 14 Pro: Daily usage for calls, emails, social media (Facebook, Instagram), and productivity apps (Slack, Microsoft Teams).",
-            "iPad Air: Used primarily for reading, browsing, and light work tasks.",
-            "MacBook Pro: Heavy usage for professional work, including design, presentations, and video calls.",
-            "Apple Watch: Used for fitness tracking, notifications, and quick calls/texts.",
-          ]}
-          rowClassName="bg-transparent px-0 py-0"
-          rowWrapperClassName="space-y-1.5"
-          rowTextClassName="font-medium"
-        />
+      <div className={cn(isDrawer ? "grid mt-3 gap-3" : "grid grid-cols-3 gap-3")}> 
+        {carrier && (
+          <InputArrayDataCell
+            label="Carrier"
+            editable={editable}
+            onDone={(value) => console.log("carrier", value)}
+            values={[carrier]}
+            rowClassName="bg-transparent px-0 py-0"
+            rowWrapperClassName="space-y-1.5"
+            rowTextClassName="font-medium"
+          />
+        )}
+        {type && (
+          <InputArrayDataCell
+            label="Type"
+            editable={editable}
+            onDone={(value) => console.log("type", value)}
+            values={[type]}
+            rowClassName="bg-transparent px-0 py-0"
+            rowWrapperClassName="space-y-1.5"
+            rowTextClassName="font-medium"
+          />
+        )}
       </div>
     </Accordion>
   );

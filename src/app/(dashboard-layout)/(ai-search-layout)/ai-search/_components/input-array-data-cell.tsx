@@ -1,7 +1,7 @@
 'use client';
 
 import cn from '@/lib/utils/cn';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { PiTrash } from 'react-icons/pi';
 
 type InputDataCellProps = {
@@ -43,6 +43,11 @@ export function InputArrayDataCell({
   const [newValue, setNewValue] = useState('');
   const [newFieldState, setNewFieldState] = useState(newField ?? false);
   const [allValues, setAllValues] = useState([...prevValues]);
+
+  // Ensure allValues updates when values prop changes
+  useEffect(() => {
+    setAllValues([...prevValues]);
+  }, [JSON.stringify(prevValues)]);
 
   const handleDone = () => {
     if (!editable) return;

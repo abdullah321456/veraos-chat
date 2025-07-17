@@ -139,12 +139,12 @@ export function PersonalInfo({
                 )}>
                 <InputDataCell
                     label="Alias/Nickname 1"
-                    value="Johnny D"
+                    value={details?.AKA1}
                     editable={editable}
                 />
                 <InputDataCell
                     label="Alias/Nickname 2"
-                    value="The Hammer"
+                    value={details?.AKA2}
                     editable={editable}
                 />
                 <InputDataCell
@@ -161,14 +161,14 @@ export function PersonalInfo({
             <div className="grid grid-cols-3 gap-4 mt-3">
                 <InputDataCell
                     label="Marital Status"
-                    value="Married"
+                    value={details?.MARITALSTA}
                     editable={editable}
                 />
                 <InputDataCell label="Gender" value={details?.GENDER} editable={editable}/>
-                <InputDataCell label="Religion" value="Christian" editable={editable}/>
+                <InputDataCell label="Religion" value="" editable={editable}/>
             </div>
             <div className="grid grid-cols-3 gap-4 mt-3">
-                <InputDataCell label="No. of Children" value="3" editable={editable}/>
+                <InputDataCell label="No. of Children" value="" editable={editable}/>
             </div>
             <div
                 className={cn(
@@ -176,7 +176,7 @@ export function PersonalInfo({
                 )}>
                 <InputDataCell
                     label="Country of Origin/Citizenship Status"
-                    value="United States / Citizen."
+                    value=""
                     editable={editable}
                 />
                 <>
@@ -184,12 +184,12 @@ export function PersonalInfo({
                         <div className="grid grid-cols-2 gap-3 mt-3">
                             <InputDataCell
                                 label="National ID"
-                                value="123-45-6789"
+                                value=""
                                 editable={editable}
                             />
                             <InputDataCell
                                 label="Voter Registration"
-                                value="Registered"
+                                value=""
                                 editable={editable}
                             />
                         </div>
@@ -197,12 +197,12 @@ export function PersonalInfo({
                         <>
                             <InputDataCell
                                 label="National ID"
-                                value="123-45-6789"
+                                value=""
                                 editable={editable}
                             />
                             <InputDataCell
                                 label="Voter Registration"
-                                value="Registered"
+                                value=""
                                 editable={editable}
                             />
                         </>

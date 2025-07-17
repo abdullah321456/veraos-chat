@@ -49,6 +49,11 @@ export type AIResponseDetail = {
     drunk_drivings?: any;
     voip?: any;
     vets?:any;
+    ScarsMarks:any;
+    SkinTone:any;
+    AKA1:any;
+    AKA2:any;
+    MARITALSTA:any;
 };
 
 export type OnImageSearchHandlerParam = { file?: File; url: string }[];

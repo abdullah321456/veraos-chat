@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "copy .env.testing .env && next dev -p 8080",
     "build": "next build",
-    "build:production": "copy .env.production .env && next build",
-    "build:testing": "copy .env.testing .env && next build",
+    "build:production": "copy .env.production .env.testing && next build",
+    "build:testing": "copy .env.testing .env.testing && next build",
     "start": "next start -p 8080",
     "lint": "next lint",
     "build:check": "tsc --noEmit"

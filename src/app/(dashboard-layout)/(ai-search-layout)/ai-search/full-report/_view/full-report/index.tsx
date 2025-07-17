@@ -44,7 +44,7 @@ import {SocialAndWeb} from './social-web';
 import {ThreatAssessment} from './threat-assessment';
 import {VehicleOwnership} from './vehicle-ownership';
 import {AIResponseDetail} from "../../../_view/conversation/type";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { toEnhancedTitleCase } from '@/lib/utils/title-case';
 
 type Props = {
@@ -59,31 +59,45 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
     const router = useRouter();
     const {openModal, closeModal} = useModal();
     const [showTooltip, setShowTooltip] = useState(false);
+    const [localDetails, setLocalDetails] = useState<AIResponseDetail | undefined>(details);
+
+    useEffect(() => {
+        if (!details) {
+            try {
+                const stored = localStorage.getItem('fullReportDetails');
+                if (stored) {
+                    setLocalDetails(JSON.parse(stored));
+                }
+            } catch (e) {
+                // ignore
+            }
+        }
+    }, [details]);
 
     const isDossierAssistantTop = pathname === ROUTES.AI_SEARCH.BUILD;
 
     const buildPathname = parsePathnameWithQuery(ROUTES.AI_SEARCH.BUILD, queryParams);
 
     const getLocations = () => {
-        if (!details) return [];
+        if (!localDetails) return [];
 
         const locations = new Set<string>();
         const records = [
-            details?.education,
-            details?.rv,
-            details?.motorcycles,
-            details?.national_drivers_license,
-            details?.bankruptcy,
-            details?.automobile,
-            details?.foreign_movers,
-            details?.cell_records,
-            details?.drunk_drivings,
-            details?.voip,
-            details?.vets
+            localDetails?.education,
+            localDetails?.rv,
+            localDetails?.motorcycles,
+            localDetails?.national_drivers_license,
+            localDetails?.bankruptcy,
+            localDetails?.automobile,
+            localDetails?.foreign_movers,
+            localDetails?.cell_records,
+            localDetails?.drunk_drivings,
+            localDetails?.voip,
+            localDetails?.vets
         ];
 
-        if (details?.STATE && (details?.CITY || details?.City)) {
-            locations.add(`${details.CITY || details.City}, ${details.ST || details.STATE}`);
+        if (localDetails?.STATE && (localDetails?.CITY || localDetails?.City)) {
+            locations.add(`${localDetails.CITY || localDetails.City}, ${localDetails.ST || localDetails.STATE}`);
         }
         records.forEach(record => {
             if (record && (record?.STATE || record?.ST || record?.State) && (record?.CITY || record?.City)) {
@@ -165,7 +179,7 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
                     <Image src="/men.png" alt="men" width={124} height={124}
                            className={cn('w-[124px] aspect-square h-auto', isDrawer && 'w-24')}/>
                     <div>
-                        <h1 className="text-black text-lg font-bold leading-6">{`${toEnhancedTitleCase(details?.FIRST || '')} ${toEnhancedTitleCase(details?.MID || '')} ${toEnhancedTitleCase(details?.LAST || '')}`.trim() || 'N/A'}</h1>
+                        <h1 className="text-black text-lg font-bold leading-6">{`${toEnhancedTitleCase(localDetails?.FIRST || '')} ${toEnhancedTitleCase(localDetails?.MID || '')} ${toEnhancedTitleCase(localDetails?.LAST || '')}`.trim() || 'N/A'}</h1>
                         <div className="flex items-start gap-2">
                             <LocationIcon className="mt-0.5 flex-shrink-0"/>
                             <p className="text-[#616166] text-xs font-normal leading-relaxed" style={{marginLeft:"-6px"}}>
@@ -221,26 +235,26 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
       )} */}
             <div className={cn('pt-4 space-y-4', isDrawer && 'block')}>
                 {/* <ThreatAssessment isEditable={editable}/> */}
-                <PersonalInfo isEditable={editable} isDrawer={isDrawer} details={details}/>
-                <PersonalAppearanceProfile isEditable={editable} isDrawer={isDrawer}/>
-                <IdentificationAndContact isEditable={editable} isDrawer={isDrawer} details={details}/>
-                <DeviceInfo isEditable={editable} isDrawer={isDrawer}/>
-                <AssociationsConnection isEditable={editable} isDrawer={isDrawer}/>
-                <CitizenesAbroad isEditable={editable}/>
-                <VehicleOwnership isEditable={editable} isDrawer={isDrawer} details={details}/>
-                <Employment isEditable={editable} isDrawer={isDrawer}/>
-                <Education isEditable={editable} isDrawer={isDrawer} details={details}/>
-                <FinancialBackground isEditable={editable} isDrawer={isDrawer}/>
-                <ConsumerInfo isEditable={editable} isDrawer={isDrawer}/>
-                <SocialAndWeb isEditable={editable} isDrawer={isDrawer}/>
-                <PhotographicArchive isEditable={editable} isDrawer={isDrawer}/>
-                <CriminalAndLegal isEditable={editable} isDrawer={isDrawer}/>
-                <HighRisk isEditable={editable} isDrawer={isDrawer}/>
-                <GeospatialTrace isEditable={editable} isDrawer={isDrawer}/>
+                <PersonalInfo isEditable={editable} isDrawer={isDrawer} details={localDetails}/>
+                <PersonalAppearanceProfile isEditable={editable} isDrawer={isDrawer} details={localDetails}/>
+                <IdentificationAndContact isEditable={editable} isDrawer={isDrawer} details={localDetails}/>
+                <DeviceInfo isEditable={editable} isDrawer={isDrawer} details={localDetails}/>
+                {/* <AssociationsConnection isEditable={editable} isDrawer={isDrawer}/> */}
+                {/* <CitizenesAbroad isEditable={editable}/> */}
+                <VehicleOwnership isEditable={editable} isDrawer={isDrawer} details={localDetails}/>
+                {/*<Employment isEditable={editable} isDrawer={isDrawer}/>*/}
+                {/*<Education isEditable={editable} isDrawer={isDrawer} details={details}/>*/}
+                {/*<FinancialBackground isEditable={editable} isDrawer={isDrawer}/>*/}
+                {/*<ConsumerInfo isEditable={editable} isDrawer={isDrawer}/>*/}
+                {/*<SocialAndWeb isEditable={editable} isDrawer={isDrawer}/>*/}
+                {/*<PhotographicArchive isEditable={editable} isDrawer={isDrawer}/>*/}
+                {/*<CriminalAndLegal isEditable={editable} isDrawer={isDrawer}/>*/}
+                {/*<HighRisk isEditable={editable} isDrawer={isDrawer}/>*/}
+                {/*<GeospatialTrace isEditable={editable} isDrawer={isDrawer}/>*/}
                 {/* <AiDriven isEditable={editable} isDrawer={isDrawer}/> */}
                 {/* <LogBookEntries isEditable={editable} isDrawer={isDrawer}/> */}
                 {/* <Notes isEditable={editable}/> */}
-                <DossierCollaboration isEditable={editable} isDrawer={isDrawer}/>
+                {/*<DossierCollaboration isEditable={editable} isDrawer={isDrawer}/>*/}
                 {/* <UserActivityTracking/> */}
                 {/* <VersionHistory/> */}
                 {/* <AuditTrail/> */}

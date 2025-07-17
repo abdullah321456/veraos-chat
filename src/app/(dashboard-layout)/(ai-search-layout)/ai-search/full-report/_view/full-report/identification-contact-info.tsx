@@ -39,6 +39,7 @@ export function IdentificationAndContact({
     if (!details) return [];
     const locations = new Set<string>();
     const records = [
+      details,
       details.education,
       details.rv,
       details.motorcycles,
@@ -51,16 +52,27 @@ export function IdentificationAndContact({
       details.voip,
       details.vets
     ];
-
+    // Add city/state combos (existing logic)
     if (details?.STATE && (details?.CITY || details?.City)) {
       locations.add(`${details.CITY || details.City}, ${details.ST || details.STATE || details.State}`);
     }
     records.forEach(record => {
-      if (record && (record.STATE || record.ST) && record.CITY) {
-        locations.add(`${record.CITY}, ${record.ST || record.STATE}`);
+      if (record && (record.STATE || record.ST || record.State) && (record.CITY || record.City)) {
+        locations.add(`${record.CITY || record.City}, ${record.ST || record.STATE || record.State}`);
+      }
+      // Add complete address if available
+      if (record && (record.ADDRESS || record.address)) {
+        const address = record.ADDRESS || record.address;
+        const city = record.CITY || record.City;
+        const state = record.STATE || record.ST || record.State;
+        const zip = record.ZIP || record.ZIP4 || record.ZIP5 || record.Zip || record.zip;
+        let full = address;
+        if (city) full += `, ${city}`;
+        if (state) full += `, ${state}`;
+        if (zip) full += ` ${zip}`;
+        locations.add(full);
       }
     });
-
     return Array.from(locations);
   };
 
@@ -153,6 +165,51 @@ export function IdentificationAndContact({
         return Array.from(addressArray);
     };
 
+  const getFullResidentialAddress = () => {
+    if (!details) return [];
+    // Try to find the first record with address, city, state, and zip
+    const records = [
+      details,
+      details.education,
+      details.rv,
+      details.motorcycles,
+      details.national_drivers_license,
+      details.bankruptcy,
+      details.automobile,
+      details.foreign_movers,
+      details.cell_records,
+      details.drunk_drivings,
+      details.voip,
+      details.vets
+    ];
+
+    for (const record of records) {
+
+      if (
+        record &&
+        (record.ADDRESS || record.address) &&
+        (record.CITY || record.City) &&
+        (record.STATE || record.ST || record.State)
+      ) {
+
+        // Check for ZIP, ZIP4, ZIP5, Zip, zip in order
+        const zip = record.ZIP || record.ZIP4 || record.ZIP5 || record.Zip || record.zip;
+        const address = record.ADDRESS || record.address;
+        const city = record.CITY || record.City;
+        const state = record.STATE || record.ST || record.State;
+
+        if (zip) {
+          return [`${address}, ${city}, ${state} ${zip}`];
+        }else{
+          return [`${address}, ${city}, ${state}`];
+        }
+      }
+    }
+    return [];
+  };
+
+
+
   const getIpAddresses = () => {
     if (!details) return [];
     const ipAddresses = new Set<string>();
@@ -194,7 +251,7 @@ export function IdentificationAndContact({
     return Array.from(ipAddresses);
   };
 
-  console.log("identification details = ",details)
+  console.log("identification details = ",details,"   ",getPhones())
 
   return (
     <Accordion
@@ -211,7 +268,7 @@ export function IdentificationAndContact({
       })}>
       <div
         className={cn(
-          isDrawer ? "grid gap-4 mt-3" : "grid grid-cols-5 gap-4 mt-3"
+          isDrawer ? "grid gap-4 mt-3" : "grid grid-cols-2 gap-4 mt-3"
         )}>
         <InputArrayDataCell
           entryPrefix={<PiPhone className="text-primary min-w-4 h-4" />}
@@ -239,7 +296,7 @@ export function IdentificationAndContact({
           label="Full Residential Address"
           editable={editable}
           onDone={(value) => console.log("full-residential-address", value)}
-          values={getAddress()}
+          values={getFullResidentialAddress()}
         />
         <InputArrayDataCell
           entryPrefix={<BlueLocationIcon className="min-w-4 h-4" />}
