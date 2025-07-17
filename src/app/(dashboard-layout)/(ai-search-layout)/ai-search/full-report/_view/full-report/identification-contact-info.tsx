@@ -61,8 +61,8 @@ export function IdentificationAndContact({
         locations.add(`${record.CITY || record.City}, ${record.ST || record.STATE || record.State}`);
       }
       // Add complete address if available
-      if (record && (record.ADDRESS || record.address)) {
-        const address = record.ADDRESS || record.address;
+      if (record && (record.ADDRESS || record.ADDRESS1 || record.ADDRESS2 || record.address)) {
+        const address = record.ADDRESS || record.ADDRESS1 || record.ADDRESS2 || record.address;
         const city = record.CITY || record.City;
         const state = record.STATE || record.ST || record.State;
         const zip = record.ZIP || record.ZIP4 || record.ZIP5 || record.Zip || record.zip;
@@ -187,14 +187,14 @@ export function IdentificationAndContact({
 
       if (
         record &&
-        (record.ADDRESS || record.address) &&
+        (record.ADDRESS || record.ADDRESS1 || record.ADDRESS2 || record.address) &&
         (record.CITY || record.City) &&
         (record.STATE || record.ST || record.State)
       ) {
 
         // Check for ZIP, ZIP4, ZIP5, Zip, zip in order
         const zip = record.ZIP || record.ZIP4 || record.ZIP5 || record.Zip || record.zip;
-        const address = record.ADDRESS || record.address;
+        const address = record.ADDRESS || record.ADDRESS1 || record.ADDRESS2 || record.address;
         const city = record.CITY || record.City;
         const state = record.STATE || record.ST || record.State;
 
@@ -253,6 +253,16 @@ export function IdentificationAndContact({
 
   console.log("identification details = ",details,"   ",getPhones())
 
+  const phones = getPhones();
+  const emails = getEmails();
+  const ips = getIpAddresses();
+  const fullAddress = getFullResidentialAddress();
+  const locations = getLocations();
+
+  const hasAnyData = phones.length > 0 || emails.length > 0 || ips.length > 0 || fullAddress.length > 0 || locations.length > 0;
+
+  if (!hasAnyData) return null;
+
   return (
     <Accordion
       translateButton={isEditable}
@@ -266,46 +276,58 @@ export function IdentificationAndContact({
           />
         ),
       })}>
-      <div
-        className={cn(
-          isDrawer ? "grid gap-4 mt-3" : "grid grid-cols-2 gap-4 mt-3"
-        )}>
-        <InputArrayDataCell
-          entryPrefix={<PiPhone className="text-primary min-w-4 h-4" />}
-          label="Verified Cell Phone Numbers"
-          editable={editable}
-          onDone={(value) => console.log("phone-numbers", value)}
-          values={getPhones()}
-        />
-        <InputArrayDataCell
-          entryPrefix={<PiEnvelope className="text-primary min-w-4 h-4" />}
-          label="Email Addresses"
-          editable={editable}
-          onDone={(value) => console.log("email", value)}
-          values={getEmails()}
-        />
-        <InputArrayDataCell
-          entryPrefix={<IpAddressIcon className="text-primary min-w-4 h-4" />}
-          label="IP Addresses"
-          editable={editable}
-          onDone={(value) => console.log("ip-addresses", value)}
-          values={getIpAddresses()}
-        />
-        <InputArrayDataCell
-          entryPrefix={<BlueLocationIcon className="min-w-4 h-4" />}
-          label="Full Residential Address"
-          editable={editable}
-          onDone={(value) => console.log("full-residential-address", value)}
-          values={getFullResidentialAddress()}
-        />
-        <InputArrayDataCell
-          entryPrefix={<BlueLocationIcon className="min-w-4 h-4" />}
-          label="Address History"
-          editable={editable}
-          onDone={(value) => console.log("address-history", value)}
-          values={getLocations()}
-        />
-      </div>
+      {hasAnyData && (
+        <div
+          className={cn(
+            isDrawer ? "grid gap-4 mt-3" : "grid grid-cols-2 gap-4 mt-3"
+          )}>
+          {phones.length > 0 && (
+            <InputArrayDataCell
+              entryPrefix={<PiPhone className="text-primary min-w-4 h-4" />}
+              label="Verified Cell Phone Numbers"
+              editable={editable}
+              onDone={(value) => console.log("phone-numbers", value)}
+              values={phones}
+            />
+          )}
+          {emails.length > 0 && (
+            <InputArrayDataCell
+              entryPrefix={<PiEnvelope className="text-primary min-w-4 h-4" />}
+              label="Email Addresses"
+              editable={editable}
+              onDone={(value) => console.log("email", value)}
+              values={emails}
+            />
+          )}
+          {ips.length > 0 && (
+            <InputArrayDataCell
+              entryPrefix={<IpAddressIcon className="text-primary min-w-4 h-4" />}
+              label="IP Addresses"
+              editable={editable}
+              onDone={(value) => console.log("ip-addresses", value)}
+              values={ips}
+            />
+          )}
+          {fullAddress.length > 0 && (
+            <InputArrayDataCell
+              entryPrefix={<BlueLocationIcon className="min-w-4 h-4" />}
+              label="Full Residential Address"
+              editable={editable}
+              onDone={(value) => console.log("full-residential-address", value)}
+              values={fullAddress}
+            />
+          )}
+          {locations.length > 0 && (
+            <InputArrayDataCell
+              entryPrefix={<BlueLocationIcon className="min-w-4 h-4" />}
+              label="Address History"
+              editable={editable}
+              onDone={(value) => console.log("address-history", value)}
+              values={locations}
+            />
+          )}
+        </div>
+      )}
     </Accordion>
   );
 }

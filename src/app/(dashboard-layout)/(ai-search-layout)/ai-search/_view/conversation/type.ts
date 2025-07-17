@@ -53,7 +53,9 @@ export type AIResponseDetail = {
     SkinTone:any;
     AKA1:any;
     AKA2:any;
-    MARITALSTA:any;
+    MARITALSTA:any
+    ADDRESS1:any;
+    ADDRESS2:any;
 };
 
 export type OnImageSearchHandlerParam = { file?: File; url: string }[];

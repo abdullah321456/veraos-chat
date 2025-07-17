@@ -54,6 +54,9 @@ export function VehicleOwnership({ isEditable = false, isDrawer, details }: Vehi
     image: '/red-car.png',
   }] : [];
 
+  const hasAny = vehicleData.length > 0;
+  if (!hasAny) return null;
+
   console.log("VehicleOwnership vehicleData:", vehicleData);
 
   return (

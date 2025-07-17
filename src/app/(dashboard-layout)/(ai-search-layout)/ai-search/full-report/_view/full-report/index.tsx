@@ -248,7 +248,9 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
                 {/*<ConsumerInfo isEditable={editable} isDrawer={isDrawer}/>*/}
                 {/*<SocialAndWeb isEditable={editable} isDrawer={isDrawer}/>*/}
                 {/*<PhotographicArchive isEditable={editable} isDrawer={isDrawer}/>*/}
-                {/*<CriminalAndLegal isEditable={editable} isDrawer={isDrawer}/>*/}
+                {((localDetails as any)?._index === 'criminals' || (localDetails as any)?._index === 'criminals_small' || (localDetails as any)?._index === 'sexoffender') && (
+                  <CriminalAndLegal isEditable={editable} isDrawer={isDrawer} details={localDetails} />
+                )}
                 {/*<HighRisk isEditable={editable} isDrawer={isDrawer}/>*/}
                 {/*<GeospatialTrace isEditable={editable} isDrawer={isDrawer}/>*/}
                 {/* <AiDriven isEditable={editable} isDrawer={isDrawer}/> */}

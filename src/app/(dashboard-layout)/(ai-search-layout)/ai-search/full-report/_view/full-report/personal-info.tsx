@@ -70,6 +70,15 @@ export function PersonalInfo({
     const formattedDOB = formatDateToMMDDYYYY(details?.DOB || '');
     const calculatedAge = calculateAge(details?.DOB || '');
 
+    const hasMain = details?.FIRST || details?.MID || details?.LAST;
+    const hasAliases = details?.AKA1 || details?.AKA2;
+    const hasDOB = !!details?.DOB;
+    const hasMarital = !!details?.MARITALSTA;
+    const hasGender = !!details?.GENDER;
+    const hasAny = hasMain || hasAliases || hasDOB || hasMarital || hasGender;
+
+    if (!hasAny) return null;
+
     return (
         <Accordion
             translateButton={isEditable}
@@ -84,93 +93,110 @@ export function PersonalInfo({
                 ),
             })}>
             <div className={cn("grid gap-4", isDrawer ? "grid" : "grid-cols-6")}>
-                <InputDataCell
-                    label="Death index match"
-                    value=""
-                    editable={editable}
-                    onDone={(value) => console.log("value", value)}
-                />
-                <InputDataCell label="Name Prefix" value="Mr." editable={editable}/>
-
+                {/* <InputDataCell label="Death index match" value="" editable={editable} onDone={(value) => console.log("value", value)} /> */}
+                {/* <InputDataCell label="Name Prefix" value="Mr." editable={editable}/> */}
                 {isDrawer ? (
                     <div className="grid grid-cols-3 gap-3">
-                        <InputDataCell
-                            label="First Name"
-                            value={details?.FIRST ? toEnhancedTitleCase(details.FIRST) : undefined}
-                            editable={editable}
-                        />
-                        <InputDataCell
-                            label="Middle Name"
-                            value={details?.MID ? toEnhancedTitleCase(details.MID) : undefined}
-                            editable={editable}
-                        />
-                        <InputDataCell 
-                            label="Last Name" 
-                            value={details?.LAST ? toEnhancedTitleCase(details.LAST) : undefined} 
-                            editable={editable}
-                        />
+                        {details?.FIRST && (
+                          <InputDataCell
+                              label="First Name"
+                              value={toEnhancedTitleCase(details.FIRST)}
+                              editable={editable}
+                          />
+                        )}
+                        {details?.MID && (
+                          <InputDataCell
+                              label="Middle Name"
+                              value={toEnhancedTitleCase(details.MID)}
+                              editable={editable}
+                          />
+                        )}
+                        {details?.LAST && (
+                          <InputDataCell 
+                              label="Last Name" 
+                              value={toEnhancedTitleCase(details.LAST)} 
+                              editable={editable}
+                          />
+                        )}
                     </div>
                 ) : (
                     <>
-                        <InputDataCell
-                            label="First Name"
-                            value={details?.FIRST ? toEnhancedTitleCase(details.FIRST) : undefined}
-                            editable={editable}
-                        />
-                        <InputDataCell
-                            label="Middle Name"
-                            value={details?.MID ? toEnhancedTitleCase(details.MID) : undefined}
-                            editable={editable}
-                        />
-                        <InputDataCell 
-                            label="Last Name" 
-                            value={details?.LAST ? toEnhancedTitleCase(details.LAST) : undefined} 
-                            editable={editable}
-                        />
+                        {details?.FIRST && (
+                          <InputDataCell
+                              label="First Name"
+                              value={toEnhancedTitleCase(details.FIRST)}
+                              editable={editable}
+                          />
+                        )}
+                        {details?.MID && (
+                          <InputDataCell
+                              label="Middle Name"
+                              value={toEnhancedTitleCase(details.MID)}
+                              editable={editable}
+                          />
+                        )}
+                        {details?.LAST && (
+                          <InputDataCell 
+                              label="Last Name" 
+                              value={toEnhancedTitleCase(details.LAST)} 
+                              editable={editable}
+                          />
+                        )}
                     </>
                 )}
-
-                <InputDataCell label="Name Prefix" value="Sr." editable={editable}/>
+                {/* <InputDataCell label="Name Prefix" value="Sr." editable={editable}/> */}
             </div>
             <div
                 className={cn(
                     "grid gap-4",
                     isDrawer ? "grid grid-cols-2 mt-3" : "grid-cols-4 mt-3"
                 )}>
-                <InputDataCell
-                    label="Alias/Nickname 1"
-                    value={details?.AKA1}
-                    editable={editable}
-                />
-                <InputDataCell
-                    label="Alias/Nickname 2"
-                    value={details?.AKA2}
-                    editable={editable}
-                />
-                <InputDataCell
-                    label="Date of Birth"
-                    value={formattedDOB || "N/A"}
-                    editable={editable}
-                />
-                <InputDataCell 
-                    label="Age" 
-                    value={calculatedAge ? `${calculatedAge} years` : "N/A"} 
-                    editable={editable}
-                />
+                {details?.AKA1 && (
+                  <InputDataCell
+                      label="Alias/Nickname 1"
+                      value={details.AKA1}
+                      editable={editable}
+                  />
+                )}
+                {details?.AKA2 && (
+                  <InputDataCell
+                      label="Alias/Nickname 2"
+                      value={details.AKA2}
+                      editable={editable}
+                  />
+                )}
+                {formattedDOB && (
+                  <InputDataCell
+                      label="Date of Birth"
+                      value={formattedDOB}
+                      editable={editable}
+                  />
+                )}
+                {calculatedAge && (
+                  <InputDataCell 
+                      label="Age" 
+                      value={`${calculatedAge} years`} 
+                      editable={editable}
+                  />
+                )}
             </div>
             <div className="grid grid-cols-3 gap-4 mt-3">
-                <InputDataCell
-                    label="Marital Status"
-                    value={details?.MARITALSTA}
-                    editable={editable}
-                />
-                <InputDataCell label="Gender" value={details?.GENDER} editable={editable}/>
-                <InputDataCell label="Religion" value="" editable={editable}/>
+                {details?.MARITALSTA && (
+                  <InputDataCell
+                      label="Marital Status"
+                      value={details.MARITALSTA}
+                      editable={editable}
+                  />
+                )}
+                {details?.GENDER && (
+                  <InputDataCell label="Gender" value={details.GENDER} editable={editable}/>
+                )}
+                {/* <InputDataCell label="Religion" value="" editable={editable}/> */}
             </div>
-            <div className="grid grid-cols-3 gap-4 mt-3">
+            {/* <div className="grid grid-cols-3 gap-4 mt-3">
                 <InputDataCell label="No. of Children" value="" editable={editable}/>
-            </div>
-            <div
+            </div> */}
+            {/* <div
                 className={cn(
                     isDrawer ? "grid mt-3 gap-3" : "grid grid-cols-3 gap-3 mt-3"
                 )}>
@@ -208,7 +234,7 @@ export function PersonalInfo({
                         </>
                     )}
                 </>
-            </div>
+            </div> */}
         </Accordion>
     );
 }

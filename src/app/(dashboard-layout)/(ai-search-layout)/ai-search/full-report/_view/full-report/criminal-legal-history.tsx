@@ -9,11 +9,13 @@ import { Accordion } from "../../_components/accordion";
 type CriminalAndLegalProps = {
   isEditable?: boolean;
   isDrawer?: boolean;
+  details?: any; // Accept details for _index logic
 };
 
 export function CriminalAndLegal({
   isEditable = false,
   isDrawer,
+  details,
 }: CriminalAndLegalProps) {
   const [isLocalEdit] = useState(isEditable);
   const [editable, setEditable] = useState(false);
@@ -28,6 +30,11 @@ export function CriminalAndLegal({
       toast.success("Successfully saved");
     }
   }
+
+  const showCriminal = details?._index === 'criminals' || details?._index === 'criminals_small';
+  const showSexOffender = details?._index === 'criminals_small';
+  const criminalTypeLabel=showSexOffender?"Sex Offender":"Criminal"
+
   return (
     <Accordion
       translateButton={isEditable}
@@ -43,25 +50,23 @@ export function CriminalAndLegal({
           />
         ),
       })}>
-      <div
-        className={cn(isDrawer ? "grid gap-3 mt-3" : "grid grid-cols-3 gap-4")}>
-        <InputDataCell
-          label="Criminal Records"
-          value="No criminal record"
-          editable={editable}
-        />
-        <InputDataCell
-          label="Arrest Records"
-          value="One arrest for public intoxication on March 15, 2021"
-          editable={editable}
-        />
-        {isDrawer ? (
-          <div className="grid grid-cols-2 gap-3 mt-3">
-            <InputDataCell
-              label="Sex Offender Registry"
-              value="Not listed"
-              editable={editable}
-            />
+      <div className={cn(isDrawer ? "grid gap-3 mt-3" : "grid grid-cols-3 gap-4")}> 
+        {showCriminal && (
+          <>
+            {criminalTypeLabel && (
+              <InputDataCell
+                label="Criminal Records"
+                value={criminalTypeLabel}
+                editable={editable}
+              />
+            )}
+            {details?.OFFENSEDES && (
+              <InputDataCell
+                label="Arrest Records"
+                value={details?.OFFENSEDES}
+                editable={editable}
+              />
+            )}
             <InputDataCell
               label="Interpol Data"
               value="No Flags"
@@ -77,69 +82,54 @@ export function CriminalAndLegal({
               value="No known links to terrorist groups"
               editable={editable}
             />
-          </div>
-        ) : (
+            {details?.CONVICTION && (
+              <InputDataCell
+                label="DUI Information"
+                value={`One DUI conviction on ${details?.CONVICTION}`}
+                editable={editable}
+              />
+            )}
+            <InputDataCell
+              label="Sanctioned Information"
+              value="Not on any sanction list"
+              editable={editable}
+            />
+            {details?.OFFENSECOD && (
+              <InputDataCell
+                label="Court Records"
+                value={details?.OFFENSECOD}
+                editable={editable}
+              />
+            )}
+          </>
+        )}
+        {showSexOffender && (
           <>
             <InputDataCell
               label="Sex Offender Registry"
-              value="Not listed"
+              value="Sex Offender Record Found"
               editable={editable}
             />
-            <InputDataCell
-              label="Interpol Data"
-              value="No Flags"
-              editable={editable}
-            />
-            <InputDataCell
-              label="Gang Affiliation"
-              value="No known gang affiliation"
-              editable={editable}
-            />
-            <InputDataCell
-              label="Terrorist Organization Information"
-              value="No known links to terrorist groups"
-              editable={editable}
-            />
+            {details?.OFFENDERST && (
+              <InputDataCell
+                label="Sex Offender Details"
+                value={details?.OFFENDERST}
+                editable={editable}
+              />
+            )}
           </>
         )}
-
-        <InputDataCell
-          label="Sex Offender Registry"
-          value="Not listed"
-          editable={editable}
-        />
-        <InputDataCell
-          label="Interpol Data"
-          value="No Flags"
-          editable={editable}
-        />
-        <InputDataCell
-          label="Gang Affiliation"
-          value="No known gang affiliation"
-          editable={editable}
-        />
-        <InputDataCell
-          label="Terrorist Organization Information"
-          value="No known links to terrorist groups "
-          editable={editable}
-        />
-        <InputDataCell
-          label="DUI Information"
-          value="One DUI conviction on July 22, 2019"
-          editable={editable}
-        />
-        <InputDataCell
-          label="Sanctioned Information"
-          value="Not on any sanction list"
-          editable={editable}
-        />
-        <InputDataCell
-          label="Court Records"
-          value="Involved in a civil case for breach of contract on 
-January 10, 2023"
-          editable={editable}
-        />
+        {(!showCriminal && !showSexOffender) && (
+          <InputDataCell
+            label="Criminal and Legal History"
+            value="No criminal or sex offender records found."
+            editable={editable}
+          />
+        )}
       </div>
     </Accordion>
   );
 }
+
+
+

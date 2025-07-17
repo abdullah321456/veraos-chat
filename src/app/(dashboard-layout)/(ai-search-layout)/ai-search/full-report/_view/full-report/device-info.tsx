@@ -29,6 +29,9 @@ export function DeviceInfo({ isEditable = false, isDrawer, details }: DeviceInfo
   // Only show voip->CARRIER and voip->TYPE if they exist
   const carrier = details?.voip?.CARRIER;
   const type = details?.voip?.TYPE;
+  const hasAny = !!carrier || !!type;
+
+  if (!hasAny) return null;
 
   return (
     <Accordion
