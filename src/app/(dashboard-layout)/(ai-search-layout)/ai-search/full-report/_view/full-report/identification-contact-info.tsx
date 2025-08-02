@@ -52,13 +52,29 @@ export function IdentificationAndContact({
       details.voip,
       details.vets
     ];
-    // Add city/state combos (existing logic)
-    if (details?.STATE && (details?.CITY || details?.City)) {
-      locations.add(`${details.CITY || details.City}, ${details.ST || details.STATE || details.State}`);
+
+
+    const address = details.ADDRESS || details.ADDRESS1 || details.ADDRESS2 || details.Address1 || details.address;
+    const city = details.CITY || details.City;
+    const state = details.STATE || details.ST || details.State;
+    const zip = details.ZIP || details.ZIP4 || details.ZIP5 || details.Zip || details.zip;
+
+
+    if (address || city || state) {
+      locations.add(`${address || ""} ${city || ""} ${state || ""} ${zip || ""}`);
     }
+
+
     records.forEach(record => {
-      if (record && (record.STATE || record.ST || record.State) && (record.CITY || record.City)) {
-        locations.add(`${record.CITY || record.City}, ${record.ST || record.STATE || record.State}`);
+      if(!record) return;
+      const address = record.ADDRESS || record.ADDRESS1 || record.ADDRESS2 || record.Address1 || record.address;
+      const city = record.CITY || record.City;
+      const state = record.STATE || record.ST || record.State;
+      const zip = record.ZIP || record.ZIP4 || record.ZIP5 || record.Zip || record.zip;
+
+
+      if (address || city || state) {
+        locations.add(`${address || ""} ${city || ""} ${state || ""} ${zip || ""}`);
       }
       // Add complete address if available
       if (record && (record.ADDRESS || record.ADDRESS1 || record.ADDRESS2 || record.address)) {
@@ -187,14 +203,14 @@ export function IdentificationAndContact({
 
       if (
         record &&
-        (record.ADDRESS || record.ADDRESS1 || record.ADDRESS2 || record.address) &&
+        (record.ADDRESS || record.ADDRESS1 || record.ADDRESS2 || record.address || record.Address1) &&
         (record.CITY || record.City) &&
         (record.STATE || record.ST || record.State)
       ) {
 
         // Check for ZIP, ZIP4, ZIP5, Zip, zip in order
         const zip = record.ZIP || record.ZIP4 || record.ZIP5 || record.Zip || record.zip;
-        const address = record.ADDRESS || record.ADDRESS1 || record.ADDRESS2 || record.address;
+        const address = record.ADDRESS || record.ADDRESS1 || record.ADDRESS2 || record.Address1 || record.address;
         const city = record.CITY || record.City;
         const state = record.STATE || record.ST || record.State;
 

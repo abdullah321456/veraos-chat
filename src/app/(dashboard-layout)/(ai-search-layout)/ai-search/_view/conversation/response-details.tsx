@@ -70,12 +70,27 @@ function SingleDetails(props: AIResponseDetail & { _index?: string }) {
             props.vets
         ];
 
-        if (props?.STATE && (props?.CITY || props?.City)) {
-            locations.add(`${props.CITY}, ${props.ST || props.STATE}`);
+        const address = props.ADDRESS || props.ADDRESS1 || props.ADDRESS2 || props.Address1 || props.address;
+        const city = props.CITY || props.City;
+        const state = props.STATE || props.ST || props.State;
+        const zip = props.ZIP || props.ZIP4 || props.ZIP5 || props.Zip || props.zip;
+
+
+        if (address || city || state) {
+            locations.add(`${address || ""} ${city || ""} ${state || ""} ${zip || ""}`);
         }
         records.forEach(record => {
-            if ((record?.STATE || record?.ST || record?.State) && (record?.CITY || record?.City)) {
-                locations.add(`${record.CITY || record.City}, ${record.ST || record.STATE || record.State}`);
+
+            if(!record) return
+            const address = record.ADDRESS || record.ADDRESS1 || record.ADDRESS2 || record.Address1
+                || record.address;
+            const city = record.CITY || record.City;
+            const state = record.STATE || record.ST || record.State;
+            const zip = props.ZIP || props.ZIP4 || props.ZIP5 || props.Zip || props.zip;
+
+
+            if (address || city || state) {
+                locations.add(`${address || ""} ${city || ""} ${state || ""} ${zip || ""}`);
             }
         });
 

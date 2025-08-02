@@ -15,7 +15,9 @@ export const apiService = {
     // POST request example
     postData: async (endpoint, data) => {
         try {
-            const response = await axiosInstance.post(endpoint, data);
+            const response = await axiosInstance.post(endpoint, data, {
+                timeout: 600000, // 10 minutes timeout
+            });
             return response.data;
         } catch (error) {
             throw error;

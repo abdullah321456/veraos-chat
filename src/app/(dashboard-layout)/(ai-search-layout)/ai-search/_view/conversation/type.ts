@@ -56,6 +56,13 @@ export type AIResponseDetail = {
     MARITALSTA:any
     ADDRESS1:any;
     ADDRESS2:any;
+    Address1:any;
+    address:any;
+    ZIP:any;
+    ZIP4:any;
+    ZIP5:any;
+    Zip:any;
+    zip:any;
 };
 
 export type OnImageSearchHandlerParam = { file?: File; url: string }[];
