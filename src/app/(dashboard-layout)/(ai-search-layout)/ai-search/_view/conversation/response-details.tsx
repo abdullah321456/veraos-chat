@@ -9,6 +9,33 @@ import {FullReport} from '../../full-report/_view/full-report';
 import { toEnhancedTitleCase } from '@/lib/utils/title-case';
 // REMOVE: import { useState } from 'react';
 
+const capitalizeState = (str: string): string => {
+    if (!str || str.trim() === '') return '';
+
+    const trimmedStr = str.trim();
+
+    // Handle state abbreviations (2 letters) - make them uppercase
+    if (trimmedStr.length === 2) {
+        return trimmedStr.toUpperCase();
+    }
+
+    // Handle full state names - capitalize first letter of each word
+    return trimmedStr
+        .split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .join(' ');
+};
+
+const capitalizeWords = (str: string): string => {
+    if (!str || str.trim() === '') return '';
+
+    return str
+        .trim()
+        .split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .join(' ');
+};
+
 export function AiResponseDetails({detailsData}: { detailsData: (AIResponseDetail & { _index?: string })[] }) {
     const {openDrawer} = useDrawer();
     // REMOVE: const [showFullReport, setShowFullReport] = useState(false);
@@ -70,10 +97,11 @@ function SingleDetails(props: AIResponseDetail & { _index?: string }) {
             props.vets
         ];
 
-        const address = props.ADDRESS || props.ADDRESS1 || props.ADDRESS2 || props.Address1 || props.address;
-        const city = props.CITY || props.City;
-        const state = props.STATE || props.ST || props.State;
-        const zip = props.ZIP || props.ZIP4 || props.ZIP5 || props.Zip || props.zip;
+        const address = capitalizeWords(props.ADDRESS || props.ADDRESS1 || props.ADDRESS2 || props.Address1 || props.address
+            || props.Address ||props.Address2 || "");
+        const city = capitalizeWords(props.CITY || props.City || "");
+        const state = capitalizeState(props.STATE || props.ST || props.State || "");
+        const zip = props.ZIP || props.ZIP4 || props.ZIP5 || props.Zip || props.zip || props.Zi;
 
 
         if (address || city || state) {
@@ -82,11 +110,12 @@ function SingleDetails(props: AIResponseDetail & { _index?: string }) {
         records.forEach(record => {
 
             if(!record) return
-            const address = record.ADDRESS || record.ADDRESS1 || record.ADDRESS2 || record.Address1
-                || record.address;
-            const city = record.CITY || record.City;
-            const state = record.STATE || record.ST || record.State;
-            const zip = props.ZIP || props.ZIP4 || props.ZIP5 || props.Zip || props.zip;
+            const address = capitalizeWords(record.ADDRESS || record.ADDRESS1 || record.ADDRESS2 || record.Address1
+                || record.address
+                || record.Address ||record.Address2 || "");
+            const city = capitalizeWords(record.CITY || record.City || "");
+            const state = capitalizeState(record.STATE || record.ST || record.State || "");
+            const zip = record.ZIP || record.ZIP4 || record.ZIP5 || record.Zip || record.zip || record.Zi;
 
 
             if (address || city || state) {

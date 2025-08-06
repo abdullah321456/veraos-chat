@@ -9,6 +9,17 @@ import { AccordionActionButton } from '../../../_components/accordion-action-but
 import { Accordion } from '../../_components/accordion';
 import { AIResponseDetail } from '../../../_view/conversation/type';
 
+// Utility function to capitalize first letter of each word
+const capitalizeWords = (str: string): string => {
+  if (!str || str.trim() === '') return '';
+  
+  return str
+    .trim()
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+};
+
 type VehicleOwnershipProps = {
   isEditable?: boolean;
   isDrawer?: boolean;
@@ -45,9 +56,9 @@ export function VehicleOwnership({ isEditable = false, isDrawer, details }: Vehi
   }
 
   const vehicleData: Car[] = details?.automobile ? [{
-    name: `${details.automobile.MAKE} ${details.automobile.MODEL}`,
-    make: details.automobile.MAKE || '',
-    model: details.automobile.MODEL || '',
+    name: `${capitalizeWords(details.automobile.MAKE || '')} ${capitalizeWords(details.automobile.MODEL || '')}`,
+    make: capitalizeWords(details.automobile.MAKE || ''),
+    model: capitalizeWords(details.automobile.MODEL || ''),
     year: details.automobile.YEAR?.toString() || '',
     color: 'N/A',
     vin: details.automobile.VIN || '',

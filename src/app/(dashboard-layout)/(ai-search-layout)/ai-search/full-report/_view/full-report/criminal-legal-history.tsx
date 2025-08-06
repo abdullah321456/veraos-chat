@@ -6,6 +6,37 @@ import { AccordionActionButton } from "../../../_components/accordion-action-but
 import { InputDataCell } from "../../../_components/input-data-cell";
 import { Accordion } from "../../_components/accordion";
 
+// Utility function to capitalize first letter of each word
+const capitalizeWords = (str: string): string => {
+  if (!str || str.trim() === '') return '';
+  
+  // First convert everything to lowercase, then capitalize first letter of each word
+  return str
+    .trim()
+    .toLowerCase()
+    .replace(/\b[a-z]/g, (letter) => letter.toUpperCase()) // Capitalize first letter of each word
+    .replace(/\/([a-z])/g, (match, letter) => '/' + letter.toUpperCase()); // Capitalize letter after slash
+};
+
+// Utility function to format date from YYYY-MM-DD to readable format
+const formatDate = (dateString: string): string => {
+  if (!dateString || dateString.trim() === '') return '';
+  
+  try {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return dateString; // Return original if invalid date
+    
+    const options: Intl.DateTimeFormatOptions = { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    };
+    return date.toLocaleDateString('en-US', options);
+  } catch (error) {
+    return dateString; // Return original if parsing fails
+  }
+};
+
 type CriminalAndLegalProps = {
   isEditable?: boolean;
   isDrawer?: boolean;
@@ -64,126 +95,126 @@ export function CriminalAndLegal({
               {details?.ArrestingAgency && (
                 <InputDataCell
                   label="Arresting Agency"
-                  value={details.ArrestingAgency}
+                  value={capitalizeWords(details.ArrestingAgency)}
                   editable={editable}
                 />
               )}
               {details?.CASENUMBER && (
                 <InputDataCell
                   label="Case Number"
-                  value={details.CASENUMBER}
+                  value={capitalizeWords(details.CASENUMBER)}
                   editable={editable}
                 />
               )}
               {details?.Category && (
                 <InputDataCell
                   label="Category"
-                  value={details.Category}
+                  value={capitalizeWords(details.Category)}
                   editable={editable}
                 />
               )}
               {details?.caseType && (
                 <InputDataCell
                   label="Case Type"
-                  value={details.caseType}
+                  value={capitalizeWords(details.caseType)}
                   editable={editable}
                 />
               )}
               {details?.OFFENDERST && (
                 <InputDataCell
                   label="Offender Status"
-                  value={details.OFFENDERST}
+                  value={capitalizeWords(details.OFFENDERST)}
                   editable={editable}
                 />
               )}
               {details?.CITY && (
                 <InputDataCell
                   label="City"
-                  value={details.CITY}
+                  value={capitalizeWords(details.CITY)}
                   editable={editable}
                 />
               )}
               {details?.Court && (
                 <InputDataCell
                   label="Court"
-                  value={details.Court}
+                  value={capitalizeWords(details.Court)}
                   editable={editable}
                 />
               )}
               {details?.ChargesFiledDate && (
                 <InputDataCell
                   label="Charges Filed Date"
-                  value={details.ChargesFiledDate}
+                  value={capitalizeWords(details.ChargesFiledDate)}
                   editable={editable}
                 />
               )}
               {details?.Counts && (
                 <InputDataCell
                   label="Counts"
-                  value={details.Counts}
+                  value={capitalizeWords(details.Counts)}
                   editable={editable}
                 />
               )}
               {details?.OFFENDERCA && (
                 <InputDataCell
                   label="Offender CA"
-                  value={details.OFFENDERCA}
+                  value={capitalizeWords(details.OFFENDERCA)}
                   editable={editable}
                 />
               )}
               {details?.OFFENSECOD && (
                 <InputDataCell
                   label="Offense Code"
-                  value={details.OFFENSECOD}
+                  value={capitalizeWords(details.OFFENSECOD)}
                   editable={editable}
                 />
               )}
               {details?.OFFENSEDES && (
                 <InputDataCell
                   label="Offense Description"
-                  value={details.OFFENSEDES}
+                  value={capitalizeWords(details.OFFENSEDES)}
                   editable={editable}
                 />
               )}
               {details?.OffenseDesc2 && (
                 <InputDataCell
                   label="Offense Description 2"
-                  value={details.OffenseDesc2}
+                  value={capitalizeWords(details.OffenseDesc2)}
                   editable={editable}
                 />
               )}
               {details?.Plea && (
                 <InputDataCell
                   label="Plea"
-                  value={details.Plea}
+                  value={capitalizeWords(details.Plea)}
                   editable={editable}
                 />
               )}
               {details?.Disposition && (
                 <InputDataCell
                   label="Disposition"
-                  value={details.Disposition}
+                  value={capitalizeWords(details.Disposition)}
                   editable={editable}
                 />
               )}
               {details?.DispositionDate && (
                 <InputDataCell
                   label="Disposition Date"
-                  value={details.DispositionDate}
+                  value={capitalizeWords(details.DispositionDate)}
                   editable={editable}
                 />
               )}
               {details?.SentenceYYYMMDDD && (
                 <InputDataCell
                   label="Sentence Date"
-                  value={details.SentenceYYYMMDDD}
+                  value={capitalizeWords(details.SentenceYYYMMDDD)}
                   editable={editable}
                 />
               )}
               {details?.ProbationYYYMMDDD && (
                 <InputDataCell
                   label="Probation Date"
-                  value={details.ProbationYYYMMDDD}
+                  value={capitalizeWords(details.ProbationYYYMMDDD)}
                   editable={editable}
                 />
               )}
@@ -203,105 +234,105 @@ export function CriminalAndLegal({
               {details?.sourceState && (
                 <InputDataCell
                   label="Source State"
-                  value={details.sourceState}
+                  value={capitalizeWords(details.sourceState)}
                   editable={editable}
                 />
               )}
               {details?.CASENUMBER && (
                 <InputDataCell
                   label="Case Number"
-                  value={details.CASENUMBER}
+                  value={capitalizeWords(details.CASENUMBER)}
                   editable={editable}
                 />
               )}
               {details?.caseType && (
                 <InputDataCell
                   label="Case Type"
-                  value={details.caseType}
+                  value={capitalizeWords(details.caseType)}
                   editable={editable}
                 />
               )}
               {details?.CONV_PLACE && (
                 <InputDataCell
                   label="Conviction Place"
-                  value={details.CONV_PLACE}
+                  value={capitalizeWords(details.CONV_PLACE)}
                   editable={editable}
                 />
               )}
               {details?.CONVICTION && (
                 <InputDataCell
                   label="Conviction"
-                  value={details.CONVICTION}
+                  value={capitalizeWords(details.CONVICTION)}
                   editable={editable}
                 />
               )}
               {details?.Court && (
                 <InputDataCell
                   label="Court"
-                  value={details.Court}
+                  value={capitalizeWords(details.Court)}
                   editable={editable}
                 />
               )}
               {details?.OFFENDERCA && (
                 <InputDataCell
                   label="Offender CA"
-                  value={details.OFFENDERCA}
+                  value={capitalizeWords(details.OFFENDERCA)}
                   editable={editable}
                 />
               )}
               {details?.OFFENDERST && (
                 <InputDataCell
                   label="Offender Status"
-                  value={details.OFFENDERST}
+                  value={capitalizeWords(details.OFFENDERST)}
                   editable={editable}
                 />
               )}
               {details?.OFFENSECOD && (
                 <InputDataCell
                   label="Offense Code"
-                  value={details.OFFENSECOD}
+                  value={capitalizeWords(details.OFFENSECOD)}
                   editable={editable}
                 />
               )}
               {details?.OFFENSEDES && (
                 <InputDataCell
                   label="Offense Description"
-                  value={details.OFFENSEDES}
+                  value={capitalizeWords(details.OFFENSEDES)}
                   editable={editable}
                 />
               )}
               {details?.OffenseDesc2 && (
                 <InputDataCell
                   label="Offense Description 2"
-                  value={details.OffenseDesc2}
+                  value={capitalizeWords(details.OffenseDesc2)}
                   editable={editable}
                 />
               )}
               {details?.Plea && (
                 <InputDataCell
                   label="Plea"
-                  value={details.Plea}
+                  value={capitalizeWords(details.Plea)}
                   editable={editable}
                 />
               )}
               {details?.Disposition && (
                 <InputDataCell
                   label="Disposition"
-                  value={details.Disposition}
+                  value={capitalizeWords(details.Disposition)}
                   editable={editable}
                 />
               )}
               {details?.SentenceYYYMMDDD && (
                 <InputDataCell
                   label="Sentence Date"
-                  value={details.SentenceYYYMMDDD}
+                  value={capitalizeWords(details.SentenceYYYMMDDD)}
                   editable={editable}
                 />
               )}
               {details?.ProbationYYYMMDDD && (
                 <InputDataCell
                   label="Probation Date"
-                  value={details.ProbationYYYMMDDD}
+                  value={capitalizeWords(details.ProbationYYYMMDDD)}
                   editable={editable}
                 />
               )}
@@ -315,47 +346,47 @@ export function CriminalAndLegal({
           <div className={cn(isDrawer ? "grid gap-3" : "grid grid-cols-3 gap-4")}>
             <InputDataCell
               label="Interpol Data"
-              value="No Flags"
+              value={capitalizeWords("No Flags")}
               editable={editable}
             />
             <InputDataCell
               label="Gang Affiliation"
-              value="No known gang affiliation"
+              value={capitalizeWords("No known gang affiliation")}
               editable={editable}
             />
             <InputDataCell
               label="Terrorist Organization Information"
-              value="No known links to terrorist groups"
+              value={capitalizeWords("No known links to terrorist groups")}
               editable={editable}
             />
             {details?.CONVICTION && (
               <InputDataCell
                 label="DUI Information"
-                value={`One DUI conviction on ${details?.CONVICTION}`}
+                value={`One DUI Conviction On ${formatDate(details?.CONVICTION)}`}
                 editable={editable}
               />
             )}
             <InputDataCell
               label="Sanctioned Information"
-              value="Not on any sanction list"
+              value={capitalizeWords("Not on any sanction list")}
               editable={editable}
             />
             {details?.OFFENSECOD && (
               <InputDataCell
                 label="Court Records"
-                value={details?.OFFENSECOD}
+                value={capitalizeWords(details?.OFFENSECOD)}
                 editable={editable}
               />
             )}
             <InputDataCell
               label="Sex Offender Registry"
-              value="Sex Offender Record Found"
+              value={capitalizeWords("Sex Offender Record Found")}
               editable={editable}
             />
             {details?.OFFENDERST && (
               <InputDataCell
                 label="Sex Offender Details"
-                value={details?.OFFENDERST}
+                value={capitalizeWords(details?.OFFENDERST)}
                 editable={editable}
               />
             )}
@@ -375,7 +406,7 @@ export function CriminalAndLegal({
         {(!showCriminal && !showSexOffender) && (
           <InputDataCell
             label="Criminal and Legal History"
-            value="No criminal or sex offender records found."
+            value={capitalizeWords("No criminal or sex offender records found.")}
             editable={editable}
           />
         )}

@@ -5,6 +5,18 @@ import { toast } from "sonner";
 import { AccordionActionButton } from "../../../_components/accordion-action-button";
 import { InputArrayDataCell } from "../../../_components/input-array-data-cell";
 import { Accordion } from "../../_components/accordion";
+
+// Utility function to capitalize first letter of each word
+const capitalizeWords = (str: string): string => {
+  if (!str || str.trim() === '') return '';
+  
+  return str
+    .trim()
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+};
+
 type DeviceInfoProps = {
   isEditable?: boolean;
   isDrawer?: boolean;
@@ -27,8 +39,8 @@ export function DeviceInfo({ isEditable = false, isDrawer, details }: DeviceInfo
   }
 
   // Only show voip->CARRIER and voip->TYPE if they exist
-  const carrier = details?.voip?.CARRIER;
-  const type = details?.voip?.TYPE;
+  const carrier = capitalizeWords(details?.voip?.CARRIER || "");
+  const type = capitalizeWords(details?.voip?.TYPE || "");
   const hasAny = !!carrier || !!type;
 
   if (!hasAny) return null;

@@ -8,6 +8,17 @@ import {Accordion} from "../../_components/accordion";
 import {AIResponseDetail} from "../../../_view/conversation/type";
 import { toEnhancedTitleCase } from '@/lib/utils/title-case';
 
+// Utility function to capitalize first letter of each word
+const capitalizeWords = (str: string): string => {
+  if (!str || str.trim() === '') return '';
+  
+  return str
+    .trim()
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+};
+
 type PersonalInfoProps = {
     isEditable?: boolean;
     isDrawer?: boolean;
@@ -154,14 +165,14 @@ export function PersonalInfo({
                 {details?.AKA1 && (
                   <InputDataCell
                       label="Alias/Nickname 1"
-                      value={details.AKA1}
+                      value={capitalizeWords(details.AKA1)}
                       editable={editable}
                   />
                 )}
                 {details?.AKA2 && (
                   <InputDataCell
                       label="Alias/Nickname 2"
-                      value={details.AKA2}
+                      value={capitalizeWords(details.AKA2)}
                       editable={editable}
                   />
                 )}
@@ -175,7 +186,7 @@ export function PersonalInfo({
                 {calculatedAge && (
                   <InputDataCell 
                       label="Age" 
-                      value={`${calculatedAge} years`} 
+                      value={capitalizeWords(`${calculatedAge} years`)} 
                       editable={editable}
                   />
                 )}
@@ -184,12 +195,12 @@ export function PersonalInfo({
                 {details?.MARITALSTA && (
                   <InputDataCell
                       label="Marital Status"
-                      value={details.MARITALSTA}
+                      value={capitalizeWords(details.MARITALSTA)}
                       editable={editable}
                   />
                 )}
                 {details?.GENDER && (
-                  <InputDataCell label="Gender" value={details.GENDER} editable={editable}/>
+                  <InputDataCell label="Gender" value={capitalizeWords(details.GENDER)} editable={editable}/>
                 )}
                 {/* <InputDataCell label="Religion" value="" editable={editable}/> */}
             </div>

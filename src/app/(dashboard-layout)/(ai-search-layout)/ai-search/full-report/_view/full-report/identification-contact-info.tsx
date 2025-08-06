@@ -10,6 +10,42 @@ import { InputArrayDataCell } from "../../../_components/input-array-data-cell";
 import { Accordion } from "../../_components/accordion";
 import { AIResponseDetail } from "../../../_view/conversation/type";
 
+// Utility function to capitalize state names only
+const capitalizeState = (str: string): string => {
+  if (!str || str.trim() === '') return '';
+
+  const trimmedStr = str.trim();
+
+  // Handle state abbreviations (2 letters) - make them uppercase
+  if (trimmedStr.length === 2) {
+    return trimmedStr.toUpperCase();
+  }
+
+  // Handle full state names - capitalize first letter of each word
+  return trimmedStr
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+};
+
+// Utility function to capitalize first letter of each word (for address and city)
+const capitalizeWords = (str: string): string => {
+  if (!str || str.trim() === '') return '';
+
+  return str
+    .trim()
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+};
+
+// Utility function to capitalize only the first letter (for emails)
+const capitalizeFirstLetter = (str: string): string => {
+  if (!str || str.trim() === '') return '';
+
+  return str.trim().charAt(0).toUpperCase() + str.trim().slice(1).toLowerCase();
+};
+
 type IdentificationAndContactProps = {
   isEditable?: boolean;
   isDrawer?: boolean;
@@ -54,10 +90,11 @@ export function IdentificationAndContact({
     ];
 
 
-    const address = details.ADDRESS || details.ADDRESS1 || details.ADDRESS2 || details.Address1 || details.address;
-    const city = details.CITY || details.City;
-    const state = details.STATE || details.ST || details.State;
-    const zip = details.ZIP || details.ZIP4 || details.ZIP5 || details.Zip || details.zip;
+    const address = capitalizeWords(details.ADDRESS || details.ADDRESS1 || details.ADDRESS2 || details.Address1 || details.address
+     || details.Address ||details.Address2 || "");
+    const city = capitalizeWords(details.CITY || details.City || "");
+    const state = capitalizeState(details.STATE || details.ST || details.State || "");
+    const zip = details.ZIP || details.ZIP4 || details.ZIP5 || details.Zip || details.zip || details.Zi;
 
 
     if (address || city || state) {
@@ -67,27 +104,29 @@ export function IdentificationAndContact({
 
     records.forEach(record => {
       if(!record) return;
-      const address = record.ADDRESS || record.ADDRESS1 || record.ADDRESS2 || record.Address1 || record.address;
-      const city = record.CITY || record.City;
-      const state = record.STATE || record.ST || record.State;
-      const zip = record.ZIP || record.ZIP4 || record.ZIP5 || record.Zip || record.zip;
+      const address = capitalizeWords(record.ADDRESS || record.ADDRESS1 || record.ADDRESS2 || record.Address1 || record.address
+          || record.Address ||record.Address2 || "");
+      const city = capitalizeWords(record.CITY || record.City || "");
+      const state = capitalizeState(record.STATE || record.ST || record.State || "");
+      const zip = record.ZIP || record.ZIP4 || record.ZIP5 || record.Zip || record.zip || record.Zi;
+
 
 
       if (address || city || state) {
         locations.add(`${address || ""} ${city || ""} ${state || ""} ${zip || ""}`);
       }
       // Add complete address if available
-      if (record && (record.ADDRESS || record.ADDRESS1 || record.ADDRESS2 || record.address)) {
-        const address = record.ADDRESS || record.ADDRESS1 || record.ADDRESS2 || record.address;
-        const city = record.CITY || record.City;
-        const state = record.STATE || record.ST || record.State;
-        const zip = record.ZIP || record.ZIP4 || record.ZIP5 || record.Zip || record.zip;
-        let full = address;
-        if (city) full += `, ${city}`;
-        if (state) full += `, ${state}`;
-        if (zip) full += ` ${zip}`;
-        locations.add(full);
-      }
+      // if (record && (record.ADDRESS || record.ADDRESS1 || record.ADDRESS2 || record.address)) {
+      //   const address = record.ADDRESS || record.ADDRESS1 || record.ADDRESS2 || record.address;
+      //   const city = record.CITY || record.City;
+      //   const state = record.STATE || record.ST || record.State;
+      //   const zip = record.ZIP || record.ZIP4 || record.ZIP5 || record.Zip || record.zip;
+      //   let full = address;
+      //   if (city) full += `, ${city}`;
+      //   if (state) full += `, ${state}`;
+      //   if (zip) full += ` ${zip}`;
+      //   locations.add(full);
+      // }
     });
     return Array.from(locations);
   };
@@ -111,7 +150,10 @@ export function IdentificationAndContact({
 
     records.forEach(record => {
       if (record?.email || record?.Email || record?.EMAIL) {
-        emails.add(record?.email || record?.Email || record?.EMAIL);
+        const email = record?.email || record?.Email || record?.EMAIL;
+        if (email) {
+          emails.add(capitalizeFirstLetter(email));
+        }
       }
     });
 
@@ -203,16 +245,18 @@ export function IdentificationAndContact({
 
       if (
         record &&
-        (record.ADDRESS || record.ADDRESS1 || record.ADDRESS2 || record.address || record.Address1) &&
+        (record.ADDRESS || record.ADDRESS1 || record.ADDRESS2 || record.Address1 || record.address
+            || record.Address ||record.Address2) &&
         (record.CITY || record.City) &&
         (record.STATE || record.ST || record.State)
       ) {
 
         // Check for ZIP, ZIP4, ZIP5, Zip, zip in order
-        const zip = record.ZIP || record.ZIP4 || record.ZIP5 || record.Zip || record.zip;
-        const address = record.ADDRESS || record.ADDRESS1 || record.ADDRESS2 || record.Address1 || record.address;
-        const city = record.CITY || record.City;
-        const state = record.STATE || record.ST || record.State;
+        const zip = record.ZIP || record.ZIP4 || record.ZIP5 || record.Zip || record.zip || record.Zi;
+        const address = capitalizeWords(record.ADDRESS || record.ADDRESS1 || record.ADDRESS2 || record.Address1 || record.address
+            || record.Address ||record.Address2 || "");
+        const city = capitalizeWords(record.CITY || record.City || "");
+        const state = capitalizeState(record.STATE || record.ST || record.State || "");
 
         if (zip) {
           return [`${address}, ${city}, ${state} ${zip}`];
@@ -229,17 +273,17 @@ export function IdentificationAndContact({
   const getIpAddresses = () => {
     if (!details) return [];
     const ipAddresses = new Set<string>();
-    
+
     // Get IP addresses from drunk_drivings.IP
     if (details.drunk_drivings?.IP) {
       ipAddresses.add(details.drunk_drivings.IP);
     }
-    
+
     // Get IP addresses from education.IPADDRESS
     if (details.education?.IPADDRESS) {
       ipAddresses.add(details.education.IPADDRESS);
     }
-    
+
     // Also check other records that might have IP addresses
     const records = [
       details.education,

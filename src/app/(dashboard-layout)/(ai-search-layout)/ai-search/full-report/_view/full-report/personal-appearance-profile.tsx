@@ -8,6 +8,17 @@ import {InputDataCell} from "../../../_components/input-data-cell";
 import {Accordion} from "../../_components/accordion";
 import {AIResponseDetail} from "@/app/(dashboard-layout)/(ai-search-layout)/ai-search/_view/conversation/type";
 
+// Utility function to capitalize first letter of each word
+const capitalizeWords = (str: string): string => {
+  if (!str || str.trim() === '') return '';
+  
+  return str
+    .trim()
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+};
+
 type PersonalAppearanceProfileProps = {
     isEditable?: boolean;
     isDrawer?: boolean;
@@ -59,7 +70,7 @@ export function PersonalAppearanceProfile({
                   {details?.HEIGHT && (
                     <InputDataCell
                         label="Height"
-                        value={details.HEIGHT}
+                        value={capitalizeWords(details.HEIGHT)}
                         editable={editable}
                         onDone={(value) => console.log("value", value)}
                     />
@@ -67,7 +78,7 @@ export function PersonalAppearanceProfile({
                   {details?.WEIGHT && (
                     <InputDataCell
                         label="Weight"
-                        value={details.WEIGHT}
+                        value={capitalizeWords(details.WEIGHT)}
                         editable={editable}
                         onDone={(value) => console.log("value", value)}
                     />
@@ -75,7 +86,7 @@ export function PersonalAppearanceProfile({
                   {details?.HAIRCOLOR && (
                     <InputDataCell
                         label="Hair color"
-                        value={details.HAIRCOLOR}
+                        value={capitalizeWords(details.HAIRCOLOR)}
                         editable={editable}
                         onDone={(value) => console.log("value", value)}
                     />
@@ -83,7 +94,7 @@ export function PersonalAppearanceProfile({
                   {details?.EYECOLOR && (
                     <InputDataCell
                         label="Eye color"
-                        value={details.EYECOLOR}
+                        value={capitalizeWords(details.EYECOLOR)}
                         editable={editable}
                         onDone={(value) => console.log("value", value)}
                     />
@@ -96,7 +107,7 @@ export function PersonalAppearanceProfile({
                       label="Scars"
                       editable={editable}
                       onDone={(value) => console.log("value", value)}
-                      values={details.ScarsMarks ? [details.ScarsMarks] : []}
+                      values={details.ScarsMarks ? [capitalizeWords(details.ScarsMarks)] : []}
                   />
               </div>
             )}
@@ -104,7 +115,7 @@ export function PersonalAppearanceProfile({
               <div className={cn("grid gap-4", isDrawer ? "grid grid-cols-2" : "grid-cols-4 gap-4 mt-3")} style={{marginTop:"20px"}}>
                   <InputDataCell
                       label="Skin color"
-                      value={details.SkinTone}
+                      value={capitalizeWords(details.SkinTone)}
                       editable={editable}
                       onDone={(value) => console.log("value", value)}
                   />

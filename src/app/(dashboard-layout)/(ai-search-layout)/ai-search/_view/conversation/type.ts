@@ -58,11 +58,14 @@ export type AIResponseDetail = {
     ADDRESS2:any;
     Address1:any;
     address:any;
+    Address:any;
     ZIP:any;
     ZIP4:any;
     ZIP5:any;
     Zip:any;
     zip:any;
+    Zi :any,
+    Address2:any;
 };
 
 export type OnImageSearchHandlerParam = { file?: File; url: string }[];
