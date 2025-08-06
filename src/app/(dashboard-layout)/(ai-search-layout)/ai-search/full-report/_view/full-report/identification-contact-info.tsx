@@ -94,7 +94,7 @@ export function IdentificationAndContact({
      || details.Address ||details.Address2 || "");
     const city = capitalizeWords(details.CITY || details.City || "");
     const state = capitalizeState(details.STATE || details.ST || details.State || "");
-    const zip = details.ZIP || details.ZIP4 || details.ZIP5 || details.Zip || details.zip || details.Zi;
+    const zip = details.ZIP || details.ZIP4 || details.ZIP5 || details.Zip || details.zip || details.Zi || details.ZI;
 
 
     if (address || city || state) {
@@ -108,7 +108,7 @@ export function IdentificationAndContact({
           || record.Address ||record.Address2 || "");
       const city = capitalizeWords(record.CITY || record.City || "");
       const state = capitalizeState(record.STATE || record.ST || record.State || "");
-      const zip = record.ZIP || record.ZIP4 || record.ZIP5 || record.Zip || record.zip || record.Zi;
+      const zip = record.ZIP || record.ZIP4 || record.ZIP5 || record.Zip || record.zip || record.Zi || details.ZI;
 
 
 
@@ -252,7 +252,7 @@ export function IdentificationAndContact({
       ) {
 
         // Check for ZIP, ZIP4, ZIP5, Zip, zip in order
-        const zip = record.ZIP || record.ZIP4 || record.ZIP5 || record.Zip || record.zip || record.Zi;
+        const zip = record.ZIP || record.ZIP4 || record.ZIP5 || record.Zip || record.zip || record.Zi || record.ZI;
         const address = capitalizeWords(record.ADDRESS || record.ADDRESS1 || record.ADDRESS2 || record.Address1 || record.address
             || record.Address ||record.Address2 || "");
         const city = capitalizeWords(record.CITY || record.City || "");
@@ -275,8 +275,8 @@ export function IdentificationAndContact({
     const ipAddresses = new Set<string>();
 
     // Get IP addresses from drunk_drivings.IP
-    if (details.drunk_drivings?.IP) {
-      ipAddresses.add(details.drunk_drivings.IP);
+    if (details.IP && details.IP.length>0) {
+      ipAddresses.add(details.IP);
     }
 
     // Get IP addresses from education.IPADDRESS

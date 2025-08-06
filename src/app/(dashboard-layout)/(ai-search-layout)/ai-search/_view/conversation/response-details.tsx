@@ -9,6 +9,9 @@ import {FullReport} from '../../full-report/_view/full-report';
 import { toEnhancedTitleCase } from '@/lib/utils/title-case';
 // REMOVE: import { useState } from 'react';
 
+
+
+
 const capitalizeState = (str: string): string => {
     if (!str || str.trim() === '') return '';
 
@@ -105,7 +108,7 @@ function SingleDetails(props: AIResponseDetail & { _index?: string }) {
 
 
         if (address || city || state) {
-            locations.add(`${address || ""} ${city || ""} ${state || ""} ${zip || ""}`);
+            locations.add(`${city || ""} ${state || ""}`);
         }
         records.forEach(record => {
 

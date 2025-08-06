@@ -65,6 +65,8 @@ export type AIResponseDetail = {
     Zip:any;
     zip:any;
     Zi :any,
+    ZI :any,
+    IP:any,
     Address2:any;
 };
 
