@@ -19,6 +19,35 @@ const capitalizeWords = (str: string): string => {
     .join(' ');
 };
 
+// Utility function to format height from "602" to "6'2"
+const formatHeight = (height: string): string => {
+  if (!height || height.trim() === '') return '';
+  
+  const cleanHeight = height.trim();
+  
+  // If it's already in feet'inches format, return as is
+  if (cleanHeight.includes("'") || cleanHeight.includes("ft") || cleanHeight.includes("feet")) {
+    return capitalizeWords(cleanHeight);
+  }
+  
+  // If it's a 3-digit number like "602", convert to feet'inches
+  if (/^\d{3}$/.test(cleanHeight)) {
+    const feet = cleanHeight.charAt(0);
+    const inches = parseInt(cleanHeight.substring(1)).toString();
+    return `${feet}'${inches}`;
+  }
+  
+  // If it's a 2-digit number, assume it's inches and convert
+  if (/^\d{2}$/.test(cleanHeight)) {
+    const feet = Math.floor(parseInt(cleanHeight) / 12);
+    const inches = parseInt(cleanHeight) % 12;
+    return `${feet}'${inches}`;
+  }
+  
+  // For other formats, just capitalize
+  return capitalizeWords(cleanHeight);
+};
+
 type PersonalAppearanceProfileProps = {
     isEditable?: boolean;
     isDrawer?: boolean;
@@ -70,7 +99,7 @@ export function PersonalAppearanceProfile({
                   {details?.HEIGHT && (
                     <InputDataCell
                         label="Height"
-                        value={capitalizeWords(details.HEIGHT)}
+                        value={formatHeight(details.HEIGHT)}
                         editable={editable}
                         onDone={(value) => console.log("value", value)}
                     />
