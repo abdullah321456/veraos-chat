@@ -30,7 +30,7 @@ const capitalizeState = (str: string): string => {
 
 
 
-function normalizeAddress(address) {
+function normalizeAddress(address:any) {
   return address
       .toLowerCase()
       .replace(/\s+/g, ' ')         // Replace multiple spaces with single space
@@ -333,7 +333,7 @@ export function IdentificationAndContact({
   console.log("full address",locations,"   ",fullAddress)
 
 
-  locations=locations.length>0 && fullAddress.length>0 && locations.filter((l:any)=>normalizeAddress(fullAddress[0])!==normalizeAddress(l));
+  locations=locations.length>0 && fullAddress.length>0 ? locations.filter((l:any)=>normalizeAddress(fullAddress[0])!==normalizeAddress(l)):[];
 
   const hasAnyData = phones.length > 0 || emails.length > 0 || ips.length > 0 || fullAddress.length > 0 || locations.length > 0;
 
