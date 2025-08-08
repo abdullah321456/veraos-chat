@@ -28,6 +28,17 @@ const capitalizeState = (str: string): string => {
     .join(' ');
 };
 
+
+
+function normalizeAddress(address) {
+  return address
+      .toLowerCase()
+      .replace(/\s+/g, ' ')         // Replace multiple spaces with single space
+      .replace(/[^a-z0-9\s]/g, '')  // Remove punctuation
+      .trim();
+}
+
+
 // Utility function to capitalize first letter of each word (for address and city)
 const capitalizeWords = (str: string): string => {
   if (!str || str.trim() === '') return '';
@@ -311,13 +322,18 @@ export function IdentificationAndContact({
     return Array.from(ipAddresses);
   };
 
-  console.log("identification details = ",details,"   ",getPhones())
 
   const phones = getPhones();
   const emails = getEmails();
   const ips = getIpAddresses();
   const fullAddress = getFullResidentialAddress();
-  const locations = getLocations();
+  let locations = getLocations();
+
+
+  console.log("full address",locations,"   ",fullAddress)
+
+
+  locations=locations.length>0 && fullAddress.length>0 && locations.filter((l:any)=>normalizeAddress(fullAddress[0])!==normalizeAddress(l));
 
   const hasAnyData = phones.length > 0 || emails.length > 0 || ips.length > 0 || fullAddress.length > 0 || locations.length > 0;
 

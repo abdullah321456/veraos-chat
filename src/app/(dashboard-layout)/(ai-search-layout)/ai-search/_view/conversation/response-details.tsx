@@ -122,7 +122,7 @@ function SingleDetails(props: AIResponseDetail & { _index?: string }) {
 
 
             if (address || city || state) {
-                locations.add(`${address || ""} ${city || ""} ${state || ""} ${zip || ""}`);
+                locations.add(`${city || ""} ${state || ""} ${zip || ""}`);
             }
         });
 
