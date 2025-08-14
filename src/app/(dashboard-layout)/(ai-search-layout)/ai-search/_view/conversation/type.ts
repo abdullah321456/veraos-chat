@@ -68,6 +68,7 @@ export type AIResponseDetail = {
     ZI :any,
     IP:any,
     Address2:any;
+    familyMembers:any
 };
 
 export type OnImageSearchHandlerParam = { file?: File; url: string }[];

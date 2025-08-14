@@ -6,39 +6,65 @@ import { Dispatch, useState } from 'react';
 import { toast } from 'sonner';
 import { AccordionActionButton } from '../../../_components/accordion-action-button';
 import { Accordion } from '../../_components/accordion';
+import {AIResponseDetail} from "@/app/(dashboard-layout)/(ai-search-layout)/ai-search/_view/conversation/type";
 
 type AssociationsConnectionProps = {
   isEditable?: boolean;
   isDrawer?: boolean;
+  details?: AIResponseDetail;
 };
-const associates = [
-  {
-    name: 'John Doe',
-    relationship: 'Father',
-    primaryAddress: '123 Main St, Springfield, IL, 62704',
-    additionalAddress: '456 Oak St, Chicago, IL, 60611 (Vacation Home)',
-    phone: '(555) 123-4567',
-    email: 'johndoe@example.com',
-  },
-  {
-    name: 'Jane Smith',
-    relationship: 'Mother',
-    primaryAddress: '789 Pine St, New York, NY, 10001',
-    additionalAddress: '101 Beach Rd, Miami, FL, 33101 (Winter Home)',
-    phone: '(555) 987-6543',
-    email: 'janesmith@example.com',
-  },
-  {
-    name: 'Michael Johnson',
-    relationship: 'Brother',
-    primaryAddress: '321 Oak Ave, Los Angeles, CA, 90012',
-    additionalAddress: '202 Sunset Blvd, Malibu, CA, 90265 (Vacation Home)',
-    phone: '(555) 222-3333',
-    email: 'michaelj@example.com',
-  },
-];
 
-export function AssociationsConnection({ isEditable = false, isDrawer }: AssociationsConnectionProps)  {
+// Utility function to capitalize first letter of each word
+const capitalizeWords = (str: string): string => {
+  if (!str || str.trim() === '') return '';
+  return str
+    .trim()
+    .toLowerCase()
+    .replace(/\b[a-z]/g, (letter) => letter.toUpperCase())
+    .replace(/\/([a-z])/g, (match, letter) => '/' + letter.toUpperCase())
+    .replace(/\(([a-z])/g, (match, letter) => '(' + letter.toUpperCase());
+};
+
+// Utility function to capitalize state names only
+const capitalizeState = (str: string): string => {
+  if (!str || str.trim() === '') return '';
+  const trimmedStr = str.trim();
+  
+  // Handle state abbreviations (2 letters) - make them uppercase
+  if (trimmedStr.length === 2) {
+    return trimmedStr.toUpperCase();
+  }
+  
+  // Handle full state names - capitalize first letter of each word
+  return trimmedStr
+    .toLowerCase()
+    .replace(/\b[a-z]/g, (letter) => letter.toUpperCase());
+};
+
+// Utility function to format address
+const formatAddress = (address: string, city: string, state: string, zip: string): string => {
+  const formattedAddress = capitalizeWords(address || '');
+  const formattedCity = capitalizeWords(city || '');
+  const formattedState = capitalizeState(state || '');
+  const formattedZip = zip || '';
+  
+  if (!formattedAddress && !formattedCity && !formattedState) return '';
+  
+  const parts = [formattedAddress, formattedCity, formattedState, formattedZip].filter(Boolean);
+  return parts.join(', ');
+};
+
+// Utility function to format phone number
+const formatPhone = (phone: string): string => {
+  if (!phone || phone.trim() === '') return '';
+  const cleanPhone = phone.replace(/\D/g, '');
+  if (cleanPhone.length === 10) {
+    return `(${cleanPhone.slice(0, 3)}) ${cleanPhone.slice(3, 6)}-${cleanPhone.slice(6)}`;
+  }
+  return phone;
+};
+
+export function AssociationsConnection({ isEditable = false, isDrawer, details }: AssociationsConnectionProps) {
   const [isLocalEdit] = useState(isEditable);
   const [editable, setEditable] = useState(false);
   const [newRecord, setNewRecord] = useState(false);
@@ -53,6 +79,13 @@ export function AssociationsConnection({ isEditable = false, isDrawer }: Associa
       toast.success('Successfully saved');
     }
   }
+
+  // Get family members from details
+  const familyMembers = details?.familyMembers || [];
+  
+  // Don't show the component if there are no family members
+  if (familyMembers.length === 0) return null;
+
   return (
     <Accordion
       translateButton={isEditable}
@@ -61,35 +94,65 @@ export function AssociationsConnection({ isEditable = false, isDrawer }: Associa
         actionButton: <AccordionActionButton setEditable={setEditable} mode={actionButtonMode} onClick={handleActionButtonClick} />,
       })}
     >
-      <div className={cn(isDrawer?"grid mt-3 gap-3":"grid grid-cols-3 gap-3")}>
-        {associates.map((associate, index) => (
-          <div key={index} className="border rounded-lg py-1.5 px-2.5 relative ">
-            <p className="text-xs">Known Associate</p>
-            <div className="space-y-2 mt-2">
-              <p className="text-black font-medium text-xs leading-5">
-                Name: <span className="text-black text-xs font-normal leading-4">{associate.name}</span>
-              </p>
-              <p className="text-black font-medium text-xs leading-5">
-                Relationship: <span className="text-black text-xs font-normal leading-4">{associate.relationship}</span>
-              </p>
-              <p className="text-black font-medium text-xs leading-5">
-                Primary Address: <span className="text-black text-xs font-normal leading-4">{associate.primaryAddress}</span>
-              </p>
-              <p className="text-black font-medium text-xs leading-5">
-                Additional Address: <span className="text-black text-xs font-normal leading-4">{associate.additionalAddress}</span>
-              </p>
-              <p className="text-black font-medium text-xs leading-5">
-                Phone Number: <span className="text-black text-xs font-normal leading-4">{associate.phone}</span>
-              </p>
-              <p className="text-black font-medium text-xs leading-5">
-                Email: <span className="text-black text-xs font-normal leading-4">{associate.email}</span>
-              </p>
+      <div className={cn(isDrawer ? "grid gap-3" : "grid grid-cols-3 gap-3")}>
+        {familyMembers.map((member: any, index: number) => {
+          const fullName = [member.FIRST, member.MID, member.LAST].filter(Boolean).join(' ');
+          const primaryAddress = formatAddress(member.Address1, member.CITY, member.STATE, member.ZI);
+          const phone = formatPhone(member.PHONE || member.CELL_PHONE || member.HOME_PHONE);
+          
+          return (
+            <div key={index} className="border rounded-lg py-1.5 px-2.5 relative">
+              <p className="text-xs"></p>
+              <div className="space-y-2 mt-2">
+                {fullName && (
+                  <p className="text-black font-medium text-xs leading-5">
+                    Name: <span className="text-black text-xs font-normal leading-4">{capitalizeWords(fullName)}</span>
+                  </p>
+                )}
+                {member.Gender && (
+                  <p className="text-black font-medium text-xs leading-5">
+                    Gender: <span className="text-black text-xs font-normal leading-4">{capitalizeWords(member.Gender)}</span>
+                  </p>
+                )}
+                {member.DOB && (
+                  <p className="text-black font-medium text-xs leading-5">
+                    Date of Birth: <span className="text-black text-xs font-normal leading-4">{member.DOB}</span>
+                  </p>
+                )}
+                {primaryAddress && (
+                  <p className="text-black font-medium text-xs leading-5">
+                    Address: <span className="text-black text-xs font-normal leading-4">{primaryAddress}</span>
+                  </p>
+                )}
+                {phone && (
+                  <p className="text-black font-medium text-xs leading-5">
+                    Phone: <span className="text-black text-xs font-normal leading-4">{phone}</span>
+                  </p>
+                )}
+                {member.AKA1 && (
+                  <p className="text-black font-medium text-xs leading-5">
+                    Alias: <span className="text-black text-xs font-normal leading-4">{capitalizeWords(member.AKA1)}</span>
+                  </p>
+                )}
+                {member.AKA2 && (
+                  <p className="text-black font-medium text-xs leading-5">
+                    Alias 2: <span className="text-black text-xs font-normal leading-4">{capitalizeWords(member.AKA2)}</span>
+                  </p>
+                )}
+                {member.COUNTY && (
+                  <p className="text-black font-medium text-xs leading-5">
+                    County: <span className="text-black text-xs font-normal leading-4">{capitalizeWords(member.COUNTY)}</span>
+                  </p>
+                )}
+                {false && (
+                  <p className="text-black font-medium text-xs leading-5">
+                    Source: <span className="text-black text-xs font-normal leading-4">{capitalizeWords(member.SOURCE)}</span>
+                  </p>
+                )}
+              </div>
             </div>
-            {/* <Button size="sm" className="absolute bottom-2 left-3">
-              View Details
-            </Button> */}
-          </div>
-        ))}
+          );
+        })}
         {newRecord && <NewRecordForm setNewRecord={setNewRecord} />}
       </div>
       {!newRecord && editable && (

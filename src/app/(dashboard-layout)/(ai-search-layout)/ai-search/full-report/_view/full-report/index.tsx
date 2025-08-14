@@ -239,7 +239,7 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
                 <PersonalAppearanceProfile isEditable={editable} isDrawer={isDrawer} details={localDetails}/>
                 <IdentificationAndContact isEditable={editable} isDrawer={isDrawer} details={localDetails}/>
                 <DeviceInfo isEditable={editable} isDrawer={isDrawer} details={localDetails}/>
-                {/* <AssociationsConnection isEditable={editable} isDrawer={isDrawer}/> */}
+                 <AssociationsConnection isEditable={editable} isDrawer={isDrawer} details={localDetails}/>
                 {/* <CitizenesAbroad isEditable={editable}/> */}
                 <VehicleOwnership isEditable={editable} isDrawer={isDrawer} details={localDetails}/>
                 {/*<Employment isEditable={editable} isDrawer={isDrawer}/>*/}
