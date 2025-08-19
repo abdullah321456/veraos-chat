@@ -3,9 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="31f38edd-b261-4f74-9fe3-a56331e865fe" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/_view/conversation/type.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/_view/conversation/type.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/full-report/_view/full-report/associations-connection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/full-report/_view/full-report/associations-connection.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/full-report/_view/full-report/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/full-report/_view/full-report/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/full-report/_view/full-report/personal-info.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/full-report/_view/full-report/personal-info.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -297,7 +295,10 @@
       <workItem from="1754643423795" duration="1386000" />
       <workItem from="1754645146022" duration="613000" />
       <workItem from="1754923356156" duration="344000" />
-      <workItem from="1755188663097" duration="2110000" />
+      <workItem from="1755188663097" duration="2799000" />
+      <workItem from="1755197713812" duration="22000" />
+      <workItem from="1755251828098" duration="158000" />
+      <workItem from="1755586800708" duration="340000" />
     </task>
     <servers />
   </component>
