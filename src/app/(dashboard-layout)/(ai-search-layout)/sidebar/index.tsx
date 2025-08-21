@@ -264,11 +264,11 @@ const navigationMenus = [
     href: ROUTES.AI_SEARCH.INDEX,
     activePathnames: [ROUTES.AI_SEARCH.INDEX, ROUTES.AI_SEARCH.FULL_REPORT] as string[],
   },
-  {
-    name: 'Dossiers',
-    href: ROUTES.AI_SEARCH.BUILD,
-    activePathnames: [ROUTES.AI_SEARCH.BUILD] as string[],
-  },
+  // {
+  //   name: 'Dossiers',
+  //   href: ROUTES.AI_SEARCH.BUILD,
+  //   activePathnames: [ROUTES.AI_SEARCH.BUILD] as string[],
+  // },
 ];
 
 function NavigationElement() {

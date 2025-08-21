@@ -89,7 +89,7 @@ export function AssociationsConnection({ isEditable = false, isDrawer, details }
   return (
     <Accordion
       translateButton={isEditable}
-      title="Associations and Connections"
+      title="Potential Associations and Connections"
       {...(isLocalEdit && {
         actionButton: <AccordionActionButton setEditable={setEditable} mode={actionButtonMode} onClick={handleActionButtonClick} />,
       })}

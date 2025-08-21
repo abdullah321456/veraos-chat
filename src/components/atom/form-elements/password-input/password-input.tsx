@@ -190,7 +190,8 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordProps>(
               onFocus={handleOnFocus}
               readOnly={readOnly}
               spellCheck="false"
-              // placeholder is a required prop for the clearable input component even if the user does not set any
+              autoComplete="current-password"
+                // placeholder is a required prop for the clearable input component even if the user does not set any
               placeholder={placeholder || 'Screen reader only'}
               className={cn(
                 `password-field`,
