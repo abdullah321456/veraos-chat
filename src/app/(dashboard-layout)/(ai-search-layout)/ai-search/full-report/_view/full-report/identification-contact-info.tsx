@@ -87,6 +87,8 @@ export function IdentificationAndContact({
     const locations = new Set<string>();
     const records = [
       details,
+      details.criminals_small,
+      details.criminals,
       details.education,
       details.rv,
       details.motorcycles,
@@ -102,10 +104,11 @@ export function IdentificationAndContact({
 
 
     const address = capitalizeWords(details.ADDRESS || details.ADDRESS1 || details.ADDRESS2 || details.Address1 || details.address
-     || details.Address ||details.Address2 || "");
-    const city = capitalizeWords(details.CITY || details.City || "");
-    const state = capitalizeState(details.STATE || details.ST || details.State || "");
-    const zip = details.ZIP || details.ZIP4 || details.ZIP5 || details.Zip || details.zip || details.Zi || details.ZI;
+     || details.Address ||details.Address2 || details.N_ADDRESS || "");
+    const city = capitalizeWords(details.CITY || details.City || details.N_CITY || "");
+    const state = capitalizeState(details.STATE || details.ST || details.State || details.N_STATE || "");
+    const zip = details.ZIP || details.ZIP4 || details.ZIP5 || details.Zip || details.zip || details.Zi || details.ZI
+    || details.N_ZIP;
 
 
     if (address || city || state) {
@@ -116,10 +119,11 @@ export function IdentificationAndContact({
     records.forEach(record => {
       if(!record) return;
       const address = capitalizeWords(record.ADDRESS || record.ADDRESS1 || record.ADDRESS2 || record.Address1 || record.address
-          || record.Address ||record.Address2 || "");
-      const city = capitalizeWords(record.CITY || record.City || "");
-      const state = capitalizeState(record.STATE || record.ST || record.State || "");
-      const zip = record.ZIP || record.ZIP4 || record.ZIP5 || record.Zip || record.zip || record.Zi || details.ZI;
+          || record.Address ||record.Address2 || record.N_ADDRESS || "");
+      const city = capitalizeWords(record.CITY || record.City || record.N_CITY || "");
+      const state = capitalizeState(record.STATE || record.ST || record.State || record.N_STATE || "");
+      const zip = record.ZIP || record.ZIP4 || record.ZIP5 || record.Zip || record.zip || record.Zi || details.ZI ||
+          record.N_ZIP;
 
 
 
@@ -239,6 +243,8 @@ export function IdentificationAndContact({
     // Try to find the first record with address, city, state, and zip
     const records = [
       details,
+      details.criminals_small,
+      details.criminals,
       details.education,
       details.rv,
       details.motorcycles,
@@ -257,17 +263,18 @@ export function IdentificationAndContact({
       if (
         record &&
         (record.ADDRESS || record.ADDRESS1 || record.ADDRESS2 || record.Address1 || record.address
-            || record.Address ||record.Address2) &&
-        (record.CITY || record.City) &&
-        (record.STATE || record.ST || record.State)
+            || record.Address ||record.Address2 || record.N_ADDRESS) &&
+        (record.CITY || record.City || record.N_CITY) &&
+        (record.STATE || record.ST || record.State || record.N_STATE)
       ) {
 
         // Check for ZIP, ZIP4, ZIP5, Zip, zip in order
-        const zip = record.ZIP || record.ZIP4 || record.ZIP5 || record.Zip || record.zip || record.Zi || record.ZI;
+        const zip = record.ZIP || record.ZIP4 || record.ZIP5 || record.Zip || record.zip || record.Zi || record.ZI
+        || record.N_ZIP;
         const address = capitalizeWords(record.ADDRESS || record.ADDRESS1 || record.ADDRESS2 || record.Address1 || record.address
-            || record.Address ||record.Address2 || "");
-        const city = capitalizeWords(record.CITY || record.City || "");
-        const state = capitalizeState(record.STATE || record.ST || record.State || "");
+            || record.Address ||record.Address2 || record.N_ADDRESS || "");
+        const city = capitalizeWords(record.CITY || record.City || record.N_CITY || "");
+        const state = capitalizeState(record.STATE || record.ST || record.State || record.N_STATE || "");
 
         if (zip) {
           return [`${address}, ${city}, ${state} ${zip}`];
@@ -322,12 +329,45 @@ export function IdentificationAndContact({
     return Array.from(ipAddresses);
   };
 
+  const getExPatriotDate = () => {
+    if (!details) return [];
+    const exPatriotDates = new Set<string>();
+    
+    // Check for MOVEDATE_ in main details
+    if ((details as any).MOVEDATE_) {
+      exPatriotDates.add((details as any).MOVEDATE_);
+    }
+    
+    // Check in other records
+    const records = [
+      details.education,
+      details.rv,
+      details.motorcycles,
+      details.national_drivers_license,
+      details.bankruptcy,
+      details.automobile,
+      details.foreign_movers,
+      details.cell_records,
+      details.drunk_drivings,
+      details.voip,
+      details.vets
+    ];
+
+    records.forEach(record => {
+      if (record && (record as any).MOVEDATE_) {
+        exPatriotDates.add((record as any).MOVEDATE_);
+      }
+    });
+
+    return Array.from(exPatriotDates);
+  };
 
   const phones = getPhones();
   const emails = getEmails();
   const ips = getIpAddresses();
   const fullAddress = getFullResidentialAddress();
   let locations = getLocations();
+  const exPatriotDates = getExPatriotDate();
 
 
   console.log("full address",locations,"   ",fullAddress)
@@ -335,7 +375,7 @@ export function IdentificationAndContact({
 
   locations=locations.length>0 && fullAddress.length>0 ? locations.filter((l:any)=>normalizeAddress(fullAddress[0])!==normalizeAddress(l)):[];
 
-  const hasAnyData = phones.length > 0 || emails.length > 0 || ips.length > 0 || fullAddress.length > 0 || locations.length > 0;
+  const hasAnyData = phones.length > 0 || emails.length > 0 || ips.length > 0 || fullAddress.length > 0 || locations.length > 0 || exPatriotDates.length > 0;
 
   if (!hasAnyData) return null;
 
@@ -391,6 +431,15 @@ export function IdentificationAndContact({
               editable={editable}
               onDone={(value) => console.log("full-residential-address", value)}
               values={fullAddress}
+            />
+          )}
+          {exPatriotDates.length > 0 && (
+            <InputArrayDataCell
+              entryPrefix={<BlueLocationIcon className="min-w-4 h-4" />}
+              label="Ex-Patriot Date"
+              editable={editable}
+              onDone={(value) => console.log("ex-patriot-date", value)}
+              values={exPatriotDates}
             />
           )}
           {locations.length > 0 && (

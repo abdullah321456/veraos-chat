@@ -2,6 +2,7 @@
 
 import { Input } from '@/components/atom/form-elements/input';
 import { fileToBase64 } from '@/lib/utils/file-to-base64';
+import { trackAISearch } from '@/lib/gtag';
 import { Send } from 'lucide-react';
 import { SVGProps, TransitionStartFunction, useState } from 'react';
 import { toast } from 'sonner';
@@ -19,6 +20,8 @@ export function SearchInput({ onTextSearch, onImageSearch, startTransition, defa
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (searchValue.trim()) {
+      // Track AI search event
+      trackAISearch(searchValue, 0); // resultsCount will be updated when results come in
       onTextSearch?.(searchValue);
       setSearchValue('');
     }

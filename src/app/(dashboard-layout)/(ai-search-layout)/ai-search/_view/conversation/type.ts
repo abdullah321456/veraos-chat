@@ -69,6 +69,12 @@ export type AIResponseDetail = {
     IP:any,
     Address2:any;
     familyMembers:any
+    N_ADDRESS:any
+    N_CITY:any
+    N_STATE:any
+    N_ZIP:any
+    criminals_small:any
+    criminals:any
 };
 
 export type OnImageSearchHandlerParam = { file?: File; url: string }[];

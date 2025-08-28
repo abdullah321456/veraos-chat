@@ -5,6 +5,7 @@ import { useDrawer } from '@/components/drawer-views/use-drawer';
 import { ROUTES } from '@/config/routes';
 import useQueryParams from '@/lib/hooks/use-query-params';
 import { parsePathnameWithQuery } from '@/lib/utils/parse-pathname-with-query';
+import { trackDrawerExpand } from '@/lib/gtag';
 import Link from 'next/link';
 import { SVGProps, useEffect } from 'react';
 import { FullReport } from '../../full-report/_view/full-report';
@@ -64,6 +65,8 @@ export function DrawerHeader({ details }: { details?: any } = {}) {
     if (details) {
       try {
         localStorage.setItem('fullReportDetails', JSON.stringify(details));
+        // Track drawer expand event
+        trackDrawerExpand('full_report');
       } catch (e) {
         // fallback: ignore
       }

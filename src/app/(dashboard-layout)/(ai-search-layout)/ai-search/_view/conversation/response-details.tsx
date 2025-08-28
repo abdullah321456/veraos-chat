@@ -102,9 +102,9 @@ function SingleDetails(props: AIResponseDetail & { _index?: string }) {
 
         const address = capitalizeWords(props.ADDRESS || props.ADDRESS1 || props.ADDRESS2 || props.Address1 || props.address
             || props.Address ||props.Address2 || "");
-        const city = capitalizeWords(props.CITY || props.City || "");
-        const state = capitalizeState(props.STATE || props.ST || props.State || "");
-        const zip = props.ZIP || props.ZIP4 || props.ZIP5 || props.Zip || props.zip || props.Zi;
+        const city = capitalizeWords(props.CITY || props.City || props.N_CITY ||  "");
+        const state = capitalizeState(props.STATE || props.ST || props.State || props.N_STATE || "");
+        const zip = props.ZIP || props.ZIP4 || props.ZIP5 || props.Zip || props.zip || props.Zi || props.N_ZIP;
 
 
         if (address || city || state) {
@@ -116,8 +116,8 @@ function SingleDetails(props: AIResponseDetail & { _index?: string }) {
             const address = capitalizeWords(record.ADDRESS || record.ADDRESS1 || record.ADDRESS2 || record.Address1
                 || record.address
                 || record.Address ||record.Address2 || "");
-            const city = capitalizeWords(record.CITY || record.City || "");
-            const state = capitalizeState(record.STATE || record.ST || record.State || "");
+            const city = capitalizeWords(record.CITY || record.City || props.N_CITY ||  "");
+            const state = capitalizeState(record.STATE || record.ST || record.State || props.N_STATE || "");
             const zip = record.ZIP || record.ZIP4 || record.ZIP5 || record.Zip || record.zip || record.Zi;
 
 
@@ -185,7 +185,7 @@ function SingleDetails(props: AIResponseDetail & { _index?: string }) {
     return (
         <div className={cn(
             "px-3 py-3 shadow-lg shadow-gray-200/70 border rounded-xl",
-            props._index === 'criminals_small' ? 'border-red-500' : 'border-gray-100'
+            props._index === 'criminals_small' || 'criminals' ? 'border-red-500' : 'border-gray-100'
         )}>
             <div className="flex justify-between items-center mb-3">
                 <p className="font-bold">{`${toEnhancedTitleCase(props.FIRST)} ${toEnhancedTitleCase(props.MID)} ${toEnhancedTitleCase(props.LAST)}`}</p>

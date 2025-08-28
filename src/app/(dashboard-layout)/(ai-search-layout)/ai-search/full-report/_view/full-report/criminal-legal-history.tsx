@@ -63,7 +63,8 @@ export function CriminalAndLegal({
   }
 
   const showCriminal = details?._index === 'criminals' || details?._index === 'criminals_small';
-  const showSexOffender = details?._index === 'criminals_small';
+  const showSexOffender = details && details.OFFENDERCA === 'SEX OFFENDER';
+
   const criminalTypeLabel=showSexOffender?"Sex Offender":"Criminal"
 
   return (
@@ -84,53 +85,22 @@ export function CriminalAndLegal({
       <div className={cn(isDrawer ? "grid gap-3 mt-3" : "grid grid-cols-3 gap-4")}> 
         
         {/* National Criminal Records Subsection */}
-        {(details?.ArrestingAgency || details?.CASENUMBER || details?.Category || details?.caseType || 
-          details?.OFFENDERST || details?.CITY || details?.Court || details?.ChargesFiledDate || 
-          details?.Counts || details?.OFFENDERCA || details?.OFFENSECOD || details?.OFFENSEDES || 
-          details?.OffenseDesc2 || details?.Plea || details?.Disposition || details?.DispositionDate || 
-          details?.SentenceYYYMMDDD || details?.ProbationYYYMMDDD) && (
+        {(details?.Category || details?.ChargesFiledDate || details?.Court || details?.Disposition || 
+          details?.DispositionDate || details?.OFFENDERCA || details?.OFFENSEDES || details?.SentenceYYYMMDDD) && (
           <div className="mb-4">
             <h5 className="text-sm font-medium mb-2 text-gray-600 border-b pb-1">National Criminal Records</h5>
             <div className={cn(isDrawer ? "grid gap-3" : "grid grid-cols-3 gap-4")}>
-              {details?.ArrestingAgency && (
-                <InputDataCell
-                  label="Arresting Agency"
-                  value={capitalizeWords(details.ArrestingAgency)}
-                  editable={editable}
-                />
-              )}
-              {details?.CASENUMBER && (
-                <InputDataCell
-                  label="Case Number"
-                  value={capitalizeWords(details.CASENUMBER)}
-                  editable={editable}
-                />
-              )}
               {details?.Category && (
                 <InputDataCell
-                  label="Category"
+                  label="Criminal Case Type"
                   value={capitalizeWords(details.Category)}
                   editable={editable}
                 />
               )}
-              {details?.caseType && (
+              {details?.ChargesFiledDate && (
                 <InputDataCell
-                  label="Case Type"
-                  value={capitalizeWords(details.caseType)}
-                  editable={editable}
-                />
-              )}
-              {details?.OFFENDERST && (
-                <InputDataCell
-                  label="Offender Status"
-                  value={capitalizeWords(details.OFFENDERST)}
-                  editable={editable}
-                />
-              )}
-              {details?.CITY && (
-                <InputDataCell
-                  label="City"
-                  value={capitalizeWords(details.CITY)}
+                  label="Charges Filed Date"
+                  value={formatDate(details.ChargesFiledDate)}
                   editable={editable}
                 />
               )}
@@ -138,55 +108,6 @@ export function CriminalAndLegal({
                 <InputDataCell
                   label="Court"
                   value={capitalizeWords(details.Court)}
-                  editable={editable}
-                />
-              )}
-              {details?.ChargesFiledDate && (
-                <InputDataCell
-                  label="Charges Filed Date"
-                  value={capitalizeWords(details.ChargesFiledDate)}
-                  editable={editable}
-                />
-              )}
-              {details?.Counts && (
-                <InputDataCell
-                  label="Counts"
-                  value={capitalizeWords(details.Counts)}
-                  editable={editable}
-                />
-              )}
-              {details?.OFFENDERCA && (
-                <InputDataCell
-                  label="Offender CA"
-                  value={capitalizeWords(details.OFFENDERCA)}
-                  editable={editable}
-                />
-              )}
-              {details?.OFFENSECOD && (
-                <InputDataCell
-                  label="Offense Code"
-                  value={capitalizeWords(details.OFFENSECOD)}
-                  editable={editable}
-                />
-              )}
-              {details?.OFFENSEDES && (
-                <InputDataCell
-                  label="Offense Description"
-                  value={capitalizeWords(details.OFFENSEDES)}
-                  editable={editable}
-                />
-              )}
-              {details?.OffenseDesc2 && (
-                <InputDataCell
-                  label="Offense Description 2"
-                  value={capitalizeWords(details.OffenseDesc2)}
-                  editable={editable}
-                />
-              )}
-              {details?.Plea && (
-                <InputDataCell
-                  label="Plea"
-                  value={capitalizeWords(details.Plea)}
                   editable={editable}
                 />
               )}
@@ -200,21 +121,28 @@ export function CriminalAndLegal({
               {details?.DispositionDate && (
                 <InputDataCell
                   label="Disposition Date"
-                  value={capitalizeWords(details.DispositionDate)}
+                  value={formatDate(details.DispositionDate)}
+                  editable={editable}
+                />
+              )}
+              {details?.OFFENDERCA && (
+                <InputDataCell
+                  label="Jurisdiction"
+                  value={capitalizeWords(details.OFFENDERCA)}
+                  editable={editable}
+                />
+              )}
+              {details?.OFFENSEDES && (
+                <InputDataCell
+                  label="Offense"
+                  value={capitalizeWords(details.OFFENSEDES)}
                   editable={editable}
                 />
               )}
               {details?.SentenceYYYMMDDD && (
                 <InputDataCell
                   label="Sentence Date"
-                  value={capitalizeWords(details.SentenceYYYMMDDD)}
-                  editable={editable}
-                />
-              )}
-              {details?.ProbationYYYMMDDD && (
-                <InputDataCell
-                  label="Probation Date"
-                  value={capitalizeWords(details.ProbationYYYMMDDD)}
+                  value={formatDate(details.SentenceYYYMMDDD)}
                   editable={editable}
                 />
               )}
@@ -223,11 +151,7 @@ export function CriminalAndLegal({
         )}
 
         {/* Sex Offender Records Subsection */}
-        {(details?.sourceState || details?.CASENUMBER || details?.caseType || details?.CONV_PLACE || 
-          details?.CONVICTION || details?.Court || details?.OFFENDERCA || details?.OFFENDERST || 
-          details?.OFFENSECOD || details?.OFFENSEDES || details?.OffenseDesc2 || details?.Plea || 
-          details?.Disposition || details?.SentenceYYYMMDDD || details?.ProbationYYYMMDDD || 
-          criminalTypeLabel === "Sex Offender") && (
+        {showSexOffender && (
           <div className="mb-4">
             <h5 className="text-sm font-medium mb-2 text-gray-600 border-b pb-1">Sex Offender Records</h5>
             <div className={cn(isDrawer ? "grid gap-3" : "grid grid-cols-3 gap-4")}>
@@ -380,7 +304,7 @@ export function CriminalAndLegal({
             )}
             <InputDataCell
               label="Sex Offender Registry"
-              value={capitalizeWords("Sex Offender Record Found")}
+              value={capitalizeWords(criminalTypeLabel)}
               editable={editable}
             />
             {details?.OFFENDERST && (
