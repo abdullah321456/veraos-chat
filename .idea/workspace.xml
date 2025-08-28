@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="31f38edd-b261-4f74-9fe3-a56331e865fe" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/components/page-tracker.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/page-tracker.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/user-tracker.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/user-tracker.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hooks/use-google-analytics.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/gtag.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/gtag.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/_view/conversation/response-details.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/_view/conversation/response-details.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -134,7 +133,7 @@
       <workItem from="1755763774510" duration="278000" />
       <workItem from="1756228206405" duration="5000" />
       <workItem from="1756367168388" duration="169000" />
-      <workItem from="1756379063854" duration="7073000" />
+      <workItem from="1756379063854" duration="7681000" />
     </task>
     <servers />
   </component>

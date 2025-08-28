@@ -185,7 +185,7 @@ function SingleDetails(props: AIResponseDetail & { _index?: string }) {
     return (
         <div className={cn(
             "px-3 py-3 shadow-lg shadow-gray-200/70 border rounded-xl",
-            props._index === 'criminals_small' || 'criminals' ? 'border-red-500' : 'border-gray-100'
+            (props._index === 'criminals_small' || props._index === 'criminals') ? 'border-red-500' : 'border-gray-100'
         )}>
             <div className="flex justify-between items-center mb-3">
                 <p className="font-bold">{`${toEnhancedTitleCase(props.FIRST)} ${toEnhancedTitleCase(props.MID)} ${toEnhancedTitleCase(props.LAST)}`}</p>
