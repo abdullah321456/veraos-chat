@@ -64,7 +64,7 @@ export function CriminalAndLegal({
 
   const showCriminal = details?._index === 'criminals' || details?._index === 'criminals_small';
   const showSexOffender = details && details.OFFENDERCA === 'SEX OFFENDER';
-  const isVets = details?._index === 'vets' && details?.VETERAN==='N';
+  const isVets = details?._index === 'vets' && details?.VETERAN==='Y';
 
   const criminalTypeLabel=showSexOffender?"Sex Offender":"Criminal"
 
