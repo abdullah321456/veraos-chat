@@ -248,7 +248,8 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
                 {/*<ConsumerInfo isEditable={editable} isDrawer={isDrawer}/>*/}
                 {/*<SocialAndWeb isEditable={editable} isDrawer={isDrawer}/>*/}
                 {/*<PhotographicArchive isEditable={editable} isDrawer={isDrawer}/>*/}
-                {((localDetails as any)?._index === 'criminals' || (localDetails as any)?._index === 'criminals_small' || (localDetails as any)?._index === 'sexoffender') && (
+                {((localDetails as any)?._index === 'criminals' || (localDetails as any)?._index === 'criminals_small'
+                     || ((localDetails as any)?._index === 'vets') && localDetails?.VETERAN==='N') && (
                   <CriminalAndLegal isEditable={editable} isDrawer={isDrawer} details={localDetails} />
                 )}
                 {/*<HighRisk isEditable={editable} isDrawer={isDrawer}/>*/}

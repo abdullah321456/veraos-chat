@@ -64,6 +64,7 @@ export function CriminalAndLegal({
 
   const showCriminal = details?._index === 'criminals' || details?._index === 'criminals_small';
   const showSexOffender = details && details.OFFENDERCA === 'SEX OFFENDER';
+  const isVets = details?._index === 'vets' && details?.VETERAN==='N';
 
   const criminalTypeLabel=showSexOffender?"Sex Offender":"Criminal"
 
@@ -84,8 +85,8 @@ export function CriminalAndLegal({
       })}>
       <div className={cn(isDrawer ? "grid gap-3 mt-3" : "grid grid-cols-3 gap-4")}> 
         
-        {/* National Criminal Records Subsection */}
-        {(details?.Category || details?.ChargesFiledDate || details?.Court || details?.Disposition || 
+        {/* National Criminal Records Subsection - Only show for criminals */}
+        {showCriminal && !showSexOffender && (details?.Category || details?.ChargesFiledDate || details?.Court || details?.Disposition ||
           details?.DispositionDate || details?.OFFENDERCA || details?.OFFENSEDES || details?.SentenceYYYMMDDD) && (
           <div className="mb-4">
             <h5 className="text-sm font-medium mb-2 text-gray-600 border-b pb-1">National Criminal Records</h5>
@@ -264,76 +265,40 @@ export function CriminalAndLegal({
           </div>
         )}
 
-        {/* Supplemental Subsection */}
-        <div className="mb-4">
-          <h5 className="text-sm font-medium mb-2 text-gray-600 border-b pb-1">Supplemental</h5>
-          <div className={cn(isDrawer ? "grid gap-3" : "grid grid-cols-3 gap-4")}>
-            <InputDataCell
-              label="Interpol Data"
-              value={capitalizeWords("No Flags")}
-              editable={editable}
-            />
-            <InputDataCell
-              label="Gang Affiliation"
-              value={capitalizeWords("No known gang affiliation")}
-              editable={editable}
-            />
-            <InputDataCell
-              label="Terrorist Organization Information"
-              value={capitalizeWords("No known links to terrorist groups")}
-              editable={editable}
-            />
-            {details?.CONVICTION && (
+        {/* Supplemental Subsection - Only show for veterans */}
+        {isVets && (
+          <div className="mb-4">
+            <h5 className="text-sm font-medium mb-2 text-gray-600 border-b pb-1">Supplemental</h5>
+            <div className={cn(isDrawer ? "grid gap-3" : "grid grid-cols-3 gap-4")}>
               <InputDataCell
-                label="DUI Information"
-                value={`One DUI Conviction On ${formatDate(details?.CONVICTION)}`}
+                label="Interpol Data"
+                value={capitalizeWords("No Flags")}
                 editable={editable}
               />
-            )}
-            <InputDataCell
-              label="Sanctioned Information"
-              value={capitalizeWords("Not on any sanction list")}
-              editable={editable}
-            />
-            {details?.OFFENSECOD && (
               <InputDataCell
-                label="Court Records"
-                value={capitalizeWords(details?.OFFENSECOD)}
+                label="Gang Affiliation"
+                value={capitalizeWords("No known gang affiliation")}
                 editable={editable}
               />
-            )}
-            <InputDataCell
-              label="Sex Offender Registry"
-              value={capitalizeWords(criminalTypeLabel)}
-              editable={editable}
-            />
-            {details?.OFFENDERST && (
               <InputDataCell
-                label="Sex Offender Details"
-                value={capitalizeWords(details?.OFFENDERST)}
+                label="Terrorist Organization Information"
+                value={capitalizeWords("No known links to terrorist groups")}
                 editable={editable}
               />
-            )}
+              <InputDataCell
+                label="Sanctioned Information"
+                value={capitalizeWords("Not on any sanction list")}
+                editable={editable}
+              />
+              <InputDataCell
+                label="Do Not Fly List"
+                value={capitalizeWords("Not on Do Not Fly list")}
+                editable={editable}
+              />
+            </div>
           </div>
-        </div>
+        )}
 
-        {showCriminal && (
-          <>
-            {/* Criminal Records and Arrest Records removed */}
-          </>
-        )}
-        {showSexOffender && (
-          <>
-            {/* Sex offender fields moved to Supplemental section above */}
-          </>
-        )}
-        {(!showCriminal && !showSexOffender) && (
-          <InputDataCell
-            label="Criminal and Legal History"
-            value={capitalizeWords("No criminal or sex offender records found.")}
-            editable={editable}
-          />
-        )}
       </div>
     </Accordion>
   );

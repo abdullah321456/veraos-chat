@@ -75,6 +75,7 @@ export type AIResponseDetail = {
     N_ZIP:any
     criminals_small:any
     criminals:any
+    VETERAN:any
 };
 
 export type OnImageSearchHandlerParam = { file?: File; url: string }[];

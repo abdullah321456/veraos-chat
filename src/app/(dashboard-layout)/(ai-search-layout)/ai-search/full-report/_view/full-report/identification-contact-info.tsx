@@ -3,7 +3,7 @@ import { IpAddressIcon } from "@/components/atom/icons/ai-search/ip-address";
 import cn from "@/lib/utils/cn";
 import { formatPhoneNumbers } from "@/lib/utils/phone-formatter";
 import { useState } from "react";
-import { PiEnvelope, PiPhone } from "react-icons/pi";
+import { PiEnvelope, PiPhone, PiGlobe } from "react-icons/pi";
 import { toast } from "sonner";
 import { AccordionActionButton } from "../../../_components/accordion-action-button";
 import { InputArrayDataCell } from "../../../_components/input-array-data-cell";
@@ -435,14 +435,14 @@ export function IdentificationAndContact({
           )}
           {exPatriotDates.length > 0 && (
             <InputArrayDataCell
-              entryPrefix={<BlueLocationIcon className="min-w-4 h-4" />}
+              entryPrefix={<PiGlobe className="text-primary min-w-4 h-4" />}
               label="Ex-Patriot Date"
               editable={editable}
               onDone={(value) => console.log("ex-patriot-date", value)}
               values={exPatriotDates}
             />
           )}
-          {locations.length > 0 && (
+          {locations.length > 0 && (!exPatriotDates || exPatriotDates.length < 1) && (
             <InputArrayDataCell
               entryPrefix={<BlueLocationIcon className="min-w-4 h-4" />}
               label="Address History"
