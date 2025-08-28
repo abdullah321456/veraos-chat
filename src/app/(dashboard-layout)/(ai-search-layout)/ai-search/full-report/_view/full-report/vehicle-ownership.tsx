@@ -55,15 +55,39 @@ export function VehicleOwnership({ isEditable = false, isDrawer, details }: Vehi
     if (newVehicle) setNewVehicle(false);
   }
 
-  const vehicleData: Car[] = details?.automobile ? [{
-    name: `${capitalizeWords(details.automobile.MAKE || '')} ${capitalizeWords(details.automobile.MODEL || '')}`,
-    make: capitalizeWords(details.automobile.MAKE || ''),
-    model: capitalizeWords(details.automobile.MODEL || ''),
-    year: details.automobile.YEAR?.toString() || '',
-    color: 'N/A',
-    vin: details.automobile.VIN || '',
-    image: '/red-car.png',
-  }] : [];
+  // Handle automobile as an array
+  const vehicleData: Car[] = [];
+  
+  if (details?.automobile && Array.isArray(details.automobile)) {
+    // If automobile is an array, map through each vehicle
+    details.automobile.forEach((vehicle: any) => {
+      if (vehicle && (vehicle.MAKE || vehicle.MODEL || vehicle.VIN)) {
+        vehicleData.push({
+          name: `${capitalizeWords(vehicle.MAKE || '')} ${capitalizeWords(vehicle.MODEL || '')}`,
+          make: capitalizeWords(vehicle.MAKE || ''),
+          model: capitalizeWords(vehicle.MODEL || ''),
+          year: vehicle.YEAR?.toString() || '',
+          color: vehicle.COLOR || 'N/A',
+          vin: vehicle.VIN || '',
+          image: '/red-car.png',
+        });
+      }
+    });
+  } else if (details?.automobile && typeof details.automobile === 'object') {
+    // Fallback: if automobile is a single object, convert to array format
+    const vehicle = details.automobile;
+    if (vehicle.MAKE || vehicle.MODEL || vehicle.VIN) {
+      vehicleData.push({
+        name: `${capitalizeWords(vehicle.MAKE || '')} ${capitalizeWords(vehicle.MODEL || '')}`,
+        make: capitalizeWords(vehicle.MAKE || ''),
+        model: capitalizeWords(vehicle.MODEL || ''),
+        year: vehicle.YEAR?.toString() || '',
+        color: vehicle.COLOR || 'N/A',
+        vin: vehicle.VIN || '',
+        image: '/red-car.png',
+      });
+    }
+  }
 
   const hasAny = vehicleData.length > 0;
   if (!hasAny) return null;
@@ -79,8 +103,8 @@ export function VehicleOwnership({ isEditable = false, isDrawer, details }: Vehi
       })}
     >
       <div className={cn(isDrawer ? 'grid grid-cols-1 gap-2' : 'grid grid-cols-1 gap-3')}>
-        {vehicleData.map((car) => (
-          <RenderExistingVehicle key={car.vin} {...car} isEditable={editable} isDrawer={isDrawer} />
+        {vehicleData.map((car, index) => (
+          <RenderExistingVehicle key={car.vin || `vehicle-${index}`} {...car} isEditable={editable} isDrawer={isDrawer} />
         ))}
         {newVehicle && editable && <AddNewVehicleForm setNewVehicle={setNewVehicle} />}
       </div>
@@ -119,6 +143,9 @@ function RenderExistingVehicle({
       <div className="space-y-2 mt-3 flex justify-between">
         <div className="w-full">
           <p className="text-black font-medium text-sm leading-5">
+            VIN Number: <span className="text-black text-sm font-normal leading-4">{vin}</span>
+          </p>
+          <p className="text-black font-medium text-sm leading-5">
             Make: <span className="text-black text-sm font-normal leading-4">{make}</span>
           </p>
           <p className="text-black font-medium text-sm leading-5">
@@ -130,9 +157,7 @@ function RenderExistingVehicle({
           <p className="text-black font-medium text-sm leading-5">
             Color: <span className="text-black text-sm font-normal leading-4">{color}</span>
           </p>
-          <p className="text-black font-medium text-sm leading-5">
-            VIN Number: <span className="text-black text-sm font-normal leading-4">{vin}</span>
-          </p>
+
         </div>
         {!isDrawer && <Image src={image} alt="black-car" width={202} height={118} />}
       </div>
