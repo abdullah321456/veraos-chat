@@ -6,10 +6,8 @@ import {AIResponseDetail} from './type';
 import {useDrawer} from '@/components/drawer-views/use-drawer';
 import {DrawerHeader} from './cta';
 import {FullReport} from '../../full-report/_view/full-report';
-import { toEnhancedTitleCase } from '@/lib/utils/title-case';
+import {toEnhancedTitleCase} from '@/lib/utils/title-case';
 // REMOVE: import { useState } from 'react';
-
-
 
 
 const capitalizeState = (str: string): string => {
@@ -50,7 +48,7 @@ export function AiResponseDetails({detailsData}: { detailsData: (AIResponseDetai
             containerClassName: 'w-[470px]',
             view: (
                 <div className="h-screen">
-                    <DrawerHeader details={props} />
+                    <DrawerHeader details={props}/>
                     <div className="h-[calc(100vh-56px)] overflow-y-auto">
                         <FullReport isDrawer details={props}/>
                     </div>
@@ -97,12 +95,16 @@ function SingleDetails(props: AIResponseDetail & { _index?: string }) {
             props.cell_records,
             props.drunk_drivings,
             props.voip,
-            props.vets
+            props.vets,
+            props.email_master,
+            props.criminals,
+            props.criminals_small
+
         ];
 
         const address = capitalizeWords(props.ADDRESS || props.ADDRESS1 || props.ADDRESS2 || props.Address1 || props.address
-            || props.Address ||props.Address2 || "");
-        const city = capitalizeWords(props.CITY || props.City || props.N_CITY ||  "");
+            || props.Address || props.Address2 || "");
+        const city = capitalizeWords(props.CITY || props.City || props.N_CITY || "");
         const state = capitalizeState(props.STATE || props.ST || props.State || props.N_STATE || "");
         const zip = props.ZIP || props.ZIP4 || props.ZIP5 || props.Zip || props.zip || props.Zi || props.N_ZIP;
 
@@ -112,11 +114,11 @@ function SingleDetails(props: AIResponseDetail & { _index?: string }) {
         }
         records.forEach(record => {
 
-            if(!record) return
+            if (!record) return
             const address = capitalizeWords(record.ADDRESS || record.ADDRESS1 || record.ADDRESS2 || record.Address1
                 || record.address
-                || record.Address ||record.Address2 || "");
-            const city = capitalizeWords(record.CITY || record.City || props.N_CITY ||  "");
+                || record.Address || record.Address2 || "");
+            const city = capitalizeWords(record.CITY || record.City || props.N_CITY || "");
             const state = capitalizeState(record.STATE || record.ST || record.State || props.N_STATE || "");
             const zip = record.ZIP || record.ZIP4 || record.ZIP5 || record.Zip || record.zip || record.Zi;
 
@@ -141,10 +143,15 @@ function SingleDetails(props: AIResponseDetail & { _index?: string }) {
             props.cell_records,
             props.drunk_drivings,
             props.voip,
-            props.vets
+            props.vets,
+            props.email_master,
+            props.criminals,
+            props.criminals_small
+
+
         ];
 
-        return records.filter(record => (record?.email || record?.Email || record?.EMAIL || "").length>0).length;
+        return records.filter(record => (record?.email || record?.Email || record?.EMAIL || "").length > 0).length;
     };
 
     const getPhoneCount = () => {
@@ -159,12 +166,18 @@ function SingleDetails(props: AIResponseDetail & { _index?: string }) {
             props.cell_records,
             props.drunk_drivings,
             props.voip,
-            props.vets
+            props.vets,
+            props.email_master,
+            props.criminals,
+            props.criminals_small
+
+
         ];
 
-        records.push({PHONE:props.PHONE})
+        records.push({PHONE: props.PHONE})
         return records.filter(record => (record?.phone || record?.Phone || record?.Phone1 || record?.Phone2
-            || record?.HOMEPHONE || record?.WORKPHONE || record?.CELL || record?.PHONE || "").length>0).length;
+            || record?.PHONE_1 || record?.PHONE_2 || record?.PHONE_3
+            || record?.HOMEPHONE || record?.WORKPHONE || record?.CELL || record?.PHONE || "").length > 0).length;
     };
 
     function handleFullReport(props: AIResponseDetail) {
@@ -173,7 +186,7 @@ function SingleDetails(props: AIResponseDetail & { _index?: string }) {
             containerClassName: 'w-[470px]',
             view: (
                 <div className="h-screen">
-                    <DrawerHeader details={props} />
+                    <DrawerHeader details={props}/>
                     <div className="h-[calc(100vh-56px)] overflow-y-auto">
                         <FullReport isDrawer details={props}/>
                     </div>
@@ -196,7 +209,8 @@ function SingleDetails(props: AIResponseDetail & { _index?: string }) {
             </div>
             <div className="text-xs space-y-2.5">
                 <div className="flex items-center gap-2">
-                    <CalendarIcon className="w-4 h-4"/> Age: {props.DOB ? `${calculateAge(props.DOB)} Years Old`:' N/A' }
+                    <CalendarIcon
+                        className="w-4 h-4"/> Age: {props.DOB ? `${calculateAge(props.DOB)} Years Old` : ' N/A'}
                 </div>
                 <div className="flex items-center gap-2">
                     <LocationIcon className="w-4 h-4"/>

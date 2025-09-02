@@ -75,6 +75,8 @@ export type AIResponseDetail = {
     N_ZIP:any
     criminals_small:any
     criminals:any
+    email_master:any
+
     VETERAN:any
 };
 
