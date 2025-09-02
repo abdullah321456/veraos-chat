@@ -9,6 +9,7 @@ import {AccordionActionButton} from "../../../_components/accordion-action-butto
 import {InputArrayDataCell} from "../../../_components/input-array-data-cell";
 import {Accordion} from "../../_components/accordion";
 import {AIResponseDetail} from "../../../_view/conversation/type";
+import {normalizeMergeResponse} from "../../../../../../../types";
 
 // Utility function to capitalize state names only
 const capitalizeState = (str: string): string => {
@@ -86,21 +87,20 @@ export function IdentificationAndContact({
         const locations = new Set<string>();
         const records = [
             details,
-            details.criminals_small,
-            details.criminals,
-            details.education,
-            details.rv,
-            details.motorcycles,
-            details.national_drivers_license,
-            details.bankruptcy,
-            details.automobile,
-            details.foreign_movers,
-            details.cell_records,
-            details.drunk_drivings,
-            details.voip,
-            details.vets,
-            details.email_master
-
+            ...normalizeMergeResponse(details.education),
+            ...normalizeMergeResponse(details.rv),
+            ...normalizeMergeResponse(details.motorcycles),
+            ...normalizeMergeResponse(details.national_drivers_license),
+            ...normalizeMergeResponse(details.bankruptcy),
+            ...normalizeMergeResponse(details.automobile),
+            ...normalizeMergeResponse(details.foreign_movers),
+            ...normalizeMergeResponse(details.cell_records),
+            ...normalizeMergeResponse(details.drunk_drivings),
+            ...normalizeMergeResponse(details.voip),
+            ...normalizeMergeResponse(details.vets),
+            ...normalizeMergeResponse(details.email_master),
+            ...normalizeMergeResponse(details.criminals),
+            ...normalizeMergeResponse(details.criminals_small)
         ];
 
 
@@ -150,18 +150,20 @@ export function IdentificationAndContact({
         if (!details) return [];
         const emails = new Set<string>();
         const records = [
-            details.education,
-            details.rv,
-            details.motorcycles,
-            details.national_drivers_license,
-            details.bankruptcy,
-            details.automobile,
-            details.foreign_movers,
-            details.cell_records,
-            details.drunk_drivings,
-            details.voip,
-            details.vets,
-            details.email_master
+            ...normalizeMergeResponse(details.education),
+            ...normalizeMergeResponse(details.rv),
+            ...normalizeMergeResponse(details.motorcycles),
+            ...normalizeMergeResponse(details.national_drivers_license),
+            ...normalizeMergeResponse(details.bankruptcy),
+            ...normalizeMergeResponse(details.automobile),
+            ...normalizeMergeResponse(details.foreign_movers),
+            ...normalizeMergeResponse(details.cell_records),
+            ...normalizeMergeResponse(details.drunk_drivings),
+            ...normalizeMergeResponse(details.voip),
+            ...normalizeMergeResponse(details.vets),
+            ...normalizeMergeResponse(details.email_master),
+            ...normalizeMergeResponse(details.criminals),
+            ...normalizeMergeResponse(details.criminals_small)
         ];
 
         records.forEach(record => {
@@ -180,17 +182,20 @@ export function IdentificationAndContact({
         if (!details) return [];
         const phones = new Set<string>();
         const records = [
-            details.education,
-            details.rv,
-            details.motorcycles,
-            details.national_drivers_license,
-            details.bankruptcy,
-            details.automobile,
-            details.foreign_movers,
-            details.cell_records,
-            details.drunk_drivings,
-            details.voip,
-            details.vets
+            ...normalizeMergeResponse(details.education),
+            ...normalizeMergeResponse(details.rv),
+            ...normalizeMergeResponse(details.motorcycles),
+            ...normalizeMergeResponse(details.national_drivers_license),
+            ...normalizeMergeResponse(details.bankruptcy),
+            ...normalizeMergeResponse(details.automobile),
+            ...normalizeMergeResponse(details.foreign_movers),
+            ...normalizeMergeResponse(details.cell_records),
+            ...normalizeMergeResponse(details.drunk_drivings),
+            ...normalizeMergeResponse(details.voip),
+            ...normalizeMergeResponse(details.vets),
+            ...normalizeMergeResponse(details.email_master),
+            ...normalizeMergeResponse(details.criminals),
+            ...normalizeMergeResponse(details.criminals_small)
         ];
         records.push({PHONE: details.PHONE})
 
@@ -213,17 +218,20 @@ export function IdentificationAndContact({
         if (!details) return [];
         const addressArray = new Set<string>();
         const records = [
-            details.education,
-            details.rv,
-            details.motorcycles,
-            details.national_drivers_license,
-            details.bankruptcy,
-            details.automobile,
-            details.foreign_movers,
-            details.cell_records,
-            details.drunk_drivings,
-            details.voip,
-            details.vets
+            ...normalizeMergeResponse(details.education),
+            ...normalizeMergeResponse(details.rv),
+            ...normalizeMergeResponse(details.motorcycles),
+            ...normalizeMergeResponse(details.national_drivers_license),
+            ...normalizeMergeResponse(details.bankruptcy),
+            ...normalizeMergeResponse(details.automobile),
+            ...normalizeMergeResponse(details.foreign_movers),
+            ...normalizeMergeResponse(details.cell_records),
+            ...normalizeMergeResponse(details.drunk_drivings),
+            ...normalizeMergeResponse(details.voip),
+            ...normalizeMergeResponse(details.vets),
+            ...normalizeMergeResponse(details.email_master),
+            ...normalizeMergeResponse(details.criminals),
+            ...normalizeMergeResponse(details.criminals_small)
         ];
         records.push({ADDRESS: details.ADDRESS})
 
@@ -244,19 +252,20 @@ export function IdentificationAndContact({
         // Try to find the first record with address, city, state, and zip
         const records = [
             details,
-            details.criminals_small,
-            details.criminals,
-            details.education,
-            details.rv,
-            details.motorcycles,
-            details.national_drivers_license,
-            details.bankruptcy,
-            details.automobile,
-            details.foreign_movers,
-            details.cell_records,
-            details.drunk_drivings,
-            details.voip,
-            details.vets
+            ...normalizeMergeResponse(details.education),
+            ...normalizeMergeResponse(details.rv),
+            ...normalizeMergeResponse(details.motorcycles),
+            ...normalizeMergeResponse(details.national_drivers_license),
+            ...normalizeMergeResponse(details.bankruptcy),
+            ...normalizeMergeResponse(details.automobile),
+            ...normalizeMergeResponse(details.foreign_movers),
+            ...normalizeMergeResponse(details.cell_records),
+            ...normalizeMergeResponse(details.drunk_drivings),
+            ...normalizeMergeResponse(details.voip),
+            ...normalizeMergeResponse(details.vets),
+            ...normalizeMergeResponse(details.email_master),
+            ...normalizeMergeResponse(details.criminals),
+            ...normalizeMergeResponse(details.criminals_small)
         ];
 
         for (const record of records) {
@@ -304,17 +313,20 @@ export function IdentificationAndContact({
 
         // Also check other records that might have IP addresses
         const records = [
-            details.education,
-            details.rv,
-            details.motorcycles,
-            details.national_drivers_license,
-            details.bankruptcy,
-            details.automobile,
-            details.foreign_movers,
-            details.cell_records,
-            details.drunk_drivings,
-            details.voip,
-            details.vets
+            ...normalizeMergeResponse(details.education),
+            ...normalizeMergeResponse(details.rv),
+            ...normalizeMergeResponse(details.motorcycles),
+            ...normalizeMergeResponse(details.national_drivers_license),
+            ...normalizeMergeResponse(details.bankruptcy),
+            ...normalizeMergeResponse(details.automobile),
+            ...normalizeMergeResponse(details.foreign_movers),
+            ...normalizeMergeResponse(details.cell_records),
+            ...normalizeMergeResponse(details.drunk_drivings),
+            ...normalizeMergeResponse(details.voip),
+            ...normalizeMergeResponse(details.vets),
+            ...normalizeMergeResponse(details.email_master),
+            ...normalizeMergeResponse(details.criminals),
+            ...normalizeMergeResponse(details.criminals_small)
         ];
 
         records.forEach(record => {

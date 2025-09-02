@@ -7,6 +7,7 @@ import {useDrawer} from '@/components/drawer-views/use-drawer';
 import {DrawerHeader} from './cta';
 import {FullReport} from '../../full-report/_view/full-report';
 import {toEnhancedTitleCase} from '@/lib/utils/title-case';
+import {normalizeMergeResponse} from "../../../../../../types";
 // REMOVE: import { useState } from 'react';
 
 
@@ -85,20 +86,20 @@ function SingleDetails(props: AIResponseDetail & { _index?: string }) {
     const getLocations = () => {
         const locations = new Set<string>();
         const records = [
-            props.education,
-            props.rv,
-            props.motorcycles,
-            props.national_drivers_license,
-            props.bankruptcy,
-            props.automobile,
-            props.foreign_movers,
-            props.cell_records,
-            props.drunk_drivings,
-            props.voip,
-            props.vets,
-            props.email_master,
-            props.criminals,
-            props.criminals_small
+                ...normalizeMergeResponse(props.education),
+                ...normalizeMergeResponse(props.rv),
+                ...normalizeMergeResponse(props.motorcycles),
+                ...normalizeMergeResponse(props.national_drivers_license),
+                ...normalizeMergeResponse(props.bankruptcy),
+                ...normalizeMergeResponse(props.automobile),
+                ...normalizeMergeResponse(props.foreign_movers),
+                ...normalizeMergeResponse(props.cell_records),
+                ...normalizeMergeResponse(props.drunk_drivings),
+                ...normalizeMergeResponse(props.voip),
+                ...normalizeMergeResponse(props.vets),
+                ...normalizeMergeResponse(props.email_master),
+                ...normalizeMergeResponse(props.criminals),
+            ...normalizeMergeResponse(props.criminals_small)
 
         ];
 
@@ -133,20 +134,20 @@ function SingleDetails(props: AIResponseDetail & { _index?: string }) {
 
     const getEmailCount = () => {
         const records = [
-            props.education,
-            props.rv,
-            props.motorcycles,
-            props.national_drivers_license,
-            props.bankruptcy,
-            props.automobile,
-            props.foreign_movers,
-            props.cell_records,
-            props.drunk_drivings,
-            props.voip,
-            props.vets,
-            props.email_master,
-            props.criminals,
-            props.criminals_small
+            ...normalizeMergeResponse(props.education),
+            ...normalizeMergeResponse(props.rv),
+            ...normalizeMergeResponse(props.motorcycles),
+            ...normalizeMergeResponse(props.national_drivers_license),
+            ...normalizeMergeResponse(props.bankruptcy),
+            ...normalizeMergeResponse(props.automobile),
+            ...normalizeMergeResponse(props.foreign_movers),
+            ...normalizeMergeResponse(props.cell_records),
+            ...normalizeMergeResponse(props.drunk_drivings),
+            ...normalizeMergeResponse(props.voip),
+            ...normalizeMergeResponse(props.vets),
+            ...normalizeMergeResponse(props.email_master),
+            ...normalizeMergeResponse(props.criminals),
+            ...normalizeMergeResponse(props.criminals_small)
 
 
         ];
@@ -156,20 +157,20 @@ function SingleDetails(props: AIResponseDetail & { _index?: string }) {
 
     const getPhoneCount = () => {
         const records = [
-            props.education,
-            props.rv,
-            props.motorcycles,
-            props.national_drivers_license,
-            props.bankruptcy,
-            props.automobile,
-            props.foreign_movers,
-            props.cell_records,
-            props.drunk_drivings,
-            props.voip,
-            props.vets,
-            props.email_master,
-            props.criminals,
-            props.criminals_small
+            ...normalizeMergeResponse(props.education),
+            ...normalizeMergeResponse(props.rv),
+            ...normalizeMergeResponse(props.motorcycles),
+            ...normalizeMergeResponse(props.national_drivers_license),
+            ...normalizeMergeResponse(props.bankruptcy),
+            ...normalizeMergeResponse(props.automobile),
+            ...normalizeMergeResponse(props.foreign_movers),
+            ...normalizeMergeResponse(props.cell_records),
+            ...normalizeMergeResponse(props.drunk_drivings),
+            ...normalizeMergeResponse(props.voip),
+            ...normalizeMergeResponse(props.vets),
+            ...normalizeMergeResponse(props.email_master),
+            ...normalizeMergeResponse(props.criminals),
+            ...normalizeMergeResponse(props.criminals_small)
 
 
         ];
