@@ -18,6 +18,7 @@ import { QuestionIcon } from './atom/icons/side-bar/question';
 import { SearchStarIcon } from './atom/icons/side-bar/search-star';
 import { SettingIcon } from './atom/icons/side-bar/setting';
 import { authUtils } from '@/lib/utils/auth';
+import { useEffect, useCallback } from 'react';
 
 type Props = {
   isExpanded: IsExpandedType;
@@ -30,6 +31,25 @@ export function DashboardSidebar({ isExpanded }: Props) {
 
   const pathname = usePathname();
   const router = useRouter();
+
+  // Route preloading for performance optimization
+  const preloadRoute = useCallback((href: string) => {
+    if (typeof window !== 'undefined') {
+      // Preload the route components
+      if (href === ROUTES.AI_SEARCH.INDEX) {
+        import('@/app/(dashboard-layout)/(ai-search-layout)/ai-search/page');
+        import('@/app/(dashboard-layout)/(ai-search-layout)/ai-search/_view/conversation');
+      } else if (href === ROUTES.REPORTS) {
+        import('@/app/(dashboard-layout)/reports/_view/reports-table');
+      }
+    }
+  }, []);
+
+  // Preload critical routes on component mount
+  useEffect(() => {
+    preloadRoute(ROUTES.AI_SEARCH.INDEX);
+    preloadRoute(ROUTES.REPORTS);
+  }, [preloadRoute]);
 
   const menuItems = [
     {
@@ -136,6 +156,15 @@ export function DashboardSidebar({ isExpanded }: Props) {
             <Link
               key={index}
               href={item.href}
+              onMouseEnter={() => preloadRoute(item.href)}
+              onClick={(e) => {
+                // Ensure clean navigation by preventing any query parameter conflicts
+                if (item.href === ROUTES.AI_SEARCH.INDEX) {
+                  // Clear any conflicting query parameters when navigating to AI Search
+                  const url = new URL(item.href, window.location.origin);
+                  e.currentTarget.href = url.toString();
+                }
+              }}
               className={cn(
                 'h-12 flex items-center duration-300 text-white/50 relative',
                 isActive && 'bg-[#5C39D9] text-white',

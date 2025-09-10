@@ -7,10 +7,12 @@ import { InboxNavigationData } from './types';
 import { Checkbox } from '@/components/atom/form-elements/checkbox';
 import { useEffect } from 'react';
 import { ROUTES } from '@/config/routes';
+import { useRouter } from 'next/navigation';
 
 export function InboxSelection({ data }: { data: InboxNavigationData[] }) {
   const { isSelectable } = useConversationSidebarSelectionState();
   const { setQueryParams, queryParams } = useQueryParams();
+  const router = useRouter();
 
   // useEffect(() => {
   //
@@ -23,7 +25,8 @@ export function InboxSelection({ data }: { data: InboxNavigationData[] }) {
 
   const handleConversationClick = (id: string) => {
     if (!isSelectable) {
-      setQueryParams({ chatId: id, route: ROUTES.AI_SEARCH.INDEX });
+      // Navigate to AI Search with the selected chatId using client-side navigation
+      router.push(`${ROUTES.AI_SEARCH.INDEX}?chatId=${id}`);
     }
   };
 

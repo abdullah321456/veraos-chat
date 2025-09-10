@@ -1,12 +1,13 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { useEffect } from 'react';
+import { useEffect, Suspense } from 'react';
 import { usePathname } from 'next/navigation';
+import { LoadingSpinner } from '@/components/atom/loading-spinner';
 
 const Conversation = dynamic(() => import('./_view/conversation').then((mod) => mod.Conversation), {
   ssr: false,
-  loading: () => 'Loading...',
+  loading: () => <LoadingSpinner size="lg" className="h-64" />,
 });
 
 export default function Page() {
@@ -23,9 +24,39 @@ export default function Page() {
     }
   }, [pathname]);
 
+  // Ensure clean navigation by clearing any conflicting query parameters
+  useEffect(() => {
+    // Only run on client side
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href);
+      const currentPath = url.pathname;
+      
+      // If we're on the AI Search page, ensure we don't have conflicting query params
+      if (currentPath === '/ai-search') {
+        // Clear any report_id or other conflicting parameters
+        const paramsToRemove = ['report_id', 'route'];
+        let hasChanges = false;
+        
+        paramsToRemove.forEach(param => {
+          if (url.searchParams.has(param)) {
+            url.searchParams.delete(param);
+            hasChanges = true;
+          }
+        });
+        
+        // Update URL if we removed parameters
+        if (hasChanges) {
+          window.history.replaceState({}, '', url.toString());
+        }
+      }
+    }
+  }, []);
+
   return (
     <div className="ml-[30px]">
-      <Conversation />
+      <Suspense fallback={<LoadingSpinner size="lg" className="h-64" />}>
+        <Conversation />
+      </Suspense>
     </div>
   );
 }

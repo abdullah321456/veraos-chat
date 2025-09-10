@@ -1,238 +1,167 @@
 'use client';
 
 import { Table } from '@/components/atom/table';
-import { columns, dossierColumns } from './columns';
-import { useState } from 'react';
+import { createColumns } from './columns';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/atom/button';
-import { FadeAnimation } from '@/components/atom/fade-animatation';
-import { PiArrowsClockwise, PiTrash } from 'react-icons/pi';
-import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
+import { apiService } from '@/services/apiService';
+import { LoadingSpinner } from '@/components/atom/loading-spinner';
+import { ReportDetailsModal } from './report-details-modal';
 import { useModal } from '@/components/modal-views/use-modal';
 import { ConfirmModal } from '@/components/atom/confirm-modal';
+import { PiTrash } from 'react-icons/pi';
+import { toast } from 'sonner';
 
 export type Report = {
-  title: string;
-  summary: string;
-  archiveDate: string;
+  _id: string;
+  user: {
+    _id: string;
+    full_name: string;
+    email: string;
+  };
+  message: string; // Stringified AI response details
+  title: string; // The title/message from the AI response
+  status: string;
+  priority: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
 };
 
-export type Dossier = {
-  name: string;
-  caseFileNumber: string;
-  summary: string;
-  archiveDate: string;
-};
 
-const data: Report[] = [
-  {
-    title: 'Financial Crimes Investigation',
-    summary: 'Uncovered fraudulent tax filings and offshore accounts linked to Smith Enterprises.',
-    archiveDate: 'Date Archived: January 10, 2025',
-  },
-  {
-    title: 'Surveillance Report',
-    summary: 'Evidence of illegal arms distribution and suspicious vehicle activities.',
-    archiveDate: 'Date Archived: January 10, 2025',
-  },
-  {
-    title: 'Internal Audit Report',
-    summary: 'Discovered non-compliance in hiring and financial reporting processes.',
-    archiveDate: 'Date Archived: January 10, 2025',
-  },
-  {
-    title: 'Financial Crimes Investigation',
-    summary: 'Uncovered fraudulent tax filings and offshore accounts linked to Smith Enterprises.',
-    archiveDate: 'Date Archived: January 10, 2025',
-  },
-  {
-    title: 'Surveillance Report',
-    summary: 'Evidence of illegal arms distribution and suspicious vehicle activities.',
-    archiveDate: 'Date Archived: January 10, 2025',
-  },
-  {
-    title: 'Internal Audit Report',
-    summary: 'Discovered non-compliance in hiring and financial reporting processes.',
-    archiveDate: 'Date Archived: January 10, 2025',
-  },
-  {
-    title: 'Financial Crimes Investigation',
-    summary: 'Uncovered fraudulent tax filings and offshore accounts linked to Smith Enterprises.',
-    archiveDate: 'Date Archived: January 10, 2025',
-  },
-  {
-    title: 'Surveillance Report',
-    summary: 'Evidence of illegal arms distribution and suspicious vehicle activities.',
-    archiveDate: 'Date Archived: January 10, 2025',
-  },
-];
 
-const data2: Dossier[] = [
-  {
-    name: 'John Doe',
-    caseFileNumber: '#DSR20231105',
-    summary: 'Multiple fraud cases linked to international wire transfers.',
-    archiveDate: 'Date Archived: January 10, 2025',
-  },
-  {
-    name: 'Jane Smith',
-    caseFileNumber: '#DSR20231212',
-    summary: 'Profile of operations across multiple states with known accomplices.',
-    archiveDate: 'Date Archived: January 10, 2025',
-  },
-  {
-    name: 'Robert Jackson',
-    caseFileNumber: '#DSR20231009',
-    summary: 'Evidence linking Jackson to racketeering and money laundering.',
-    archiveDate: 'Date Archived: January 10, 2025',
-  },
-  {
-    name: 'Emily White',
-    caseFileNumber: '#DSR20230618',
-    summary: 'Charged with developing ransomware software affecting global institutions.',
-    archiveDate: 'Date Archived: January 10, 2025',
-  },
-  {
-    name: 'Michael Brown',
-    caseFileNumber: '#DSR20230725',
-    summary: 'History of theft, fraud, and gang affiliations.',
-    archiveDate: 'Date Archived: January 10, 2025',
-  },
-  {
-    name: 'Angela Lee',
-    caseFileNumber: '#DSR20230314',
-    summary: 'Investigated for leaking classified information to foreign entities.',
-    archiveDate: 'Date Archived: January 10, 2025',
-  },
-];
 
-export function ReportsTable() {
+export const ReportsTable = React.memo(function ReportsTable() {
   const router = useRouter();
-  const [reportsSelectedRowIds, setReportsSelectedRowIds] = useState<string[]>([]);
-  const [dossiersSelectedRowIds, setDossiersSelectedRowIds] = useState<string[]>([]);
-  const [renderReports, setRenderReports] = useState(true);
-  const [renderDossiers, setRenderDossiers] = useState(true);
-
-  return (
-    <div className="pr-6 ">
-      <div className="grid grid-cols-2 gap-5">
-        <div>
-          <div className="flex justify-between items-center mb-2">
-            <h2 className="text-lg font-bold -mb-1 p-4 rounded-t-lg">Reports</h2>
-            {reportsSelectedRowIds.length > 0 && (
-              <TableToolbar
-                onDelete={() => {
-                  setReportsSelectedRowIds([]);
-                  setRenderReports(!renderReports);
-                  router.refresh();
-                }}
-                onRestore={() => {
-                  setReportsSelectedRowIds([]);
-                  setRenderReports(!renderReports);
-                }}
-              />
-            )}
-          </div>
-          <Table<Report>
-            key={String(renderReports)}
-            columns={columns}
-            data={data || []}
-            size={10}
-            rowClassName="py-1"
-            className="border-0 bg-white p-0 min-h-[calc(100vh-100px)] shadow-lg border-gray-50"
-            getTable={(rows) => {
-              const ids = rows.map((row) => row.original.title);
-              setReportsSelectedRowIds(ids);
-            }}
-          />
-        </div>
-        <div key={String(renderDossiers)}>
-          <div className="flex justify-between items-center mb-2">
-            <h2 className="text-lg font-bold -mb-1 p-4 rounded-t-lg">Dossiers</h2>
-            {dossiersSelectedRowIds.length > 0 && (
-              <TableToolbar
-                onDelete={() => {
-                  setDossiersSelectedRowIds([]);
-                  setRenderDossiers(!renderDossiers);
-                }}
-                onRestore={() => {
-                  setDossiersSelectedRowIds([]);
-                  setRenderDossiers(!renderDossiers);
-                }}
-              />
-            )}
-          </div>
-          <Table<Dossier>
-            key={String(renderDossiers)}
-            columns={dossierColumns}
-            data={data2 || []}
-            size={10}
-            rowClassName="py-1"
-            className="border-0 bg-white p-0 min-h-[calc(100vh-100px)] shadow-lg border-gray-50"
-            getTable={(rows) => {
-              const ids = rows.map((row) => row.original.name);
-              setDossiersSelectedRowIds(ids);
-            }}
-          />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function TableToolbar({ onRestore, onDelete }: { onRestore: () => void; onDelete: () => void }) {
   const { openModal, closeModal } = useModal();
+  const [renderReports, setRenderReports] = useState(true);
+  const [reports, setReports] = useState<Report[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [selectedReport, setSelectedReport] = useState<Report | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  function handleRestore() {
+  // Handle opening modal with report details
+  const handleOpenModal = (report: Report) => {
+    console.log('Opening modal with report:', report);
+    setSelectedReport(report);
+    setIsModalOpen(true);
+  };
+
+  // Handle closing modal
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedReport(null);
+  };
+
+  // Handle clear all reports
+  const handleClearAll = () => {
     openModal({
       view: (
         <ConfirmModal
-          variant="info"
           icon={<PiTrash className="w-8 h-8" />}
-          title="Restore Report"
-          description="Are you sure you want to restore this report?"
-          onConfirm={() => {
-            toast.success('Successfully Restored');
-            onRestore();
-            closeModal();
+          title="Clear All Reports"
+          description="Are you sure you want to delete all reports? This action cannot be undone."
+          onConfirm={async () => {
+            try {
+              await apiService.deleteData('/users/reports/user');
+              toast.success('All reports deleted successfully');
+              setReports([]);
+              setRenderReports(!renderReports);
+              closeModal();
+            } catch (error) {
+              console.error('Error deleting all reports:', error);
+              toast.error('Failed to delete all reports');
+              closeModal();
+            }
           }}
           cancelButtonText="Cancel"
         />
       ),
       containerClassName: ConfirmModal.containerClassName,
     });
+  };
+
+  // Fetch reports data
+  useEffect(() => {
+    const fetchReports = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const response = await apiService.getData('/users/reports/user');
+        if (response.success && response.data) {
+          setReports(response.data);
+        } else {
+          setError('Failed to fetch reports');
+        }
+      } catch (err) {
+        console.error('Error fetching reports:', err);
+        setError('Failed to fetch reports');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchReports();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="pr-6 flex items-center justify-center min-h-[calc(100vh-100px)]">
+        <LoadingSpinner size="lg" className="h-32" />
+      </div>
+    );
   }
-  function handleDelete() {
-    openModal({
-      view: (
-        <ConfirmModal
-          icon={<PiTrash className="w-8 h-8" />}
-          title="Delete Report"
-          description="Are you sure you want to delete this report?"
-          onConfirm={() => {
-            toast.success('Successfully Deleted');
-            onDelete();
-            closeModal();
-          }}
-          cancelButtonText="Cancel"
-        />
-      ),
-      containerClassName: ConfirmModal.containerClassName,
-    });
+
+  if (error) {
+    return (
+      <div className="pr-6 flex items-center justify-center min-h-[calc(100vh-100px)]">
+        <div className="text-center">
+          <p className="text-red-500 mb-4">{error}</p>
+          <Button onClick={() => window.location.reload()} variant="outline">
+            Retry
+          </Button>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <FadeAnimation>
-      <div className="inline-flex items-center gap-2">
-        <Button onClick={handleRestore} size="sm" variant="outline" className="rounded-md">
-          <PiArrowsClockwise className="w-4 h-4 me-1" />
-          Restore
-        </Button>
-        <Button onClick={handleDelete} size="sm" variant="outline" color="danger" className="rounded-md">
-          <PiTrash className="w-4 h-4 me-1" />
-          Delete
-        </Button>
+    <>
+      <div className="pr-6">
+        <div className="flex justify-between items-center mb-2">
+          <h2 className="text-lg font-bold -mb-1 p-4 rounded-t-lg">Reports</h2>
+          {reports.length > 0 && (
+            <Button 
+              onClick={handleClearAll} 
+              size="sm" 
+              variant="outline" 
+              color="danger" 
+              className="rounded-md"
+            >
+              <PiTrash className="w-4 h-4 me-1" />
+              Clear All
+            </Button>
+          )}
+        </div>
+        <Table<Report>
+          key={String(renderReports)}
+          columns={createColumns(handleOpenModal)}
+          data={reports || []}
+          size={10}
+          rowClassName="py-1"
+          className="border-0 bg-white p-0 min-h-[calc(100vh-100px)] shadow-lg border-gray-50"
+        />
       </div>
-    </FadeAnimation>
+      
+      {/* Report Details Modal */}
+      <ReportDetailsModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        report={selectedReport}
+      />
+    </>
   );
-}
+});
+

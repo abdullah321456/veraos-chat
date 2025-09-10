@@ -7,14 +7,46 @@ import useQueryParams from '@/lib/hooks/use-query-params';
 import { parsePathnameWithQuery } from '@/lib/utils/parse-pathname-with-query';
 import { trackDrawerExpand } from '@/lib/gtag';
 import Link from 'next/link';
-import { SVGProps, useEffect } from 'react';
+import { SVGProps, useEffect, ReactNode } from 'react';
 import { FullReport } from '../../full-report/_view/full-report';
 
-export function ConversationCta() {
+export function ConversationCta({ message }: { message?: string | ReactNode }) {
   const { openDrawer } = useDrawer();
   const { queryParams } = useQueryParams();
 
   function handleFullReport() {
+    // Store the message in localStorage for the full report to access
+    if (message) {
+      try {
+        // Convert message to string if it's not already
+        const messageString = typeof message === 'string' ? message : String(message);
+        
+        const currentData = localStorage.getItem('fullReportDetails');
+        let reportData = currentData ? JSON.parse(currentData) : {};
+        
+        // If it's the new format, update the message
+        if (reportData.details) {
+          reportData.message = messageString;
+          // Also store message in details object
+          reportData.details.message = messageString;
+        } else {
+          // If it's the old format, create new format
+          reportData = {
+            details: {
+              ...reportData,
+              message: messageString
+            },
+            message: messageString
+          };
+        }
+        
+        console.log('Storing report data with message:', reportData);
+        localStorage.setItem('fullReportDetails', JSON.stringify(reportData));
+      } catch (e) {
+        console.error('Error storing message:', e);
+      }
+    }
+    
     openDrawer({
       closeOnPathnameChange: true,
       containerClassName: 'w-[470px]',

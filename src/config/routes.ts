@@ -8,6 +8,7 @@ export const ROUTES = {
   },
   HOME: '/',
   REPORTS: '/reports',
+  REPORTS_AI_RESPONSE_FULL: '/reports/ai-response-full-report',
   FAQ: {
     INDEX: '/faq',
     HELP_CENTER: '/help-center',

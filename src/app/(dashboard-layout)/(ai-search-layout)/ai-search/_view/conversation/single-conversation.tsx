@@ -22,6 +22,8 @@ export function SingleConversation({ sender, message, cta, aiResponseDetails, im
   const isLeft = sender === 'ai';
   const questionId = `question-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
   const [localImages, setLocalImages] = React.useState<OnImageSearchHandlerParam>(images || []);
+  
+  console.log('SingleConversation - message:', message, 'cta:', cta, 'sender:', sender);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -44,7 +46,7 @@ export function SingleConversation({ sender, message, cta, aiResponseDetails, im
           <RenderMessageOrImages message={message} isLeft={isLeft} images={localImages} />
         </div>
       </div>
-      {cta && <ConversationCta />}
+      {cta && <ConversationCta message={message} />}
       <AiResponseDetails detailsData={aiResponseDetails ?? []} />
     </div>
   );

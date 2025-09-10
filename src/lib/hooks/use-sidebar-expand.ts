@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useCallback, useMemo } from 'react';
 import { create } from 'zustand';
 import { setCookie } from '../utils/cookies';
 
@@ -24,7 +24,7 @@ export function useSidebarExpand(defaultLayout?: IsExpandedType) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function toggle(toggleTo: boolean) {
+  const toggle = useCallback((toggleTo: boolean) => {
     const value = toggleTo ? 'true' : 'false';
     setCookie({
       name: 'sidebarExpanded',
@@ -32,9 +32,14 @@ export function useSidebarExpand(defaultLayout?: IsExpandedType) {
       path: '/',
     });
     setIsExpanded(value);
-  }
+  }, [setIsExpanded]);
 
-  return { isExpanded, toggle };
+  const memoizedReturn = useMemo(() => ({
+    isExpanded,
+    toggle
+  }), [isExpanded, toggle]);
+
+  return memoizedReturn;
 }
 
 export function getIsSidebarExpandedOnClient(serverState?: IsExpandedType, clientState?: IsExpandedType) {

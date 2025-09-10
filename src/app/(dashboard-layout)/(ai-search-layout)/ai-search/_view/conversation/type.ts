@@ -17,6 +17,7 @@ export type ConversationData = {
 
 export type AIResponseDetail = {
     id: number;
+    message:any;
     PHONE:string,
     FULL_NAME: string;
     isExactMatch: boolean;
@@ -76,7 +77,7 @@ export type AIResponseDetail = {
     criminals_small:any
     criminals:any
     email_master:any
-
+    _index:any;
     VETERAN:any
 };
 

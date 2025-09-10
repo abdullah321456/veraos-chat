@@ -8,6 +8,7 @@ import {DrawerHeader} from './cta';
 import {FullReport} from '../../full-report/_view/full-report';
 import {toEnhancedTitleCase} from '@/lib/utils/title-case';
 import {normalizeMergeResponse} from "../../../../../../types";
+import { apiService } from '@/services/apiService';
 // REMOVE: import { useState } from 'react';
 
 
@@ -38,7 +39,7 @@ const capitalizeWords = (str: string): string => {
         .join(' ');
 };
 
-export function AiResponseDetails({detailsData}: { detailsData: (AIResponseDetail & { _index?: string })[] }) {
+export function AiResponseDetails({detailsData}: {detailsData: (AIResponseDetail & { _index?: string })[] }) {
     const {openDrawer} = useDrawer();
     // REMOVE: const [showFullReport, setShowFullReport] = useState(false);
     // REMOVE: const [fullReportDetails, setFullReportDetails] = useState<AIResponseDetail | null>(null);
@@ -67,7 +68,7 @@ export function AiResponseDetails({detailsData}: { detailsData: (AIResponseDetai
     );
 }
 
-function SingleDetails(props: AIResponseDetail & { _index?: string }) {
+function SingleDetails(props: AIResponseDetail) {
     const {openDrawer} = useDrawer();
 
     const calculateAge = (birthdate: string) => {
@@ -181,7 +182,19 @@ function SingleDetails(props: AIResponseDetail & { _index?: string }) {
             || record?.HOMEPHONE || record?.WORKPHONE || record?.CELL || record?.PHONE || "").length > 0).length;
     };
 
-    function handleFullReport(props: AIResponseDetail) {
+    async function handleFullReport(props: AIResponseDetail) {
+        try {
+
+
+            
+            apiService.postData('/users/reports', {
+                message:JSON.stringify(props),title:props.message
+            });
+            
+        } catch (error) {
+            console.error('Error creating report from response-details:', error);
+        }
+        
         openDrawer({
             closeOnPathnameChange: true,
             containerClassName: 'w-[470px]',

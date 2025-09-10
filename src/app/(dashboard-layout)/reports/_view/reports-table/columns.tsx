@@ -1,111 +1,103 @@
 'use client';
 
-import { Checkbox } from '@/components/atom/form-elements/checkbox';
 
 import { Dropdown } from '@/components/atom/dropdown/dropdown';
 import { ColumnDef } from '@tanstack/react-table';
 import { MoreHorizontal } from 'lucide-react';
 import { PiEyeFill } from 'react-icons/pi';
-import { Dossier, Report } from '.';
+import { Report } from '.';
+import { apiService } from '@/services/apiService';
 
-export const columns: ColumnDef<Report>[] = [
-  {
-    id: 'select',
-    size: 30,
-    header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected()}
-        onChange={(value) => {
-          table.toggleAllPageRowsSelected(value.target.checked);
-        }}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => <Checkbox checked={row.getIsSelected()} onChange={(value) => row.toggleSelected(value.target.checked)} />,
-    enableSorting: false,
-    enableHiding: false,
-  },
+// Function to handle view details click
+const handleViewDetails = async (report: Report, onOpenModal?: (report: Report) => void) => {
+  console.log('handleViewDetails called with report:', report, 'onOpenModal:', onOpenModal);
+  try {
+    // Parse the response details from the report message (which is now stringified AI response details)
+    let parsedDetails = null;
+    try {
+      parsedDetails = JSON.parse(report.message);
+    } catch (e) {
+      console.error('Error parsing response details:', e);
+      parsedDetails = report.message;
+    }
+    
+    // Call POST API to create report
+    const reportData = {
+      message: parsedDetails,
+      title: report.title || ''
+    };
+    
+    await apiService.postData('/users/reports', {
+      message: JSON.stringify(reportData)
+    });
+    
+    console.log('Report created successfully:', reportData);
+    
+    // Store both the parsed details and the message in localStorage for the AI search full report component to access
+    const localStorageData = {
+      details: {
+        ...parsedDetails,
+        message: report.title
+      },
+      message: report.title,
+      reportId: report._id,
+      user: report.user,
+      createdAt: report.createdAt
+    };
+    
+    localStorage.setItem('fullReportDetails', JSON.stringify(localStorageData));
+    
+    // Open modal with report details
+    if (onOpenModal) {
+      onOpenModal(report);
+    }
+  } catch (error) {
+    console.error('Error creating report or navigating:', error);
+    // Still open modal even if API call fails
+    if (onOpenModal) {
+      onOpenModal(report);
+    }
+  }
+};
+
+export const createColumns = (onOpenModal?: (report: Report) => void): ColumnDef<Report>[] => [
   {
     accessorKey: 'title',
-    header: 'Title',
-    size: 250,
-    cell: ({ row }) => (
-      <div className="text-xs">
-        <p className="font-medium mb-1">{row.getValue('title')}</p>
-        <p className="text-xs text-gray-600 text-[10px]">{row.original.archiveDate}</p>
-      </div>
-    ),
-  },
-  {
-    accessorKey: 'summary',
-    header: 'Summary',
+    header: 'AI Analysis Summary',
     size: 300,
-    cell: ({ row }) => <p className="text-xs">{row.getValue('summary')}</p>,
-  },
-  {
-    id: 'actions',
-    size: 50,
-    cell: () => {
-      return (
-        <Dropdown>
-          {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-          {/* @ts-expect-error */}
-          <Dropdown.Trigger className="cursor-pointer">
-            <MoreHorizontal className="h-4 w-4" />
-          </Dropdown.Trigger>
-          <Dropdown.Menu className="bg-white border shadow-md w-[150px]">
-            <Dropdown.Item className="text-xs font-medium hover:bg-primary-dark/10 duration-150">
-              <PiEyeFill className="w-4 h-4 text-gray-500 mr-1.5" /> View Details
-            </Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
-      );
-    },
-  },
-  // ...
-];
-export const dossierColumns: ColumnDef<Dossier>[] = [
-  {
-    id: 'select',
-    size: 30,
-    header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected()}
-        onChange={(value) => table.toggleAllPageRowsSelected(value.target.checked)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => <Checkbox checked={row.getIsSelected()} onChange={(value) => row.toggleSelected(value.target.checked)} />,
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: 'name',
-    header: 'Name',
-    size: 220,
     cell: ({ row }) => (
       <div className="text-xs">
-        <p className="font-medium mb-1">{row.getValue('name')}</p>
-        <p className="text-xs text-gray-600 text-[10px]">{row.original.archiveDate}</p>
+        <p className="font-medium mb-1 line-clamp-2">{row.original.title}</p>
+        <p className="text-xs text-gray-600 text-[10px]">
+          Created: {new Date(row.original.createdAt).toLocaleDateString()}
+        </p>
       </div>
     ),
   },
   {
-    accessorKey: 'caseFileNumber',
-    header: 'CASE FILE NUMBER',
-    size: 150,
-    cell: ({ row }) => <p className="text-xs">{row.getValue('caseFileNumber')}</p>,
-  },
-  {
-    accessorKey: 'summary',
-    header: 'Summary',
-    size: 280,
-    cell: ({ row }) => <p className="text-xs">{row.getValue('summary')}</p>,
+    accessorKey: 'createdAt',
+    header: 'Created At',
+    size: 200,
+    cell: ({ row }) => {
+      const createdAt = row.original.createdAt;
+      const date = new Date(createdAt);
+      
+      return (
+        <div className="text-xs">
+          <p className="font-medium">
+            {date.toLocaleDateString()}
+          </p>
+          <p className="text-gray-500">
+            {date.toLocaleTimeString()}
+          </p>
+        </div>
+      );
+    },
   },
   {
     id: 'actions',
     size: 50,
-    cell: () => {
+    cell: ({ row }) => {
       return (
         <Dropdown>
           {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
@@ -114,7 +106,10 @@ export const dossierColumns: ColumnDef<Dossier>[] = [
             <MoreHorizontal className="h-4 w-4" />
           </Dropdown.Trigger>
           <Dropdown.Menu className="bg-white border shadow-md w-[150px]">
-            <Dropdown.Item className="text-xs font-medium hover:bg-primary-dark/10 duration-150">
+                   <Dropdown.Item 
+                     className="text-xs font-medium hover:bg-primary-dark/10 duration-150 cursor-pointer"
+                     onClick={() => handleViewDetails(row.original, onOpenModal)}
+                   >
               <PiEyeFill className="w-4 h-4 text-gray-500 mr-1.5" /> View Details
             </Dropdown.Item>
           </Dropdown.Menu>
@@ -122,5 +117,4 @@ export const dossierColumns: ColumnDef<Dossier>[] = [
       );
     },
   },
-  // ...
 ];
