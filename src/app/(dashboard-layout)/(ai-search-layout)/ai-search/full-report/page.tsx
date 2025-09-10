@@ -5,7 +5,7 @@ import { FullReport } from './_view/full-report';
 export default function AiSearchPage() {
   return (
     <FadeAnimation>
-      <div className="flex gap-4">
+      <div className="ml-[30px]">
         <FullReport />
       </div>
     </FadeAnimation>
