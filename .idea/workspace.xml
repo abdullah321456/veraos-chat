@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="31f38edd-b261-4f74-9fe3-a56331e865fe" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/billing/_components/billing-address.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/billing/_components/billing-address.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/billing/_components/plan-limit.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/billing/_components/plan-limit.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/billing/_components/recent-payments.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/billing/_components/recent-payments.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/billing/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/billing/page.tsx" afterDir="false" />
-    </list>
+    <list default="true" id="31f38edd-b261-4f74-9fe3-a56331e865fe" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -148,7 +141,7 @@
       <workItem from="1757484408018" duration="297000" />
       <workItem from="1757499841565" duration="17992000" />
       <workItem from="1757572644935" duration="5283000" />
-      <workItem from="1757599403929" duration="295000" />
+      <workItem from="1757599403929" duration="757000" />
     </task>
     <servers />
   </component>
