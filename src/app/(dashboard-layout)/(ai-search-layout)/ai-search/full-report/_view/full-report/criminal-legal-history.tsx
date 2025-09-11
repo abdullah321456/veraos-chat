@@ -65,8 +65,12 @@ export function CriminalAndLegal({
   const showCriminal = details?._index === 'criminals' || details?._index === 'criminals_small';
   const showSexOffender = details && details.OFFENDERCA === 'SEX OFFENDER';
   const isVets = details?._index === 'vets' && details?.VETERAN==='Y';
+  const isDrunkDriving = details?._index === 'drunk-drivings' && details?.ACCIDENTS==='Y';
 
   const criminalTypeLabel=showSexOffender?"Sex Offender":"Criminal"
+
+
+  console.log("isDrunkDriving = ",isDrunkDriving)
 
   return (
     <Accordion
@@ -261,6 +265,27 @@ export function CriminalAndLegal({
                   editable={editable}
                 />
               )}
+            </div>
+          </div>
+        )}
+
+        {/* Drunk Driving Match Subsection */}
+        {isDrunkDriving && (
+          <div className="mb-4">
+            <div className={cn(isDrawer ? "grid gap-3" : "grid grid-cols-3 gap-4")}>
+              <div className="ring-[1px] min-h-14 text-xs ring-gray-200 rounded-md px-2.5 py-1.5 border-dashed border-2 border-primary/0">
+                <div className="flex justify-between w-full mb-1.5 relative">
+                  <p className="whitespace-nowrap text-gray-600">Drunk Driving Match</p>
+                </div>
+                <div>
+                  <p className="text-[13px] font-semibold text-red-600 font-bold">YES</p>
+                </div>
+              </div>
+              <InputDataCell
+                label="Source"
+                value="Reported by Insurance Company"
+                editable={editable}
+              />
             </div>
           </div>
         )}

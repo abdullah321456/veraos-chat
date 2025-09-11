@@ -166,10 +166,12 @@ export function Table<T>({
                   <div
                     className={cn(
                       'flex w-full justify-between border-b border-[#ECECEC] last-of-type:border-b-0',
-                      ROW_CLASS_NAME
+                      ROW_CLASS_NAME,
+                      onRowClick && 'cursor-pointer'
                       // row.getIsSelected() &&
                       //   'border-slate-500/0 [&_.selected-bg]:!bg-gray-50/50'
                     )}
+                    onClick={() => handleRowClick(rowData)}
                   >
                     {row.getVisibleCells().map((cell) => {
                       return (

@@ -9,10 +9,14 @@ import {AIResponseDetail} from "../../../_view/conversation/type";
 import { toEnhancedTitleCase } from '@/lib/utils/title-case';
 
 // Utility function to capitalize first letter of each word
-const capitalizeWords = (str: string): string => {
-  if (!str || str.trim() === '') return '';
+const capitalizeWords = (str: string | number | any): string => {
+  if (!str) return '';
   
-  return str
+  // Convert to string if it's not already
+  const strValue = String(str);
+  if (strValue.trim() === '') return '';
+  
+  return strValue
     .trim()
     .split(' ')
     .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
@@ -87,9 +91,19 @@ export function PersonalInfo({
     const hasMain = details?.FIRST || details?.MID || details?.LAST;
     const hasAliases = details?.AKA1 || details?.AKA2;
     const hasDOB = !!details?.DOB;
-    const hasMarital = !!details?.MARITALSTA;
-    const hasGender = !!details?.GENDER;
-    const hasAny = hasMain || hasAliases || hasDOB || hasMarital || hasGender;
+    const hasMarital = !!details?.MARITALSTA || !!details?.Marital_Status;
+    const hasGender = !!details?.GENDER || !!details?.Gender ;
+    const isSmoker = !!details?.SMOKER;
+    const hasIncome = !!details?.Income;
+    const hasHomeowner = !!details?.HOMEOWNER;
+    const hasOwnRent = !!details?.OWN_RENT;
+    const hasEthnicity = !!details?.ETHNICITY;
+    const hasSkinTone = !!details?.SkinTone;
+    const hasRace = !!details?.RACE;
+    const hasScarsMarks = !!(details as any)?.ScarsMarks;
+    const hasMilitaryService = !!(details as any)?.MilitaryService;
+    const hasDOD = !!details?.DOD;
+    const hasAny = hasMain || hasAliases || hasDOB || hasMarital || hasGender || isSmoker || hasIncome || hasHomeowner || hasOwnRent || hasEthnicity || hasSkinTone || hasRace || hasScarsMarks || hasMilitaryService || hasDOD;
 
     if (!hasAny) return null;
 
@@ -167,14 +181,14 @@ export function PersonalInfo({
                 )}>
                 {details?.AKA1 && (
                   <InputDataCell
-                      label="Alias/Nickname 1"
+                      label="Alias 1"
                       value={capitalizeWords(details.AKA1)}
                       editable={editable}
                   />
                 )}
                 {details?.AKA2 && (
                   <InputDataCell
-                      label="Alias/Nickname 2"
+                      label="Alias 2"
                       value={capitalizeWords(details.AKA2)}
                       editable={editable}
                   />
@@ -195,15 +209,49 @@ export function PersonalInfo({
                 )}
             </div>
             <div className="grid grid-cols-3 gap-4 mt-3">
-                {details?.MARITALSTA && (
+                {(details?.MARITALSTA || details?.Marital_Status)  && (
                   <InputDataCell
                       label="Marital Status"
-                      value={capitalizeWords(details.MARITALSTA)}
+                      value={capitalizeWords(details?.MARITALSTA || details?.Marital_Status)}
                       editable={editable}
                   />
                 )}
-                {details?.GENDER && (
-                  <InputDataCell label="Gender" value={capitalizeWords(details.GENDER)} editable={editable}/>
+                {(details?.GENDER || details?.Gender) && (
+                  <InputDataCell label="Gender" value={capitalizeWords(details?.GENDER || details?.Gender)} editable={editable}/>
+                )}
+                {details?.SMOKER && (
+                  <InputDataCell label="Smoker" value={capitalizeWords(details.SMOKER)} editable={editable}/>
+                )}
+                {details?.Income && (
+                  <InputDataCell label="Income" value={capitalizeWords(details.Income)} editable={editable}/>
+                )}
+                {details?.HOMEOWNER && (
+                  <InputDataCell label="Homeowner" value={capitalizeWords(details.HOMEOWNER)} editable={editable}/>
+                )}
+                {details?.OWN_RENT && (
+                  <InputDataCell 
+                    label="Dwelling Status" 
+                    value={details.OWN_RENT.toLowerCase() === 'own' ? 'Own' : 'Rent'} 
+                    editable={editable}
+                  />
+                )}
+                {details?.ETHNICITY && (
+                  <InputDataCell label="Ethnicity" value={capitalizeWords(details.ETHNICITY)} editable={editable}/>
+                )}
+                {details?.SkinTone && (
+                  <InputDataCell label="Skin Tone" value={capitalizeWords(details.SkinTone)} editable={editable}/>
+                )}
+                {details?.RACE && (
+                  <InputDataCell label="Race" value={capitalizeWords(details.RACE)} editable={editable}/>
+                )}
+                {(details as any)?.ScarsMarks && (
+                  <InputDataCell label="Scars & Tattoos" value={capitalizeWords((details as any).ScarsMarks)} editable={editable}/>
+                )}
+                {(details as any)?.MilitaryService && (
+                  <InputDataCell label="Military Service" value={capitalizeWords((details as any).MilitaryService)} editable={editable}/>
+                )}
+                {details?.DOD && (
+                  <InputDataCell label="Date of Death" value={capitalizeWords(details.DOD)} editable={editable}/>
                 )}
                 {/* <InputDataCell label="Religion" value="" editable={editable}/> */}
             </div>

@@ -102,13 +102,19 @@ export const createColumns = (onOpenModal?: (report: Report) => void): ColumnDef
         <Dropdown>
           {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
           {/* @ts-expect-error */}
-          <Dropdown.Trigger className="cursor-pointer">
+          <Dropdown.Trigger 
+            className="cursor-pointer"
+            onClick={(e) => e.stopPropagation()}
+          >
             <MoreHorizontal className="h-4 w-4" />
           </Dropdown.Trigger>
           <Dropdown.Menu className="bg-white border shadow-md w-[150px]">
                    <Dropdown.Item 
                      className="text-xs font-medium hover:bg-primary-dark/10 duration-150 cursor-pointer"
-                     onClick={() => handleViewDetails(row.original, onOpenModal)}
+                     onClick={(e) => {
+                       e.stopPropagation();
+                       handleViewDetails(row.original, onOpenModal);
+                     }}
                    >
               <PiEyeFill className="w-4 h-4 text-gray-500 mr-1.5" /> View Details
             </Dropdown.Item>

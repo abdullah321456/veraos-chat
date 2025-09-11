@@ -150,8 +150,9 @@ export const ReportsTable = React.memo(function ReportsTable() {
           columns={createColumns(handleOpenModal)}
           data={reports || []}
           size={10}
-          rowClassName="py-1"
+          rowClassName="py-1 cursor-pointer hover:bg-gray-50"
           className="border-0 bg-white p-0 min-h-[calc(100vh-100px)] shadow-lg border-gray-50"
+          onRowClick={handleOpenModal}
         />
       </div>
       

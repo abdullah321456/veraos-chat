@@ -11,10 +11,13 @@ import { Accordion } from '../../../_components/accordion';
 import { AddOrEditModal } from './add-or-edit-modal';
 import { FormInputType } from './validation';
 import { InputArrayDataCell } from '../../../../_components/input-array-data-cell';
+import { InputDataCell } from '../../../../_components/input-data-cell';
+import { AIResponseDetail } from '../../../../_view/conversation/type';
 
 type Props = {
   isEditable?: boolean;
   isDrawer?: boolean;
+  details?: AIResponseDetail;
 };
 
 type DataType = FormInputType & { id: number };
@@ -28,13 +31,32 @@ const MORTGAGE_DUMMY_DATA: DataType[] = [
   },
 ];
 
-export function FinancialBackground({ isEditable = false, isDrawer }: Props) {
+// Utility function to capitalize first letter of each word
+const capitalizeWords = (str: string | number | any): string => {
+  if (!str) return '';
+  
+  // Convert to string if it's not already
+  const strValue = String(str);
+  if (strValue.trim() === '') return '';
+  
+  return strValue
+    .trim()
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+};
+
+export function FinancialBackground({ isEditable = false, isDrawer, details }: Props) {
   const { openModal } = useModal();
   const [isLocalEdit] = useState(isEditable);
   const [editable, setEditable] = useState(false);
   const [mortgageValuesState, setMortgageValuesState] = useState(MORTGAGE_DUMMY_DATA);
 
   const actionButtonMode = isLocalEdit && !editable ? 'edit' : 'save';
+
+  // Only show if _index equals "bankruptcy"
+  const isBankruptcy = details?._index === 'bankruptcy';
+  if (!isBankruptcy) return null;
 
   function handleActionButtonClick() {
     if (actionButtonMode !== 'save') {
@@ -90,36 +112,43 @@ export function FinancialBackground({ isEditable = false, isDrawer }: Props) {
         actionButton: <AccordionActionButton setEditable={setEditable} mode={actionButtonMode} onClick={handleActionButtonClick} />,
       })}
     >
-      {/* top part will be there */}
-
-      {/* --------------------------------- */}
-      <div className={cn(isDrawer ? 'grid gap-3 mt-3' : 'grid grid-cols-2 gap-3 ')} key={mortgageValuesState?.toString()}>
-        <InputArrayDataCell
-          label="Net Worth"
-          editable={editable}
-          onDone={(value) => console.log('value', value)}
-          values={['Estimated at $750,000 (including property holdings savings, and investments).']}
-          rowClassName="bg-transparent px-0 py-0"
-          rowWrapperClassName="space-y-1.5"
-          rowTextClassName="font-medium"
-        />
-        {mortgageValuesState.map((data, index) => (
-          <Single
-            key={data.id}
-            data={data}
-            title={`Mortgage ${index + 1}`}
+      <div className={cn(isDrawer ? "grid gap-3" : "grid grid-cols-3 gap-4")}>
+        {details?.COURTDIST && (
+          <InputDataCell
+            label="Court District"
+            value={capitalizeWords(details.COURTDIST)}
             editable={editable}
-            handleOpenEditModal={handleOpenEditModal}
-            handleRemoveField={handleRemoveField}
           />
-        ))}
+        )}
+        {details?.COUNTY && (
+          <InputDataCell
+            label="County"
+            value={capitalizeWords(details.COUNTY)}
+            editable={editable}
+          />
+        )}
+        {details?.FILE_DATE && (
+          <InputDataCell
+            label="Filing Date"
+            value={capitalizeWords(details.FILE_DATE)}
+            editable={editable}
+          />
+        )}
+        {details?.CASENUM && (
+          <InputDataCell
+            label="Case Number"
+            value={capitalizeWords(details.CASENUM)}
+            editable={editable}
+          />
+        )}
+        {details?.CHAPTER && (
+          <InputDataCell
+            label="Chapter"
+            value={capitalizeWords(details.CHAPTER)}
+            editable={editable}
+          />
+        )}
       </div>
-
-      {editable && (
-        <button className="text-xs text-primary font-semibold mt-2" onClick={handleOpenAddModal}>
-          + Add Mortgage Record
-        </button>
-      )}
     </Accordion>
   );
 }

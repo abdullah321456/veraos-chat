@@ -76,9 +76,27 @@ export type AIResponseDetail = {
     N_ZIP:any
     criminals_small:any
     criminals:any
-    email_master:any
+    email_master:any;
+    CELL_PHONE:any,
+    HOME_PHONE:any,
+    PHONE1:any,
+    PHONE2:any,
     _index:any;
-    VETERAN:any
+    VETERAN:any;
+    VIOLATIONS:any;
+    ACCIDENTS:any;
+    SMOKER:any;
+    Marital_Status:any;
+    Gender:any;
+    Income:any;
+    INCOME:any;
+    LIC_NUMBER:any;
+    LIC_STATE:any;
+    HOMEOWNER:any;
+    OWN_RENT:any;
+    ETHNICITY:any;
+    DOD:any;
+    MilitaryService:any;
 };
 
 export type OnImageSearchHandlerParam = { file?: File; url: string }[];

@@ -286,12 +286,14 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
                 <VehicleOwnership isEditable={editable} isDrawer={isDrawer} details={localDetails}/>
                 {/*<Employment isEditable={editable} isDrawer={isDrawer}/>*/}
                 {/*<Education isEditable={editable} isDrawer={isDrawer} details={details}/>*/}
-                {/*<FinancialBackground isEditable={editable} isDrawer={isDrawer}/>*/}
+                <FinancialBackground isEditable={editable} isDrawer={isDrawer} details={details}/>
                 {/*<ConsumerInfo isEditable={editable} isDrawer={isDrawer}/>*/}
                 {/*<SocialAndWeb isEditable={editable} isDrawer={isDrawer}/>*/}
                 {/*<PhotographicArchive isEditable={editable} isDrawer={isDrawer}/>*/}
                 {((localDetails as any)?._index === 'criminals' || (localDetails as any)?._index === 'criminals_small'
-                     || ((localDetails as any)?._index === 'vets') && localDetails?.VETERAN==='Y') && (
+                     || ((localDetails as any)?._index === 'vets' && localDetails?.VETERAN==='Y')
+                    || ((localDetails as any)?._index === 'drunk-drivings' && localDetails?.ACCIDENTS==='Y')
+                ) && (
                   <CriminalAndLegal isEditable={editable} isDrawer={isDrawer} details={localDetails} />
                 )}
                 {/*<HighRisk isEditable={editable} isDrawer={isDrawer}/>*/}

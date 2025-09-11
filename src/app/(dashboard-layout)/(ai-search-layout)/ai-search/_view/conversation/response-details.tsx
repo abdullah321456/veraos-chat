@@ -176,7 +176,12 @@ function SingleDetails(props: AIResponseDetail) {
 
         ];
 
-        records.push({PHONE: props.PHONE})
+        records.push({PHONE: props.PHONE});
+        records.push({PHONE: props.CELL_PHONE})
+        records.push({PHONE: props.HOME_PHONE})
+        records.push({PHONE: props.PHONE1})
+        records.push({PHONE: props.PHONE2})
+
         return records.filter(record => (record?.phone || record?.Phone || record?.Phone1 || record?.Phone2
             || record?.PHONE_1 || record?.PHONE_2 || record?.PHONE_3
             || record?.HOMEPHONE || record?.WORKPHONE || record?.CELL || record?.PHONE || "").length > 0).length;

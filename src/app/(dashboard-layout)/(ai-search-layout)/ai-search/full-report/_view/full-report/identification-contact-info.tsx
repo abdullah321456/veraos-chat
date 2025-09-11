@@ -197,7 +197,11 @@ export function IdentificationAndContact({
             ...normalizeMergeResponse(details.criminals),
             ...normalizeMergeResponse(details.criminals_small)
         ];
-        records.push({PHONE: details.PHONE})
+        records.push({PHONE: details.PHONE});
+        records.push({PHONE: details.CELL_PHONE})
+        records.push({PHONE: details.HOME_PHONE})
+        records.push({PHONE: details.PHONE1})
+        records.push({PHONE: details.PHONE2})
 
         records.forEach(record => {
             if (record?.phone || record?.Phone || record?.Phone1 || record?.Phone2
