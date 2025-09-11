@@ -114,13 +114,18 @@ export function Sidebar({ isExpanded, lastMessage }: Props) {
     }
   };
 
-  const handleNewChat = useCallback(async () => {
-    if (isCreatingChat || hasCreatedChatForThisSession.current) return; // Prevent multiple calls and infinite loop
+  const handleNewChat = useCallback(async (isManualClick = false) => {
+    if (isCreatingChat) return; // Prevent multiple calls
+    
+    // Only check the guard for automatic creation, not manual clicks
+    if (!isManualClick && hasCreatedChatForThisSession.current) return;
 
     try {
       setIsCreatingChat(true);
-      hasCreatedChatForThisSession.current = true; // Set guard to prevent infinite loop
-      console.log('Creating new chat...');
+      if (!isManualClick) {
+        hasCreatedChatForThisSession.current = true; // Set guard only for automatic creation
+      }
+      console.log('Creating new chat...', isManualClick ? '(manual click)' : '(automatic)');
       const response = await apiService.postData('/chat', {});
       const newChatId = response.data._id;
       console.log('New chat created with ID:', newChatId);
@@ -346,8 +351,8 @@ function NavigationElement() {
             ) : (
                 <Link
                     key={name}
-                    href={parsePathnameWithQuery(href, queryParams)}
-                    className={cn('px-3 py-2 text-xs text-center rounded-full duration-300',  activePathnames.includes(pathname) && activeClassName)}
+                    href={parsePathnameWithQuery(href || '', queryParams)}
+                    className={cn('px-3 py-2 text-xs text-center rounded-full duration-300', activePathnames?.includes(pathname) && activeClassName)}
                 >
                   {name}
                 </Link>
@@ -358,7 +363,7 @@ function NavigationElement() {
 }
 
 
-function Toolbar({ inboxNavigationData, onNewChat }: { inboxNavigationData: InboxNavigationData[]; onNewChat: () => void }) {
+function Toolbar({ inboxNavigationData, onNewChat }: { inboxNavigationData: InboxNavigationData[]; onNewChat: (isManualClick?: boolean) => void }) {
   const { isSelectable, setIsSelectable, selectMultiple, clearSelection } = useConversationSidebarSelectionState();
 
   const allIds = inboxNavigationData?.map((item) => item.id);
@@ -381,7 +386,7 @@ function Toolbar({ inboxNavigationData, onNewChat }: { inboxNavigationData: Inbo
                 <PiPencilLine /> Edit
               </button>
               <span className="w-px h-4 bg-gray-400" />
-              <button className="text-primary flex items-center gap-1" onClick={onNewChat}>
+              <button className="text-primary flex items-center gap-1" onClick={() => onNewChat(true)}>
                 <PiPlus /> New Chat
               </button>
             </div>

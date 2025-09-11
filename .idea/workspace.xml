@@ -3,24 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="31f38edd-b261-4f74-9fe3-a56331e865fe" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(auth)/signup/_forms/account-and-organization-info.form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(auth)/signup/_forms/account-and-organization-info.form.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(auth)/signup/validation.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(auth)/signup/validation.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/_view/conversation/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/_view/conversation/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(settings-layout)/settings/account/_view/tab-view.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(settings-layout)/settings/account/_view/tab-view.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(settings-layout)/settings/account/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(settings-layout)/settings/account/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(settings-layout)/settings/privacy/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(settings-layout)/settings/privacy/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/billing/_components/billing-address.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/billing/_components/billing-address.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/billing/_components/organization-details.tsx" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/billing/_components/plan-limit.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/billing/_components/plan-limit.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/billing/_components/recent-payments.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/billing/_components/recent-payments.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/billing/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/billing/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/settings/account-settings/profile-information.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/settings/account-settings/profile-information.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/settings/account-settings/user-roles-permisson.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/settings/account-settings/user-roles-permisson.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/axios.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/axios.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/hooks/use-user.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/use-user.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/utils/auth.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/utils/auth.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/userService.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/userService.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/user.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/user.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -160,7 +147,8 @@
       <workItem from="1757440682901" duration="3845000" />
       <workItem from="1757484408018" duration="297000" />
       <workItem from="1757499841565" duration="17992000" />
-      <workItem from="1757572644935" duration="4852000" />
+      <workItem from="1757572644935" duration="5283000" />
+      <workItem from="1757599403929" duration="295000" />
     </task>
     <servers />
   </component>

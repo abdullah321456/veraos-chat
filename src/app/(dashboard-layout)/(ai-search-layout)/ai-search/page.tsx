@@ -2,8 +2,9 @@
 
 import dynamic from 'next/dynamic';
 import { useEffect, Suspense } from 'react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { LoadingSpinner } from '@/components/atom/loading-spinner';
+import { AiSearchIndex } from './ai-search-index';
 
 const Conversation = dynamic(() => import('./_view/conversation').then((mod) => mod.Conversation), {
   ssr: false,
@@ -12,6 +13,8 @@ const Conversation = dynamic(() => import('./_view/conversation').then((mod) => 
 
 export default function Page() {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const chatId = searchParams.get('chatId');
 
   useEffect(() => {
     // Check if we're coming from login by checking session storage
@@ -55,7 +58,11 @@ export default function Page() {
   return (
     <div className="ml-[30px]">
       <Suspense fallback={<LoadingSpinner size="lg" className="h-64" />}>
-        <Conversation />
+        {chatId ? (
+          <Conversation />
+        ) : (
+          <AiSearchIndex />
+        )}
       </Suspense>
     </div>
   );
