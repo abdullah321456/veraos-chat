@@ -3,13 +3,24 @@
   <component name="ChangeListManager">
     <list default="true" id="31f38edd-b261-4f74-9fe3-a56331e865fe" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/full-report/_view/full-report/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/full-report/_view/full-report/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/reports/_view/reports-table/report-details-modal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/reports/_view/reports-table/report-details-modal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/reports/ai-response-full-report/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/reports/ai-response-full-report/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/reports/full-report/_view/reports-full-report/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/reports/full-report/_view/reports-full-report/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/reports/full-report/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/reports/full-report/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/atom/loading-spinner.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/atom/loading-spinner.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/atom/route-transition.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/atom/route-transition.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(auth)/signup/_forms/account-and-organization-info.form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(auth)/signup/_forms/account-and-organization-info.form.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(auth)/signup/validation.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(auth)/signup/validation.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/_view/conversation/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/_view/conversation/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(settings-layout)/settings/account/_view/tab-view.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(settings-layout)/settings/account/_view/tab-view.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(settings-layout)/settings/account/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(settings-layout)/settings/account/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(settings-layout)/settings/privacy/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(settings-layout)/settings/privacy/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/billing/_components/billing-address.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/billing/_components/billing-address.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/billing/_components/organization-details.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/billing/_components/plan-limit.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/billing/_components/plan-limit.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/billing/_components/recent-payments.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/billing/_components/recent-payments.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/billing/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/billing/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/settings/account-settings/profile-information.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/settings/account-settings/profile-information.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/settings/account-settings/user-roles-permisson.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/settings/account-settings/user-roles-permisson.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config/axios.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/axios.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/hooks/use-user.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/use-user.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/utils/auth.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/utils/auth.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/userService.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/userService.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/user.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/user.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,16 +46,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "E:/practice/veraos-chat",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "ts.external.directory.path": "E:\\practice\\veraos-chat\\node_modules\\typescript\\lib"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/practice/veraos-chat&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;E:\\practice\\veraos-chat\\node_modules\\typescript\\lib&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="E:\practice\veraos-chat" />
@@ -148,7 +159,8 @@
       <workItem from="1756831096327" duration="1897000" />
       <workItem from="1757440682901" duration="3845000" />
       <workItem from="1757484408018" duration="297000" />
-      <workItem from="1757499841565" duration="17384000" />
+      <workItem from="1757499841565" duration="17992000" />
+      <workItem from="1757572644935" duration="4852000" />
     </task>
     <servers />
   </component>

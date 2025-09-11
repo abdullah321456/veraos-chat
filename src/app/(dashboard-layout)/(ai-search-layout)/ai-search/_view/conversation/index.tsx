@@ -373,8 +373,12 @@ export function Conversation() {
                 msg: msg.message,
                 sender: msg.sender === 'me' ? SenderOption.me : SenderOption.ai,
                 cta: msg.cta,
-                responseDetails: msg.responseDetails ? JSON.parse(msg.responseDetails) : undefined
-            }));
+                responseDetails: msg.responseDetails ? JSON.parse(msg.responseDetails).map((detail: any) => ({
+                    ...detail,
+                    message: msg.message
+                })) : undefined
+            }))
+
             setMessages([{
                 msg: "Welcome to Overwatch.\nBegin your search using natural language—Overwatch understands context, not just keywords.",
                 sender: SenderOption.ai,
@@ -455,7 +459,10 @@ export function Conversation() {
                     msg: searchResponse.data.message,
                     sender: SenderOption.ai,
                     cta: false,
-                    responseDetails: searchResponse.data?.hits || undefined
+                    responseDetails: searchResponse.data?.hits ? searchResponse.data.hits.map((hit: any) => ({
+                        ...hit,
+                        message: searchResponse.data.message
+                    })) : undefined
                 }
             ]);
 

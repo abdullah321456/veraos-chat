@@ -31,6 +31,66 @@ export const userService = {
         } catch (error) {
             throw error;
         }
+    },
+
+    // Get all users for organization
+    getAllUsers: async () => {
+        try {
+            const response = await apiService.getData('/users/all');
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    },
+
+    // Add new user to organization
+    addUser: async (userData) => {
+        try {
+            const response = await apiService.postData('/users/organization/add-user', userData);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    },
+
+    // Update user in organization
+    updateUser: async (userId, userData) => {
+        try {
+            const response = await apiService.updateData(`/users/organization/update-user/${userId}`, userData);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    },
+
+    // Delete user from organization
+    deleteUser: async (userId) => {
+        try {
+            const response = await apiService.deleteData(`users/organization/delete-user/${userId}`);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    },
+
+    // Get specific user by ID
+    getUserById: async (userId) => {
+        try {
+            const response = await apiService.getData(`/users/organization/user/${userId}`);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    },
+
+    // Force logout from all devices
+    forceLogoutAllDevices: async () => {
+        try {
+            const response = await apiService.postData('/users/force-logout', {});
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
     }
 };
 

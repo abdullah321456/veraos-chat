@@ -79,7 +79,6 @@ export function AccountAndOrganizationInfoForm() {
       postalCode: '',
       country: '',
       jobTitle: '',
-      jobId: '',
     },
   });
 
@@ -282,12 +281,6 @@ function OrganizationDetailsForm({
           label="Job Title"
           placeholder="Enter job title"
           error={errors.jobTitle?.message}
-        />
-        <Input
-          {...register('jobId')}
-          label="Job ID"
-          placeholder="Enter job ID"
-          error={errors.jobId?.message}
         />
       </div>
     </div>

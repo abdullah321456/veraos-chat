@@ -28,7 +28,11 @@ const countryOptions = [
   },
 ];
 
-export function BillingAddress() {
+interface BillingAddressProps {
+  isEditable: boolean;
+}
+
+export function BillingAddress({ isEditable }: BillingAddressProps) {
   const { userData, loading, error, updateProfile, updating } = useUser();
   const [formData, setFormData] = useState({
     address: '',
@@ -116,30 +120,35 @@ export function BillingAddress() {
               className="col-span-full" 
               value={formData.address}
               onChange={(e) => handleInputChange('address', e.target.value)}
+              disabled={!isEditable}
             />
             <Input 
               placeholder="Address Line 2 (Optional)" 
               className="col-span-full" 
               value={formData.addressLine2}
               onChange={(e) => handleInputChange('addressLine2', e.target.value)}
+              disabled={!isEditable}
             />
             <Input 
               isRequired 
               placeholder="City *" 
               value={formData.city}
               onChange={(e) => handleInputChange('city', e.target.value)}
+              disabled={!isEditable}
             />
             <Input 
               isRequired 
               placeholder="State *" 
               value={formData.state}
               onChange={(e) => handleInputChange('state', e.target.value)}
+              disabled={!isEditable}
             />
             <Input 
               isRequired 
               placeholder="Postal Code *" 
               value={formData.postalCode}
               onChange={(e) => handleInputChange('postalCode', e.target.value)}
+              disabled={!isEditable}
             />
             <Select
               dropdownMenuClassName="w-[215px]"
@@ -151,20 +160,30 @@ export function BillingAddress() {
               onSelect={({ value }: { value: string }) => {
                 handleInputChange('country', value);
               }}
+              disabled={!isEditable}
             />
             <Input 
               isRequired 
               placeholder="Phone Number *" 
               value={formData.phoneNumber}
               onChange={(e) => handleInputChange('phoneNumber', e.target.value)}
+              disabled={!isEditable}
             />
           </div>
         </div>
-        <div className="pt-3">
-          <Button onClick={handleUpdate} disabled={updating}>
-            {updating ? 'Updating...' : 'Update Billing Address'}
-          </Button>
-        </div>
+        {isEditable ? (
+          <div className="pt-3">
+            <Button onClick={handleUpdate} disabled={updating}>
+              {updating ? 'Updating...' : 'Update Billing Address'}
+            </Button>
+          </div>
+        ) : (
+          <div className="pt-3">
+            <p className="text-sm text-gray-500 italic">
+              Only organization administrators can edit billing information.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

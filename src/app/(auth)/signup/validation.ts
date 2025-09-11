@@ -26,7 +26,6 @@ export const SignupFormSchema = z.object({
   postalCode: z.string().min(1, 'Postal code is required'),
   country: z.string().min(1, 'Country is required'),
   jobTitle: z.string().optional(),
-  jobId: z.string().optional(),
 }).refine((data) => data.email === data.confirmEmail, {
   message: "Emails don't match",
   path: ["confirmEmail"],

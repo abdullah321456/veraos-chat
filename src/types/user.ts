@@ -23,7 +23,6 @@ export interface UserData {
   postalCode: string;
   country: string;
   jobTitle: string;
-  jobId: string;
   intendedUse: string;
   dataAccessNeeds: string[];
   documents: string[];
@@ -32,6 +31,7 @@ export interface UserData {
   __v: number;
   status: string;
   force_update_password: boolean;
+  users?: UserData[];
 }
 
 // Password update data structure
@@ -66,5 +66,4 @@ export interface UserProfileUpdateRequest {
   postalCode?: string;
   country?: string;
   jobTitle?: string;
-  jobId?: string;
 } 

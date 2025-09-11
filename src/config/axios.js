@@ -7,8 +7,11 @@ const getLocalStorage = () => {
   return window.localStorage;
 };
 
+const baseURL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+console.log('API Base URL:', baseURL);
+
 const axiosInstance = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_API_URL,
+    baseURL: baseURL,
     headers: {
         'Content-Type': 'application/json',
     },

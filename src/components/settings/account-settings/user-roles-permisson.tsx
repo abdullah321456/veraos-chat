@@ -11,11 +11,13 @@ import cn from '@/lib/utils/cn';
 import { zodUtils } from '@/lib/utils/zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { MoreHorizontal } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import { PiPencil, PiTrash } from 'react-icons/pi';
 import { toast } from 'sonner';
 import { z } from 'zod';
+import { useUser } from '@/lib/hooks/use-user';
+import { userService } from '@/services/userService';
 
 const FormInputSchema = z
   .object({
@@ -30,83 +32,61 @@ const FormInputSchema = z
     state: zodUtils.getStringSchema({ name: 'State', minErrorMessage: 'State is required', min: 1 }),
     postalCode: zodUtils.getStringSchema({ name: 'Postal Code', minErrorMessage: 'Postal Code is required', min: 1 }),
     country: z.string({ required_error: 'Country is required' }).min(1, { message: 'Country is required' }),
-    officeTitle: z.string().min(1, { message: 'Office title is required' }),
-    role: z.string({ required_error: 'Role is required' }).min(1, { message: 'Role is required' }),
-    addUserLimit: z.coerce
-      .number({ required_error: 'Add user limit is required', invalid_type_error: 'Add user limit is required' })
-      .nullish(),
-  })
-  .superRefine((inputs, ctx) => {
-    if (inputs.role === 'Department Head' && !inputs.addUserLimit) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: 'Add user limit is required',
-      });
-      return z.NEVER;
-    }
+  });
+
+// Schema for edit user (same as add user - no role or officeTitle)
+const EditFormInputSchema = z
+  .object({
+    firstName: z.string().min(1, { message: 'First name is required' }),
+    middleName: z.string().optional(),
+    lastName: z.string().min(1, { message: 'Last name is required' }),
+    phoneNumber: z.string().min(1, { message: 'Phone number is required' }),
+    email: z.string().min(1, { message: 'Email is required' }).email({ message: 'Email is invalid' }),
+    address: zodUtils.getStringSchema({ name: 'Address', minErrorMessage: 'Address is required', min: 1 }),
+    addressLine2: z.string().optional(),
+    city: zodUtils.getStringSchema({ name: 'City', minErrorMessage: 'City is required', min: 1 }),
+    state: zodUtils.getStringSchema({ name: 'State', minErrorMessage: 'State is required', min: 1 }),
+    postalCode: zodUtils.getStringSchema({ name: 'Postal Code', minErrorMessage: 'Postal Code is required', min: 1 }),
+    country: z.string({ required_error: 'Country is required' }).min(1, { message: 'Country is required' }),
   });
 
 type FormInputType = z.infer<typeof FormInputSchema>;
+type EditFormInputType = z.infer<typeof EditFormInputSchema>;
 
 export default function UserRolesAndPermission() {
   const { openModal, closeModal } = useModal();
+  const { userData, loading: userLoading, error: userError, fetchUserData } = useUser();
+  const [users, setUsers] = useState<EditFormInputType[]>([]);
+  const [userIds, setUserIds] = useState<string[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // const [users, setUsers] = useState([
-  //   { name: 'John Doe', permission: 'Owner' },
-  //   { name: 'John Smith', permission: 'Department Head' },
-  //   { name: 'Emily White', permission: 'Team Member' },
-  // ]);
-
-  const [users, setUsers] = useState<FormInputType[]>([
-    {
-      firstName: 'John',
-      middleName: '',
-      lastName: 'Doe',
-      role: 'Owner',
-      phoneNumber: '123-456-7890',
-      email: 'U7m1O@example.com',
-      address: '123 Main St',
-      addressLine2: '',
-      city: 'New York',
-      state: 'NY',
-      postalCode: '10001',
-      country: 'us',
-      officeTitle: 'CEO',
-      addUserLimit: null,
-    },
-    {
-      firstName: 'John',
-      middleName: '',
-      lastName: 'Smith',
-      role: 'Department Head',
-      phoneNumber: '123-456-7890',
-      email: 'U7m1O@example.com',
-      address: '123 Main St',
-      addressLine2: '',
-      city: 'New York',
-      state: 'NY',
-      postalCode: '10001',
-      country: 'us',
-      officeTitle: 'CEO',
-      addUserLimit: 5,
-    },
-    {
-      firstName: 'Emily',
-      middleName: '',
-      lastName: 'White',
-      role: 'Team Member',
-      phoneNumber: '123-456-7890',
-      email: 'U7m1O@example.com',
-      address: '123 Main St',
-      addressLine2: '',
-      city: 'New York',
-      state: 'NY',
-      postalCode: '10001',
-      country: 'us',
-      officeTitle: 'CEO',
-      addUserLimit: null,
-    },
-  ]);
+  // Transform users from userData when it changes
+  useEffect(() => {
+    if (userData?.users && Array.isArray(userData.users)) {
+      const transformedUsers: EditFormInputType[] = userData.users.map((user: any) => ({
+        firstName: user.firstName || '',
+        middleName: user.middleName || '',
+        lastName: user.lastName || '',
+        phoneNumber: user.phoneNumber || '',
+        email: user.email || '',
+        address: user.address || '',
+        addressLine2: user.addressLine2 || '',
+        city: user.city || '',
+        state: user.state || '',
+        postalCode: user.postalCode || '',
+        country: user.country || '',
+        role:user.role||''
+      }));
+      
+      const ids = userData.users.map((user: any) => user._id);
+      
+      setUsers(transformedUsers);
+      setUserIds(ids);
+    } else {
+      setUsers([] as EditFormInputType[]);
+      setUserIds([]);
+    }
+  }, [userData]);
 
   function handleOpenAddModal() {
     openModal({
@@ -115,9 +95,30 @@ export default function UserRolesAndPermission() {
         <>
           <ModalHeader title="Add New User" />
           <AddEditUserModal
-            onSave={(data) => {
-              setUsers((prev) => [...prev, data]);
+            onSave={async (data) => {
+              try {
+                setIsSubmitting(true);
+                // Add default role as 'user' and office title for new users
+                const userDataWithDefaults = {
+                  ...data,
+                  role: 'user',
+                  officeTitle: 'Team Member'
+                };
+                await userService.addUser(userDataWithDefaults);
+                toast.success('User added successfully');
+                // Refresh user data to get updated users list
+                await fetchUserData();
+                closeModal();
+              } catch (error: any) {
+                console.error('Error adding user:', error);
+                // Extract error message from API response
+                const errorMessage = error.response?.data?.message || error.message || 'Failed to add user';
+                toast.error(errorMessage);
+              } finally {
+                setIsSubmitting(false);
+              }
             }}
+            isSubmitting={isSubmitting}
           />
         </>
       ),
@@ -125,6 +126,7 @@ export default function UserRolesAndPermission() {
   }
 
   function handleOpenEditModal(index: number) {
+    const userId = userIds[index];
     openModal({
       containerClassName: 'w-[600px]',
       view: (
@@ -132,21 +134,78 @@ export default function UserRolesAndPermission() {
           <ModalHeader title="Edit User" />
           <AddEditUserModal
             value={users[index]}
-            onSave={(data) => {
-              const updatedUsers = [...users];
-              updatedUsers[index] = data;
-              setUsers(updatedUsers);
+            onSave={async (data) => {
+              try {
+                setIsSubmitting(true);
+                await userService.updateUser(userId, data);
+                toast.success('User updated successfully');
+                // Refresh user data to get updated users list
+                await fetchUserData();
+                closeModal();
+              } catch (error: any) {
+                console.error('Error updating user:', error);
+                // Extract error message from API response
+                const errorMessage = error.response?.data?.message || error.message || 'Failed to update user';
+                toast.error(errorMessage);
+              } finally {
+                setIsSubmitting(false);
+              }
             }}
+            isSubmitting={isSubmitting}
+            isEdit={true}
           />
         </>
       ),
     });
   }
 
-  function handleDelete(index: number) {
-    const updatedUsers = [...users];
-    updatedUsers.splice(index, 1);
-    setUsers(updatedUsers);
+  async function handleDelete(index: number) {
+    const userId = userIds[index];
+    try {
+      setIsSubmitting(true);
+      await userService.deleteUser(userId);
+      toast.success('User deleted successfully');
+      // Refresh user data to get updated users list
+      await fetchUserData();
+    } catch (error: any) {
+      console.error('Error deleting user:', error);
+      // Extract error message from API response
+      const errorMessage = error.response?.data?.message || error.message || 'Failed to delete user';
+      toast.error(errorMessage);
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
+  // Loading state
+  if (userLoading) {
+    return (
+      <div className="mt-3.5 space-y-3 -mx-5">
+        <div className="flex justify-center items-center py-8">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+          <span className="ml-2 text-gray-600">Loading users...</span>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (userError) {
+    return (
+      <div className="mt-3.5 space-y-3 -mx-5">
+        <div className="text-center py-8">
+          <p className="text-red-500 mb-2">Failed to load users</p>
+          <p className="text-sm text-gray-500">{userError}</p>
+          <Button 
+            onClick={() => window.location.reload()} 
+            className="mt-4"
+            variant="outline"
+          >
+            Retry
+          </Button>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -160,7 +219,14 @@ export default function UserRolesAndPermission() {
           </tr>
         </thead>
         <tbody className="w-full">
-          {users?.map((user, index) => (
+          {users?.length === 0 ? (
+            <tr>
+              <td colSpan={3} className="py-8 text-center text-gray-500">
+                No users found
+              </td>
+            </tr>
+          ) : (
+            users?.map((user, index) => (
             <tr key={index} className="border-b last:border-none hover:bg-gray-50">
               <td className="py-3 px-6 text-black text-xs font-medium text-left">
                 {user.firstName + ' ' + (user.middleName ? user.middleName + ' ' : '') + user.lastName}
@@ -189,10 +255,9 @@ export default function UserRolesAndPermission() {
                               icon={<PiTrash className="w-8 h-8" />}
                               title="Delete User"
                               description="Are you sure you want to delete this user?"
-                              onConfirm={() => {
-                                handleDelete(index);
+                              onConfirm={async () => {
+                                await handleDelete(index);
                                 closeModal();
-                                toast.success('User Successfully Deleted');
                               }}
                               cancelButtonText="Cancel"
                             />
@@ -207,7 +272,8 @@ export default function UserRolesAndPermission() {
                 </Dropdown>
               </td>
             </tr>
-          ))}
+            ))
+          )}
         </tbody>
       </table>
 
@@ -223,23 +289,6 @@ export default function UserRolesAndPermission() {
   );
 }
 
-const roleOptions = [
-  {
-    id: '1',
-    name: 'Owner',
-    value: 'Owner',
-  },
-  {
-    id: '2',
-    name: 'Department Head',
-    value: 'Department Head',
-  },
-  {
-    id: '3',
-    name: 'Team Member',
-    value: 'Team Member',
-  },
-];
 
 const labelClassName = cn('block text-[#6D6F73]', inputLabelStyles.color.black, inputLabelStyles.size.md, inputLabelStyles.weight.medium);
 
@@ -261,10 +310,21 @@ const countryOptions = [
   },
 ];
 
-function AddEditUserModal({ value, onSave }: { value?: FormInputType; onSave: (inputs: FormInputType) => void }) {
+function AddEditUserModal({ 
+  value, 
+  onSave, 
+  isSubmitting = false,
+  isEdit = false
+}: { 
+  value?: FormInputType | EditFormInputType; 
+  onSave: (inputs: FormInputType | EditFormInputType) => void;
+  isSubmitting?: boolean;
+  isEdit?: boolean;
+}) {
   const { closeModal } = useModal();
-  const methods = useForm<FormInputType>({
-    resolver: zodResolver(FormInputSchema),
+  const schema = isEdit ? EditFormInputSchema : FormInputSchema;
+  const methods = useForm<FormInputType | EditFormInputType>({
+    resolver: zodResolver(schema),
     defaultValues: value ?? {},
   });
 
@@ -275,13 +335,14 @@ function AddEditUserModal({ value, onSave }: { value?: FormInputType; onSave: (i
     formState: { errors },
   } = methods;
 
-  const watchedRole = useWatch({ control, name: 'role' });
+  // Type assertion for errors to handle both schemas
+  const typedErrors = errors as any;
 
   async function onSubmit(inputs: FormInputType) {
     try {
-      // Handle form submission
+      await onSave(inputs);
     } catch (error) {
-      // Handle error
+      console.error('Error in form submission:', error);
     }
   }
 
@@ -347,52 +408,15 @@ function AddEditUserModal({ value, onSave }: { value?: FormInputType; onSave: (i
               />
             </div>
           </div>
-          <Input
-            isRequired
-            label="Office Title"
-            type="text"
-            placeholder="Office Title"
-            {...register('officeTitle')}
-            error={errors.officeTitle?.message}
-          />
-          <Controller
-            control={control}
-            name="role"
-            render={({ field }) => (
-              <Select
-                isRequired
-                inPortal={false}
-                label="Role"
-                dropdownMenuClassName="w-[270px]"
-                placeholder="Choose Role"
-                labelClassName={labelClassName}
-                selected={roleOptions.find((option) => option.value === field.value)}
-                options={roleOptions}
-                formatDisplay={(option) => option?.name}
-                onSelect={({ value }: { value: string }) => {
-                  field.onChange(value);
-                }}
-                error={errors.role?.message}
-              />
-            )}
-          />
-          {watchedRole === 'Department Head' && (
-            <Input
-              isRequired
-              label="Add User Limit"
-              type="number"
-              placeholder="Add User Limit"
-              {...register('addUserLimit', { valueAsNumber: true })}
-              error={errors.addUserLimit?.message}
-            />
-          )}
         </div>
       </div>
         <div className="col-span-full grid grid-cols-2 gap-3 mt-8">
-          <Button type="button" variant="outline" onClick={() => closeModal()}>
+          <Button type="button" variant="outline" onClick={() => closeModal()} disabled={isSubmitting}>
             Cancel
           </Button>
-          <Button type="submit">{value ? 'Save' : 'Add'}</Button>
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Saving...' : (value ? 'Save' : 'Add')}
+          </Button>
         </div>
     </form>
   );

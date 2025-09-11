@@ -22,7 +22,6 @@ const UserInfoSchema = z.object({
   email: z.string().email('Invalid email address'),
   confirmEmail: z.string().email('Invalid email address'),
   jobTitle: z.string().optional(),
-  jobId: z.string().optional(),
 }).refine((data) => data.email === data.confirmEmail, {
   message: "Emails don't match",
   path: ["confirmEmail"],
@@ -85,7 +84,6 @@ function UserInfo() {
       email: '',
       confirmEmail: '',
       jobTitle: '',
-      jobId: '',
     },
   });
 
@@ -100,7 +98,6 @@ function UserInfo() {
         email: userData.email || '',
         confirmEmail: userData.confirmEmail || userData.email || '',
         jobTitle: userData.jobTitle || '',
-        jobId: userData.jobId || '',
       });
     }
   }, [userData, userForm]);
@@ -114,7 +111,6 @@ function UserInfo() {
       email: data.email,
       confirmEmail: data.confirmEmail,
       jobTitle: data.jobTitle,
-      jobId: data.jobId,
     });
     
     if (success) {
@@ -136,7 +132,6 @@ function UserInfo() {
         email: userData.email || '',
         confirmEmail: userData.confirmEmail || userData.email || '',
         jobTitle: userData.jobTitle || '',
-        jobId: userData.jobId || '',
       });
     }
     setIsEditing(false);
@@ -202,13 +197,6 @@ function UserInfo() {
           placeholder="Enter job title" 
           {...userForm.register('jobTitle')}
           error={userForm.formState.errors.jobTitle?.message}
-          disabled={!isEditing}
-        />
-        <Input 
-          label="Job ID" 
-          placeholder="Enter job ID" 
-          {...userForm.register('jobId')}
-          error={userForm.formState.errors.jobId?.message}
           disabled={!isEditing}
         />
         
@@ -431,8 +419,12 @@ export function ProfileInformation() {
   return (
     <form className="mt-[14px] space-y-6 pb-1">
       <UserInfo />
-      <hr />
-      <OrganizationInfo />
+      {userData?.role === 'organization' && (
+        <>
+          <hr />
+          <OrganizationInfo />
+        </>
+      )}
     </form>
   );
 }

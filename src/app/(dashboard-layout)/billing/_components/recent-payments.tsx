@@ -1,68 +1,31 @@
-"use client";
-import { useState } from "react";
-
 export function RecentPayments() {
-  const [payments] = useState([
-    {
-      date: "Jan 15,2025",
-      payment_method: "Visa **** 1234",
-      amount: "$99.00",
-      status: "successful",
-    },
-    {
-      date: "Feb 14,2025",
-      payment_method: "Visa **** 3234",
-      amount: "$129.00",
-      status: "successful",
-    },
-    {
-      date: "Mar 1,2025",
-      payment_method: "Visa **** 1203",
-      amount: "$69.00",
-      status: "successful",
-    },
-  ]);
   return (
-   <div className="pb-6">
-     <div className="shadow-lg p-4 border border-gray-100 rounded-[10px] ">
+    <div className="pb-6">
+      <div className="shadow-lg p-4 border border-gray-100 rounded-[10px]">
         <h2 className="text-black text-base font-bold">Recent Payments</h2>
-        <div className="mt-3.5 space-y-3 -mx-[16px]">
-          <table className="w-full">
-            <thead className="bg-[#8E8E8E1A] bg-opacity-10 text-[#767676] text-xs font-medium uppercase ">
-              <tr className="border-b">
-                <th className="py-3 px-6 text-left">Ticket Title</th>
-                <th className="py-3 px-6 text-left">Status</th>
-                <th className="py-3 px-6 text-left">Last Updated</th>
-                <th className="py-3 px-6 mr-4">Status</th>
-              </tr>
-            </thead>
-            <tbody className="w-full">
-              {payments.map((payment, index) => (
-                <tr
-                  key={index}
-                  className="border-b last:border-none hover:bg-gray-50">
-                  <td className="py-3 px-6 text-black text-xs font-normal">
-                    {payment.date}
-                  </td>
-                  <td className="py-3 px-6 text-sx font-medium ">
-                    {payment.payment_method}
-                  </td>
-                  <td className="py-3 px-6 text-black text-xs font-normal ">
-                    {payment.amount}
-                  </td>
-
-                  <td className="py-3 px-6 text-black text-xs font-medium text-right">
-                    <span className="bg-[#0EBA81] bg-opacity-10 rounded-[22px] text-[#0EBA81] py-1 px-2 mr-1">
-                      {payment.status}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="mt-6 py-8 text-center">
+          <div className="text-gray-500">
+            <svg
+              className="mx-auto h-12 w-12 text-gray-400"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              />
+            </svg>
+            <h3 className="mt-2 text-sm font-medium text-gray-900">No recent payments</h3>
+            <p className="mt-1 text-sm text-gray-500">
+              Your payment history will appear here once you make your first payment.
+            </p>
+          </div>
         </div>
-      
+      </div>
     </div>
-   </div>
   );
 }

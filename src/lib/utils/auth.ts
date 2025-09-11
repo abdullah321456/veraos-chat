@@ -42,4 +42,23 @@ export const authUtils = {
         Cookies.remove(TOKEN_KEY, { path: '/' });
         window.location.href = ROUTES.AUTH.LOGIN;
     },
+
+    // Force logout - clear all storage and redirect
+    forceLogout: () => {
+        // Clear cookies
+        Cookies.remove(TOKEN_KEY, { path: '/' });
+        
+        // Clear localStorage
+        if (typeof window !== 'undefined') {
+            localStorage.clear();
+        }
+        
+        // Clear sessionStorage
+        if (typeof window !== 'undefined') {
+            sessionStorage.clear();
+        }
+        
+        // Redirect to login
+        window.location.href = ROUTES.AUTH.LOGIN;
+    },
 };

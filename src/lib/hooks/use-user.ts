@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { UserData, PasswordUpdateData, UserProfileUpdateRequest } from '../../types/user';
 import { getUserData, updateUserProfile, updateUserPassword } from '../../services/userService';
+import { authUtils } from '../utils/auth';
 import { toast } from 'sonner';
 
 export const useUser = () => {
@@ -35,6 +36,13 @@ export const useUser = () => {
             const data = await getUserData(token);
             console.log('Fetched user data:', data);
             
+            // Check if force logout is required
+            if (data.force_logout === true) {
+                console.log('Force logout detected, clearing storage and redirecting to login');
+                authUtils.forceLogout();
+                return;
+            }
+            
             // Transform the API response to match our UserData interface
             const transformedData: UserData = {
                 _id: data._id,
@@ -57,7 +65,6 @@ export const useUser = () => {
                 postalCode: data.postalCode || '',
                 country: data.country || '',
                 jobTitle: data.jobTitle || '',
-                jobId: data.jobId || '',
                 intendedUse: data.intendedUse || '',
                 dataAccessNeeds: data.dataAccessNeeds || [],
                 documents: data.documents || [],
@@ -66,6 +73,7 @@ export const useUser = () => {
                 __v: data.__v || 0,
                 status: data.status || '',
                 force_update_password: data.force_update_password || false,
+                users: data.users || [],
             };
             
             setUserData(transformedData);
