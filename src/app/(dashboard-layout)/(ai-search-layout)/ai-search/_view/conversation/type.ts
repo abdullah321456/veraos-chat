@@ -97,6 +97,7 @@ export type AIResponseDetail = {
     ETHNICITY:any;
     DOD:any;
     MilitaryService:any;
+    dob_master:any;
 };
 
 export type OnImageSearchHandlerParam = { file?: File; url: string }[];

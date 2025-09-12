@@ -99,6 +99,7 @@ export function IdentificationAndContact({
             ...normalizeMergeResponse(details.voip),
             ...normalizeMergeResponse(details.vets),
             ...normalizeMergeResponse(details.email_master),
+            ...normalizeMergeResponse(details.dob_master),
             ...normalizeMergeResponse(details.criminals),
             ...normalizeMergeResponse(details.criminals_small)
         ];
@@ -115,6 +116,13 @@ export function IdentificationAndContact({
         if (address || city || state) {
             locations.add(`${address || ""} ${city || ""} ${state || ""} ${zip || ""}`);
         }
+
+
+        records.push({PHONE: details.PHONE});
+        records.push({PHONE: details.CELL_PHONE})
+        records.push({PHONE: details.HOME_PHONE})
+        records.push({PHONE: details.PHONE1})
+        records.push({PHONE: details.PHONE2})
 
 
         records.forEach(record => {
@@ -162,6 +170,7 @@ export function IdentificationAndContact({
             ...normalizeMergeResponse(details.voip),
             ...normalizeMergeResponse(details.vets),
             ...normalizeMergeResponse(details.email_master),
+            ...normalizeMergeResponse(details.dob_master),
             ...normalizeMergeResponse(details.criminals),
             ...normalizeMergeResponse(details.criminals_small)
         ];
@@ -194,6 +203,7 @@ export function IdentificationAndContact({
             ...normalizeMergeResponse(details.voip),
             ...normalizeMergeResponse(details.vets),
             ...normalizeMergeResponse(details.email_master),
+            ...normalizeMergeResponse(details.dob_master),
             ...normalizeMergeResponse(details.criminals),
             ...normalizeMergeResponse(details.criminals_small)
         ];
@@ -205,16 +215,34 @@ export function IdentificationAndContact({
 
         records.forEach(record => {
             if (record?.phone || record?.Phone || record?.Phone1 || record?.Phone2
-                || record?.HOMEPHONE || record?.WORKPHONE || record?.CELL || record?.PHONE) {
+                || record?.HOMEPHONE || record?.WORKPHONE || record?.CELL || record?.PHONE
+                || record?.PHONE_1 || record?.PHONE_2 || record?.PHONE_3
+            ) {
                 const phone = record?.phone || record?.Phone || record?.Phone1 || record?.Phone2
+                    || record?.PHONE_1 || record?.PHONE_2 || record?.PHONE_3
                     || record?.HOMEPHONE || record?.WORKPHONE || record?.CELL || record?.PHONE;
-                if (phone) {
-                    phones.add(phone);
+                if (phone && phone.trim() !== '') {
+                    // Normalize phone number by removing all non-digit characters for comparison
+                    const normalizedPhone = phone.replace(/\D/g, '');
+                    if (normalizedPhone.length >= 10) { // Only add if it's a valid phone number length
+                        phones.add(phone);
+                    }
                 }
             }
         });
 
-        return formatPhoneNumbers(Array.from(phones));
+        // Format phone numbers and remove duplicates by normalizing them
+        const formattedPhones = formatPhoneNumbers(Array.from(phones));
+        const uniquePhones = new Set<string>();
+
+        formattedPhones.forEach(phone => {
+            const normalized = phone.replace(/\D/g, '');
+            if (normalized.length >= 10) {
+                uniquePhones.add(phone);
+            }
+        });
+
+        return Array.from(uniquePhones);
     };
 
 
@@ -234,6 +262,7 @@ export function IdentificationAndContact({
             ...normalizeMergeResponse(details.voip),
             ...normalizeMergeResponse(details.vets),
             ...normalizeMergeResponse(details.email_master),
+            ...normalizeMergeResponse(details.dob_master),
             ...normalizeMergeResponse(details.criminals),
             ...normalizeMergeResponse(details.criminals_small)
         ];
@@ -268,6 +297,7 @@ export function IdentificationAndContact({
             ...normalizeMergeResponse(details.voip),
             ...normalizeMergeResponse(details.vets),
             ...normalizeMergeResponse(details.email_master),
+            ...normalizeMergeResponse(details.dob_master),
             ...normalizeMergeResponse(details.criminals),
             ...normalizeMergeResponse(details.criminals_small)
         ];
@@ -330,6 +360,7 @@ export function IdentificationAndContact({
             ...normalizeMergeResponse(details.vets),
             ...normalizeMergeResponse(details.email_master),
             ...normalizeMergeResponse(details.criminals),
+            ...normalizeMergeResponse(details.dob_master),
             ...normalizeMergeResponse(details.criminals_small)
         ];
 
