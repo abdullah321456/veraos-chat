@@ -74,10 +74,11 @@ const groupConversationsByDate = (conversations: InboxNavigationData[]): Grouped
 type Props = {
   isExpanded: IsExpandedType;
   lastMessage: { chatId: string; message: string } | null;
+  newChatId: string | null;
 };
 
 
-export function Sidebar({ isExpanded, lastMessage }: Props) {
+export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
   const { isExpanded: isExpandedState } = useSidebarExpand(isExpanded);
   const IS_SIDEBAR_EXPANDED = getIsSidebarExpandedOnClient(isExpanded, isExpandedState);
   const { isSelectable, setIsSelectable, selectedIds } = useConversationSidebarSelectionState();
@@ -223,6 +224,9 @@ export function Sidebar({ isExpanded, lastMessage }: Props) {
       setIsDeleting(true);
       await apiService.deleteData('/chat', { chatIds: selectedIds });
 
+      // Check if all chats are being deleted
+      const willDeleteAllChats = selectedIds.length === conversations.length;
+
       // Remove deleted conversations from the UI
       setConversations(prevConversations =>
           prevConversations.filter(conv => !selectedIds.includes(conv.id))
@@ -234,6 +238,12 @@ export function Sidebar({ isExpanded, lastMessage }: Props) {
       if (selectedIds.includes(queryParams.chatId)) {
         setQueryParams({ chatId: undefined });
       }
+
+      // If all chats were deleted, automatically create a new chat
+      if (willDeleteAllChats) {
+        console.log('All chats deleted - creating new chat automatically');
+        await handleNewChat(true); // Pass true to indicate this is a manual action
+      }
     } catch (error) {
       console.error('Error deleting chats:', error);
     } finally {
@@ -242,6 +252,22 @@ export function Sidebar({ isExpanded, lastMessage }: Props) {
   };
 
   const groupedConversations = groupConversationsByDate(JSON.parse(JSON.stringify(conversations)));
+
+  // Handle new chat from external component (like + button)
+  useEffect(() => {
+    if (newChatId) {
+      console.log('New chat created externally, adding to sidebar:', newChatId);
+      const newChat: InboxNavigationData = {
+        id: newChatId,
+        title: 'New Chat',
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        timestamp: new Date().toISOString(),
+        description: 'Start a new conversation',
+      };
+      
+      setConversations(prev => [newChat, ...prev]);
+    }
+  }, [newChatId]);
 
   // Debug: Log conversations whenever they change
   useEffect(() => {

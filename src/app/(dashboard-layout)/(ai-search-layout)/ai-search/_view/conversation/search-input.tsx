@@ -3,7 +3,7 @@
 import { Input } from '@/components/atom/form-elements/input';
 import { fileToBase64 } from '@/lib/utils/file-to-base64';
 import { trackAISearch } from '@/lib/gtag';
-import { Send } from 'lucide-react';
+import { Send, Plus } from 'lucide-react';
 import { SVGProps, TransitionStartFunction, useState } from 'react';
 import { toast } from 'sonner';
 import { OnImageSearchHandlerParam } from './type';
@@ -12,10 +12,11 @@ type Props = {
   defaultValue?: string;
   onTextSearch?: (text: string) => void;
   onImageSearch?: (files: OnImageSearchHandlerParam) => void;
+  onNewChat?: () => void;
   startTransition?: TransitionStartFunction;
 };
 
-export function SearchInput({ onTextSearch, onImageSearch, startTransition, defaultValue }: Props) {
+export function SearchInput({ onTextSearch, onImageSearch, onNewChat, startTransition, defaultValue }: Props) {
   const [searchValue, setSearchValue] = useState(defaultValue || '');
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -51,7 +52,7 @@ export function SearchInput({ onTextSearch, onImageSearch, startTransition, defa
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex justify-between">
+    <form onSubmit={handleSubmit} className="flex justify-between gap-2">
       <Input
         prefix={
           <label htmlFor="file" className="text-gray-500 cursor-pointer">
@@ -63,14 +64,22 @@ export function SearchInput({ onTextSearch, onImageSearch, startTransition, defa
         value={searchValue}
         onChange={(e) => setSearchValue(e.target.value)}
         placeholder="Ask me anything.... "
-        className="w-[calc(100%-64px)] "
+        className="w-[calc(100%-140px)]"
         inputClassName="h-12 bg-gray-100"
       />
       <button
         type="submit"
-        className="min-w-12 max-w-12 aspect-square bg-primary text-white p-2 rounded-full hover:bg-primary-dark duration-300"
+        className="min-w-14 max-w-14 aspect-square bg-primary text-white p-3 rounded-full hover:bg-primary-dark duration-300 flex items-center justify-center"
       >
-        <Send className="w-5 relative -right-1" />
+        <Send className="w-6" />
+      </button>
+      <button
+        type="button"
+        onClick={onNewChat}
+        className="min-w-14 max-w-14 aspect-square bg-white border-4 border-primary text-primary p-3 rounded-full hover:bg-primary hover:text-white duration-300 flex items-center justify-center"
+        title="Create new chat"
+      >
+        <Plus className="w-6" />
       </button>
     </form>
   );

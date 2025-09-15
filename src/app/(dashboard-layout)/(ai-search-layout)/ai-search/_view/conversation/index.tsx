@@ -1,6 +1,6 @@
 'use client';
 
-import {useRef, useState, useTransition, useEffect} from 'react';
+import React, {useRef, useState, useTransition, useEffect} from 'react';
 import {SearchInput} from './search-input';
 import {SingleConversation} from './single-conversation';
 import {AIResponseDetail, ConversationData, OnImageSearchHandlerParam, SenderOption} from './type';
@@ -11,6 +11,9 @@ import { useMessageContext } from '@/app/(dashboard-layout)/(ai-search-layout)/c
 import { toast } from 'sonner';
 import { useModal } from '@/components/modal-views/use-modal';
 import { Button } from '@/components/atom/button';
+import { useUser } from '@/lib/hooks/use-user';
+import { useRouter } from 'next/navigation';
+import { ROUTES } from '@/config/routes';
 
 interface ApiMessage {
     _id: string;
@@ -355,8 +358,10 @@ export function Conversation() {
     const searchParams = useSearchParams();
     const chatId = searchParams.get('chatId');
     const { setQueryParams } = useQueryParams();
-    const { onNewMessage } = useMessageContext();
+    const { onNewMessage, onNewChat } = useMessageContext();
     const { openModal } = useModal();
+    const { userData } = useUser();
+    const router = useRouter();
 
     const handleTermsClick = () => {
         openModal({
@@ -365,25 +370,77 @@ export function Conversation() {
         });
     };
 
+    const handleNewChat = async () => {
+        try {
+            console.log('Creating new chat from search input...');
+            const response = await apiService.postData('/chat', {});
+            const newChatId = response.data._id;
+            console.log('New chat created with ID:', newChatId);
+            
+            // Notify sidebar about the new chat
+            onNewChat(newChatId);
+            
+            // Clear current messages to show fresh start
+            setMessages([{
+                msg: "Welcome to Overwatch. Begin your search using natural language—Overwatch understands context, not just keywords. If this is your first time using Overwatch say \"Tin Man Help Me\".",
+                sender: SenderOption.ai,
+                cta: false
+            }]);
+            
+            // Navigate to the new chat
+            router.push(`${ROUTES.AI_SEARCH.INDEX}?chatId=${newChatId}`);
+        } catch (error) {
+            console.error('Error creating new chat:', error);
+            toast.error('Failed to create new chat');
+        }
+    };
+
     const fetchMessages = async (id: string) => {
         setIsLoading(true);
         try {
             const response = await apiService.getData(`/chat/${id}/messages`);
-            const mappedMessages = response.data.map((msg: ApiMessage) => ({
-                msg: msg.message,
-                sender: msg.sender === 'me' ? SenderOption.me : SenderOption.ai,
-                cta: msg.cta,
-                responseDetails: msg.responseDetails ? JSON.parse(msg.responseDetails).map((detail: any) => ({
-                    ...detail,
-                    message: msg.message
-                })) : undefined
-            }))
+            const mappedMessages = response.data.map((msg: ApiMessage) => {
+                return {
+                    msg: msg.message,
+                    sender: msg.sender === 'me' ? SenderOption.me : SenderOption.ai,
+                    cta: msg.cta,
+                    responseDetails: msg.responseDetails ? JSON.parse(msg.responseDetails).map((detail: any) => ({
+                        ...detail,
+                        message: msg.message
+                    })) : undefined
+                };
+            });
+
+            // Check for "Tin Man Help Me" messages and add static responses
+            const messagesWithHelpResponses: ConversationData[] = [];
+            for (let i = 0; i < mappedMessages.length; i++) {
+                const msg = mappedMessages[i];
+                messagesWithHelpResponses.push(msg);
+                
+                // If this is a user message saying "Tin Man Help Me", add the static response
+                if (msg.sender === SenderOption.me && typeof msg.msg === 'string' && msg.msg.toLowerCase().trim() === "tin man help me") {
+                    const firstName = userData?.firstName || "User";
+                    const helpText = "Hello, [First Name from account setup]!\n\nHere's how you can search using natural language:\n\n• Find Jodi Arias in California; she's in her 40s.\n• Find Yarly Reyes he has brown eyes.\n• Whose phone number is (727) 504-2129?\n• Find Ghislaine Maxwell; she owns a Cadillac.\n• Whose email address is DonaldTrump@hotmail.com?\n• Who lives at 523 Covena Ave, Modesto, CA 95354?\n• Whose IP address is 152.72.121.172?\n\nYou can also start simple, then add more details step-by-step:\n\nSearch for Joshua Jones\n(Results appear then add additional context)\nLimit to Delray Beach, Florida.\n\nYou can add further context at anytime.\n\nWhen you're ready to do a new search simply press the create new chat button.";
+                    const processedHelpText = helpText.replace("[First Name from account setup]", firstName);
+                    
+                    messagesWithHelpResponses.push({
+                        msg: (
+                            <div className="whitespace-pre-line">
+                                {processedHelpText}
+                            </div>
+                        ),
+                        sender: SenderOption.ai,
+                        cta: false,
+                        responseDetails: undefined
+                    });
+                }
+            }
 
             setMessages([{
-                msg: "Welcome to Overwatch.\nBegin your search using natural language—Overwatch understands context, not just keywords.",
+                msg: "Welcome to Overwatch. Begin your search using natural language—Overwatch understands context, not just keywords. If this is your first time using Overwatch say \"Tin Man Help Me\".",
                 sender: SenderOption.ai,
                 cta: false
-            }, ...mappedMessages]);
+            }, ...messagesWithHelpResponses]);
             // Scroll to bottom only on initial load
             setTimeout(() => {
                 if (scrollRef.current) {
@@ -430,6 +487,7 @@ export function Conversation() {
                 }
             }, 10);
 
+
             // Add loading message with animation
             setMessages((prev) => [...prev, { msg: <div className="flex items-center gap-1"><LoadingDots /></div>, sender: SenderOption.ai, cta: false }]);
             // Scroll after adding loading response
@@ -452,17 +510,35 @@ export function Conversation() {
                 previousText = `${previousText} ${value}`;
             }
 
+            // Check if user typed "Tin Man Help Me" and replace with static response
+            let responseMessage: string | React.ReactNode = searchResponse.data.message;
+            let responseDetails = searchResponse.data?.hits ? searchResponse.data.hits.map((hit: any) => ({
+                ...hit,
+                message: searchResponse.data.message
+            })) : undefined;
+
+            if (value.toLowerCase().trim() === "tin man help me") {
+                const firstName = userData?.firstName || "User";
+                const helpText = "Hello, [First Name from account setup]!\n\nHere's how you can search using natural language:\n\n• Find Jodi Arias in California; she's in her 40s.\n• Find Yarly Reyes he has brown eyes.\n• Whose phone number is (727) 504-2129?\n• Find Ghislaine Maxwell; she owns a Cadillac.\n• Whose email address is DonaldTrump@hotmail.com?\n• Who lives at 523 Covena Ave, Modesto, CA 95354?\n• Whose IP address is 152.72.121.172?\n\nYou can also start simple, then add more details step-by-step:\n\nSearch for Joshua Jones\n(Results appear then add additional context)\nLimit to Delray Beach, Florida.\n\nYou can add further context at anytime.\n\nWhen you're ready to do a new search simply press the create new chat button.";
+                const processedHelpText = helpText.replace("[First Name from account setup]", firstName);
+                
+                // Convert line breaks to JSX elements for proper rendering
+                responseMessage = (
+                    <div className="whitespace-pre-line">
+                        {processedHelpText}
+                    </div>
+                );
+                responseDetails = undefined; // No response details for help message
+            }
+
             // Replace loading message with actual response
             setMessages((prev) => [
                 ...prev.slice(0, -1), // Remove the loading message
                 {
-                    msg: searchResponse.data.message,
+                    msg: responseMessage,
                     sender: SenderOption.ai,
                     cta: false,
-                    responseDetails: searchResponse.data?.hits ? searchResponse.data.hits.map((hit: any) => ({
-                        ...hit,
-                        message: searchResponse.data.message
-                    })) : undefined
+                    responseDetails: responseDetails
                 }
             ]);
 
@@ -529,7 +605,7 @@ export function Conversation() {
             </div>
             <div>
                 <SearchInput onTextSearch={addMessage} startTransition={startImgInputTransition}
-                             onImageSearch={handleImageSearch}/>
+                             onImageSearch={handleImageSearch} onNewChat={handleNewChat}/>
                 <p className="pt-4 text-xs text-gray-500 font-medium">
                     By using Veraos, you agree to abide by our terms of use and acceptable use cases.&nbsp;
                     <button

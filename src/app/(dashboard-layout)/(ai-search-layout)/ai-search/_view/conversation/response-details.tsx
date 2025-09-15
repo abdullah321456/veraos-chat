@@ -157,7 +157,6 @@ function SingleDetails(props: AIResponseDetail) {
     };
 
     const getPhoneCount = () => {
-        const phones = new Set<string>();
         const records = [
             ...normalizeMergeResponse(props.education),
             ...normalizeMergeResponse(props.rv),
@@ -173,6 +172,8 @@ function SingleDetails(props: AIResponseDetail) {
             ...normalizeMergeResponse(props.email_master),
             ...normalizeMergeResponse(props.criminals),
             ...normalizeMergeResponse(props.criminals_small)
+
+
         ];
 
         records.push({PHONE: props.PHONE});
@@ -181,21 +182,9 @@ function SingleDetails(props: AIResponseDetail) {
         records.push({PHONE: props.PHONE1})
         records.push({PHONE: props.PHONE2})
 
-        records.forEach(record => {
-            if (record?.phone || record?.Phone || record?.Phone1 || record?.Phone2
-                || record?.PHONE_1 || record?.PHONE_2 || record?.PHONE_3
-                || record?.HOMEPHONE || record?.WORKPHONE || record?.CELL || record?.PHONE
-            ) {
-                const phone = record?.phone || record?.Phone || record?.Phone1 || record?.Phone2
-                    || record?.PHONE_1 || record?.PHONE_2 || record?.PHONE_3
-                    || record?.HOMEPHONE || record?.WORKPHONE || record?.CELL || record?.PHONE;
-                if (phone && phone.trim() !== '') {
-                    phones.add(phone);
-                }
-            }
-        });
-
-        return phones.size;
+        return records.filter(record => (record?.phone || record?.Phone || record?.Phone1 || record?.Phone2
+            || record?.PHONE_1 || record?.PHONE_2 || record?.PHONE_3
+            || record?.HOMEPHONE || record?.WORKPHONE || record?.CELL || record?.PHONE || "").length > 0).length;
     };
 
     async function handleFullReport(props: AIResponseDetail) {

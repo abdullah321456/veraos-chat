@@ -6,6 +6,7 @@ import { IsExpandedType } from '@/lib/hooks/use-sidebar-expand';
 
 interface MessageContextType {
   onNewMessage: (message: { chatId: string; message: string }) => void;
+  onNewChat: (chatId: string) => void;
 }
 
 const MessageContext = createContext<MessageContextType | undefined>(undefined);
@@ -25,15 +26,20 @@ interface ClientLayoutProps {
 
 export function ClientLayout({ children, isExpanded }: ClientLayoutProps) {
   const [lastMessage, setLastMessage] = useState<{ chatId: string; message: string } | null>(null);
+  const [newChatId, setNewChatId] = useState<string | null>(null);
 
   const onNewMessage = (message: { chatId: string; message: string }) => {
     setLastMessage(message);
   };
 
+  const onNewChat = (chatId: string) => {
+    setNewChatId(chatId);
+  };
+
   return (
-    <MessageContext.Provider value={{ onNewMessage }}>
+    <MessageContext.Provider value={{ onNewMessage, onNewChat }}>
       <div>
-        <Sidebar isExpanded={isExpanded} lastMessage={lastMessage} />
+        <Sidebar isExpanded={isExpanded} lastMessage={lastMessage} newChatId={newChatId} />
         {children}
       </div>
     </MessageContext.Provider>

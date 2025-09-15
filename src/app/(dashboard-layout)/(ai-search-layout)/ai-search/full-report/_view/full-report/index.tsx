@@ -281,7 +281,6 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
                 <PersonalAppearanceProfile isEditable={editable} isDrawer={isDrawer} details={localDetails}/>
                 <IdentificationAndContact isEditable={editable} isDrawer={isDrawer} details={localDetails}/>
                 <DeviceInfo isEditable={editable} isDrawer={isDrawer} details={localDetails}/>
-                 <AssociationsConnection isEditable={editable} isDrawer={isDrawer} details={localDetails}/>
                 {/* <CitizenesAbroad isEditable={editable}/> */}
                 <VehicleOwnership isEditable={editable} isDrawer={isDrawer} details={localDetails}/>
                 {/*<Employment isEditable={editable} isDrawer={isDrawer}/>*/}
@@ -296,6 +295,7 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
                 ) && (
                   <CriminalAndLegal isEditable={editable} isDrawer={isDrawer} details={localDetails} />
                 )}
+                <AssociationsConnection isEditable={editable} isDrawer={isDrawer} details={localDetails}/>
                 {/*<HighRisk isEditable={editable} isDrawer={isDrawer}/>*/}
                 {/*<GeospatialTrace isEditable={editable} isDrawer={isDrawer}/>*/}
                 {/* <AiDriven isEditable={editable} isDrawer={isDrawer}/> */}
