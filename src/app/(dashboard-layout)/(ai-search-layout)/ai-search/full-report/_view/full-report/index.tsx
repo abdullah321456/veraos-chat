@@ -173,7 +173,7 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
             containerClassName: ConfirmModal.containerClassName,
         });
     }
-    console.log("report message = ",details)
+    console.log("report message111 = ",localDetails)
 
     return (
         <div className={cn('p-6 border border-gray-50 rounded-[10px] w-full mx-auto mr-3', isDrawer && 'p-4 mr-0')}>
@@ -197,8 +197,15 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
 
             <div className={cn('flex justify-between mt-4', isDrawer && 'mt-0')}>
                 <div className="flex gap-6 items-center">
-                    <Image src="/men.png" alt="men" width={124} height={124}
-                           className={cn('w-[124px] aspect-square h-auto', isDrawer && 'w-24')}/>
+                    <Image 
+                        src={localDetails?.PhotoName ||
+                            (localDetails?.criminals && localDetails?.criminals.length>0 && localDetails?.criminals[0].PhotoName)
+                            || "/men.png"}
+                        alt="men" 
+                        width={124} 
+                        height={124}
+                        className={cn('w-[124px] aspect-square h-auto rounded-full', isDrawer && 'w-24')}
+                    />
                     <div>
                         <h1 className="text-black text-lg font-bold leading-6">{`${toEnhancedTitleCase(localDetails?.FIRST || '')} ${toEnhancedTitleCase(localDetails?.MID || '')} ${toEnhancedTitleCase(localDetails?.LAST || '')}`.trim() || 'N/A'}</h1>
                         <div className="flex items-start gap-2">
@@ -292,9 +299,35 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
                 {((localDetails as any)?._index === 'criminals' || (localDetails as any)?._index === 'criminals_small'
                      || ((localDetails as any)?._index === 'vets' && localDetails?.VETERAN==='Y')
                     || ((localDetails as any)?._index === 'drunk-drivings' && localDetails?.ACCIDENTS==='Y')
+                    || ((localDetails as any).criminals && (localDetails as any).criminals.length>0)
                 ) && (
                   <CriminalAndLegal isEditable={editable} isDrawer={isDrawer} details={localDetails} />
                 )}
+                
+                {/* Social Media Accounts Section */}
+                {localDetails?.SOCIAL_LINK && Array.isArray(localDetails.SOCIAL_LINK) && localDetails.SOCIAL_LINK.length > 0 && (
+                    <div className="bg-white border border-gray-200 rounded-lg p-4">
+                        <h3 className="text-lg font-semibold text-gray-900 mb-4">Social Media Accounts</h3>
+                        <div className="grid grid-cols-1 gap-3">
+                            {localDetails.SOCIAL_LINK.map((link: string, index: number) => (
+                                <div key={index} className="flex items-center p-3 bg-gray-50 rounded-lg border">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                                            <svg className="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <p className="text-sm font-medium text-gray-900">Facebook Profile</p>
+                                            <p className="text-xs text-gray-500 truncate max-w-xs">{link}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+                
                 <AssociationsConnection isEditable={editable} isDrawer={isDrawer} details={localDetails}/>
                 {/*<HighRisk isEditable={editable} isDrawer={isDrawer}/>*/}
                 {/*<GeospatialTrace isEditable={editable} isDrawer={isDrawer}/>*/}

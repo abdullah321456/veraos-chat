@@ -84,6 +84,16 @@ export function IdentificationAndContact({
 
     const getLocations = () => {
         if (!details) return [];
+
+        if(details.Known_Addresses){
+            return details.Known_Addresses
+        }
+
+
+        if(details.criminals && details.criminals.length>0 && details.criminals[0].Known_Addresses){
+            return details.criminals[0].Known_Addresses
+        }
+
         const locations = new Set<string>();
         const records = [
             details,
@@ -156,6 +166,12 @@ export function IdentificationAndContact({
 
     const getEmails = () => {
         if (!details) return [];
+
+        if(details.Know_Emails){
+            return details.Know_Emails
+        }
+
+
         const emails = new Set<string>();
         const records = [
             ...normalizeMergeResponse(details.education),
@@ -189,6 +205,16 @@ export function IdentificationAndContact({
 
     const getPhones = () => {
         if (!details) return [];
+
+        if(details.Known_PHONE){
+            return details.Known_PHONE
+        }
+
+
+        if(details.criminals && details.criminals.length>0 && details.criminals[0].Known_PHONE){
+            return details.criminals[0].Known_PHONE
+        }
+
         const phones = new Set<string>();
         const records = [
             ...normalizeMergeResponse(details.education),
@@ -221,28 +247,13 @@ export function IdentificationAndContact({
                 const phone = record?.phone || record?.Phone || record?.Phone1 || record?.Phone2
                     || record?.PHONE_1 || record?.PHONE_2 || record?.PHONE_3
                     || record?.HOMEPHONE || record?.WORKPHONE || record?.CELL || record?.PHONE;
-                if (phone && phone.trim() !== '') {
-                    // Normalize phone number by removing all non-digit characters for comparison
-                    const normalizedPhone = phone.replace(/\D/g, '');
-                    if (normalizedPhone.length >= 10) { // Only add if it's a valid phone number length
-                        phones.add(phone);
-                    }
-                }
+                phones.add(phone);
             }
         });
 
         // Format phone numbers and remove duplicates by normalizing them
         const formattedPhones = formatPhoneNumbers(Array.from(phones));
-        const uniquePhones = new Set<string>();
-
-        formattedPhones.forEach(phone => {
-            const normalized = phone.replace(/\D/g, '');
-            if (normalized.length >= 10) {
-                uniquePhones.add(phone);
-            }
-        });
-
-        return Array.from(uniquePhones);
+        return Array.from(formattedPhones);
     };
 
 
@@ -333,6 +344,11 @@ export function IdentificationAndContact({
 
     const getIpAddresses = () => {
         if (!details) return [];
+
+        if(details.Known_IPAddresses){
+            return details.Known_IPAddresses
+        }
+
         const ipAddresses = new Set<string>();
 
         // Get IP addresses from drunk_drivings.IP

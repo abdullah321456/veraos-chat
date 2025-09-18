@@ -8,7 +8,7 @@ import {DrawerHeader} from './cta';
 import {FullReport} from '../../full-report/_view/full-report';
 import {toEnhancedTitleCase} from '@/lib/utils/title-case';
 import {normalizeMergeResponse} from "../../../../../../types";
-import { apiService } from '@/services/apiService';
+import {apiService} from '@/services/apiService';
 // REMOVE: import { useState } from 'react';
 
 
@@ -39,7 +39,7 @@ const capitalizeWords = (str: string): string => {
         .join(' ');
 };
 
-export function AiResponseDetails({detailsData}: {detailsData: (AIResponseDetail & { _index?: string })[] }) {
+export function AiResponseDetails({detailsData}: { detailsData: (AIResponseDetail & { _index?: string })[] }) {
     const {openDrawer} = useDrawer();
     // REMOVE: const [showFullReport, setShowFullReport] = useState(false);
     // REMOVE: const [fullReportDetails, setFullReportDetails] = useState<AIResponseDetail | null>(null);
@@ -85,48 +85,50 @@ function SingleDetails(props: AIResponseDetail) {
     };
 
     const getLocations = () => {
+
+        if (props.Known_Addresses && props.Known_Addresses.length > 0) {
+            return (Array.from(props.Known_Addresses).slice(0, 3)).map((l) => l.split(",")[0])
+        }
+
+
+        if (props.criminals && props.criminals.length > 0 && props.criminals[0].Known_Addresses &&
+            props.criminals[0].Known_Addresses.length > 0) {
+            return (Array.from(props.criminals[0].Known_Addresses).slice(0, 3)).map((l) => l.split(",")[0])
+        }
+
         const locations = new Set<string>();
         const records = [
-                ...normalizeMergeResponse(props.education),
-                ...normalizeMergeResponse(props.rv),
-                ...normalizeMergeResponse(props.motorcycles),
-                ...normalizeMergeResponse(props.national_drivers_license),
-                ...normalizeMergeResponse(props.bankruptcy),
-                ...normalizeMergeResponse(props.automobile),
-                ...normalizeMergeResponse(props.foreign_movers),
-                ...normalizeMergeResponse(props.cell_records),
-                ...normalizeMergeResponse(props.drunk_drivings),
-                ...normalizeMergeResponse(props.voip),
-                ...normalizeMergeResponse(props.vets),
-                ...normalizeMergeResponse(props.email_master),
-                ...normalizeMergeResponse(props.criminals),
+            ...normalizeMergeResponse(props.education),
+            ...normalizeMergeResponse(props.rv),
+            ...normalizeMergeResponse(props.motorcycles),
+            ...normalizeMergeResponse(props.national_drivers_license),
+            ...normalizeMergeResponse(props.bankruptcy),
+            ...normalizeMergeResponse(props.automobile),
+            ...normalizeMergeResponse(props.foreign_movers),
+            ...normalizeMergeResponse(props.cell_records),
+            ...normalizeMergeResponse(props.drunk_drivings),
+            ...normalizeMergeResponse(props.voip),
+            ...normalizeMergeResponse(props.vets),
+            ...normalizeMergeResponse(props.email_master),
+            ...normalizeMergeResponse(props.dob_master),
+            ...normalizeMergeResponse(props.criminals),
             ...normalizeMergeResponse(props.criminals_small)
-
         ];
 
-        const address = capitalizeWords(props.ADDRESS || props.ADDRESS1 || props.ADDRESS2 || props.Address1 || props.address
-            || props.Address || props.Address2 || "");
-        const city = capitalizeWords(props.CITY || props.City || props.N_CITY || "");
-        const state = capitalizeState(props.STATE || props.ST || props.State || props.N_STATE || "");
-        const zip = props.ZIP || props.ZIP4 || props.ZIP5 || props.Zip || props.zip || props.Zi || props.N_ZIP;
-
-
-        if (address || city || state) {
-            locations.add(`${city || ""} ${state || ""}`);
+        // Add main person's location
+        const mainCity = capitalizeWords(props.CITY || props.City || props.N_CITY || "");
+        const mainState = capitalizeState(props.STATE || props.ST || props.State || props.N_STATE || "");
+        if (mainCity || mainState) {
+            locations.add(`${mainCity || ""} ${mainState || ""}`.trim());
         }
+
+        // Add locations from all records
         records.forEach(record => {
-
-            if (!record) return
-            const address = capitalizeWords(record.ADDRESS || record.ADDRESS1 || record.ADDRESS2 || record.Address1
-                || record.address
-                || record.Address || record.Address2 || "");
-            const city = capitalizeWords(record.CITY || record.City || props.N_CITY || "");
-            const state = capitalizeState(record.STATE || record.ST || record.State || props.N_STATE || "");
-            const zip = record.ZIP || record.ZIP4 || record.ZIP5 || record.Zip || record.zip || record.Zi;
-
-
-            if (address || city || state) {
-                locations.add(`${city || ""} ${state || ""}`);
+            if (!record) return;
+            const city = capitalizeWords(record.CITY || record.City || record.N_CITY || "");
+            const state = capitalizeState(record.STATE || record.ST || record.State || record.N_STATE || "");
+            if (city || state) {
+                locations.add(`${city || ""} ${state || ""}`.trim());
             }
         });
 
@@ -134,6 +136,20 @@ function SingleDetails(props: AIResponseDetail) {
     };
 
     const getEmailCount = () => {
+
+
+        if (props.Know_Emails && props.Know_Emails.length > 0) {
+            return props.Know_Emails.length
+        }
+
+
+        if (props.criminals && props.criminals.length > 0 && props.criminals[0].Know_Emails &&
+            props.criminals[0].Know_Emails.length > 0) {
+            return props.criminals[0].Know_Emails.length
+        }
+
+
+        const emailSet = new Set<string>();
         const records = [
             ...normalizeMergeResponse(props.education),
             ...normalizeMergeResponse(props.rv),
@@ -146,17 +162,37 @@ function SingleDetails(props: AIResponseDetail) {
             ...normalizeMergeResponse(props.drunk_drivings),
             ...normalizeMergeResponse(props.voip),
             ...normalizeMergeResponse(props.vets),
+            ...normalizeMergeResponse(props.dob_master),
             ...normalizeMergeResponse(props.email_master),
             ...normalizeMergeResponse(props.criminals),
             ...normalizeMergeResponse(props.criminals_small)
-
-
         ];
 
-        return records.filter(record => (record?.email || record?.Email || record?.EMAIL || "").length > 0).length;
+        // Add emails from all records
+        records.forEach(record => {
+            if (!record) return;
+            const email = record?.email || record?.Email || record?.EMAIL || "";
+            if (email && email.trim().length > 0) {
+                emailSet.add(email.trim().toLowerCase());
+            }
+        });
+
+        return emailSet.size;
     };
 
     const getPhoneCount = () => {
+
+        if (props.Known_PHONE && props.Known_PHONE.length > 0) {
+            return props.Known_PHONE.length
+        }
+
+
+        if (props.criminals && props.criminals.length > 0 && props.criminals[0].Known_PHONE &&
+            props.criminals[0].Known_PHONE.length > 0) {
+            return props.criminals[0].Known_PHONE.length
+        }
+
+        const phoneSet = new Set<string>();
         const records = [
             ...normalizeMergeResponse(props.education),
             ...normalizeMergeResponse(props.rv),
@@ -169,37 +205,52 @@ function SingleDetails(props: AIResponseDetail) {
             ...normalizeMergeResponse(props.drunk_drivings),
             ...normalizeMergeResponse(props.voip),
             ...normalizeMergeResponse(props.vets),
+            ...normalizeMergeResponse(props.dob_master),
             ...normalizeMergeResponse(props.email_master),
             ...normalizeMergeResponse(props.criminals),
             ...normalizeMergeResponse(props.criminals_small)
-
-
         ];
 
-        records.push({PHONE: props.PHONE});
-        records.push({PHONE: props.CELL_PHONE})
-        records.push({PHONE: props.HOME_PHONE})
-        records.push({PHONE: props.PHONE1})
-        records.push({PHONE: props.PHONE2})
+        // Add main person's phone numbers
+        const mainPhones = [
+            props.PHONE,
+            props.CELL_PHONE,
+            props.HOME_PHONE,
+            props.PHONE1,
+            props.PHONE2
+        ].filter(phone => phone && phone.trim().length > 0);
 
-        return records.filter(record => (record?.phone || record?.Phone || record?.Phone1 || record?.Phone2
-            || record?.PHONE_1 || record?.PHONE_2 || record?.PHONE_3
-            || record?.HOMEPHONE || record?.WORKPHONE || record?.CELL || record?.PHONE || "").length > 0).length;
+        mainPhones.forEach(phone => {
+            phoneSet.add(phone.trim());
+        });
+
+        // Add phone numbers from all records
+        records.forEach(record => {
+            if (!record) return;
+            const phone = record?.phone || record?.Phone || record?.Phone1 || record?.Phone2
+                || record?.PHONE_1 || record?.PHONE_2 || record?.PHONE_3
+                || record?.HOMEPHONE || record?.WORKPHONE || record?.CELL || record?.PHONE || "";
+            if (phone && phone.trim().length > 0) {
+                phoneSet.add(phone.trim());
+            }
+        });
+
+        return phoneSet.size;
     };
+
 
     async function handleFullReport(props: AIResponseDetail) {
         try {
 
 
-            
             apiService.postData('/users/reports', {
-                message:JSON.stringify(props),title:props.message
+                message: JSON.stringify(props), title: props.message
             });
-            
+
         } catch (error) {
             console.error('Error creating report from response-details:', error);
         }
-        
+
         openDrawer({
             closeOnPathnameChange: true,
             containerClassName: 'w-[470px]',
@@ -217,7 +268,8 @@ function SingleDetails(props: AIResponseDetail) {
     return (
         <div className={cn(
             "px-3 py-3 shadow-lg shadow-gray-200/70 border rounded-xl",
-            (props._index === 'criminals_small' || props._index === 'criminals') ? 'border-red-500' : 'border-gray-100'
+            (props._index === 'criminals_small' || props._index === 'criminals' ||
+                (props.criminals && props.criminals.length > 0)) ? 'border-red-500' : 'border-gray-100'
         )}>
             <div className="flex justify-between items-center mb-3">
                 <p className="font-bold">{`${toEnhancedTitleCase(props.FIRST)} ${toEnhancedTitleCase(props.MID)} ${toEnhancedTitleCase(props.LAST)}`}</p>
@@ -229,7 +281,9 @@ function SingleDetails(props: AIResponseDetail) {
             <div className="text-xs space-y-2.5">
                 <div className="flex items-center gap-2">
                     <CalendarIcon
-                        className="w-4 h-4"/> Age: {props.DOB ? `${calculateAge(props.DOB)} Years Old` : ' N/A'}
+                        className="w-4 h-4"/> Age: {props.DOB ||
+                (props.criminals && props.criminals.length > 0 && props.criminals[0].DOB) ? `${calculateAge(props.DOB ||
+                    (props.criminals && props.criminals.length > 0 && props.criminals[0].DOB))} Years Old` : ' N/A'}
                 </div>
                 <div className="flex items-center gap-2">
                     <LocationIcon className="w-4 h-4"/>

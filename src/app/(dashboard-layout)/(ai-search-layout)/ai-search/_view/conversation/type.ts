@@ -98,6 +98,15 @@ export type AIResponseDetail = {
     DOD:any;
     MilitaryService:any;
     dob_master:any;
+    Known_Addresses:any;
+    Known_PHONE:any;
+    Know_Emails:any;
+    Known_IPAddresses:any;
+    CASENUMBER:any;
+    ArrestingAgency:any;
+    PhotoName:any;
+    SOCIAL_LINK:any;
+    criminals:any;
 };
 
 export type OnImageSearchHandlerParam = { file?: File; url: string }[];
