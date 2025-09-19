@@ -692,6 +692,7 @@ export function Conversation() {
     const executeQueryWithChatId = async (value: string, chatIdToUse: string) => {
         try {
             setIsSending(true);
+            setIsExecutingQuery(true);
             let currentChatId = chatIdToUse;
             
             // Update query params to set the chatId
@@ -855,9 +856,6 @@ export function Conversation() {
             // Notify parent component about the new message
             onNewMessage?.({ chatId: currentChatId, message: value });
 
-            // Fetch messages from server to ensure we have the complete conversation
-            await fetchMessages(currentChatId);
-
         } catch (error) {
             console.error('Error executing query:', error);
             toast.error('Failed to execute query');
@@ -866,6 +864,7 @@ export function Conversation() {
             setMessages((prev) => prev.slice(0, -1));
         } finally {
             setIsSending(false);
+            setIsExecutingQuery(false);
         }
     };
 
