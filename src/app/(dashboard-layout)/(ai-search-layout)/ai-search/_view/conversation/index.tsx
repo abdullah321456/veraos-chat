@@ -350,6 +350,16 @@ function TermsOfUseModal() {
 }
 
 export function Conversation() {
+    // Helper function to check if the query is asking for help
+    const isHelpQuery = (query: string): boolean => {
+        const normalizedQuery = query.toLowerCase().trim();
+        return normalizedQuery.includes('tin man') || 
+               normalizedQuery.includes('tinman') ||
+               normalizedQuery.includes('help me') || 
+               normalizedQuery === 'help' ||
+               normalizedQuery === 'tin man help me';
+    };
+
     const [messages, setMessages] = useState<ConversationData[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [isSending, setIsSending] = useState(false);
@@ -484,8 +494,8 @@ export function Conversation() {
                 const msg = mappedMessages[i];
                 messagesWithHelpResponses.push(msg);
                 
-                // If this is a user message saying "<strong>Tin Man Help Me</strong>", add the static response
-                if (msg.sender === SenderOption.me && typeof msg.msg === 'string' && msg.msg.toLowerCase().trim() === "tin man help me") {
+                // If this is a user message asking for help, add the static response
+                if (msg.sender === SenderOption.me && typeof msg.msg === 'string' && isHelpQuery(msg.msg)) {
                     const firstName = userData?.firstName || "User";
                     
                     const handleShowMore = (query: string) => {
@@ -720,14 +730,14 @@ export function Conversation() {
                 previousText = `${previousText} ${value}`;
             }
 
-            // Check if user typed "Tin Man Help Me" and replace with static response
+            // Check if user typed a help query and replace with static response
             let responseMessage: string | React.ReactNode = searchResponse.data.message;
             let responseDetails = searchResponse.data?.hits ? searchResponse.data.hits.map((hit: any) => ({
                 ...hit,
                 message: searchResponse.data.message
             })) : undefined;
 
-            if (value.toLowerCase().trim() === "tin man help me") {
+            if (isHelpQuery(value)) {
                 const firstName = userData?.firstName || "User";
                 
                 const handleShowMore = (query: string) => {
@@ -982,14 +992,14 @@ export function Conversation() {
                 previousText = `${previousText} ${value}`;
             }
 
-            // Check if user typed "<strong>Tin Man Help Me</strong>" and replace with static response
+            // Check if user typed a help query and replace with static response
             let responseMessage: string | React.ReactNode = searchResponse.data.message;
             let responseDetails = searchResponse.data?.hits ? searchResponse.data.hits.map((hit: any) => ({
                 ...hit,
                 message: searchResponse.data.message
             })) : undefined;
 
-            if (value.toLowerCase().trim() === "tin man help me") {
+            if (isHelpQuery(value)) {
                 const firstName = userData?.firstName || "User";
                 
                 const handleShowMore = (query: string) => {
