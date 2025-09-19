@@ -172,6 +172,11 @@ export function IdentificationAndContact({
         }
 
 
+
+        if(details.criminals && details.criminals.length>0 && details.criminals[0].Know_Emails){
+            return (Array.from(details.criminals[0].Know_Emails))
+        }
+
         const emails = new Set<string>();
         const records = [
             ...normalizeMergeResponse(details.education),

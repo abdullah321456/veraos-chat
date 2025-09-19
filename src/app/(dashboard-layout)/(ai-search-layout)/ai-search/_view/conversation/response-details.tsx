@@ -168,20 +168,13 @@ function SingleDetails(props: AIResponseDetail) {
         const uniqueEmails = new Set<string>();
 
         if (props.Know_Emails && props.Know_Emails.length > 0) {
-            props.Know_Emails.forEach((email: any) => {
-                if (email && email.trim()) {
-                    uniqueEmails.add(email.trim().toLowerCase());
-                }
-            });
+            return (Array.from((props.Know_Emails))).length
         }
+
 
         if (props.criminals && props.criminals.length > 0 && props.criminals[0].Know_Emails &&
             props.criminals[0].Know_Emails.length > 0) {
-            props.criminals[0].Know_Emails.forEach((email: any) => {
-                if (email && email.trim()) {
-                    uniqueEmails.add(email.trim().toLowerCase());
-                }
-            });
+            return (Array.from((props.criminals[0].Know_Emails))).length
         }
 
         const records = [
@@ -216,20 +209,13 @@ function SingleDetails(props: AIResponseDetail) {
         const uniquePhones = new Set<string>();
 
         if (props.Known_PHONE && props.Known_PHONE.length > 0) {
-            props.Known_PHONE.forEach((phone: any) => {
-                if (phone && phone.trim()) {
-                    uniquePhones.add(phone.trim());
-                }
-            });
+            return (((props.Known_PHONE))).length
         }
+
 
         if (props.criminals && props.criminals.length > 0 && props.criminals[0].Known_PHONE &&
             props.criminals[0].Known_PHONE.length > 0) {
-            props.criminals[0].Known_PHONE.forEach((phone: any) => {
-                if (phone && phone.trim()) {
-                    uniquePhones.add(phone.trim());
-                }
-            });
+            return (((props.criminals[0].Known_PHONE))).length
         }
 
         const records = [

@@ -396,7 +396,7 @@ export function Conversation() {
                         Tap the icon below to watch a brief introduction to Overwatch.
                         <br />
                         <br />
-                        <div className="flex justify-center">
+                        <div className="flex justify-start">
                             <button 
                                 onClick={() => {
                                     const modal = document.createElement('div');
@@ -606,7 +606,7 @@ export function Conversation() {
                         Tap the icon below to watch a brief introduction to Overwatch.
                         <br />
                         <br />
-                        <div className="flex justify-center">
+                        <div className="flex justify-start">
                             <button 
                                 onClick={() => {
                                     const modal = document.createElement('div');
