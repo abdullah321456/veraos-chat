@@ -319,7 +319,14 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
                                         </div>
                                         <div>
                                             <p className="text-sm font-medium text-gray-900">Facebook Profile</p>
-                                            <p className="text-xs text-gray-500 truncate max-w-xs">{link}</p>
+                                            <a 
+                                                href={link.startsWith('http') ? link : `https://facebook.com/${link.replace('@', '')}`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="text-xs text-blue-600 hover:underline cursor-pointer truncate max-w-xs block"
+                                            >
+                                                {link}
+                                            </a>
                                         </div>
                                     </div>
                                 </div>

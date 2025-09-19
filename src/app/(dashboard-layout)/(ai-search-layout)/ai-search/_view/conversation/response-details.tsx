@@ -84,16 +84,35 @@ function SingleDetails(props: AIResponseDetail) {
         return age;
     };
 
+
+    function getCitiesAndStates(addresses) {
+        return addresses.map(addr => {
+            // Case 1: format like "New York, NY 10065"
+            let match = addr.match(/,\s*([^,]+?),?\s*([A-Z]{2})\b/);
+            if (match) {
+                return `${match[1].trim()} ${match[2]}`;
+            }
+
+            // Case 2: format like "Yreka CA 96097"
+            match = addr.match(/([A-Za-z\s]+)\s+([A-Z]{2})\b/);
+            if (match) {
+                return `${match[1].trim()} ${match[2]}`;
+            }
+
+            return addr; // fallback if no match
+        });
+    }
+
     const getLocations = () => {
 
         if (props.Known_Addresses && props.Known_Addresses.length > 0) {
-            return (Array.from(props.Known_Addresses).slice(0, 3)).map((l) => l.split(",")[0])
+            return (Array.from(getCitiesAndStates(props.Known_Addresses)).slice(0, 3))
         }
 
 
         if (props.criminals && props.criminals.length > 0 && props.criminals[0].Known_Addresses &&
             props.criminals[0].Known_Addresses.length > 0) {
-            return (Array.from(props.criminals[0].Known_Addresses).slice(0, 3)).map((l) => l.split(",")[0])
+            return (Array.from(getCitiesAndStates(props.criminals[0].Known_Addresses)).slice(0, 3))
         }
 
         const locations = new Set<string>();
@@ -113,22 +132,32 @@ function SingleDetails(props: AIResponseDetail) {
             ...normalizeMergeResponse(props.dob_master),
             ...normalizeMergeResponse(props.criminals),
             ...normalizeMergeResponse(props.criminals_small)
+
         ];
 
-        // Add main person's location
-        const mainCity = capitalizeWords(props.CITY || props.City || props.N_CITY || "");
-        const mainState = capitalizeState(props.STATE || props.ST || props.State || props.N_STATE || "");
-        if (mainCity || mainState) {
-            locations.add(`${mainCity || ""} ${mainState || ""}`.trim());
-        }
+        const address = capitalizeWords(props.ADDRESS || props.ADDRESS1 || props.ADDRESS2 || props.Address1 || props.address
+            || props.Address || props.Address2 || "");
+        const city = capitalizeWords(props.CITY || props.City || props.N_CITY || "");
+        const state = capitalizeState(props.STATE || props.ST || props.State || props.N_STATE || "");
+        const zip = props.ZIP || props.ZIP4 || props.ZIP5 || props.Zip || props.zip || props.Zi || props.N_ZIP;
 
-        // Add locations from all records
+
+        if (address || city || state) {
+            locations.add(`${city || ""} ${state || ""}`);
+        }
         records.forEach(record => {
-            if (!record) return;
-            const city = capitalizeWords(record.CITY || record.City || record.N_CITY || "");
-            const state = capitalizeState(record.STATE || record.ST || record.State || record.N_STATE || "");
-            if (city || state) {
-                locations.add(`${city || ""} ${state || ""}`.trim());
+
+            if (!record) return
+            const address = capitalizeWords(record.ADDRESS || record.ADDRESS1 || record.ADDRESS2 || record.Address1
+                || record.address
+                || record.Address || record.Address2 || "");
+            const city = capitalizeWords(record.CITY || record.City || props.N_CITY || "");
+            const state = capitalizeState(record.STATE || record.ST || record.State || props.N_STATE || "");
+            const zip = record.ZIP || record.ZIP4 || record.ZIP5 || record.Zip || record.zip || record.Zi;
+
+
+            if (address || city || state) {
+                locations.add(`${city || ""} ${state || ""}`);
             }
         });
 
@@ -136,20 +165,6 @@ function SingleDetails(props: AIResponseDetail) {
     };
 
     const getEmailCount = () => {
-
-
-        if (props.Know_Emails && props.Know_Emails.length > 0) {
-            return props.Know_Emails.length
-        }
-
-
-        if (props.criminals && props.criminals.length > 0 && props.criminals[0].Know_Emails &&
-            props.criminals[0].Know_Emails.length > 0) {
-            return props.criminals[0].Know_Emails.length
-        }
-
-
-        const emailSet = new Set<string>();
         const records = [
             ...normalizeMergeResponse(props.education),
             ...normalizeMergeResponse(props.rv),
@@ -166,33 +181,14 @@ function SingleDetails(props: AIResponseDetail) {
             ...normalizeMergeResponse(props.email_master),
             ...normalizeMergeResponse(props.criminals),
             ...normalizeMergeResponse(props.criminals_small)
+
+
         ];
 
-        // Add emails from all records
-        records.forEach(record => {
-            if (!record) return;
-            const email = record?.email || record?.Email || record?.EMAIL || "";
-            if (email && email.trim().length > 0) {
-                emailSet.add(email.trim().toLowerCase());
-            }
-        });
-
-        return emailSet.size;
+        return records.filter(record => (record?.email || record?.Email || record?.EMAIL || "").length > 0).length;
     };
 
     const getPhoneCount = () => {
-
-        if (props.Known_PHONE && props.Known_PHONE.length > 0) {
-            return props.Known_PHONE.length
-        }
-
-
-        if (props.criminals && props.criminals.length > 0 && props.criminals[0].Known_PHONE &&
-            props.criminals[0].Known_PHONE.length > 0) {
-            return props.criminals[0].Known_PHONE.length
-        }
-
-        const phoneSet = new Set<string>();
         const records = [
             ...normalizeMergeResponse(props.education),
             ...normalizeMergeResponse(props.rv),
@@ -209,35 +205,20 @@ function SingleDetails(props: AIResponseDetail) {
             ...normalizeMergeResponse(props.email_master),
             ...normalizeMergeResponse(props.criminals),
             ...normalizeMergeResponse(props.criminals_small)
+
+
         ];
 
-        // Add main person's phone numbers
-        const mainPhones = [
-            props.PHONE,
-            props.CELL_PHONE,
-            props.HOME_PHONE,
-            props.PHONE1,
-            props.PHONE2
-        ].filter(phone => phone && phone.trim().length > 0);
+        records.push({PHONE: props.PHONE});
+        records.push({PHONE: props.CELL_PHONE})
+        records.push({PHONE: props.HOME_PHONE})
+        records.push({PHONE: props.PHONE1})
+        records.push({PHONE: props.PHONE2})
 
-        mainPhones.forEach(phone => {
-            phoneSet.add(phone.trim());
-        });
-
-        // Add phone numbers from all records
-        records.forEach(record => {
-            if (!record) return;
-            const phone = record?.phone || record?.Phone || record?.Phone1 || record?.Phone2
-                || record?.PHONE_1 || record?.PHONE_2 || record?.PHONE_3
-                || record?.HOMEPHONE || record?.WORKPHONE || record?.CELL || record?.PHONE || "";
-            if (phone && phone.trim().length > 0) {
-                phoneSet.add(phone.trim());
-            }
-        });
-
-        return phoneSet.size;
+        return records.filter(record => (record?.phone || record?.Phone || record?.Phone1 || record?.Phone2
+            || record?.PHONE_1 || record?.PHONE_2 || record?.PHONE_3
+            || record?.HOMEPHONE || record?.WORKPHONE || record?.CELL || record?.PHONE || "").length > 0).length;
     };
-
 
     async function handleFullReport(props: AIResponseDetail) {
         try {
@@ -269,7 +250,9 @@ function SingleDetails(props: AIResponseDetail) {
         <div className={cn(
             "px-3 py-3 shadow-lg shadow-gray-200/70 border rounded-xl",
             (props._index === 'criminals_small' || props._index === 'criminals' ||
-                (props.criminals && props.criminals.length > 0)) ? 'border-red-500' : 'border-gray-100'
+                (props.criminals && props.criminals.length>0) ||
+                (props.criminals_small && props.criminals_small.length>0)
+            ) ? 'border-red-500' : 'border-gray-100'
         )}>
             <div className="flex justify-between items-center mb-3">
                 <p className="font-bold">{`${toEnhancedTitleCase(props.FIRST)} ${toEnhancedTitleCase(props.MID)} ${toEnhancedTitleCase(props.LAST)}`}</p>
@@ -281,9 +264,8 @@ function SingleDetails(props: AIResponseDetail) {
             <div className="text-xs space-y-2.5">
                 <div className="flex items-center gap-2">
                     <CalendarIcon
-                        className="w-4 h-4"/> Age: {props.DOB ||
-                (props.criminals && props.criminals.length > 0 && props.criminals[0].DOB) ? `${calculateAge(props.DOB ||
-                    (props.criminals && props.criminals.length > 0 && props.criminals[0].DOB))} Years Old` : ' N/A'}
+                        className="w-4 h-4"/> Age: {(props.DOB || (props.criminals && props.criminals.length>0)) ?
+                    `${calculateAge(props.DOB || props.criminals[0].DOB)} Years Old` : ' N/A'}
                 </div>
                 <div className="flex items-center gap-2">
                     <LocationIcon className="w-4 h-4"/>

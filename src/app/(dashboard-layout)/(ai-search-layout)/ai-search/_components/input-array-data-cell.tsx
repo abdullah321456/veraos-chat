@@ -118,7 +118,18 @@ export function InputArrayDataCell({
                 {serial && <span>{index + 1}.</span>}
                 <p title={val} className={cn('break-all', rowTextClassName)}>
                   {hasValueLabel && <span className="font-semibold">{valueLabel + ':'}</span>}
-                  <span className={valueClassName}>{value}</span>
+                  {valueLabel?.toLowerCase() === 'facebook' && value ? (
+                    <a 
+                      href={`https://facebook.com/${value.replace('@', '')}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={cn(valueClassName, 'hover:underline cursor-pointer')}
+                    >
+                      {value}
+                    </a>
+                  ) : (
+                    <span className={valueClassName}>{value}</span>
+                  )}
                 </p>
               </div>
               {editable && (

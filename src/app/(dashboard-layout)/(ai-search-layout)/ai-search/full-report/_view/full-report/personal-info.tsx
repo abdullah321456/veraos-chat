@@ -85,7 +85,7 @@ export function PersonalInfo({
         }
     }
 
-    const formattedDOB = formatDateToMMDDYYYY(details?.DOB || '');
+    const formattedDOB = formatDateToMMDDYYYY(details?.DOB || (details.criminals && details.criminals.length>0 && details.criminals[0].DOB) || '');
     const calculatedAge = calculateAge(details?.DOB ||
         (details.criminals && details.criminals.length>0 && details.criminals[0].DOB) || '');
 

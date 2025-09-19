@@ -165,18 +165,24 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
     const currentPathname = window.location.pathname;
     const isOnAiSearch = currentPathname === ROUTES.AI_SEARCH.INDEX;
     
-    if (!isOnAiSearch || queryParams?.chatId) return;
+    // Check URL directly for query parameter as well
+    const urlParams = new URLSearchParams(window.location.search);
+    const hasQueryInUrl = urlParams.has('query');
+    
+    if (!isOnAiSearch || queryParams?.chatId || queryParams?.query || hasQueryInUrl) return;
 
     console.log('Handling chat selection on AI Search load:', { 
       conversationsLength: conversations.length,
       isOnAiSearch,
-      hasChatId: !!queryParams?.chatId 
+      hasChatId: !!queryParams?.chatId,
+      hasQuery: !!queryParams?.query,
+      hasQueryInUrl
     });
 
     // Always create a new chat when AI Search page loads
     console.log('AI Search page loaded - creating new chat...');
     await handleNewChat();
-  }, [conversations, queryParams?.chatId, router, handleNewChat]);
+  }, [conversations, queryParams?.chatId, queryParams?.query, router, handleNewChat]);
 
   useEffect(() => {
     if (!hasFetched.current) {
@@ -194,11 +200,15 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
 
   // Create new chat every time AI Search page loads (no existing chatId)
   useEffect(() => {
-    if (isChatFetched && pathname === ROUTES.AI_SEARCH.INDEX && !queryParams?.chatId && !hasCreatedChatForThisSession.current) {
+    // Check URL directly for query parameter as well
+    const urlParams = new URLSearchParams(window.location.search);
+    const hasQueryInUrl = urlParams.has('query');
+    
+    if (isChatFetched && pathname === ROUTES.AI_SEARCH.INDEX && !queryParams?.chatId && !queryParams?.query && !hasQueryInUrl && !hasCreatedChatForThisSession.current) {
       console.log('AI Search page loaded - creating new chat automatically');
       handleChatSelection();
     }
-  }, [isChatFetched, pathname, queryParams?.chatId, handleChatSelection]);
+  }, [isChatFetched, pathname, queryParams?.chatId, queryParams?.query, handleChatSelection]);
 
   useEffect(() => {
     if (lastMessage) {

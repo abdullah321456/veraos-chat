@@ -207,12 +207,12 @@ export function IdentificationAndContact({
         if (!details) return [];
 
         if(details.Known_PHONE){
-            return details.Known_PHONE
+            return formatPhoneNumbers(Array.from(details.Known_PHONE))
         }
 
 
         if(details.criminals && details.criminals.length>0 && details.criminals[0].Known_PHONE){
-            return details.criminals[0].Known_PHONE
+            return formatPhoneNumbers(Array.from(details.criminals[0].Known_PHONE))
         }
 
         const phones = new Set<string>();

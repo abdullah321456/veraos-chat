@@ -353,10 +353,16 @@ export function Conversation() {
     const [messages, setMessages] = useState<ConversationData[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [isSending, setIsSending] = useState(false);
+    const [isExecutingQuery, setIsExecutingQuery] = useState(false);
+    const [hasExecutedQuery, setHasExecutedQuery] = useState(false);
     const scrollRef = useRef<HTMLDivElement>(null);
+    const executionId = useRef(Math.random().toString(36).substr(2, 9));
+    
+    console.log(`[${executionId.current}] Conversation component mounted/rendered`);
     const [, startImgInputTransition] = useTransition();
     const searchParams = useSearchParams();
     const chatId = searchParams.get('chatId');
+    const query = searchParams.get('query');
     const { setQueryParams } = useQueryParams();
     const { onNewMessage, onNewChat } = useMessageContext();
     const { openModal } = useModal();
@@ -382,7 +388,54 @@ export function Conversation() {
             
             // Clear current messages to show fresh start
             setMessages([{
-                msg: "Welcome to Overwatch. Begin your search using natural language—Overwatch understands context, not just keywords. If this is your first time using Overwatch say \"Tin Man Help Me\".",
+                msg: (
+                    <div>
+                        Welcome to Overwatch. Begin your search using natural language—Overwatch understands context, not just keywords. If this is your first time using Overwatch say <strong>"Tin Man Help Me"</strong>.
+                        <br />
+                        <br />
+                        Tap the icon below to watch a brief introduction to Overwatch.
+                        <br />
+                        <br />
+                        <button 
+                            onClick={() => {
+                                const modal = document.createElement('div');
+                                modal.className = 'fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50';
+                                modal.innerHTML = `
+                                    <div class="relative w-full max-w-4xl mx-4">
+                                        <button 
+                                            onclick="this.parentElement.parentElement.remove()" 
+                                            class="absolute -top-10 right-0 text-white text-2xl hover:text-gray-300 z-10"
+                                        >
+                                            ×
+                                        </button>
+                                        <div class="relative w-full" style="padding-bottom: 56.25%;">
+                                            <iframe 
+                                                src="https://www.youtube.com/embed/7s14tEmr2Nw?autoplay=1" 
+                                                class="absolute top-0 left-0 w-full h-full rounded-lg"
+                                                frameborder="0" 
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                                allowfullscreen>
+                                            </iframe>
+                                        </div>
+                                    </div>
+                                `;
+                                document.body.appendChild(modal);
+                                modal.addEventListener('click', (e) => {
+                                    if (e.target === modal) {
+                                        modal.remove();
+                                    }
+                                });
+                            }}
+                            className="block w-64"
+                        >
+                            <img 
+                                src="https://img.youtube.com/vi/7s14tEmr2Nw/maxresdefault.jpg" 
+                                alt="Overwatch Introduction Video" 
+                                className="w-full rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer"
+                            />
+                        </button>
+                    </div>
+                ),
                 sender: SenderOption.ai,
                 cta: false
             }]);
@@ -411,22 +464,116 @@ export function Conversation() {
                 };
             });
 
-            // Check for "Tin Man Help Me" messages and add static responses
+            // Check for "<strong>Tin Man Help Me</strong>" messages and add static responses
             const messagesWithHelpResponses: ConversationData[] = [];
             for (let i = 0; i < mappedMessages.length; i++) {
                 const msg = mappedMessages[i];
                 messagesWithHelpResponses.push(msg);
                 
-                // If this is a user message saying "Tin Man Help Me", add the static response
+                // If this is a user message saying "<strong>Tin Man Help Me</strong>", add the static response
                 if (msg.sender === SenderOption.me && typeof msg.msg === 'string' && msg.msg.toLowerCase().trim() === "tin man help me") {
                     const firstName = userData?.firstName || "User";
-                    const helpText = "Hello, [First Name from account setup]!\n\nHere's how you can search using natural language:\n\n• Find Jodi Arias in California; she's in her 40s.\n• Find Yarly Reyes he has brown eyes.\n• Whose phone number is (727) 504-2129?\n• Find Ghislaine Maxwell; she owns a Cadillac.\n• Whose email address is DonaldTrump@hotmail.com?\n• Who lives at 523 Covena Ave, Modesto, CA 95354?\n• Whose IP address is 152.72.121.172?\n\nYou can also start simple, then add more details step-by-step:\n\nSearch for Joshua Jones\n(Results appear then add additional context)\nLimit to Delray Beach, Florida.\n\nYou can add further context at anytime.\n\nWhen you're ready to do a new search simply press the create new chat button.";
-                    const processedHelpText = helpText.replace("[First Name from account setup]", firstName);
+                    
+                    const handleShowMore = (query: string) => {
+                        // Encode the query for URL
+                        const encodedQuery = encodeURIComponent(query);
+                        
+                        // Open new tab with the query (chat will be created in the new tab)
+                        const newTabUrl = `${window.location.origin}/ai-search?query=${encodedQuery}`;
+                        window.open(newTabUrl, '_blank');
+                    };
                     
                     messagesWithHelpResponses.push({
                         msg: (
-                            <div className="whitespace-pre-line">
-                                {processedHelpText}
+                            <div>
+                                <p>Hello, {firstName}!</p>
+                                <br />
+                                <p>Here's how you can search using natural language:</p>
+                                <br />
+                                <div className="space-y-2">
+                                    <div className="flex items-center">
+                                        <span>• Find Jodi Arias in California; she's in her 40s.</span>
+                                        <button 
+                                            onClick={() => handleShowMore("Find Jodi Arias in California; she's in her 40s")}
+                                            className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                        >
+                                            Show more
+                                        </button>
+                                    </div>
+                                    <div className="flex items-center">
+                                        <span>• Find Yarly Reyes he has brown eyes.</span>
+                                        <button 
+                                            onClick={() => handleShowMore("Find Yarly Reyes he has brown eyes")}
+                                            className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                        >
+                                            Show more
+                                        </button>
+                                    </div>
+                                    <div className="flex items-center">
+                                        <span>• Whose phone number is (727) 504-2129?</span>
+                                        <button 
+                                            onClick={() => handleShowMore("Whose phone number is (727) 504-2129")}
+                                            className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                        >
+                                            Show more
+                                        </button>
+                                    </div>
+                                    <div className="flex items-center">
+                                        <span>• Find Ghislaine Maxwell; she owns a Cadillac.</span>
+                                        <button 
+                                            onClick={() => handleShowMore("Find Ghislaine Maxwell; she owns a Cadillac")}
+                                            className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                        >
+                                            Show more
+                                        </button>
+                                    </div>
+                                    <div className="flex items-center">
+                                        <span>• Whose email address is DonaldTrump@hotmail.com?</span>
+                                        <button 
+                                            onClick={() => handleShowMore("Whose email address is DonaldTrump@hotmail.com")}
+                                            className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                        >
+                                            Show more
+                                        </button>
+                                    </div>
+                                    <div className="flex items-center">
+                                        <span>• Who lives at 523 Covena Ave, Modesto, CA 95354?</span>
+                                        <button 
+                                            onClick={() => handleShowMore("Who lives at 523 Covena Ave, Modesto, CA 95354")}
+                                            className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                        >
+                                            Show more
+                                        </button>
+                                    </div>
+                                    <div className="flex items-center">
+                                        <span>• Whose IP address is 152.72.121.172?</span>
+                                        <button 
+                                            onClick={() => handleShowMore("Whose IP address is 152.72.121.172")}
+                                            className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                        >
+                                            Show more
+                                        </button>
+                                    </div>
+                                    <div className="flex items-center">
+                                        <span>• Whose car is this VIN Number: 1GKFK66U95J223404</span>
+                                        <button 
+                                            onClick={() => handleShowMore("Whose car is this VIN Number: 1GKFK66U95J223404")}
+                                            className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                        >
+                                            Show more
+                                        </button>
+                                    </div>
+                                </div>
+                                <br />
+                                <p>You can also start simple, then add more details step-by-step:</p>
+                                <br />
+                                <p>Search for Joshua Jones</p>
+                                <p>(Results appear then add additional context)</p>
+                                <p>Limit to Delray Beach, Florida.</p>
+                                <br />
+                                <p>You can add further context at anytime.</p>
+                                <br />
+                                <p>When you're ready to do a new search simply press the create new chat button.</p>
                             </div>
                         ),
                         sender: SenderOption.ai,
@@ -437,7 +584,54 @@ export function Conversation() {
             }
 
             setMessages([{
-                msg: "Welcome to Overwatch. Begin your search using natural language—Overwatch understands context, not just keywords. If this is your first time using Overwatch say \"Tin Man Help Me\".",
+                msg: (
+                    <div>
+                        Welcome to Overwatch. Begin your search using natural language—Overwatch understands context, not just keywords. If this is your first time using Overwatch say <strong>"Tin Man Help Me"</strong>.
+                        <br />
+                        <br />
+                        Tap the icon below to watch a brief introduction to Overwatch.
+                        <br />
+                        <br />
+                        <button 
+                            onClick={() => {
+                                const modal = document.createElement('div');
+                                modal.className = 'fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50';
+                                modal.innerHTML = `
+                                    <div class="relative w-full max-w-4xl mx-4">
+                                        <button 
+                                            onclick="this.parentElement.parentElement.remove()" 
+                                            class="absolute -top-10 right-0 text-white text-2xl hover:text-gray-300 z-10"
+                                        >
+                                            ×
+                                        </button>
+                                        <div class="relative w-full" style="padding-bottom: 56.25%;">
+                                            <iframe 
+                                                src="https://www.youtube.com/embed/7s14tEmr2Nw?autoplay=1" 
+                                                class="absolute top-0 left-0 w-full h-full rounded-lg"
+                                                frameborder="0" 
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                                allowfullscreen>
+                                            </iframe>
+                                        </div>
+                                    </div>
+                                `;
+                                document.body.appendChild(modal);
+                                modal.addEventListener('click', (e) => {
+                                    if (e.target === modal) {
+                                        modal.remove();
+                                    }
+                                });
+                            }}
+                            className="block w-64"
+                        >
+                            <img 
+                                src="https://img.youtube.com/vi/7s14tEmr2Nw/maxresdefault.jpg" 
+                                alt="Overwatch Introduction Video" 
+                                className="w-full rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer"
+                            />
+                        </button>
+                    </div>
+                ),
                 sender: SenderOption.ai,
                 cta: false
             }, ...messagesWithHelpResponses]);
@@ -462,6 +656,250 @@ export function Conversation() {
         }
         previousText=""
     }, [chatId]);
+
+    const executeQueryWithChatId = async (value: string, chatIdToUse: string) => {
+        try {
+            setIsSending(true);
+            let currentChatId = chatIdToUse;
+            
+            // Update query params to set the chatId
+            setQueryParams({ chatId: currentChatId });
+
+            // Add optimistic update for the user's message
+            setMessages((prev) => [...prev, { msg: value, sender: SenderOption.me, cta: false }]);
+            // Scroll after adding question
+            setTimeout(() => {
+                if (scrollRef.current) {
+                    scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+                }
+            }, 10);
+
+            // Call the search API
+            const searchResponse = await apiService.postData('/search-local', {
+                text: value,
+                chat: currentChatId,
+                previous: previousText
+            }) as SearchResponse;
+
+            if (searchResponse.isEntityFound) {
+                previousText = value;
+            } else {
+                previousText = `${previousText} ${value}`;
+            }
+
+            // Check if user typed "Tin Man Help Me" and replace with static response
+            let responseMessage: string | React.ReactNode = searchResponse.data.message;
+            let responseDetails = searchResponse.data?.hits ? searchResponse.data.hits.map((hit: any) => ({
+                ...hit,
+                message: searchResponse.data.message
+            })) : undefined;
+
+            if (value.toLowerCase().trim() === "tin man help me") {
+                const firstName = userData?.firstName || "User";
+                
+                const handleShowMore = (query: string) => {
+                    // Encode the query for URL
+                    const encodedQuery = encodeURIComponent(query);
+                    
+                    // Open new tab with the query (chat will be created in the new tab)
+                    const newTabUrl = `${window.location.origin}/ai-search?query=${encodedQuery}`;
+                    window.open(newTabUrl, '_blank');
+                };
+                
+                // Convert line breaks to JSX elements for proper rendering
+                responseMessage = (
+                    <div>
+                        <p>Hello, {firstName}!</p>
+                        <br />
+                        <p>Here's how you can search using natural language:</p>
+                        <br />
+                        <div className="space-y-2">
+                            <div className="flex items-center">
+                                <span>• Find Jodi Arias in California; she's in her 40s.</span>
+                                <button 
+                                    onClick={() => handleShowMore("Find Jodi Arias in California; she's in her 40s")}
+                                    className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                >
+                                    Show more
+                                </button>
+                            </div>
+                            <div className="flex items-center">
+                                <span>• Find Yarly Reyes he has brown eyes.</span>
+                                <button 
+                                    onClick={() => handleShowMore("Find Yarly Reyes he has brown eyes")}
+                                    className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                >
+                                    Show more
+                                </button>
+                            </div>
+                            <div className="flex items-center">
+                                <span>• Whose phone number is (727) 504-2129?</span>
+                                <button 
+                                    onClick={() => handleShowMore("Whose phone number is (727) 504-2129")}
+                                    className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                >
+                                    Show more
+                                </button>
+                            </div>
+                            <div className="flex items-center">
+                                <span>• Find Ghislaine Maxwell; she owns a Cadillac.</span>
+                                <button 
+                                    onClick={() => handleShowMore("Find Ghislaine Maxwell; she owns a Cadillac")}
+                                    className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                >
+                                    Show more
+                                </button>
+                            </div>
+                            <div className="flex items-center">
+                                <span>• Whose email address is DonaldTrump@hotmail.com?</span>
+                                <button 
+                                    onClick={() => handleShowMore("Whose email address is DonaldTrump@hotmail.com")}
+                                    className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                >
+                                    Show more
+                                </button>
+                            </div>
+                            <div className="flex items-center">
+                                <span>• Who lives at 523 Covena Ave, Modesto, CA 95354?</span>
+                                <button 
+                                    onClick={() => handleShowMore("Who lives at 523 Covena Ave, Modesto, CA 95354")}
+                                    className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                >
+                                    Show more
+                                </button>
+                            </div>
+                            <div className="flex items-center">
+                                <span>• Whose IP address is 152.72.121.172?</span>
+                                <button 
+                                    onClick={() => handleShowMore("Whose IP address is 152.72.121.172")}
+                                    className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                >
+                                    Show more
+                                </button>
+                            </div>
+                            <div className="flex items-center">
+                                <span>• Whose car is this VIN Number: 1GKFK66U95J223404</span>
+                                <button 
+                                    onClick={() => handleShowMore("Whose car is this VIN Number: 1GKFK66U95J223404")}
+                                    className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                >
+                                    Show more
+                                </button>
+                            </div>
+                        </div>
+                        <br />
+                        <p>You can also start simple, then add more details step-by-step:</p>
+                        <br />
+                        <p>Search for Joshua Jones</p>
+                        <p>(Results appear then add additional context)</p>
+                        <p>Limit to Delray Beach, Florida.</p>
+                        <br />
+                        <p>You can add further context at anytime.</p>
+                        <br />
+                        <p>When you're ready to do a new search simply press the create new chat button.</p>
+                    </div>
+                );
+                responseDetails = undefined; // No response details for help message
+            }
+
+            // Replace loading message with actual response
+            setMessages((prev) => [
+                ...prev.slice(0, -1), // Remove the loading message
+                {
+                    msg: responseMessage,
+                    sender: SenderOption.ai,
+                    cta: false,
+                    responseDetails: responseDetails
+                }
+            ]);
+
+            // Scroll to bottom after response
+            setTimeout(() => {
+                if (scrollRef.current) {
+                    scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+                }
+            }, 100);
+
+            // Notify parent component about the new message
+            onNewMessage?.({ chatId: currentChatId, message: value });
+
+        } catch (error) {
+            console.error('Error executing query:', error);
+            toast.error('Failed to execute query');
+            
+            // Remove the user's message on error
+            setMessages((prev) => prev.slice(0, -1));
+        } finally {
+            setIsSending(false);
+        }
+    };
+
+    // Auto-execute query if present in URL
+    useEffect(() => {
+        console.log(`[${executionId.current}] Query useEffect triggered:`, { query, hasExecutedQuery, chatId, timestamp: new Date().toISOString() });
+        
+        // Check if we're already processing this query globally
+        const globalKey = `processing_query_${query}`;
+        if (query && !hasExecutedQuery && !chatId && !(window as any)[globalKey]) {
+            console.log(`[${executionId.current}] Executing query for the first time:`, query);
+            (window as any)[globalKey] = true; // Set global flag
+            setHasExecutedQuery(true); // Prevent duplicate execution
+            setIsExecutingQuery(true);
+            
+            // Create new chat and execute query
+            const createChatAndExecuteQuery = async () => {
+                try {
+                    console.log(`[${executionId.current}] Creating new chat for query:`, query);
+                    const newChatResponse = await apiService.postData('/chat', {});
+                    const newChatId = newChatResponse.data._id;
+                    console.log(`[${executionId.current}] New chat created with ID:`, newChatId);
+                    
+                    // Update URL with new chatId
+                    const url = new URL(window.location.href);
+                    url.searchParams.set('chatId', newChatId);
+                    window.history.replaceState({}, '', url.toString());
+                    
+                    // Update query params to ensure chatId is set
+                    setQueryParams({ chatId: newChatId });
+                    
+                    // Notify sidebar about the new chat
+                    onNewChat(newChatId);
+                    
+                    // Execute the query immediately with the confirmed chatId
+                    try {
+                        console.log(`[${executionId.current}] Executing query with chatId:`, newChatId);
+                        // Execute the query directly with the new chatId
+                        await executeQueryWithChatId(query, newChatId);
+                        // Clear the query from URL after execution
+                        const cleanUrl = new URL(window.location.href);
+                        cleanUrl.searchParams.delete('query');
+                        window.history.replaceState({}, '', cleanUrl.toString());
+                        console.log(`[${executionId.current}] Query execution completed`);
+                        
+                        // Clear global flag
+                        delete (window as any)[globalKey];
+                    } catch (error) {
+                        console.error('Error executing query:', error);
+                    } finally {
+                        setIsExecutingQuery(false);
+                    }
+                } catch (error) {
+                    console.error('Error creating new chat:', error);
+                    toast.error('Failed to create new chat');
+                    setIsExecutingQuery(false);
+                    // Clear global flag on error
+                    delete (window as any)[globalKey];
+                }
+            };
+            
+            createChatAndExecuteQuery();
+        }
+    }, [query, chatId]);
+
+    // Reset the query execution flag when query changes
+    useEffect(() => {
+        setHasExecutedQuery(false);
+    }, [query]);
 
     const addMessage = async (value: string) => {
         try {
@@ -510,7 +948,7 @@ export function Conversation() {
                 previousText = `${previousText} ${value}`;
             }
 
-            // Check if user typed "Tin Man Help Me" and replace with static response
+            // Check if user typed "<strong>Tin Man Help Me</strong>" and replace with static response
             let responseMessage: string | React.ReactNode = searchResponse.data.message;
             let responseDetails = searchResponse.data?.hits ? searchResponse.data.hits.map((hit: any) => ({
                 ...hit,
@@ -519,13 +957,107 @@ export function Conversation() {
 
             if (value.toLowerCase().trim() === "tin man help me") {
                 const firstName = userData?.firstName || "User";
-                const helpText = "Hello, [First Name from account setup]!\n\nHere's how you can search using natural language:\n\n• Find Jodi Arias in California; she's in her 40s.\n• Find Yarly Reyes he has brown eyes.\n• Whose phone number is (727) 504-2129?\n• Find Ghislaine Maxwell; she owns a Cadillac.\n• Whose email address is DonaldTrump@hotmail.com?\n• Who lives at 523 Covena Ave, Modesto, CA 95354?\n• Whose IP address is 152.72.121.172?\n\nYou can also start simple, then add more details step-by-step:\n\nSearch for Joshua Jones\n(Results appear then add additional context)\nLimit to Delray Beach, Florida.\n\nYou can add further context at anytime.\n\nWhen you're ready to do a new search simply press the create new chat button.";
-                const processedHelpText = helpText.replace("[First Name from account setup]", firstName);
+                
+                const handleShowMore = (query: string) => {
+                    // Encode the query for URL
+                    const encodedQuery = encodeURIComponent(query);
+                    
+                    // Open new tab with the query (chat will be created in the new tab)
+                    const newTabUrl = `${window.location.origin}/ai-search?query=${encodedQuery}`;
+                    window.open(newTabUrl, '_blank');
+                };
                 
                 // Convert line breaks to JSX elements for proper rendering
                 responseMessage = (
-                    <div className="whitespace-pre-line">
-                        {processedHelpText}
+                    <div>
+                        <p>Hello, {firstName}!</p>
+                        <br />
+                        <p>Here's how you can search using natural language:</p>
+                        <br />
+                        <div className="space-y-2">
+                            <div className="flex items-center">
+                                <span>• Find Jodi Arias in California; she's in her 40s.</span>
+                                <button 
+                                    onClick={() => handleShowMore("Find Jodi Arias in California; she's in her 40s")}
+                                    className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                >
+                                    Show more
+                                </button>
+                            </div>
+                            <div className="flex items-center">
+                                <span>• Find Yarly Reyes he has brown eyes.</span>
+                                <button 
+                                    onClick={() => handleShowMore("Find Yarly Reyes he has brown eyes")}
+                                    className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                >
+                                    Show more
+                                </button>
+                            </div>
+                            <div className="flex items-center">
+                                <span>• Whose phone number is (727) 504-2129?</span>
+                                <button 
+                                    onClick={() => handleShowMore("Whose phone number is (727) 504-2129")}
+                                    className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                >
+                                    Show more
+                                </button>
+                            </div>
+                            <div className="flex items-center">
+                                <span>• Find Ghislaine Maxwell; she owns a Cadillac.</span>
+                                <button 
+                                    onClick={() => handleShowMore("Find Ghislaine Maxwell; she owns a Cadillac")}
+                                    className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                >
+                                    Show more
+                                </button>
+                            </div>
+                            <div className="flex items-center">
+                                <span>• Whose email address is DonaldTrump@hotmail.com?</span>
+                                <button 
+                                    onClick={() => handleShowMore("Whose email address is DonaldTrump@hotmail.com")}
+                                    className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                >
+                                    Show more
+                                </button>
+                            </div>
+                            <div className="flex items-center">
+                                <span>• Who lives at 523 Covena Ave, Modesto, CA 95354?</span>
+                                <button 
+                                    onClick={() => handleShowMore("Who lives at 523 Covena Ave, Modesto, CA 95354")}
+                                    className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                >
+                                    Show more
+                                </button>
+                            </div>
+                            <div className="flex items-center">
+                                <span>• Whose IP address is 152.72.121.172?</span>
+                                <button 
+                                    onClick={() => handleShowMore("Whose IP address is 152.72.121.172")}
+                                    className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                >
+                                    Show more
+                                </button>
+                            </div>
+                            <div className="flex items-center">
+                                <span>• Whose car is this VIN Number: 1GKFK66U95J223404</span>
+                                <button 
+                                    onClick={() => handleShowMore("Whose car is this VIN Number: 1GKFK66U95J223404")}
+                                    className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                >
+                                    Show more
+                                </button>
+                            </div>
+                        </div>
+                        <br />
+                        <p>You can also start simple, then add more details step-by-step:</p>
+                        <br />
+                        <p>Search for Joshua Jones</p>
+                        <p>(Results appear then add additional context)</p>
+                        <p>Limit to Delray Beach, Florida.</p>
+                        <br />
+                        <p>You can add further context at anytime.</p>
+                        <br />
+                        <p>When you're ready to do a new search simply press the create new chat button.</p>
                     </div>
                 );
                 responseDetails = undefined; // No response details for help message
@@ -584,7 +1116,7 @@ export function Conversation() {
         <div className="pr-6">
             <div ref={scrollRef}
                  className="h-[calc(100vh-176px)] overflow-y-auto flex flex-col space-y-4">
-                {isLoading ? (
+                {isLoading || isExecutingQuery ? (
                     <div className="flex justify-center items-center h-full">
                         <LoadingDots />
                     </div>
