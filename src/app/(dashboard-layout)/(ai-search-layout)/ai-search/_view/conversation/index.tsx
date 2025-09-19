@@ -492,9 +492,9 @@ export function Conversation() {
                         // Encode the query for URL
                         const encodedQuery = encodeURIComponent(query);
                         
-                        // Open new tab with the query (chat will be created in the new tab)
-                        const newTabUrl = `${window.location.origin}/ai-search?query=${encodedQuery}`;
-                        window.open(newTabUrl, '_blank');
+                        // Navigate to the same tab with the query
+                        const queryUrl = `${window.location.origin}/ai-search?query=${encodedQuery}`;
+                        window.location.href = queryUrl;
                     };
                     
                     messagesWithHelpResponses.push({
@@ -734,9 +734,9 @@ export function Conversation() {
                     // Encode the query for URL
                     const encodedQuery = encodeURIComponent(query);
                     
-                    // Open new tab with the query (chat will be created in the new tab)
-                    const newTabUrl = `${window.location.origin}/ai-search?query=${encodedQuery}`;
-                    window.open(newTabUrl, '_blank');
+                    // Navigate to the same tab with the query
+                    const queryUrl = `${window.location.origin}/ai-search?query=${encodedQuery}`;
+                    window.location.href = queryUrl;
                 };
                 
                 // Convert line breaks to JSX elements for proper rendering
@@ -996,9 +996,9 @@ export function Conversation() {
                     // Encode the query for URL
                     const encodedQuery = encodeURIComponent(query);
                     
-                    // Open new tab with the query (chat will be created in the new tab)
-                    const newTabUrl = `${window.location.origin}/ai-search?query=${encodedQuery}`;
-                    window.open(newTabUrl, '_blank');
+                    // Navigate to the same tab with the query
+                    const queryUrl = `${window.location.origin}/ai-search?query=${encodedQuery}`;
+                    window.location.href = queryUrl;
                 };
                 
                 // Convert line breaks to JSX elements for proper rendering
