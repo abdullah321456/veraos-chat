@@ -85,8 +85,8 @@ function SingleDetails(props: AIResponseDetail) {
     };
 
 
-    function getCitiesAndStates(addresses) {
-        return addresses.map(addr => {
+    function getCitiesAndStates(addresses: any) {
+        return addresses.map((addr: any) => {
             // Case 1: format like "New York, NY 10065"
             let match = addr.match(/,\s*([^,]+?),?\s*([A-Z]{2})\b/);
             if (match) {
@@ -165,6 +165,25 @@ function SingleDetails(props: AIResponseDetail) {
     };
 
     const getEmailCount = () => {
+        const uniqueEmails = new Set<string>();
+
+        if (props.Know_Emails && props.Know_Emails.length > 0) {
+            props.Know_Emails.forEach((email: any) => {
+                if (email && email.trim()) {
+                    uniqueEmails.add(email.trim().toLowerCase());
+                }
+            });
+        }
+
+        if (props.criminals && props.criminals.length > 0 && props.criminals[0].Know_Emails &&
+            props.criminals[0].Know_Emails.length > 0) {
+            props.criminals[0].Know_Emails.forEach((email: any) => {
+                if (email && email.trim()) {
+                    uniqueEmails.add(email.trim().toLowerCase());
+                }
+            });
+        }
+
         const records = [
             ...normalizeMergeResponse(props.education),
             ...normalizeMergeResponse(props.rv),
@@ -181,14 +200,38 @@ function SingleDetails(props: AIResponseDetail) {
             ...normalizeMergeResponse(props.email_master),
             ...normalizeMergeResponse(props.criminals),
             ...normalizeMergeResponse(props.criminals_small)
-
-
         ];
 
-        return records.filter(record => (record?.email || record?.Email || record?.EMAIL || "").length > 0).length;
+        records.forEach(record => {
+            const email = record?.email || record?.Email || record?.EMAIL || "";
+            if (email && email.trim()) {
+                uniqueEmails.add(email.trim().toLowerCase());
+            }
+        });
+
+        return uniqueEmails.size;
     };
 
     const getPhoneCount = () => {
+        const uniquePhones = new Set<string>();
+
+        if (props.Known_PHONE && props.Known_PHONE.length > 0) {
+            props.Known_PHONE.forEach((phone: any) => {
+                if (phone && phone.trim()) {
+                    uniquePhones.add(phone.trim());
+                }
+            });
+        }
+
+        if (props.criminals && props.criminals.length > 0 && props.criminals[0].Known_PHONE &&
+            props.criminals[0].Known_PHONE.length > 0) {
+            props.criminals[0].Known_PHONE.forEach((phone: any) => {
+                if (phone && phone.trim()) {
+                    uniquePhones.add(phone.trim());
+                }
+            });
+        }
+
         const records = [
             ...normalizeMergeResponse(props.education),
             ...normalizeMergeResponse(props.rv),
@@ -205,19 +248,33 @@ function SingleDetails(props: AIResponseDetail) {
             ...normalizeMergeResponse(props.email_master),
             ...normalizeMergeResponse(props.criminals),
             ...normalizeMergeResponse(props.criminals_small)
-
-
         ];
 
-        records.push({PHONE: props.PHONE});
-        records.push({PHONE: props.CELL_PHONE})
-        records.push({PHONE: props.HOME_PHONE})
-        records.push({PHONE: props.PHONE1})
-        records.push({PHONE: props.PHONE2})
+        // Add direct phone properties
+        const directPhones = [
+            props.PHONE,
+            props.CELL_PHONE,
+            props.HOME_PHONE,
+            props.PHONE1,
+            props.PHONE2
+        ];
 
-        return records.filter(record => (record?.phone || record?.Phone || record?.Phone1 || record?.Phone2
-            || record?.PHONE_1 || record?.PHONE_2 || record?.PHONE_3
-            || record?.HOMEPHONE || record?.WORKPHONE || record?.CELL || record?.PHONE || "").length > 0).length;
+        directPhones.forEach(phone => {
+            if (phone && phone.trim()) {
+                uniquePhones.add(phone.trim());
+            }
+        });
+
+        records.forEach(record => {
+            const phone = record?.phone || record?.Phone || record?.Phone1 || record?.Phone2
+                || record?.PHONE_1 || record?.PHONE_2 || record?.PHONE_3
+                || record?.HOMEPHONE || record?.WORKPHONE || record?.CELL || record?.PHONE || "";
+            if (phone && phone.trim()) {
+                uniquePhones.add(phone.trim());
+            }
+        });
+
+        return uniquePhones.size;
     };
 
     async function handleFullReport(props: AIResponseDetail) {

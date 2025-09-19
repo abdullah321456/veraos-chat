@@ -396,44 +396,58 @@ export function Conversation() {
                         Tap the icon below to watch a brief introduction to Overwatch.
                         <br />
                         <br />
-                        <button 
-                            onClick={() => {
-                                const modal = document.createElement('div');
-                                modal.className = 'fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50';
-                                modal.innerHTML = `
-                                    <div class="relative w-full max-w-4xl mx-4">
-                                        <button 
-                                            onclick="this.parentElement.parentElement.remove()" 
-                                            class="absolute -top-10 right-0 text-white text-2xl hover:text-gray-300 z-10"
-                                        >
-                                            ×
-                                        </button>
-                                        <div class="relative w-full" style="padding-bottom: 56.25%;">
-                                            <iframe 
-                                                src="https://www.youtube.com/embed/7s14tEmr2Nw?autoplay=1" 
-                                                class="absolute top-0 left-0 w-full h-full rounded-lg"
-                                                frameborder="0" 
-                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                                allowfullscreen>
-                                            </iframe>
+                        <div className="flex justify-center">
+                            <button 
+                                onClick={() => {
+                                    const modal = document.createElement('div');
+                                    modal.className = 'fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50';
+                                    modal.innerHTML = `
+                                        <div class="relative w-full max-w-4xl mx-4">
+                                            <button 
+                                                onclick="this.parentElement.parentElement.remove()" 
+                                                class="absolute -top-10 right-0 text-white text-2xl hover:text-gray-300 z-10"
+                                            >
+                                                ×
+                                            </button>
+                                            <div class="relative w-full" style="padding-bottom: 56.25%;">
+                                                <iframe 
+                                                    src="https://www.youtube.com/embed/7s14tEmr2Nw?autoplay=1" 
+                                                    class="absolute top-0 left-0 w-full h-full rounded-lg"
+                                                    frameborder="0" 
+                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                                    allowfullscreen>
+                                                </iframe>
+                                            </div>
                                         </div>
+                                    `;
+                                    document.body.appendChild(modal);
+                                    modal.addEventListener('click', (e) => {
+                                        if (e.target === modal) {
+                                            modal.remove();
+                                        }
+                                    });
+                                }}
+                                className="relative block w-64 group"
+                            >
+                                <img 
+                                    src="https://img.youtube.com/vi/7s14tEmr2Nw/maxresdefault.jpg" 
+                                    alt="Overwatch Introduction Video" 
+                                    className="w-full rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer"
+                                />
+                                {/* Play icon overlay */}
+                                <div className="absolute inset-0 flex items-center justify-center">
+                                    <div className="bg-black bg-opacity-60 rounded-full p-4 group-hover:bg-opacity-80 transition-all duration-200">
+                                        <svg 
+                                            className="w-8 h-8 text-white" 
+                                            fill="currentColor" 
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path d="M8 5v14l11-7z"/>
+                                        </svg>
                                     </div>
-                                `;
-                                document.body.appendChild(modal);
-                                modal.addEventListener('click', (e) => {
-                                    if (e.target === modal) {
-                                        modal.remove();
-                                    }
-                                });
-                            }}
-                            className="block w-64"
-                        >
-                            <img 
-                                src="https://img.youtube.com/vi/7s14tEmr2Nw/maxresdefault.jpg" 
-                                alt="Overwatch Introduction Video" 
-                                className="w-full rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer"
-                            />
-                        </button>
+                                </div>
+                            </button>
+                        </div>
                     </div>
                 ),
                 sender: SenderOption.ai,
@@ -497,7 +511,7 @@ export function Conversation() {
                                             onClick={() => handleShowMore("Find Jodi Arias in California; she's in her 40s")}
                                             className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
                                         >
-                                            Show more
+                                            Show Me
                                         </button>
                                     </div>
                                     <div className="flex items-center">
@@ -506,7 +520,7 @@ export function Conversation() {
                                             onClick={() => handleShowMore("Find Yarly Reyes he has brown eyes")}
                                             className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
                                         >
-                                            Show more
+                                            Show Me
                                         </button>
                                     </div>
                                     <div className="flex items-center">
@@ -515,7 +529,7 @@ export function Conversation() {
                                             onClick={() => handleShowMore("Whose phone number is (727) 504-2129")}
                                             className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
                                         >
-                                            Show more
+                                            Show Me
                                         </button>
                                     </div>
                                     <div className="flex items-center">
@@ -524,7 +538,7 @@ export function Conversation() {
                                             onClick={() => handleShowMore("Find Ghislaine Maxwell; she owns a Cadillac")}
                                             className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
                                         >
-                                            Show more
+                                            Show Me
                                         </button>
                                     </div>
                                     <div className="flex items-center">
@@ -533,7 +547,7 @@ export function Conversation() {
                                             onClick={() => handleShowMore("Whose email address is DonaldTrump@hotmail.com")}
                                             className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
                                         >
-                                            Show more
+                                            Show Me
                                         </button>
                                     </div>
                                     <div className="flex items-center">
@@ -542,7 +556,7 @@ export function Conversation() {
                                             onClick={() => handleShowMore("Who lives at 523 Covena Ave, Modesto, CA 95354")}
                                             className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
                                         >
-                                            Show more
+                                            Show Me
                                         </button>
                                     </div>
                                     <div className="flex items-center">
@@ -551,7 +565,7 @@ export function Conversation() {
                                             onClick={() => handleShowMore("Whose IP address is 152.72.121.172")}
                                             className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
                                         >
-                                            Show more
+                                            Show Me
                                         </button>
                                     </div>
                                     <div className="flex items-center">
@@ -560,7 +574,7 @@ export function Conversation() {
                                             onClick={() => handleShowMore("Whose car is this VIN Number: 1GKFK66U95J223404")}
                                             className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
                                         >
-                                            Show more
+                                            Show Me
                                         </button>
                                     </div>
                                 </div>
@@ -592,44 +606,58 @@ export function Conversation() {
                         Tap the icon below to watch a brief introduction to Overwatch.
                         <br />
                         <br />
-                        <button 
-                            onClick={() => {
-                                const modal = document.createElement('div');
-                                modal.className = 'fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50';
-                                modal.innerHTML = `
-                                    <div class="relative w-full max-w-4xl mx-4">
-                                        <button 
-                                            onclick="this.parentElement.parentElement.remove()" 
-                                            class="absolute -top-10 right-0 text-white text-2xl hover:text-gray-300 z-10"
-                                        >
-                                            ×
-                                        </button>
-                                        <div class="relative w-full" style="padding-bottom: 56.25%;">
-                                            <iframe 
-                                                src="https://www.youtube.com/embed/7s14tEmr2Nw?autoplay=1" 
-                                                class="absolute top-0 left-0 w-full h-full rounded-lg"
-                                                frameborder="0" 
-                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                                allowfullscreen>
-                                            </iframe>
+                        <div className="flex justify-center">
+                            <button 
+                                onClick={() => {
+                                    const modal = document.createElement('div');
+                                    modal.className = 'fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50';
+                                    modal.innerHTML = `
+                                        <div class="relative w-full max-w-4xl mx-4">
+                                            <button 
+                                                onclick="this.parentElement.parentElement.remove()" 
+                                                class="absolute -top-10 right-0 text-white text-2xl hover:text-gray-300 z-10"
+                                            >
+                                                ×
+                                            </button>
+                                            <div class="relative w-full" style="padding-bottom: 56.25%;">
+                                                <iframe 
+                                                    src="https://www.youtube.com/embed/7s14tEmr2Nw?autoplay=1" 
+                                                    class="absolute top-0 left-0 w-full h-full rounded-lg"
+                                                    frameborder="0" 
+                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                                    allowfullscreen>
+                                                </iframe>
+                                            </div>
                                         </div>
+                                    `;
+                                    document.body.appendChild(modal);
+                                    modal.addEventListener('click', (e) => {
+                                        if (e.target === modal) {
+                                            modal.remove();
+                                        }
+                                    });
+                                }}
+                                className="relative block w-64 group"
+                            >
+                                <img 
+                                    src="https://img.youtube.com/vi/7s14tEmr2Nw/maxresdefault.jpg" 
+                                    alt="Overwatch Introduction Video" 
+                                    className="w-full rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer"
+                                />
+                                {/* Play icon overlay */}
+                                <div className="absolute inset-0 flex items-center justify-center">
+                                    <div className="bg-black bg-opacity-60 rounded-full p-4 group-hover:bg-opacity-80 transition-all duration-200">
+                                        <svg 
+                                            className="w-8 h-8 text-white" 
+                                            fill="currentColor" 
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path d="M8 5v14l11-7z"/>
+                                        </svg>
                                     </div>
-                                `;
-                                document.body.appendChild(modal);
-                                modal.addEventListener('click', (e) => {
-                                    if (e.target === modal) {
-                                        modal.remove();
-                                    }
-                                });
-                            }}
-                            className="block w-64"
-                        >
-                            <img 
-                                src="https://img.youtube.com/vi/7s14tEmr2Nw/maxresdefault.jpg" 
-                                alt="Overwatch Introduction Video" 
-                                className="w-full rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer"
-                            />
-                        </button>
+                                </div>
+                            </button>
+                        </div>
                     </div>
                 ),
                 sender: SenderOption.ai,
@@ -650,12 +678,16 @@ export function Conversation() {
 
     useEffect(() => {
         if (chatId) {
-            fetchMessages(chatId);
+            // Only fetch messages if we're not currently executing a query
+            // This prevents overwriting the optimistic message during query execution
+            if (!isExecutingQuery) {
+                fetchMessages(chatId);
+            }
         } else {
             setMessages([]);
         }
         previousText=""
-    }, [chatId]);
+    }, [chatId, isExecutingQuery]);
 
     const executeQueryWithChatId = async (value: string, chatIdToUse: string) => {
         try {
@@ -720,7 +752,7 @@ export function Conversation() {
                                     onClick={() => handleShowMore("Find Jodi Arias in California; she's in her 40s")}
                                     className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
                                 >
-                                    Show more
+                                    Show Me
                                 </button>
                             </div>
                             <div className="flex items-center">
@@ -729,7 +761,7 @@ export function Conversation() {
                                     onClick={() => handleShowMore("Find Yarly Reyes he has brown eyes")}
                                     className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
                                 >
-                                    Show more
+                                    Show Me
                                 </button>
                             </div>
                             <div className="flex items-center">
@@ -738,7 +770,7 @@ export function Conversation() {
                                     onClick={() => handleShowMore("Whose phone number is (727) 504-2129")}
                                     className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
                                 >
-                                    Show more
+                                    Show Me
                                 </button>
                             </div>
                             <div className="flex items-center">
@@ -747,7 +779,7 @@ export function Conversation() {
                                     onClick={() => handleShowMore("Find Ghislaine Maxwell; she owns a Cadillac")}
                                     className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
                                 >
-                                    Show more
+                                    Show Me
                                 </button>
                             </div>
                             <div className="flex items-center">
@@ -756,7 +788,7 @@ export function Conversation() {
                                     onClick={() => handleShowMore("Whose email address is DonaldTrump@hotmail.com")}
                                     className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
                                 >
-                                    Show more
+                                    Show Me
                                 </button>
                             </div>
                             <div className="flex items-center">
@@ -765,7 +797,7 @@ export function Conversation() {
                                     onClick={() => handleShowMore("Who lives at 523 Covena Ave, Modesto, CA 95354")}
                                     className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
                                 >
-                                    Show more
+                                    Show Me
                                 </button>
                             </div>
                             <div className="flex items-center">
@@ -774,7 +806,7 @@ export function Conversation() {
                                     onClick={() => handleShowMore("Whose IP address is 152.72.121.172")}
                                     className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
                                 >
-                                    Show more
+                                    Show Me
                                 </button>
                             </div>
                             <div className="flex items-center">
@@ -783,7 +815,7 @@ export function Conversation() {
                                     onClick={() => handleShowMore("Whose car is this VIN Number: 1GKFK66U95J223404")}
                                     className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
                                 >
-                                    Show more
+                                    Show Me
                                 </button>
                             </div>
                         </div>
@@ -822,6 +854,9 @@ export function Conversation() {
 
             // Notify parent component about the new message
             onNewMessage?.({ chatId: currentChatId, message: value });
+
+            // Fetch messages from server to ensure we have the complete conversation
+            await fetchMessages(currentChatId);
 
         } catch (error) {
             console.error('Error executing query:', error);
@@ -981,7 +1016,7 @@ export function Conversation() {
                                     onClick={() => handleShowMore("Find Jodi Arias in California; she's in her 40s")}
                                     className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
                                 >
-                                    Show more
+                                    Show Me
                                 </button>
                             </div>
                             <div className="flex items-center">
@@ -990,7 +1025,7 @@ export function Conversation() {
                                     onClick={() => handleShowMore("Find Yarly Reyes he has brown eyes")}
                                     className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
                                 >
-                                    Show more
+                                    Show Me
                                 </button>
                             </div>
                             <div className="flex items-center">
@@ -999,7 +1034,7 @@ export function Conversation() {
                                     onClick={() => handleShowMore("Whose phone number is (727) 504-2129")}
                                     className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
                                 >
-                                    Show more
+                                    Show Me
                                 </button>
                             </div>
                             <div className="flex items-center">
@@ -1008,7 +1043,7 @@ export function Conversation() {
                                     onClick={() => handleShowMore("Find Ghislaine Maxwell; she owns a Cadillac")}
                                     className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
                                 >
-                                    Show more
+                                    Show Me
                                 </button>
                             </div>
                             <div className="flex items-center">
@@ -1017,7 +1052,7 @@ export function Conversation() {
                                     onClick={() => handleShowMore("Whose email address is DonaldTrump@hotmail.com")}
                                     className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
                                 >
-                                    Show more
+                                    Show Me
                                 </button>
                             </div>
                             <div className="flex items-center">
@@ -1026,7 +1061,7 @@ export function Conversation() {
                                     onClick={() => handleShowMore("Who lives at 523 Covena Ave, Modesto, CA 95354")}
                                     className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
                                 >
-                                    Show more
+                                    Show Me
                                 </button>
                             </div>
                             <div className="flex items-center">
@@ -1035,7 +1070,7 @@ export function Conversation() {
                                     onClick={() => handleShowMore("Whose IP address is 152.72.121.172")}
                                     className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
                                 >
-                                    Show more
+                                    Show Me
                                 </button>
                             </div>
                             <div className="flex items-center">
@@ -1044,7 +1079,7 @@ export function Conversation() {
                                     onClick={() => handleShowMore("Whose car is this VIN Number: 1GKFK66U95J223404")}
                                     className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
                                 >
-                                    Show more
+                                    Show Me
                                 </button>
                             </div>
                         </div>

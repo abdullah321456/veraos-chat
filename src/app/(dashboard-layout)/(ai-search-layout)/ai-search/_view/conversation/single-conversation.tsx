@@ -61,7 +61,7 @@ type RenderMessageOrImagesProps = {
 function RenderMessageOrImages({ message, isLeft, images }: RenderMessageOrImagesProps) {
   const className = cn(
     'max-w-[650px] p-4 rounded-2xl text-sm relative',
-    isLeft ? 'bg-[#F6F6F9] rounded-es-sm' : 'bg-[#F6F5FE] rounded-ee-sm'
+    isLeft ? 'bg-[#F6F6F9] rounded-es-sm' : 'bg-[#4795f9] text-white rounded-ee-sm'
   );
 
   const actionButtonClassName = cn(
