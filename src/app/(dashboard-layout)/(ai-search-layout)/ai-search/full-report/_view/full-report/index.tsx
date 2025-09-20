@@ -299,7 +299,7 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
                 {((localDetails as any)?._index === 'criminals' || (localDetails as any)?._index === 'criminals_small'
                      || ((localDetails as any)?._index === 'vets' && localDetails?.VETERAN==='Y')
                     || ((localDetails as any)?._index === 'drunk-drivings' && localDetails?.ACCIDENTS==='Y')
-                    || ((localDetails as any).criminals && (localDetails as any).criminals.length>0)
+                    || ((localDetails as any)?.criminals && (localDetails as any).criminals.length>0)
                 ) && (
                   <CriminalAndLegal isEditable={editable} isDrawer={isDrawer} details={localDetails} />
                 )}

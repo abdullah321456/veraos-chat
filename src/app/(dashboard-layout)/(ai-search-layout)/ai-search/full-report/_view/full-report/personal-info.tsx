@@ -85,16 +85,16 @@ export function PersonalInfo({
         }
     }
 
-    const formattedDOB = formatDateToMMDDYYYY(details?.DOB || (details.criminals && details.criminals.length>0 && details.criminals[0].DOB) || '');
+    const formattedDOB = formatDateToMMDDYYYY(details?.DOB || (details?.criminals && details.criminals.length>0 && details.criminals[0].DOB) || '');
     const calculatedAge = calculateAge(details?.DOB ||
-        (details.criminals && details.criminals.length>0 && details.criminals[0].DOB) || '');
+        (details?.criminals && details.criminals.length>0 && details.criminals[0].DOB) || '');
 
     const hasMain = details?.FIRST || details?.MID || details?.LAST;
     const hasAliases = details?.AKA1 || details?.AKA2;
-    const hasDOB = !!details?.DOB || (details.criminals && details.criminals.length>0 && details.criminals[0].DOB);
+    const hasDOB = !!details?.DOB || (details?.criminals && details.criminals.length>0 && details.criminals[0].DOB);
     const hasMarital = !!details?.MARITALSTA || !!details?.Marital_Status;
     const hasGender = !!details?.GENDER || !!details?.Gender ||
-        (details.criminals && details.criminals.length>0 && details.criminals[0].Gender)
+        (details?.criminals && details.criminals.length>0 && details.criminals[0].Gender)
     const isSmoker = !!details?.SMOKER;
     const hasIncome = !!details?.Income;
     const hasHomeowner = !!details?.HOMEOWNER;
