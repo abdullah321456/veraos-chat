@@ -3,8 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="31f38edd-b261-4f74-9fe3-a56331e865fe" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/full-report/_view/full-report/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/full-report/_view/full-report/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/full-report/_view/full-report/personal-info.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/full-report/_view/full-report/personal-info.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/_view/conversation/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/_view/conversation/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(faq-help-layout)/link-menu.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(faq-help-layout)/link-menu.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(faq-help-layout)/terms-of-use/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(faq-help-layout)/terms-of-use/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/sidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/sidebar.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -153,7 +155,9 @@
       <workItem from="1757932170039" duration="184000" />
       <workItem from="1758180687408" duration="14752000" />
       <workItem from="1758268417735" duration="11938000" />
-      <workItem from="1758350622284" duration="456000" />
+      <workItem from="1758350622284" duration="799000" />
+      <workItem from="1758453091501" duration="137000" />
+      <workItem from="1758453252135" duration="1016000" />
     </task>
     <servers />
   </component>

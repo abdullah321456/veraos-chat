@@ -40,11 +40,11 @@ export function DataAccessForm() {
   const router = useRouter();
   const { handleNext } = useSignupMultiStep();
   const [selectedNeeds, setSelectedNeeds] = useState<string[]>([]);
-  const { setDataAccessInfo } = useSignup();
+  const { setDataAccessInfo, dataAccessInfo } = useSignup();
 
   const form = useForm<DataAccessFormInputType>({
     resolver: zodResolver(DataAccessFormSchema),
-    defaultValues: {
+    defaultValues: dataAccessInfo || {
       intendedUse: '',
       dataAccessNeeds: [],
     },
@@ -64,6 +64,25 @@ export function DataAccessForm() {
   useEffect(() => {
     // Form values are being watched for validation
   }, [formValues, isValid, errors, dirtyFields]);
+
+  // Update form when dataAccessInfo changes (when data is loaded from context)
+  useEffect(() => {
+    if (dataAccessInfo) {
+      setValue('intendedUse', dataAccessInfo.intendedUse);
+      setValue('dataAccessNeeds', dataAccessInfo.dataAccessNeeds);
+      setSelectedNeeds(dataAccessInfo.dataAccessNeeds);
+    }
+  }, [dataAccessInfo, setValue]);
+
+  // Save form data to context on every change
+  useEffect(() => {
+    const subscription = watch((value) => {
+      if (value && (value.intendedUse || value.dataAccessNeeds?.length > 0)) {
+        setDataAccessInfo(value as DataAccessFormInputType);
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [watch, setDataAccessInfo]);
 
   const handleNeedSelection = (need: string) => {
     const newSelectedNeeds = selectedNeeds.includes(need)

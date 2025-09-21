@@ -65,9 +65,9 @@ export function DashboardSidebar({ isExpanded }: Props) {
       name: 'Archive',
     },
     {
-      href: ROUTES.FAQ.INDEX,
+      href: ROUTES.FAQ.TERMS_OF_USE,
       icon: QuestionIcon,
-      activePathnames: [ROUTES.FAQ.INDEX],
+      activePathnames: [ROUTES.FAQ.TERMS_OF_USE],
       name: 'Faq',
     },
     {
@@ -79,12 +79,6 @@ export function DashboardSidebar({ isExpanded }: Props) {
       ],
     },
     { separator: true },
-    {
-      href: ROUTES.TECH_SUPPORT,
-      name: 'Support',
-      icon: HeadphoneIcon,
-      activePathnames: [ROUTES.TECH_SUPPORT],
-    },
     {
       href: ROUTES.BILLING,
       name: 'Billing',

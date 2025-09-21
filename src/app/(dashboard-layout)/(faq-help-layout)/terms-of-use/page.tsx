@@ -147,7 +147,7 @@ export default function TermsOfUsePage() {
               <p className="text-black text-sm leading-relaxed">
                 If you have questions about these terms or need to report a violation, 
                 please contact our legal team at{' '}
-                <span className="text-primary font-medium">legal@veraos.com</span>
+                <span className="text-primary font-medium">legal@veraos.io</span>
               </p>
             </div>
           </section>
@@ -166,4 +166,4 @@ export default function TermsOfUsePage() {
       </FadeAnimation>
     </div>
   );
-} 
+}

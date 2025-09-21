@@ -5,6 +5,7 @@ import { Input } from "@/components/atom/form-elements/input";
 import { PasswordInput } from "@/components/atom/form-elements/password-input/password-input";
 import { inputLabelStyles } from "@/components/atom/form-elements/styles/label-styles";
 import { Select } from "@/components/atom/select";
+import { PasswordDifficulty } from "@/components/atom/password-difficulty/password-difficulty";
 import cn from "@/lib/utils/cn";
 import { useRouter } from "next/navigation";
 import { ScrollToTop } from "@/components/atom/scroll-to-top";
@@ -14,6 +15,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SignupFormInputType, SignupFormSchema } from "../../signup/validation";
 import { toast } from "sonner";
 import { useSignup } from "../../signup/context/signup.context";
+import { useEffect } from "react";
 
 const labelClassName = cn(
   "block text-[#6D6F73]",
@@ -56,11 +58,11 @@ const countryOptions = [
 export function AccountAndOrganizationInfoForm() {
   const router = useRouter();
   const { handleNext } = useSignupMultiStep();
-  const { setBasicInfo } = useSignup();
+  const { setBasicInfo, basicInfo } = useSignup();
 
   const form = useForm<SignupFormInputType>({
     resolver: zodResolver(SignupFormSchema),
-    defaultValues: {
+    defaultValues: basicInfo || {
       firstName: '',
       middleName: '',
       lastName: '',
@@ -92,6 +94,26 @@ export function AccountAndOrganizationInfoForm() {
 
   const selectedOrganizationType = watch('organizationType');
   const selectedCountry = watch('country');
+  const password = watch('password');
+
+  // Update form when basicInfo changes (when data is loaded from context)
+  useEffect(() => {
+    if (basicInfo) {
+      Object.keys(basicInfo).forEach((key) => {
+        setValue(key as keyof SignupFormInputType, basicInfo[key as keyof SignupFormInputType]);
+      });
+    }
+  }, [basicInfo, setValue]);
+
+  // Save form data to context on every change
+  useEffect(() => {
+    const subscription = watch((value) => {
+      if (value && Object.values(value).some(v => v !== '')) {
+        setBasicInfo(value as SignupFormInputType);
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [watch, setBasicInfo]);
 
   async function onSubmit(inputs: SignupFormInputType) {
     try {
@@ -108,7 +130,7 @@ export function AccountAndOrganizationInfoForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-2 gap-5 w-[1020px]">
       <ScrollToTop />
-      <BasicInfoForm register={register} errors={errors} />
+      <BasicInfoForm register={register} errors={errors} password={password} />
       <OrganizationDetailsForm 
         register={register} 
         errors={errors} 
@@ -128,7 +150,7 @@ export function AccountAndOrganizationInfoForm() {
   );
 }
 
-function BasicInfoForm({ register, errors }: { register: any; errors: any }) {
+function BasicInfoForm({ register, errors, password }: { register: any; errors: any; password: string }) {
   return (
     <div className="bg-white shadow-md rounded-lg p-5 border border-gray-100">
       <p className="text-lg font-bold mb-5">Basic Information</p>
@@ -170,6 +192,7 @@ function BasicInfoForm({ register, errors }: { register: any; errors: any }) {
           placeholder="Type your password"
           error={errors.password?.message}
         />
+        <PasswordDifficulty password={password} className="mt-2" />
         <PasswordInput
           {...register('confirmPassword')}
           isRequired

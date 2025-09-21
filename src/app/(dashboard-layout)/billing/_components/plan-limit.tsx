@@ -8,7 +8,7 @@ interface PlanLimitProps {
 export function PlanLimit({ isEditable }: PlanLimitProps) {
   return (
     <div className="grid grid-cols-2 gap-4 ">
-      <div className="shadow-lg p-4 border border-gray-50 rounded-[10px] w-[346px]">
+      <div className="shadow-lg p-4 border border-gray-50 rounded-[10px] w-[346px] hidden">
         <div className="space-y-4">
           <h5 className="text-black text-base font-bold">Current Plan</h5>
           <div className="flex items-center justify-between">
@@ -50,7 +50,7 @@ function PaymentType({ isEditable }: PaymentTypeProps) {
     'peer-checked:text-primary peer-checked:font-semibold border rounded p-4 text-center cursor-pointer ring-0 peer-checked:ring-[2px] peer-checked:ring-primary text-sm duration-300';
 
   return (
-    <div className="shadow-lg p-4 border border-gray-50 rounded-[10px] w-[346px] space-y-6">
+    <div className="shadow-lg p-4 border border-gray-50 rounded-[10px] w-[346px] space-y-6 hidden">
       <p className="text-black text-base font-bold">Payment Method</p>
       <div className="grid grid-cols-2 gap-3 ">
         <AdvancedRadio name="paymentType" defaultChecked disabled={!isEditable}>

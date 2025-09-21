@@ -322,7 +322,7 @@ function TermsOfUseModal() {
                             If you have questions about these {activeSection === 'terms' ? 'terms' : 'privacy policies'} or need to report a violation,
                             please contact our {activeSection === 'terms' ? 'legal' : 'privacy'} team at{' '}
                             <span className="text-primary font-medium">
-                {activeSection === 'terms' ? 'legal@veraos.com' : 'privacy@veraos.com'}
+                {activeSection === 'terms' ? 'legal@veraos.io' : 'legal@veraos.io'}
               </span>
                         </p>
                     </div>

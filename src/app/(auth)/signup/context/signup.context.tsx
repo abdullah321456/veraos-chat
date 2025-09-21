@@ -26,17 +26,14 @@ export function SignupProvider({ children }: { children: ReactNode }) {
 
   const setBasicInfo = (info: SignupFormInputType) => {
     setBasicInfoState(info);
-    localStorage.setItem('basicInfo', JSON.stringify(info));
   };
 
   const setDataAccessInfo = (info: DataAccessFormInputType) => {
     setDataAccessInfoState(info);
-    localStorage.setItem('dataAccessNeeds', JSON.stringify(info));
   };
 
   const setFinalSubmissionInfo = (info: FinalSubmissionFormInputType) => {
     setFinalSubmissionInfoState(info);
-    localStorage.setItem('finalSubmissionInfo', JSON.stringify(info));
   };
 
   const addDocument = (document: File) => {
@@ -52,9 +49,6 @@ export function SignupProvider({ children }: { children: ReactNode }) {
     setDataAccessInfoState(null);
     setFinalSubmissionInfoState(null);
     setDocuments([]);
-    localStorage.removeItem('basicInfo');
-    localStorage.removeItem('dataAccessNeeds');
-    localStorage.removeItem('finalSubmissionInfo');
   };
 
   return (

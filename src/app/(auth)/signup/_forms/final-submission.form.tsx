@@ -25,6 +25,7 @@ export function FinalSubmissionForm() {
     const {
         basicInfo,
         dataAccessInfo,
+        finalSubmissionInfo,
         addDocument,
         removeDocument,
         setFinalSubmissionInfo
@@ -34,7 +35,7 @@ export function FinalSubmissionForm() {
 
     const form = useForm<FinalSubmissionFormInputType>({
         resolver: zodResolver(FinalSubmissionFormSchema),
-        defaultValues: {
+        defaultValues: finalSubmissionInfo || {
             documents: [],
         },
         mode: 'onChange',
