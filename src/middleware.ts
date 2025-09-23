@@ -10,6 +10,7 @@ export function middleware(request: NextRequest) {
         ROUTES.AUTH.LOGIN,
         ROUTES.AUTH.SIGNUP,
         ROUTES.AUTH.FORGOT_PASSWORD,
+        ROUTES.AUTH.RESET_PASSWORD,
         ROUTES.AUTH.JOIN_WITH_INVITE_CODE,
         ROUTES.HOME,
         ROUTES.FAQ.INDEX,

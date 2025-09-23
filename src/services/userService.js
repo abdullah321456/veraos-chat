@@ -91,6 +91,26 @@ export const userService = {
         } catch (error) {
             throw error;
         }
+    },
+
+    // Forgot password - send reset link to email
+    forgotPassword: async (email) => {
+        try {
+            const response = await apiService.postData('/users/forgot-password', { email });
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    },
+
+    // Reset password with code and new password
+    resetPassword: async (resetData) => {
+        try {
+            const response = await apiService.postData('/users/reset-password', resetData);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
     }
 };
 
