@@ -1,9 +1,9 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 
-export function UrlTest() {
+function UrlTestContent() {
   const searchParams = useSearchParams();
   const [urlParams, setUrlParams] = useState<Record<string, string>>({});
 
@@ -55,5 +55,21 @@ export function UrlTest() {
         </div>
       </div>
     </div>
+  );
+}
+
+export function UrlTest() {
+  return (
+    <Suspense fallback={
+      <div className="p-8 max-w-4xl mx-auto">
+        <h1 className="text-2xl font-bold mb-6">URL Parameter Test</h1>
+        <div className="p-4 bg-gray-50 rounded-md">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+          <p className="text-sm mt-2 text-gray-600 text-center">Loading URL parameters...</p>
+        </div>
+      </div>
+    }>
+      <UrlTestContent />
+    </Suspense>
   );
 }

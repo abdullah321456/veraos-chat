@@ -55,13 +55,8 @@ export function ResetPasswordForm() {
   const password = watch('password');
 
   useEffect(() => {
-    console.log('Reset password form mounted');
-    console.log('Code:', code);
-    console.log('Email:', email);
-    
     // Validate the reset code and email
     if (!code || !email) {
-      console.log('Missing code or email, redirecting to forgot password');
       toast.error('Invalid reset link. Please request a new password reset.');
       router.push(ROUTES.AUTH.FORGOT_PASSWORD);
       return;
@@ -69,7 +64,6 @@ export function ResetPasswordForm() {
     
     // Here you could add a validation call to check if the code is valid
     // For now, we'll assume it's valid if both code and email are present
-    console.log('Code and email present, setting as valid');
     setIsValidCode(true);
     setIsValidating(false);
   }, [code, email, router]);
