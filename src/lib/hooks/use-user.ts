@@ -130,7 +130,32 @@ export const useUser = () => {
             return true;
         } catch (err: any) {
             console.error('Error updating password:', err);
-            toast.error(err.message || 'Failed to update password');
+            
+            // Handle different types of errors and show user-friendly messages
+            let errorMessage = 'Failed to update password';
+            
+            if (err.response?.data?.message) {
+                // Server-provided error message
+                errorMessage = err.response.data.message;
+            } else if (err.response?.status === 400) {
+                errorMessage = 'Invalid password data. Please check your current password and try again.';
+            } else if (err.response?.status === 401) {
+                errorMessage = 'Current password is incorrect. Please try again.';
+            } else if (err.response?.status === 403) {
+                errorMessage = 'You are not authorized to perform this action.';
+            } else if (err.response?.status === 404) {
+                errorMessage = 'Password update service not found. Please try again later.';
+            } else if (err.response?.status === 422) {
+                errorMessage = 'Password does not meet security requirements. Please choose a stronger password.';
+            } else if (err.response?.status >= 500) {
+                errorMessage = 'Server error occurred. Please try again later.';
+            } else if (err.code === 'NETWORK_ERROR' || err.message?.includes('Network Error')) {
+                errorMessage = 'Network connection error. Please check your internet connection and try again.';
+            } else if (err.message && err.message !== 'Failed to update password') {
+                errorMessage = err.message;
+            }
+            
+            toast.error(errorMessage);
             return false;
         } finally {
             setUpdating(false);

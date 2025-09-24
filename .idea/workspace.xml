@@ -3,18 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="31f38edd-b261-4f74-9fe3-a56331e865fe" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(auth)/forgot-password/form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(auth)/forgot-password/form.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(auth)/forgot-password/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(auth)/forgot-password/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(auth)/signup/_forms/data-access.form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(auth)/signup/_forms/data-access.form.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(auth)/signup/_forms/final-submission.form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(auth)/signup/_forms/final-submission.form.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(auth)/signup/context/signup.context.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(auth)/signup/context/signup.context.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(faq-help-layout)/faq/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(faq-help-layout)/faq/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(faq-help-layout)/link-menu.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(faq-help-layout)/link-menu.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(faq-help-layout)/terms-of-use/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(faq-help-layout)/terms-of-use/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/test/test.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/test/test.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/atom/password-difficulty/password-difficulty.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/atom/password-difficulty/password-difficulty.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/routes.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middleware.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/middleware.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/sidebar/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/sidebar/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/settings/account-settings/password-security.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/settings/account-settings/password-security.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/services/userService.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/userService.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -168,7 +158,10 @@
       <workItem from="1758453091501" duration="137000" />
       <workItem from="1758453252135" duration="2014000" />
       <workItem from="1758482012021" duration="35000" />
-      <workItem from="1758612470988" duration="2683000" />
+      <workItem from="1758612470988" duration="3155000" />
+      <workItem from="1758696244428" duration="62000" />
+      <workItem from="1758715460294" duration="103000" />
+      <workItem from="1758715580092" duration="829000" />
     </task>
     <servers />
   </component>

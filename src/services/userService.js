@@ -26,9 +26,10 @@ export const userService = {
     // Update user password
     updatePassword: async (passwordData) => {
         try {
-            const response = await apiService.updateData('/users/password', passwordData);
+            const response = await apiService.updateData('/users/update-password', passwordData);
             return response.data;
         } catch (error) {
+            console.error('Password update API error:', error);
             throw error;
         }
     },
@@ -155,7 +156,7 @@ export const updateUserProfile = async (token, updateData) => {
 // Update user password
 export const updateUserPassword = async (token, passwordData) => {
     try {
-        const response = await axios.put('/users/password', passwordData, {
+        const response = await axios.put('/users/update-password', passwordData, {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
@@ -166,6 +167,8 @@ export const updateUserPassword = async (token, passwordData) => {
         return response.data;
     } catch (error) {
         console.error('Error updating password:', error);
+        
+        // Preserve the original error for proper handling in the hook
         throw error;
     }
 }; 

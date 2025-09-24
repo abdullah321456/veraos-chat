@@ -365,7 +365,7 @@ const navigationMenus = [
     activePathnames: [ROUTES.AI_SEARCH.INDEX, ROUTES.AI_SEARCH.FULL_REPORT] as string[],
   },
   {
-    name: 'Version 0.597',
+    name: 'Version 1.0',
     isVersion:true
   },
 ];
