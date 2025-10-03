@@ -7,16 +7,31 @@
   --foreground: #171717;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   color: var(--foreground);
   background: var(--background);
+}
+
+/* Force light mode only - disable any dark mode */
+* {
+  color-scheme: light only !important;
+}
+
+/* Override any potential dark mode styles */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #ffffff !important;
+    --foreground: #171717 !important;
+  }
+  
+  body {
+    background: #ffffff !important;
+    color: #171717 !important;
+  }
+  
+  html {
+    background: #ffffff !important;
+  }
 }
 
 /* Title Case Styling - Consistent Capitalization */

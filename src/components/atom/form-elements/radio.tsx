@@ -51,7 +51,7 @@ const radioStyles = {
   },
   variant: {
     outline: 'border border-gray-400',
-    flat: 'border-0 bg-muted/70 backdrop-blur ring-muted/70 hover:enabled:bg-muted/90 dark:checked:!bg-transparent dark:checked:!ring-primary checked:!bg-primary',
+    flat: 'border-0 bg-muted/70 backdrop-blur ring-muted/70 hover:enabled:bg-muted/90 checked:!bg-primary',
   },
 };
 

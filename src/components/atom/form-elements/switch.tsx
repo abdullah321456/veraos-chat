@@ -175,7 +175,6 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
             className={cn(
               'peer/switch absolute -z-[1] opacity-0 [&:checked:enabled~span_.rm-switch-off-icon]:hidden [&:checked:enabled~span_.rm-switch-on-icon]:opacity-100',
               '[&:checked:enabled~span>.rm-switch-knob]:bg-white [&:checked:enabled~span>.rm-switch-knob]:text-black',
-              '[&:checked:enabled~span>.rm-switch-knob]:dark:bg-black [&:checked:enabled~span>.rm-switch-knob]:dark:text-white',
               switchKnobStyles.translate.active[size]
             )}
             {...props}
@@ -201,8 +200,8 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
                 switchKnobStyles.color,
                 switchKnobStyles.translate.inactive,
                 variant === 'flat' && [
-                  'text-foreground dark:text-primary-foreground bg-white shadow-sm',
-                  disabled && 'dark:bg-muted-foreground',
+                  'text-foreground bg-white shadow-sm',
+                  disabled && 'bg-muted-foreground',
                 ],
                 variant === 'outline' && 'bg-muted text-foreground',
                 switchKnobClassName

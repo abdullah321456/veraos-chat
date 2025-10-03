@@ -3,9 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="31f38edd-b261-4f74-9fe3-a56331e865fe" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/sidebar/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/sidebar/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/settings/account-settings/password-security.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/settings/account-settings/password-security.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/userService.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/userService.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/globals.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/atom/button.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/atom/button.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/atom/dropdown/dropdown-styles.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/atom/dropdown/dropdown-styles.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/atom/form-elements/radio.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/atom/form-elements/radio.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/atom/form-elements/switch.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/atom/form-elements/switch.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tsconfig.tsbuildinfo" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -161,7 +164,8 @@
       <workItem from="1758612470988" duration="3155000" />
       <workItem from="1758696244428" duration="62000" />
       <workItem from="1758715460294" duration="103000" />
-      <workItem from="1758715580092" duration="829000" />
+      <workItem from="1758715580092" duration="1791000" />
+      <workItem from="1759500219472" duration="2564000" />
     </task>
     <servers />
   </component>

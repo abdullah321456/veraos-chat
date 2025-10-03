@@ -9,11 +9,11 @@ import { toEnhancedTitleCase } from '@/lib/utils/title-case';
 
 export const buttonVariantStyles = {
   solid: {
-    base: 'border border-transparent dark:backdrop-blur ',
+    base: 'border border-transparent ',
     color: {
       primary: 'bg-primary hover:bg-primary-dark focus-visible:ring-muted text-white',
       secondary:
-        'bg-secondary hover:bg-secondary-dark dark:hover:bg-secondary/80 focus-visible:ring-secondary/30 text-secondary-foreground',
+        'bg-secondary hover:bg-secondary-dark focus-visible:ring-secondary/30 text-secondary-foreground',
       danger: 'bg-red-500 hover:bg-red-700 focus-visible:ring-danger/30 text-white',
     },
   },
@@ -26,7 +26,7 @@ export const buttonVariantStyles = {
     },
   },
   outline: {
-    base: 'bg-transparent border dark:backdrop-blur',
+    base: 'bg-transparent border',
     color: {
       primary: 'focus-visible:ring-muted border-primary hover:bg-primary/[.05] text-primary hover:text-primary hover:border-primary',
       secondary: 'focus-visible:ring-secondary-lighter hover:text-secondary hover:border-secondary',

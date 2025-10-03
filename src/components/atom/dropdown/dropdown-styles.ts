@@ -1,5 +1,5 @@
 export const dropdownStyles = {
-  base: 'z-[999] border border-gray-100 bg-background !p-1.5 focus-visible:outline-none dark:bg-muted/80 dark:backdrop-blur-3xl',
+  base: 'z-[999] border border-gray-100 bg-background !p-1.5 focus-visible:outline-none',
   rounded: {
     none: 'rounded-none',
     sm: 'rounded-sm',
