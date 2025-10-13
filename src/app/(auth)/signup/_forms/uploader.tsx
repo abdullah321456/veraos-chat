@@ -24,6 +24,19 @@ export function Uploader({ onUpload, onRemove, uploadedDocuments, error }: Uploa
     const selectedFile = event.target.files?.[0];
     if (!selectedFile) return;
 
+    // Validate file type - only images
+    if (!selectedFile.type.startsWith('image/')) {
+      toast.error('Please upload only image files');
+      return;
+    }
+
+    // Validate file size - max 2 MB
+    const maxSize = 2 * 1024 * 1024; // 2 MB in bytes
+    if (selectedFile.size > maxSize) {
+      toast.error('File size must be less than 2 MB');
+      return;
+    }
+
     startTransition(() => {
       try {
         // Return the file directly instead of converting to base64
@@ -44,6 +57,21 @@ export function Uploader({ onUpload, onRemove, uploadedDocuments, error }: Uploa
     event.preventDefault();
     const droppedFile = event.dataTransfer.files?.[0];
     if (!droppedFile) return;
+
+    // Validate file type - only images
+    if (!droppedFile.type.startsWith('image/')) {
+      toast.error('Please upload only image files');
+      setFileOnBoard(false);
+      return;
+    }
+
+    // Validate file size - max 2 MB
+    const maxSize = 2 * 1024 * 1024; // 2 MB in bytes
+    if (droppedFile.size > maxSize) {
+      toast.error('File size must be less than 2 MB');
+      setFileOnBoard(false);
+      return;
+    }
 
     startTransition(() => {
       try {
@@ -80,7 +108,7 @@ export function Uploader({ onUpload, onRemove, uploadedDocuments, error }: Uploa
               className="hidden" 
               ref={inputRef} 
               onChange={handleImageFileChange}
-              accept="image/*,.pdf"
+              accept="image/png,image/jpeg,image/jpg,image/gif,image/webp"
             />
             <Button
               onClick={() => inputRef.current?.click()}
