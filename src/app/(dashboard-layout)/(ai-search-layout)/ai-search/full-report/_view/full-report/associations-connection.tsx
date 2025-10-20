@@ -94,65 +94,85 @@ export function AssociationsConnection({ isEditable = false, isDrawer, details }
         actionButton: <AccordionActionButton setEditable={setEditable} mode={actionButtonMode} onClick={handleActionButtonClick} />,
       })}
     >
-      <div className={cn(isDrawer ? "grid gap-3" : "grid grid-cols-3 gap-3")}>
-        {familyMembers.map((member: any, index: number) => {
-          const fullName = [member.FIRST, member.MID, member.LAST].filter(Boolean).join(' ');
-          const primaryAddress = formatAddress(member.Address1, member.CITY, member.STATE, member.ZI);
-          const phone = formatPhone(member.PHONE || member.CELL_PHONE || member.HOME_PHONE);
-          
-          return (
-            <div key={index} className="border rounded-lg py-1.5 px-2.5 relative">
-              <p className="text-xs"></p>
-              <div className="space-y-2 mt-2">
-                {fullName && (
-                  <p className="text-black font-medium text-xs leading-5">
-                    Name: <span className="text-black text-xs font-normal leading-4">{capitalizeWords(fullName)}</span>
-                  </p>
-                )}
-                {member.Gender && (
-                  <p className="text-black font-medium text-xs leading-5">
-                    Gender: <span className="text-black text-xs font-normal leading-4">{capitalizeWords(member.Gender)}</span>
-                  </p>
-                )}
-                {member.DOB && (
-                  <p className="text-black font-medium text-xs leading-5">
-                    Date of Birth: <span className="text-black text-xs font-normal leading-4">{member.DOB}</span>
-                  </p>
-                )}
-                {primaryAddress && (
-                  <p className="text-black font-medium text-xs leading-5">
-                    Address: <span className="text-black text-xs font-normal leading-4">{primaryAddress}</span>
-                  </p>
-                )}
-                {phone && (
-                  <p className="text-black font-medium text-xs leading-5">
-                    Phone: <span className="text-black text-xs font-normal leading-4">{phone}</span>
-                  </p>
-                )}
-                {member.AKA1 && (
-                  <p className="text-black font-medium text-xs leading-5">
-                    Alias: <span className="text-black text-xs font-normal leading-4">{capitalizeWords(member.AKA1)}</span>
-                  </p>
-                )}
-                {member.AKA2 && (
-                  <p className="text-black font-medium text-xs leading-5">
-                    Alias 2: <span className="text-black text-xs font-normal leading-4">{capitalizeWords(member.AKA2)}</span>
-                  </p>
-                )}
-                {member.COUNTY && (
-                  <p className="text-black font-medium text-xs leading-5">
-                    County: <span className="text-black text-xs font-normal leading-4">{capitalizeWords(member.COUNTY)}</span>
-                  </p>
-                )}
-                {false && (
-                  <p className="text-black font-medium text-xs leading-5">
-                    Source: <span className="text-black text-xs font-normal leading-4">{capitalizeWords(member.SOURCE)}</span>
-                  </p>
-                )}
+      <div className="space-y-4">
+        {(() => {
+          // Group members by address
+          const groupedByAddress = familyMembers.reduce((acc: any, member: any) => {
+            const address = formatAddress(member.Address1, member.CITY, member.STATE, member.ZI);
+            const key = address || 'Unknown Address';
+            
+            if (!acc[key]) {
+              acc[key] = [];
+            }
+            acc[key].push(member);
+            return acc;
+          }, {});
+
+          return Object.entries(groupedByAddress).map(([address, members]: [string, any]) => (
+            <div key={address} className="border rounded-lg p-3">
+              {/* Address Header */}
+              <h3 className="font-bold text-sm text-black mb-3 pb-2 border-b">
+                {address}
+              </h3>
+              
+              {/* Associates under this address */}
+              <div className={cn(isDrawer ? "grid gap-3" : "grid grid-cols-3 gap-3")}>
+                {members.map((member: any, index: number) => {
+                  const fullName = [member.FIRST, member.MID, member.LAST].filter(Boolean).join(' ');
+                  const phone = formatPhone(member.PHONE || member.CELL_PHONE || member.HOME_PHONE);
+                  
+                  return (
+                    <div key={index} className="border rounded-lg py-1.5 px-2.5 relative">
+                      <p className="text-xs"></p>
+                      <div className="space-y-2 mt-2">
+                        {fullName && (
+                          <p className="text-black font-medium text-xs leading-5">
+                            Name: <span className="text-black text-xs font-normal leading-4">{capitalizeWords(fullName)}</span>
+                          </p>
+                        )}
+                        {member.Gender && (
+                          <p className="text-black font-medium text-xs leading-5">
+                            Gender: <span className="text-black text-xs font-normal leading-4">{capitalizeWords(member.Gender)}</span>
+                          </p>
+                        )}
+                        {member.DOB && (
+                          <p className="text-black font-medium text-xs leading-5">
+                            Date of Birth: <span className="text-black text-xs font-normal leading-4">{member.DOB}</span>
+                          </p>
+                        )}
+                        {phone && (
+                          <p className="text-black font-medium text-xs leading-5">
+                            Phone: <span className="text-black text-xs font-normal leading-4">{phone}</span>
+                          </p>
+                        )}
+                        {member.AKA1 && (
+                          <p className="text-black font-medium text-xs leading-5">
+                            Alias: <span className="text-black text-xs font-normal leading-4">{capitalizeWords(member.AKA1)}</span>
+                          </p>
+                        )}
+                        {member.AKA2 && (
+                          <p className="text-black font-medium text-xs leading-5">
+                            Alias 2: <span className="text-black text-xs font-normal leading-4">{capitalizeWords(member.AKA2)}</span>
+                          </p>
+                        )}
+                        {member.COUNTY && (
+                          <p className="text-black font-medium text-xs leading-5">
+                            County: <span className="text-black text-xs font-normal leading-4">{capitalizeWords(member.COUNTY)}</span>
+                          </p>
+                        )}
+                        {false && (
+                          <p className="text-black font-medium text-xs leading-5">
+                            Source: <span className="text-black text-xs font-normal leading-4">{capitalizeWords(member.SOURCE)}</span>
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
-          );
-        })}
+          ));
+        })()}
         {newRecord && <NewRecordForm setNewRecord={setNewRecord} />}
       </div>
       {!newRecord && editable && (
