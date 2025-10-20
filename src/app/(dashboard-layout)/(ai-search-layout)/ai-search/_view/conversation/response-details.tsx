@@ -130,6 +130,7 @@ function SingleDetails(props: AIResponseDetail) {
             ...normalizeMergeResponse(props.vets),
             ...normalizeMergeResponse(props.email_master),
             ...normalizeMergeResponse(props.dob_master),
+            ...normalizeMergeResponse(props.devices),
             ...normalizeMergeResponse(props.criminals),
             ...normalizeMergeResponse(props.criminals_small)
 
@@ -192,6 +193,7 @@ function SingleDetails(props: AIResponseDetail) {
             ...normalizeMergeResponse(props.dob_master),
             ...normalizeMergeResponse(props.email_master),
             ...normalizeMergeResponse(props.criminals),
+            ...normalizeMergeResponse(props.devices),
             ...normalizeMergeResponse(props.criminals_small)
         ];
 
@@ -233,6 +235,7 @@ function SingleDetails(props: AIResponseDetail) {
             ...normalizeMergeResponse(props.dob_master),
             ...normalizeMergeResponse(props.email_master),
             ...normalizeMergeResponse(props.criminals),
+            ...normalizeMergeResponse(props.devices),
             ...normalizeMergeResponse(props.criminals_small)
         ];
 
@@ -247,16 +250,16 @@ function SingleDetails(props: AIResponseDetail) {
 
         directPhones.forEach(phone => {
             if (phone && phone.trim()) {
-                uniquePhones.add(phone.trim());
+                uniquePhones.add(phone.trim().replace(/[^0-9]/g, ""));
             }
         });
 
         records.forEach(record => {
             const phone = record?.phone || record?.Phone || record?.Phone1 || record?.Phone2
                 || record?.PHONE_1 || record?.PHONE_2 || record?.PHONE_3
-                || record?.HOMEPHONE || record?.WORKPHONE || record?.CELL || record?.PHONE || "";
+                || record?.HOMEPHONE || record?.WORKPHONE || record?.CELL || record?.PHONE || record?.POE_PHONE || "";
             if (phone && phone.trim()) {
-                uniquePhones.add(phone.trim());
+                uniquePhones.add(phone.trim().replace(/[^0-9]/g, ""));
             }
         });
 

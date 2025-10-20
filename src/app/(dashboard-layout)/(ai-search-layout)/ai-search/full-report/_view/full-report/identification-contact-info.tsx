@@ -193,7 +193,9 @@ export function IdentificationAndContact({
             ...normalizeMergeResponse(details.email_master),
             ...normalizeMergeResponse(details.dob_master),
             ...normalizeMergeResponse(details.criminals),
-            ...normalizeMergeResponse(details.criminals_small)
+            ...normalizeMergeResponse(details.criminals_small),
+            ...normalizeMergeResponse(details.devices)
+
         ];
 
         records.forEach(record => {
@@ -236,26 +238,28 @@ export function IdentificationAndContact({
             ...normalizeMergeResponse(details.email_master),
             ...normalizeMergeResponse(details.dob_master),
             ...normalizeMergeResponse(details.criminals),
+            ...normalizeMergeResponse(details.devices),
             ...normalizeMergeResponse(details.criminals_small)
         ];
-        records.push({PHONE: details.PHONE});
-        records.push({PHONE: details.CELL_PHONE})
-        records.push({PHONE: details.HOME_PHONE})
-        records.push({PHONE: details.PHONE1})
-        records.push({PHONE: details.PHONE2})
+        records.push({PHONE: (details.PHONE || "").replace(/[^0-9]/g, "")});
+        records.push({PHONE: (details.CELL_PHONE || "").replace(/[^0-9]/g, "")})
+        records.push({PHONE: (details.HOME_PHONE || "").replace(/[^0-9]/g, "")})
+        records.push({PHONE: (details.PHONE1 || "").replace(/[^0-9]/g, "")})
+        records.push({PHONE: (details.PHONE2 || "").replace(/[^0-9]/g, "")})
 
         records.forEach(record => {
             if (record?.phone || record?.Phone || record?.Phone1 || record?.Phone2
                 || record?.HOMEPHONE || record?.WORKPHONE || record?.CELL || record?.PHONE
-                || record?.PHONE_1 || record?.PHONE_2 || record?.PHONE_3
+                || record?.PHONE_1 || record?.PHONE_2 || record?.PHONE_3 || record?.POE_PHONE
             ) {
                 const phone = record?.phone || record?.Phone || record?.Phone1 || record?.Phone2
                     || record?.PHONE_1 || record?.PHONE_2 || record?.PHONE_3
-                    || record?.HOMEPHONE || record?.WORKPHONE || record?.CELL || record?.PHONE;
-                phones.add(phone);
+                    || record?.HOMEPHONE || record?.WORKPHONE || record?.CELL || record?.PHONE || record?.POE_PHONE;
+                if(phone && phone.length>0) phones.add(phone.replace(/[^0-9]/g, ""));
             }
         });
 
+        console.log("phones = ",records)
         // Format phone numbers and remove duplicates by normalizing them
         const formattedPhones = formatPhoneNumbers(Array.from(phones));
         return Array.from(formattedPhones);
@@ -280,6 +284,7 @@ export function IdentificationAndContact({
             ...normalizeMergeResponse(details.email_master),
             ...normalizeMergeResponse(details.dob_master),
             ...normalizeMergeResponse(details.criminals),
+            ...normalizeMergeResponse(details.devices),
             ...normalizeMergeResponse(details.criminals_small)
         ];
         records.push({ADDRESS: details.ADDRESS})
@@ -315,6 +320,7 @@ export function IdentificationAndContact({
             ...normalizeMergeResponse(details.email_master),
             ...normalizeMergeResponse(details.dob_master),
             ...normalizeMergeResponse(details.criminals),
+            ...normalizeMergeResponse(details.devices),
             ...normalizeMergeResponse(details.criminals_small)
         ];
 
@@ -382,6 +388,7 @@ export function IdentificationAndContact({
             ...normalizeMergeResponse(details.email_master),
             ...normalizeMergeResponse(details.criminals),
             ...normalizeMergeResponse(details.dob_master),
+            ...normalizeMergeResponse(details.devices),
             ...normalizeMergeResponse(details.criminals_small)
         ];
 
