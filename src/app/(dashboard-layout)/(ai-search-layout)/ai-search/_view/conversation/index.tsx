@@ -587,6 +587,15 @@ export function Conversation() {
                                             Show Me
                                         </button>
                                     </div>
+                                    <div className="flex items-center">
+                                        <span>• Find Heather Kennedy who lives with Andy</span>
+                                        <button 
+                                            onClick={() => handleShowMore("Find Heather Kennedy who lives with Andy")}
+                                            className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                        >
+                                            Show Me
+                                        </button>
+                                    </div>
                                 </div>
                                 <br />
                                 <p>You can also start simple, then add more details step-by-step:</p>
@@ -824,6 +833,15 @@ export function Conversation() {
                                 <span>• Whose car is this VIN Number: 1GKFK66U95J223404</span>
                                 <button 
                                     onClick={() => handleShowMore("Whose car is this VIN Number: 1GKFK66U95J223404")}
+                                    className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                >
+                                    Show Me
+                                </button>
+                            </div>
+                            <div className="flex items-center">
+                                <span>• Find Heather Kennedy who lives with Andy</span>
+                                <button 
+                                    onClick={() => handleShowMore("Find Heather Kennedy who lives with Andy")}
                                     className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
                                 >
                                     Show Me
@@ -1086,6 +1104,15 @@ export function Conversation() {
                                 <span>• Whose car is this VIN Number: 1GKFK66U95J223404</span>
                                 <button 
                                     onClick={() => handleShowMore("Whose car is this VIN Number: 1GKFK66U95J223404")}
+                                    className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                >
+                                    Show Me
+                                </button>
+                            </div>
+                            <div className="flex items-center">
+                                <span>• Find Heather Kennedy who lives with Andy</span>
+                                <button 
+                                    onClick={() => handleShowMore("Find Heather Kennedy who lives with Andy")}
                                     className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
                                 >
                                     Show Me
