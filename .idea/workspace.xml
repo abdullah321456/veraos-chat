@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="31f38edd-b261-4f74-9fe3-a56331e865fe" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/full-report/_view/full-report/personal-info.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/full-report/_view/full-report/personal-info.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -164,7 +165,8 @@
       <workItem from="1760341526452" duration="1898000" />
       <workItem from="1760855431939" duration="1114000" />
       <workItem from="1760949768325" duration="5357000" />
-      <workItem from="1760981242732" duration="2851000" />
+      <workItem from="1760981242732" duration="3109000" />
+      <workItem from="1761057845591" duration="859000" />
     </task>
     <servers />
   </component>

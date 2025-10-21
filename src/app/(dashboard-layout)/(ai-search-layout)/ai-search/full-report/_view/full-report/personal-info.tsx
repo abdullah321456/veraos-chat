@@ -134,10 +134,10 @@ export function PersonalInfo({
                                 editable={editable}
                             />
                         )}
-                        {details?.MID && (
+                        {(details?.MID || (details.criminals?.length>0 && details.criminals[0].MID)) && (
                             <InputDataCell
                                 label="Middle Name"
-                                value={toEnhancedTitleCase(details.MID)}
+                                value={toEnhancedTitleCase(details.MID || details.criminals[0].MID)}
                                 editable={editable}
                             />
                         )}
