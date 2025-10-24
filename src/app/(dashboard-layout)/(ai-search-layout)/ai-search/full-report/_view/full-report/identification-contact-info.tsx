@@ -561,7 +561,7 @@ export function IdentificationAndContact({
                     {uuids.length > 0 && (
                         <InputArrayDataCell
                             entryPrefix={<IpAddressIcon className="text-primary min-w-4 h-4"/>}
-                            label="UUIDs"
+                            label="Mobile Device Identifiers"
                             editable={editable}
                             onDone={(value) => console.log("uuids", value)}
                             values={uuids}
