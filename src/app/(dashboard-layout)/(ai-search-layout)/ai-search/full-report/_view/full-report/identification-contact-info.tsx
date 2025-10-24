@@ -404,6 +404,64 @@ export function IdentificationAndContact({
         return Array.from(ipAddresses);
     };
 
+    const getUuids = () => {
+        if (!details) return [];
+
+        const uuids = new Set<string>();
+
+        // Get UUIDs from DEVICE_ID field
+        if (details.DEVICE_ID) {
+            if (Array.isArray(details.DEVICE_ID)) {
+                details.DEVICE_ID.forEach(deviceId => {
+                    if (deviceId && typeof deviceId === 'string') {
+                        uuids.add(deviceId);
+                    }
+                });
+            } else if (typeof details.DEVICE_ID === 'string') {
+                uuids.add(details.DEVICE_ID);
+            }
+        }
+
+        // Also check devices records for device_id fields
+        const records = [
+            ...normalizeMergeResponse(details.devices),
+            ...normalizeMergeResponse(details.education),
+            ...normalizeMergeResponse(details.rv),
+            ...normalizeMergeResponse(details.motorcycles),
+            ...normalizeMergeResponse(details.national_drivers_license),
+            ...normalizeMergeResponse(details.bankruptcy),
+            ...normalizeMergeResponse(details.automobile),
+            ...normalizeMergeResponse(details.foreign_movers),
+            ...normalizeMergeResponse(details.cell_records),
+            ...normalizeMergeResponse(details.drunk_drivings),
+            ...normalizeMergeResponse(details.voip),
+            ...normalizeMergeResponse(details.vets),
+            ...normalizeMergeResponse(details.email_master),
+            ...normalizeMergeResponse(details.criminals),
+            ...normalizeMergeResponse(details.dob_master),
+            ...normalizeMergeResponse(details.criminals_small)
+        ];
+
+        records.forEach(record => {
+            if (record?.device_id || record?.DEVICE_ID || record?.Device_ID) {
+                const deviceId = record?.device_id || record?.DEVICE_ID || record?.Device_ID;
+                if (deviceId) {
+                    if (Array.isArray(deviceId)) {
+                        deviceId.forEach(id => {
+                            if (id && typeof id === 'string') {
+                                uuids.add(id);
+                            }
+                        });
+                    } else if (typeof deviceId === 'string') {
+                        uuids.add(deviceId);
+                    }
+                }
+            }
+        });
+
+        return Array.from(uuids);
+    };
+
     const getExPatriotDate = () => {
         if (!details) return [];
         const exPatriotDates = new Set<string>();
@@ -440,17 +498,18 @@ export function IdentificationAndContact({
     const phones = getPhones();
     const emails = getEmails();
     const ips = getIpAddresses();
+    const uuids = getUuids();
     const fullAddress = getFullResidentialAddress();
     let locations = getLocations();
     const exPatriotDates = getExPatriotDate();
 
 
-    console.log("full address", locations, "   ", fullAddress)
+    console.log("uuids", uuids)
 
 
     locations = locations.length > 0 && fullAddress.length > 0 ? locations.filter((l: any) => normalizeAddress(fullAddress[0]) !== normalizeAddress(l)) : [];
 
-    const hasAnyData = phones.length > 0 || emails.length > 0 || ips.length > 0 || fullAddress.length > 0 || locations.length > 0 || exPatriotDates.length > 0;
+    const hasAnyData = phones.length > 0 || emails.length > 0 || ips.length > 0 || uuids.length > 0 || fullAddress.length > 0 || locations.length > 0 || exPatriotDates.length > 0;
 
     if (!hasAnyData) return null;
 
@@ -497,6 +556,15 @@ export function IdentificationAndContact({
                             editable={editable}
                             onDone={(value) => console.log("ip-addresses", value)}
                             values={ips}
+                        />
+                    )}
+                    {uuids.length > 0 && (
+                        <InputArrayDataCell
+                            entryPrefix={<IpAddressIcon className="text-primary min-w-4 h-4"/>}
+                            label="UUIDs"
+                            editable={editable}
+                            onDone={(value) => console.log("uuids", value)}
+                            values={uuids}
                         />
                     )}
                     {fullAddress.length > 0 && (
