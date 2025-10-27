@@ -596,6 +596,15 @@ export function Conversation() {
                                             Show Me
                                         </button>
                                     </div>
+                                    <div className="flex items-center">
+                                        <span>• Whose device is 7C0F9238-F328-4A72-8764-C4133F48F74B</span>
+                                        <button 
+                                            onClick={() => handleShowMore("Whose device is 7C0F9238-F328-4A72-8764-C4133F48F74B")}
+                                            className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                        >
+                                            Show Me
+                                        </button>
+                                    </div>
                                 </div>
                                 <br />
                                 <p>You can also start simple, then add more details step-by-step:</p>
@@ -842,6 +851,15 @@ export function Conversation() {
                                 <span>• Find Heather Kennedy who lives with Andy</span>
                                 <button 
                                     onClick={() => handleShowMore("Find Heather Kennedy who lives with Andy")}
+                                    className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                >
+                                    Show Me
+                                </button>
+                            </div>
+                            <div className="flex items-center">
+                                <span>• Whose device is 7C0F9238-F328-4A72-8764-C4133F48F74B</span>
+                                <button 
+                                    onClick={() => handleShowMore("Whose device is 7C0F9238-F328-4A72-8764-C4133F48F74B")}
                                     className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
                                 >
                                     Show Me
@@ -1113,6 +1131,15 @@ export function Conversation() {
                                 <span>• Find Heather Kennedy who lives with Andy</span>
                                 <button 
                                     onClick={() => handleShowMore("Find Heather Kennedy who lives with Andy")}
+                                    className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                >
+                                    Show Me
+                                </button>
+                            </div>
+                            <div className="flex items-center">
+                                <span>• Whose device is 7C0F9238-F328-4A72-8764-C4133F48F74B</span>
+                                <button 
+                                    onClick={() => handleShowMore("Whose device is 7C0F9238-F328-4A72-8764-C4133F48F74B")}
                                     className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
                                 >
                                     Show Me
