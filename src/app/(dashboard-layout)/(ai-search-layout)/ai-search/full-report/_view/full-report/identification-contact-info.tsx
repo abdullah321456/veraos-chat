@@ -372,6 +372,9 @@ export function IdentificationAndContact({
             ipAddresses.add(details.education.IPADDRESS);
         }
 
+
+
+
         // Also check other records that might have IP addresses
         const records = [
             ...normalizeMergeResponse(details.education),
@@ -392,11 +395,22 @@ export function IdentificationAndContact({
             ...normalizeMergeResponse(details.criminals_small)
         ];
 
+
+        console.log("record?.criminals?.Known_IPAddresses = ",records)
+
         records.forEach(record => {
-            if (record?.IP || record?.IPADDRESS || record?.ip || record?.ipaddress) {
+            if (record?.IP || record?.IPADDRESS || record?.ip || record?.ipaddress || record?.Known_IPAddresses) {
                 const ip = record?.IP || record?.IPADDRESS || record?.ip || record?.ipaddress;
                 if (ip) {
                     ipAddresses.add(ip);
+                }
+
+                if(record?.Known_IPAddresses){
+                    record?.Known_IPAddresses.forEach(ip => {
+                        if (ip && typeof ip === 'string') {
+                            ipAddresses.add(ip);
+                        }
+                    });
                 }
             }
         });
@@ -462,6 +476,54 @@ export function IdentificationAndContact({
         return Array.from(uuids);
     };
 
+
+
+    const getCarVins = () => {
+        if (!details) return [];
+
+        const carVins = new Set<string>();
+
+
+        // Also check devices records for device_id fields
+        const records = [
+            ...normalizeMergeResponse(details.devices),
+            ...normalizeMergeResponse(details.education),
+            ...normalizeMergeResponse(details.rv),
+            ...normalizeMergeResponse(details.motorcycles),
+            ...normalizeMergeResponse(details.national_drivers_license),
+            ...normalizeMergeResponse(details.bankruptcy),
+            ...normalizeMergeResponse(details.automobile),
+            ...normalizeMergeResponse(details.foreign_movers),
+            ...normalizeMergeResponse(details.cell_records),
+            ...normalizeMergeResponse(details.drunk_drivings),
+            ...normalizeMergeResponse(details.voip),
+            ...normalizeMergeResponse(details.vets),
+            ...normalizeMergeResponse(details.email_master),
+            ...normalizeMergeResponse(details.criminals),
+            ...normalizeMergeResponse(details.dob_master),
+            ...normalizeMergeResponse(details.criminals_small)
+        ];
+
+        records.forEach(record => {
+            if (record?.Known_CarVINs) {
+                const carVinRecord = record.Known_CarVINs;
+                if (carVinRecord) {
+                    if (Array.isArray(carVinRecord)) {
+                        carVinRecord.forEach(r => {
+                            if (r && typeof r === 'string') {
+                                carVins.add(r);
+                            }
+                        });
+                    } else if (typeof carVinRecord === 'string') {
+                        carVins.add(carVinRecord);
+                    }
+                }
+            }
+        });
+
+        return Array.from(carVins);
+    };
+
     const getExPatriotDate = () => {
         if (!details) return [];
         const exPatriotDates = new Set<string>();
@@ -502,9 +564,10 @@ export function IdentificationAndContact({
     const fullAddress = getFullResidentialAddress();
     let locations = getLocations();
     const exPatriotDates = getExPatriotDate();
+    const carVins = getCarVins();
 
 
-    console.log("uuids", uuids)
+    console.log("carVins", carVins)
 
 
     locations = locations.length > 0 && fullAddress.length > 0 ? locations.filter((l: any) => normalizeAddress(fullAddress[0]) !== normalizeAddress(l)) : [];
@@ -565,6 +628,15 @@ export function IdentificationAndContact({
                             editable={editable}
                             onDone={(value) => console.log("uuids", value)}
                             values={uuids}
+                        />
+                    )}
+                    {carVins.length > 0 && (
+                        <InputArrayDataCell
+                            entryPrefix={<IpAddressIcon className="text-primary min-w-4 h-4"/>}
+                            label="Car Vins"
+                            editable={editable}
+                            onDone={(value) => console.log("vin", value)}
+                            values={carVins}
                         />
                     )}
                     {fullAddress.length > 0 && (

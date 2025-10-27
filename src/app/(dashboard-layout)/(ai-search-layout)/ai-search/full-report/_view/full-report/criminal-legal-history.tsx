@@ -119,6 +119,13 @@ export function CriminalAndLegal({
                           editable={editable}
                       />
                   )}
+                  {selectedDetails?.DATE_OF_ARREST && (
+                      <InputDataCell
+                          label="Date of Arrest"
+                          value={formatDate(selectedDetails.DATE_OF_ARREST)}
+                          editable={editable}
+                      />
+                  )}
                   {selectedDetails?.ArrestingAgency && (
                       <InputDataCell
                           label="Arresting Agency"
