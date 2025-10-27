@@ -443,8 +443,8 @@ export function IdentificationAndContact({
         ];
 
         records.forEach(record => {
-            if (record?.device_id || record?.DEVICE_ID || record?.Device_ID) {
-                const deviceId = record?.device_id || record?.DEVICE_ID || record?.Device_ID;
+            if (record?.device_id || record?.DEVICE_ID || record?.Device_ID || record?.Known_DeviceIDs) {
+                const deviceId = record?.device_id || record?.DEVICE_ID || record?.Device_ID || record?.Known_DeviceIDs;
                 if (deviceId) {
                     if (Array.isArray(deviceId)) {
                         deviceId.forEach(id => {
