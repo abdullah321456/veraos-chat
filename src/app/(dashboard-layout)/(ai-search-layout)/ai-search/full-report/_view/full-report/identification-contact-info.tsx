@@ -127,6 +127,7 @@ export function IdentificationAndContact({
             locations.add(`${address || ""} ${city || ""} ${state || ""} ${zip || ""}`);
         }
 
+        console.log("records = ",records)
 
         records.push({PHONE: details.PHONE});
         records.push({PHONE: details.CELL_PHONE})
@@ -137,6 +138,17 @@ export function IdentificationAndContact({
 
         records.forEach(record => {
             if (!record) return;
+
+            if(record.Known_Addresses){
+
+                record.Known_Addresses.forEach(address => {
+                    if (address && typeof address === 'string') {
+                        locations.add(address);
+                    }
+                });
+
+            }
+
             const address = capitalizeWords(record.ADDRESS || record.ADDRESS1 || record.ADDRESS2 || record.Address1 || record.address
                 || record.Address || record.Address2 || record.N_ADDRESS || "");
             const city = capitalizeWords(record.CITY || record.City || record.N_CITY || "");
