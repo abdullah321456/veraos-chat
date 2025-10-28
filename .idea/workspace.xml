@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="31f38edd-b261-4f74-9fe3-a56331e865fe" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/full-report/_view/full-report/criminal-legal-history.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/full-report/_view/full-report/criminal-legal-history.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/full-report/_view/full-report/identification-contact-info.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/full-report/_view/full-report/identification-contact-info.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -172,7 +171,8 @@
       <workItem from="1761323275618" duration="2225000" />
       <workItem from="1761552638362" duration="1772000" />
       <workItem from="1761580924077" duration="641000" />
-      <workItem from="1761583217538" duration="3660000" />
+      <workItem from="1761583217538" duration="4377000" />
+      <workItem from="1761635776888" duration="1612000" />
     </task>
     <servers />
   </component>

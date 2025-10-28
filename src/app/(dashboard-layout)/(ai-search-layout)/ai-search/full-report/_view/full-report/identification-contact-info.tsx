@@ -630,15 +630,15 @@ export function IdentificationAndContact({
                             values={uuids}
                         />
                     )}
-                    {carVins.length > 0 && (
-                        <InputArrayDataCell
-                            entryPrefix={<IpAddressIcon className="text-primary min-w-4 h-4"/>}
-                            label="Car Vins"
-                            editable={editable}
-                            onDone={(value) => console.log("vin", value)}
-                            values={carVins}
-                        />
-                    )}
+                    {/*{carVins.length > 0 && (*/}
+                    {/*    <InputArrayDataCell*/}
+                    {/*        entryPrefix={<IpAddressIcon className="text-primary min-w-4 h-4"/>}*/}
+                    {/*        label="Car Vins"*/}
+                    {/*        editable={editable}*/}
+                    {/*        onDone={(value) => console.log("vin", value)}*/}
+                    {/*        values={carVins}*/}
+                    {/*    />*/}
+                    {/*)}*/}
                     {fullAddress.length > 0 && (
                         <InputArrayDataCell
                             entryPrefix={<BlueLocationIcon className="min-w-4 h-4"/>}
