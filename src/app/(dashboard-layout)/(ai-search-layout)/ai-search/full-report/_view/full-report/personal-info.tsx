@@ -105,7 +105,8 @@ export function PersonalInfo({
     const hasScarsMarks = !!(details as any)?.ScarsMarks;
     const hasMilitaryService = !!(details as any)?.MilitaryService;
     const hasDOD = !!details?.DOD;
-    const hasAny = hasMain || hasAliases || hasDOB || hasMarital || hasGender || isSmoker || hasIncome || hasHomeowner || hasOwnRent || hasEthnicity || hasSkinTone || hasRace || hasScarsMarks || hasMilitaryService || hasDOD;
+    const hasDeathRecord = !!(details as any)?.Death_Record || !!((details as any)?.criminals && (details as any).criminals.length > 0 && (details as any).criminals[0]?.Death_Record);
+    const hasAny = hasMain || hasAliases || hasDOB || hasMarital || hasGender || isSmoker || hasIncome || hasHomeowner || hasOwnRent || hasEthnicity || hasSkinTone || hasRace || hasScarsMarks || hasMilitaryService || hasDOD || hasDeathRecord;
 
     if (!hasAny) return null;
 
@@ -266,6 +267,39 @@ export function PersonalInfo({
                 {details?.DOD && (
                     <InputDataCell label="Date of Death" value={capitalizeWords(details.DOD)} editable={editable}/>
                 )}
+                {(() => {
+                    const deathRecord = (details as any)?.Death_Record || 
+                                       ((details as any)?.criminals && (details as any).criminals.length > 0 && (details as any).criminals[0]?.Death_Record);
+                    
+                    if (deathRecord) {
+                        return (
+                            <>
+                                {deathRecord.Death_Index_Match !== undefined && (
+                                    <InputDataCell 
+                                        label="Death Index Match" 
+                                        value={deathRecord.Death_Index_Match ? "Yes" : "No"} 
+                                        editable={editable}
+                                    />
+                                )}
+                                {deathRecord.Death_Date && (
+                                    <InputDataCell 
+                                        label="Death Date" 
+                                        value={deathRecord.Death_Date} 
+                                        editable={editable}
+                                    />
+                                )}
+                                {deathRecord.Cause_of_Death && (
+                                    <InputDataCell 
+                                        label="Cause of Death" 
+                                        value={deathRecord.Cause_of_Death} 
+                                        editable={editable}
+                                    />
+                                )}
+                            </>
+                        );
+                    }
+                    return null;
+                })()}
                 {/* <InputDataCell label="Religion" value="" editable={editable}/> */}
             </div>
             {/* <div className="grid grid-cols-3 gap-4 mt-3">

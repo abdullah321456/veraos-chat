@@ -28,16 +28,28 @@ export function Education({ isEditable = false, isDrawer, details }: Props) {
 
   console.log("Education details:", details);
 
+  // Map Education_Records from details to component state
   const [valuesState, setValuesState] = useState<DataType[]>(() => {
     console.log("Initializing education state with details:", details);
-    if (details) {
-      return [{
-        id: 1,
-        institution: details.CITY || 'Unknown Institution',
-        degree: 'High School Diploma',
-        graduationDate: new Date(),
-        gpa: 'N/A',
-      }];
+    
+    // Check for Education_Records in details or in criminals[0]
+    const educationRecords = details?.Education_Records || 
+                            (details?.criminals && details.criminals.length > 0 && details.criminals[0].Education_Records);
+    
+    if (educationRecords && Array.isArray(educationRecords)) {
+      return educationRecords.map((record: any, index: number) => {
+        // Parse graduation year to a Date object (set to January of that year)
+        const graduationYear = record.Graduation_Year ? parseInt(record.Graduation_Year) : new Date().getFullYear();
+        const graduationDate = new Date(graduationYear, 0); // January of the graduation year
+        
+        return {
+          id: index + 1,
+          institution: record.Institution || '',
+          degree: record.Degree || '',
+          graduationDate: graduationDate,
+          gpa: record.GPA || 'N/A',
+        };
+      });
     }
     return [];
   });
@@ -89,6 +101,10 @@ export function Education({ isEditable = false, isDrawer, details }: Props) {
       ),
     });
   }
+
+  // Don't render if there's no education data
+  const hasAny = valuesState.length > 0;
+  if (!hasAny) return null;
 
   return (
     <Accordion

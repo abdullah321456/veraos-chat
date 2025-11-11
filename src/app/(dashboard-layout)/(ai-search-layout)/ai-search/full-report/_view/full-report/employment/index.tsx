@@ -11,38 +11,72 @@ import { AccordionActionButton } from '../../../../_components/accordion-action-
 import { Accordion } from '../../../_components/accordion';
 import { AddOrEditEmploymentModal } from './add-or-edit-modal';
 import { EmploymentFormInputType } from './validation';
+import { AIResponseDetail } from '../../../_view/conversation/type';
 
 type Props = {
   isEditable?: boolean;
   isDrawer?: boolean;
+  details?: AIResponseDetail;
 };
 
 type DataType = EmploymentFormInputType & { id: number };
 
-const DUMMY_DATA: DataType[] = [
-  {
-    id: 1,
-    companyName: 'ABC Corp',
-    position: 'Marketing Manager',
-    startDate: dayJs().add(-1, 'year').toDate(),
-    endDate: dayJs().toDate(),
-    responsibilities: 'Oversee marketing campaigns, manage a team of 5, develop strategic marketing plans.',
-  },
-  {
-    id: 2,
-    companyName: '123 Solutions',
-    position: 'Intern',
-    startDate: dayJs().add(-2, 'year').toDate(),
-    endDate: dayJs().add(-1, 'year').toDate(),
-    responsibilities: 'Assisted in the execution of marketing strategies, coordinated events, and maintained social media presence.',
-  },
-];
+// Helper function to parse date string to Date object
+const parseEmploymentDate = (dateString: string): Date => {
+  if (!dateString) return new Date();
+  
+  // Handle various date formats like "2011 – 2012", "May 2013", "April 2015 – July 2015"
+  const dateMatch = dateString.match(/([A-Za-z]+\s+)?(\d{4})/);
+  if (dateMatch) {
+    const year = parseInt(dateMatch[2]);
+    const monthStr = dateMatch[1]?.trim();
+    
+    if (monthStr) {
+      const monthMap: { [key: string]: number } = {
+        'January': 0, 'February': 1, 'March': 2, 'April': 3,
+        'May': 4, 'June': 5, 'July': 6, 'August': 7,
+        'September': 8, 'October': 9, 'November': 10, 'December': 11
+      };
+      const month = monthMap[monthStr] ?? 0;
+      return new Date(year, month);
+    }
+    
+    return new Date(year, 0);
+  }
+  
+  return new Date();
+};
 
-export function Employment({ isEditable = false, isDrawer }: Props) {
+export function Employment({ isEditable = false, isDrawer, details }: Props) {
   const { openModal } = useModal();
   const [isLocalEdit] = useState(isEditable);
   const [editable, setEditable] = useState(false);
-  const [valuesState, setValuesState] = useState(DUMMY_DATA);
+
+  // Map Employment_Records from details to component state
+  const [valuesState, setValuesState] = useState<DataType[]>(() => {
+    // Check for Employment_Records in details or in criminals[0]
+    const employmentRecords = details?.Employment_Records || 
+                             (details?.criminals && details.criminals.length > 0 && details.criminals[0].Employment_Records);
+    
+    if (employmentRecords && Array.isArray(employmentRecords)) {
+      return employmentRecords.map((record: any, index: number) => {
+        // Parse the Dates field (e.g., "2011 – 2012", "May 2013 – May 2013")
+        const dates = record.Dates?.split('–') || record.Dates?.split('-') || [];
+        const startDateStr = dates[0]?.trim() || '';
+        const endDateStr = dates[1]?.trim() || dates[0]?.trim() || '';
+        
+        return {
+          id: index + 1,
+          companyName: record.Employer || '',
+          position: record.Position || '',
+          startDate: parseEmploymentDate(startDateStr),
+          endDate: parseEmploymentDate(endDateStr),
+          responsibilities: record.Location ? `Located in ${record.Location}` : '',
+        };
+      });
+    }
+    return [];
+  });
 
   const actionButtonMode = isLocalEdit && !editable ? 'edit' : 'save';
 
@@ -91,6 +125,10 @@ export function Employment({ isEditable = false, isDrawer }: Props) {
       ),
     });
   }
+
+  // Don't render if there's no employment data
+  const hasAny = valuesState.length > 0;
+  if (!hasAny) return null;
 
   return (
     <Accordion

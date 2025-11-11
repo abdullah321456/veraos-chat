@@ -108,7 +108,10 @@ export type AIResponseDetail = {
     SOCIAL_LINK:any;
     criminals:any;
     devices:any;
-    DEVICE_ID:any
+    DEVICE_ID:any;
+    Education_Records:any;
+    Employment_Records:any;
+    Death_Record:any;
 };
 
 export type OnImageSearchHandlerParam = { file?: File; url: string }[];
