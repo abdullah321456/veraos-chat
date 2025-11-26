@@ -34,6 +34,39 @@ interface GroupedConversations {
   older: InboxNavigationData[];
 }
 
+const getRelativeTime = (timestamp: string): string => {
+  const now = new Date();
+  const past = new Date(timestamp);
+  const diffInSeconds = Math.floor((now.getTime() - past.getTime()) / 1000);
+
+  if (diffInSeconds < 60) {
+    return `${diffInSeconds}s`;
+  }
+
+  const diffInMinutes = Math.floor(diffInSeconds / 60);
+  if (diffInMinutes < 60) {
+    return `${diffInMinutes}m`;
+  }
+
+  const diffInHours = Math.floor(diffInMinutes / 60);
+  if (diffInHours < 24) {
+    return `${diffInHours}hrs`;
+  }
+
+  const diffInDays = Math.floor(diffInHours / 24);
+  if (diffInDays < 30) {
+    return `${diffInDays}d`;
+  }
+
+  const diffInMonths = Math.floor(diffInDays / 30);
+  if (diffInMonths < 12) {
+    return `${diffInMonths}mo`;
+  }
+
+  const diffInYears = Math.floor(diffInMonths / 12);
+  return `${diffInYears}y`;
+};
+
 const groupConversationsByDate = (conversations: InboxNavigationData[]): GroupedConversations => {
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -102,7 +135,7 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
       const mappedConversations: InboxNavigationData[] = data.data.map((conv: ApiConversation) => ({
         id: conv._id,
         title: conv.question_preview,
-        time: new Date(conv.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        time: getRelativeTime(conv.timestamp),
         timestamp: conv.timestamp,
         description: conv.message,
       }));
@@ -135,7 +168,7 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
       const newChat: InboxNavigationData = {
         id: newChatId,
         title: 'New Chat',
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        time: getRelativeTime(new Date().toISOString()),
         timestamp: new Date().toISOString(),
         description: 'Start a new conversation',
       };
@@ -168,7 +201,7 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
     // Check URL directly for query parameter as well
     const urlParams = new URLSearchParams(window.location.search);
     const hasQueryInUrl = urlParams.has('query');
-    
+
     if (!isOnAiSearch || queryParams?.chatId || queryParams?.query || hasQueryInUrl) return;
 
     console.log('Handling chat selection on AI Search load:', { 
@@ -218,7 +251,7 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
             ...conv,
             title: lastMessage.message,
             description: lastMessage.message,
-            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            time: getRelativeTime(new Date().toISOString()),
             timestamp: new Date().toISOString()
           };
         }
@@ -270,7 +303,7 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
       const newChat: InboxNavigationData = {
         id: newChatId,
         title: 'New Chat',
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        time: getRelativeTime(new Date().toISOString()),
         timestamp: new Date().toISOString(),
         description: 'Start a new conversation',
       };
@@ -296,18 +329,25 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
 
   return (
       <div
-          className={cn('h-screen top-16 duration-300 w-[320px] bg-[#F6F6F9] fixed p-4', IS_SIDEBAR_EXPANDED ? 'left-[76px]' : 'left-[200px]')}
+          className={cn(
+            'h-screen duration-300 bg-white fixed p-4',
+            'top-0 sm:top-16',
+            'w-full sm:w-[320px]',
+            'left-0 sm:left-[76px]',
+            IS_SIDEBAR_EXPANDED ? 'sm:left-[76px]' : 'sm:left-[200px]',
+            'z-40 sm:z-auto'
+          )}
       >
         <NavigationElement />
-        <Input
-            placeholder="Search here..."
-            className="bg-white rounded-full mt-3"
-            inputClassName="rounded-full h-9"
-            prefix={<PiMagnifyingGlass className="scale-[1.3] ms-1 text-gray-500" />}
-        />
+        {/*<Input*/}
+        {/*    placeholder="Search here..."*/}
+        {/*    className="bg-white rounded-full mt-3"*/}
+        {/*    inputClassName="rounded-full h-9"*/}
+        {/*    prefix={<PiMagnifyingGlass className="scale-[1.3] ms-1 text-gray-500" />}*/}
+        {/*/>*/}
         <Toolbar inboxNavigationData={conversations} onNewChat={handleNewChat} />
 
-        <div className="overflow-y-auto h-[calc(100vh-200px)] pb-16 pl-2">
+        <div className="overflow-y-auto overflow-x-hidden h-[calc(100vh-200px)] pb-16 pl-2">
 
           {Object.entries(groupedConversations).map(([key, conversations]) =>
                   conversations.length > 0 && (
@@ -331,7 +371,7 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
         </div>
 
         {isSelectable && (
-            <div className={cn('fixed bottom-0 w-[280px] bg-[#F6F6F9] p-4 border-t border-gray-200', IS_SIDEBAR_EXPANDED ? 'left-[76px]' : 'left-[200px]')}>
+            <div className={cn('fixed bottom-0 w-[280px] bg-white p-4 border-t border-gray-200', IS_SIDEBAR_EXPANDED ? 'left-[76px]' : 'left-[200px]')}>
               <div className="grid grid-cols-2 gap-2">
                 <Button onClick={() => setIsSelectable(false)} variant="outline" size="sm">
                   Cancel Selection
@@ -360,7 +400,7 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
 
 const navigationMenus = [
   {
-    name: 'Search history',
+    name: 'Search History',
     href: ROUTES.AI_SEARCH.INDEX,
     activePathnames: [ROUTES.AI_SEARCH.INDEX, ROUTES.AI_SEARCH.FULL_REPORT] as string[],
   },
@@ -373,14 +413,14 @@ const navigationMenus = [
 function NavigationElement() {
   const pathname = usePathname();
   const { queryParams } = useQueryParams();
-  const activeClassName = 'bg-primary/10 text-primary font-medium ';
+  const activeClassName = 'text-primary font-medium ';
   return (
-      <div className="rounded-full bg-white p-1 grid grid-cols-2 shadow-lg shadow-gray-200 border border-gray-100">
+      <div className="rounded-[10px] p-1 grid grid-cols-2 shadow-lg shadow-gray-200 border border-gray-100" style={{ backgroundColor: '#F3F3F5' }}>
         {navigationMenus.map(({ name, href, activePathnames, isVersion }) => (
             isVersion ? (
                 <span
                     key={name}
-                    className={cn('px-3 py-2 text-xs text-center rounded-full duration-300')}
+                    className={cn('px-3 py-3 text-xs text-center rounded-[10px] duration-300')}
                 >
                   {name}
                 </span>
@@ -388,7 +428,8 @@ function NavigationElement() {
                 <Link
                     key={name}
                     href={parsePathnameWithQuery(href || '', queryParams)}
-                    className={cn('px-3 py-2 text-xs text-center rounded-full duration-300', activePathnames?.includes(pathname) && activeClassName)}
+                    className={cn('px-3 py-3 text-xs text-center rounded-[10px] duration-300', activePathnames?.includes(pathname) && activeClassName)}
+                    style={activePathnames?.includes(pathname) ? { backgroundColor: 'white' } : {}}
                 >
                   {name}
                 </Link>
@@ -418,11 +459,11 @@ function Toolbar({ inboxNavigationData, onNewChat }: { inboxNavigationData: Inbo
         <span></span>
         {!isSelectable ? (
             <div className="flex gap-2 items-center">
-              <button onClick={() => setIsSelectable(true)} className="flex items-center gap-1">
+              <button onClick={() => setIsSelectable(true)} className="flex items-center gap-1 px-3 py-1.5 rounded-[6px] border border-transparent" style={{ backgroundColor: '#6161661A' }}>
                 <PiPencilLine /> Edit
               </button>
-              <span className="w-px h-4 bg-gray-400" />
-              <button className="text-primary flex items-center gap-1" onClick={() => onNewChat(true)}>
+              {/*<span className="w-px h-4 bg-gray-400" />*/}
+              <button className="text-primary flex items-center gap-1 px-3 py-1.5 rounded-[6px] border border-transparent" style={{ backgroundColor: '#6161661A' }} onClick={() => onNewChat(true)}>
                 <PiPlus /> New Chat
               </button>
             </div>

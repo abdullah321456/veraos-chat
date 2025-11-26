@@ -52,35 +52,36 @@ export function SearchInput({ onTextSearch, onImageSearch, onNewChat, startTrans
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex justify-between gap-2">
-      <Input
-        prefix={
-          <label htmlFor="file" className="text-gray-500 cursor-pointer">
-            {/*<input type="file" id="file" className="hidden" accept="image/*" multiple onChange={handleImageChange} />*/}
-            {/*<ImageIcon className="w-5 h-5" />*/}
-          </label>
-        }
-        rounded="pill"
-        value={searchValue}
-        onChange={(e) => setSearchValue(e.target.value)}
-        placeholder="Ask me anything.... "
-        className="w-[calc(100%-140px)]"
-        inputClassName="h-12 bg-gray-100"
-      />
-      <button
-        type="submit"
-        className="min-w-14 max-w-14 aspect-square bg-primary text-white p-3 rounded-full hover:bg-primary-dark duration-300 flex items-center justify-center"
+    <form onSubmit={handleSubmit} className="flex justify-between gap-1.5 sm:gap-2">
+      <div 
+        className="w-full rounded-[14px] overflow-hidden relative"
+        style={{ background: 'linear-gradient(90deg, rgba(92, 57, 217, 0.1) 0%, rgba(197, 31, 160, 0.1) 100%)' }}
       >
-        <Send className="w-6" />
-      </button>
-      <button
-        type="button"
-        onClick={onNewChat}
-        className="min-w-14 max-w-14 aspect-square bg-white border-4 border-primary text-primary p-3 rounded-full hover:bg-primary hover:text-white duration-300 flex items-center justify-center"
-        title="Create new chat"
-      >
-        <Plus className="w-6" />
-      </button>
+        <textarea
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault();
+              handleSubmit(e as any);
+            }
+          }}
+          placeholder="Ask me anything.... "
+          className="w-full min-h-[64px] sm:min-h-[64px] px-4 py-3 pr-14 sm:pr-16 text-sm sm:text-base bg-transparent border-0 focus:outline-none resize-none rounded-[14px]"
+          rows={1}
+          onInput={(e) => {
+            const target = e.target as HTMLTextAreaElement;
+            target.style.height = 'auto';
+            target.style.height = `${target.scrollHeight}px`;
+          }}
+        />
+        <button
+          type="submit"
+          className="absolute right-2 sm:right-3 bottom-2 sm:bottom-3 bg-primary text-white p-2 rounded-full hover:bg-primary-dark duration-300 flex items-center justify-center"
+        >
+          <Send className="w-[14px] h-[14px]" />
+        </button>
+      </div>
     </form>
   );
 }

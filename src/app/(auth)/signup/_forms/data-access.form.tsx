@@ -16,11 +16,11 @@ import { useState, useEffect } from 'react';
 import { useSignup } from '../../signup/context/signup.context';
 
 const labelClassName = cn(
-  'block text-[#6D6F73]',
-  inputLabelStyles.color.black,
-  inputLabelStyles.size.md,
-  inputLabelStyles.weight.medium,
-  'mb-4'
+    'block text-[#6D6F73]',
+    inputLabelStyles.color.black,
+    inputLabelStyles.size.md,
+    inputLabelStyles.weight.medium,
+    'mb-4'
 );
 
 const accessNeeds = [
@@ -67,9 +67,9 @@ export function DataAccessForm() {
 
   const handleNeedSelection = (need: string) => {
     const newSelectedNeeds = selectedNeeds.includes(need)
-      ? selectedNeeds.filter(n => n !== need)
-      : [...selectedNeeds, need];
-    
+        ? selectedNeeds.filter(n => n !== need)
+        : [...selectedNeeds, need];
+
     setSelectedNeeds(newSelectedNeeds);
     setValue('dataAccessNeeds', newSelectedNeeds, { shouldValidate: true });
   };
@@ -87,60 +87,61 @@ export function DataAccessForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 max-w-[560px] mx-auto">
-      <ScrollToTop />
-      <Textarea
-        {...register('intendedUse')}
-        label="Describe Your Intended Use"
-        placeholder="Write a description here..."
-        textareaClassName="resize-none min-h-[172px]"
-        error={errors.intendedUse?.message}
-      />
-      <DataAccessNeed 
-        selectedNeeds={selectedNeeds}
-        onNeedSelection={handleNeedSelection}
-        error={errors.dataAccessNeeds?.message}
-      />
-      <div className="col-span-full flex justify-end gap-3 pt-4">
-        <Button variant="outline" onClick={() => router.back()}>
-          Back
-        </Button>
-        <Button 
-          type="submit" 
-          disabled={isSubmitting || !isValid}
-          className={!isValid ? 'opacity-50 cursor-not-allowed' : ''}
-        >
-          {isSubmitting ? 'Saving...' : 'Next'}
-        </Button>
-      </div>
-    </form>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 w-full max-w-[560px] mx-auto px-4 sm:px-0">
+        <ScrollToTop />
+        <Textarea
+            {...register('intendedUse')}
+            label="Describe Your Intended Use"
+            placeholder="Write a description here..."
+            textareaClassName="resize-none min-h-[172px]"
+            error={errors.intendedUse?.message}
+        />
+        <DataAccessNeed
+            selectedNeeds={selectedNeeds}
+            onNeedSelection={handleNeedSelection}
+            error={errors.dataAccessNeeds?.message}
+        />
+        <div className="col-span-full flex flex-col sm:flex-row justify-end gap-3 pt-4">
+          <Button variant="outline" onClick={() => router.back()} className="w-full sm:w-auto rounded-[8px] h-[36px]">
+            Back
+          </Button>
+          <Button
+              type="submit"
+              disabled={isSubmitting || !isValid}
+              className={cn('w-full sm:w-auto rounded-[8px] h-[36px]', !isValid && 'opacity-50 cursor-not-allowed')}
+              style={{ background: 'linear-gradient(113.07deg, #5C39D9 15.59%, #7B6FFF 64.93%)' }}
+          >
+            {isSubmitting ? 'Saving...' : 'Next'}
+          </Button>
+        </div>
+      </form>
   );
 }
 
-function DataAccessNeed({ 
-  selectedNeeds, 
-  onNeedSelection,
-  error 
-}: { 
+function DataAccessNeed({
+                          selectedNeeds,
+                          onNeedSelection,
+                          error
+                        }: {
   selectedNeeds: string[];
   onNeedSelection: (need: string) => void;
   error?: string;
 }) {
   return (
-    <div>
-      <p className={labelClassName}>Data Access Needs</p>
-      <div className="grid grid-cols-9 gap-y-3">
-        {accessNeeds.map((need, index) => (
-          <Checkbox
-            key={index}
-            label={need}
-            className="col-span-4"
-            checked={selectedNeeds.includes(need)}
-            onChange={() => onNeedSelection(need)}
-          />
-        ))}
+      <div>
+        <p className={labelClassName}>Data Access Needs</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-9 gap-y-3">
+          {accessNeeds.map((need, index) => (
+              <Checkbox
+                  key={index}
+                  label={need}
+                  className="col-span-1 sm:col-span-1 lg:col-span-4"
+                  checked={selectedNeeds.includes(need)}
+                  onChange={() => onNeedSelection(need)}
+              />
+          ))}
+        </div>
+        {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
       </div>
-      {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-    </div>
   );
 }

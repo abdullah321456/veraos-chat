@@ -1,11 +1,28 @@
 'use client';
-import { ReactNode, SVGProps, useState } from 'react';
+import { ReactNode, SVGProps, useState, useEffect } from 'react';
 import cn from '@/lib/utils/cn';
 import { usePathname } from 'next/navigation';
 import { MAP_PAGE_HEADER_TITLE } from '@/config/routes';
+import { ROUTES } from '@/config/routes';
+import { IsExpandedType } from '@/lib/hooks/use-sidebar-expand';
+import Link from 'next/link';
+import Image from 'next/image';
+import { BoxIcon } from './atom/icons/side-bar/box';
+import { HeadphoneIcon } from './atom/icons/side-bar/headphone';
+import { LogoutIcon } from './atom/icons/side-bar/logout';
+import { PaperIcon } from './atom/icons/side-bar/paper';
+import { QuestionIcon } from './atom/icons/side-bar/question';
+import { SearchStarIcon } from './atom/icons/side-bar/search-star';
+import { SettingIcon } from './atom/icons/side-bar/setting';
+import { authUtils } from '@/lib/utils/auth';
 
-export function DashboardHeader() {
+type Props = {
+  isExpanded?: IsExpandedType;
+};
+
+export function DashboardHeader({ isExpanded }: Props = {}) {
   const pathname = usePathname();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
   // Get the current page title from the mapping
   const getCurrentPageTitle = () => {
@@ -21,9 +38,32 @@ export function DashboardHeader() {
   const currentPageTitle = getCurrentPageTitle();
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-20 bg-white border-b border-gray-200 h-16 flex justify-start items-center px-6">
-      <h1 className="text-xl font-bold text-gray-900 ml-[200px]">{currentPageTitle}</h1>
-      <div className="flex items-center gap-4">
+    <div className="fixed top-0 left-0 right-0 z-20 bg-white border-b border-gray-200 h-16 flex justify-between items-center px-4 sm:px-6">
+      <h1 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 ml-0 sm:ml-[200px] truncate pr-2">{currentPageTitle}</h1>
+      <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
+        {/* Mobile Menu Toggle - only show on small screens */}
+        <button
+          onClick={() => setIsMobileMenuOpen(true)}
+          className="block sm:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          aria-label="Toggle menu"
+        >
+          <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+        
+        {/* Mobile Menu Drawer */}
+        {isMobileMenuOpen && (
+          <>
+            <div
+              className="fixed inset-0 bg-black/50 z-[60] sm:hidden"
+              onClick={() => setIsMobileMenuOpen(false)}
+            />
+            <div className="fixed left-0 top-0 bottom-0 w-[200px] bg-[#171137] z-[70] sm:hidden">
+              <MobileDashboardMenu onClose={() => setIsMobileMenuOpen(false)} />
+            </div>
+          </>
+        )}
         {/* Temporarily hidden - buttons don't work currently
         <AdvanceSwitch
           positiveIcon={<LightModeIcon className="w-[18px] h-[18px]" />}
@@ -42,6 +82,123 @@ export function DashboardHeader() {
           negativeIcon={<SoundInActiveIcon className="w-[18px] h-[18px]" />}
         />
         */}
+      </div>
+    </div>
+  );
+}
+
+function MobileDashboardMenu({ onClose }: { onClose: () => void }) {
+  const pathname = usePathname();
+
+  const menuItems = [
+    {
+      href: ROUTES.AI_SEARCH.INDEX,
+      icon: SearchStarIcon,
+      activePathnames: [ROUTES.AI_SEARCH.INDEX],
+      name: 'Overwatch AI',
+    },
+    {
+      href: ROUTES.REPORTS,
+      icon: BoxIcon,
+      activePathnames: [ROUTES.REPORTS],
+      name: 'Archive',
+    },
+    {
+      href: ROUTES.FAQ.TERMS_OF_USE,
+      icon: QuestionIcon,
+      activePathnames: [ROUTES.FAQ.TERMS_OF_USE],
+      name: 'Faq',
+    },
+    {
+      href: ROUTES.SETTINGS.ACCOUNT,
+      name: 'Settings',
+      icon: SettingIcon,
+      activePathnames: [ROUTES.SETTINGS.ACCOUNT],
+    },
+    { separator: true },
+    {
+      href: ROUTES.BILLING,
+      name: 'Billing',
+      icon: PaperIcon,
+      activePathnames: [ROUTES.BILLING],
+    },
+    {
+      icon: LogoutIcon,
+      name: 'Log Out',
+      iconClassName: 'w-5 h-5 relative -left-0.5',
+      onClick: () => {
+        authUtils.logout();
+      },
+    },
+  ];
+
+  return (
+    <div className="flex flex-col h-full px-3 py-4">
+      {/* Logo and Close Button */}
+      <div className="flex items-center justify-between mb-10">
+        <Link href={ROUTES.HOME} onClick={onClose}>
+          <Image
+            src="/logo.png"
+            alt="logo"
+            width={52}
+            height={52}
+            quality={100}
+            className="brightness-0 invert"
+          />
+        </Link>
+        <button
+          onClick={onClose}
+          className="p-2 text-white/70 hover:text-white transition-colors"
+          aria-label="Close menu"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      {/* Menu Items */}
+      <div className="flex flex-col gap-2 w-full">
+        {menuItems.map((item, index) => {
+          if (item.separator) {
+            return <span key={index} className="h-px w-full my-2 bg-white/20" />;
+          }
+          if (!item.icon) return null;
+          const Icon = item.icon;
+
+          if (!item.href) {
+            const onClick = item.onClick ?? (() => {});
+            return (
+              <button
+                onClick={() => {
+                  onClick();
+                  onClose();
+                }}
+                key={index}
+                className="h-12 flex items-center rounded-lg w-full justify-start ps-[18px] text-white/50 hover:bg-white/10 transition-colors"
+              >
+                <Icon className={cn('w-5 h-5', item?.iconClassName)} />
+                <span className="ml-4 whitespace-nowrap text-left">{item?.name}</span>
+              </button>
+            );
+          }
+
+          const isActive = item?.activePathnames && (item.activePathnames as string[]).includes(pathname);
+          return (
+            <Link
+              key={index}
+              href={item.href}
+              onClick={onClose}
+              className={cn(
+                'h-12 flex items-center rounded-lg w-full justify-start ps-[18px] text-white/50 transition-colors',
+                isActive && 'bg-[#5C39D9] text-white'
+              )}
+            >
+              <Icon className={cn('w-5 h-5', item?.iconClassName)} />
+              <span className="ml-4 whitespace-nowrap text-left">{item?.name}</span>
+            </Link>
+          );
+        })}
       </div>
     </div>
   );

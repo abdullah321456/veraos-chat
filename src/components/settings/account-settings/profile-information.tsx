@@ -139,12 +139,12 @@ function UserInfo() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-5">
-        <p className="text-base font-bold">User Information</p>
+      <div className="flex justify-between items-center mb-4 sm:mb-5">
+        <p className="text-sm sm:text-base font-bold">User Information</p>
       </div>
       
-      <form onSubmit={handleSaveClick} className="grid grid-cols-1 gap-4">
-        <div className="grid grid-cols-3 gap-x-3">
+      <form onSubmit={handleSaveClick} className="grid grid-cols-1 gap-3 sm:gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-3 gap-y-3">
           <CustomInputLabel label="Full Name" isRequired />
           <Input 
             placeholder="First" 
@@ -201,7 +201,7 @@ function UserInfo() {
         />
         
         <div className="flex justify-end gap-3 col-span-full">
-          <Button type="button" onClick={handleSaveClick} disabled={updating}>
+          <Button type="button" onClick={handleSaveClick} disabled={updating} className="w-full sm:w-auto">
             {updating ? 'Saving...' : 'Save'}
           </Button>
         </div>
@@ -277,11 +277,11 @@ function OrganizationInfo() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-5">
-        <p className="text-base font-bold">Organization Details</p>
+      <div className="flex justify-between items-center mb-4 sm:mb-5">
+        <p className="text-sm sm:text-base font-bold">Organization Details</p>
       </div>
       
-      <form onSubmit={handleSaveClick} className="grid grid-cols-2 gap-4">
+      <form onSubmit={handleSaveClick} className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
         <Input 
           isRequired 
           className="col-span-full" 
@@ -293,7 +293,7 @@ function OrganizationInfo() {
         />
         <Select
           isRequired
-          dropdownMenuClassName="w-[215px]"
+          dropdownMenuClassName="w-full sm:w-[215px]"
           placeholder="Choose type"
           labelClassName={labelClassName}
           label="Organization Type"
@@ -315,7 +315,7 @@ function OrganizationInfo() {
         />
         <div className="col-span-full">
           <CustomInputLabel label="Business Address" isRequired />
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <Input 
               isRequired 
               placeholder="Address" 
@@ -353,7 +353,7 @@ function OrganizationInfo() {
               disabled={!isEditing}
             />
             <Select
-              dropdownMenuClassName="w-[215px]"
+              dropdownMenuClassName="w-full sm:w-[215px]"
               placeholder="Choose Country *"
               labelClassName={labelClassName}
               selected={countryOptions.find(option => option.value === orgForm.watch('country'))}
@@ -368,7 +368,7 @@ function OrganizationInfo() {
         </div>
         
         <div className="flex justify-end gap-3 col-span-full">
-          <Button type="button" onClick={handleSaveClick} disabled={updating}>
+          <Button type="button" onClick={handleSaveClick} disabled={updating} className="w-full sm:w-auto">
             {updating ? 'Saving...' : 'Save'}
           </Button>
         </div>

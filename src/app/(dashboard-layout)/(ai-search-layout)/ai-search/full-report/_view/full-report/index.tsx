@@ -65,6 +65,26 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
     const [reportUser, setReportUser] = useState<any>(null);
     const [reportCreatedAt, setReportCreatedAt] = useState<string>('');
 
+    // Close tooltip when clicking outside on mobile
+    useEffect(() => {
+        if (showTooltip) {
+            const handleClickOutside = (e: MouseEvent | TouchEvent) => {
+                const target = e.target as HTMLElement;
+                if (!target.closest('[data-tooltip-container]')) {
+                    setShowTooltip(false);
+                }
+            };
+            
+            document.addEventListener('click', handleClickOutside);
+            document.addEventListener('touchstart', handleClickOutside);
+            
+            return () => {
+                document.removeEventListener('click', handleClickOutside);
+                document.removeEventListener('touchstart', handleClickOutside);
+            };
+        }
+    }, [showTooltip]);
+
     useEffect(() => {
         if (!details) {
             try {
@@ -176,7 +196,7 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
     console.log("report message111 = ",localDetails)
 
     return (
-        <div className={cn('p-6 border border-gray-50 rounded-[10px] w-full mx-auto mr-3', isDrawer && 'p-4 mr-0')}>
+        <div className={cn('p-2 xs:p-3 sm:p-6 border border-gray-50 rounded-[10px] w-full mx-auto mr-0 sm:mr-3 overflow-visible sm:overflow-hidden', isDrawer && 'p-4 mr-0')}>
             {!isDrawer && (
                 <>
                     {isDossierAssistantTop ? (
@@ -186,17 +206,17 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
                     ) : (
                         <>
                             <div
-                                className="flex items-center justify-between border-b border-b-gray-300 -mx-6 px-6 pb-6">
-                                <h4 className="text-black text-[22px] font-bold">Full Report</h4>
-                                <CrossIcon onClick={handleCloseFullReport} className="cursor-pointer"/>
+                                className="flex items-center justify-between border-b border-b-gray-300 -mx-2 xs:-mx-3 sm:-mx-6 px-2 xs:px-3 sm:px-6 pb-3 xs:pb-4 sm:pb-6">
+                                <h4 className="text-black text-sm xs:text-base sm:text-lg md:text-[22px] font-bold">Full Report</h4>
+                                <CrossIcon onClick={handleCloseFullReport} className="cursor-pointer w-4 h-4 xs:w-5 xs:h-5 sm:w-6 sm:h-6 flex-shrink-0"/>
                             </div>
                         </>
                     )}
                 </>
             )}
 
-            <div className={cn('flex justify-between mt-4', isDrawer && 'mt-0')}>
-                <div className="flex gap-6 items-center">
+            <div className={cn('flex flex-row justify-between items-start mt-3 sm:mt-4 gap-2 sm:gap-4 px-2 sm:px-0', isDrawer && 'mt-0')}>
+                <div className="flex gap-2 sm:gap-3 md:gap-6 items-start flex-1 min-w-0 pr-2 sm:pr-0">
                     <Image 
                         src={localDetails?.PhotoName ||
                             (localDetails?.criminals && localDetails?.criminals.length>0 && localDetails?.criminals[0].PhotoName)
@@ -204,13 +224,13 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
                         alt="men" 
                         width={124} 
                         height={124}
-                        className={cn('w-[124px] aspect-square h-auto rounded-full', isDrawer && 'w-24')}
+                        className={cn('w-16 h-16 sm:w-20 sm:h-20 md:w-[124px] md:h-[124px] aspect-square rounded-full flex-shrink-0 object-cover', isDrawer && 'w-24 h-24')}
                     />
-                    <div>
-                        <h1 className="text-black text-lg font-bold leading-6">{`${toEnhancedTitleCase(localDetails?.FIRST || '')} ${toEnhancedTitleCase(localDetails?.MID || '')} ${toEnhancedTitleCase(localDetails?.LAST || '')}`.trim() || 'N/A'}</h1>
-                        <div className="flex items-start gap-2">
-                            <LocationIcon className="mt-0.5 flex-shrink-0"/>
-                            <p className="text-[#616166] text-xs font-normal leading-relaxed" style={{marginLeft:"-6px"}}>
+                    <div className="min-w-0 flex-1">
+                        <h1 className="text-black text-sm sm:text-base md:text-lg font-bold leading-tight sm:leading-6 break-words">{`${toEnhancedTitleCase(localDetails?.FIRST || '')} ${toEnhancedTitleCase(localDetails?.MID || '')} ${toEnhancedTitleCase(localDetails?.LAST || '')}`.trim() || 'N/A'}</h1>
+                        <div className="flex items-start gap-2 sm:gap-2 mt-1">
+                            <LocationIcon className="mt-0.5 flex-shrink-0 w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5"/>
+                            <p className="text-[#616166] text-[10px] sm:text-xs font-normal leading-relaxed break-words flex-1">
                                 {getLocations().length > 0 ? (
                                     <span className="flex flex-wrap gap-0.5">
                                         {getLocations().map((location, index) => (
@@ -232,41 +252,54 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
                         {/*<Button onClick={() => router.push(buildPathname)}>Build Dossier</Button>}*/}
                     </div>
                 </div>
-                <div className="flex gap-3">
-                    <div className="relative">
-                        <CountryIcon
-                            className="hover:cursor-pointer"
-                            onMouseEnter={() => setShowTooltip(true)}
-                            onMouseLeave={() => setShowTooltip(false)}
+                <div className="flex gap-2 sm:gap-3 flex-shrink-0 self-start pl-2 sm:pl-0 min-w-[24px] sm:min-w-[28px] md:min-w-[32px]" data-tooltip-container>
+                    <div 
+                        className="relative w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 flex items-center justify-center"
+                        onMouseEnter={() => setShowTooltip(true)}
+                        onMouseLeave={() => setShowTooltip(false)}
+                        onTouchStart={(e) => {
+                            e.stopPropagation();
+                            setShowTooltip(!showTooltip);
+                        }}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            // Only toggle on mobile, not on desktop hover
+                            if (window.innerWidth < 640) {
+                                setShowTooltip(!showTooltip);
+                            }
+                        }}
+                    >
+                        <ExclamationIcon
+                            className="hover:cursor-pointer w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 flex-shrink-0"
                         />
                         {showTooltip && (
-                            <div className="absolute z-[9999] left-[-5px] top-[-10px] transform -translate-x-full px-4 py-2 bg-gray-900 text-white text-sm rounded-lg shadow-lg w-[200px]">
-                                <p className="whitespace-normal">
+                            <div 
+                                className="absolute z-[9999] right-0 sm:right-0 top-full sm:top-[-10px] mt-2 sm:mt-0 sm:transform sm:translate-x-0 px-3 sm:px-4 py-2 bg-gray-900 text-white text-xs sm:text-sm rounded-lg shadow-lg w-[200px] sm:w-[220px] md:w-[250px]"
+                                onMouseEnter={() => setShowTooltip(true)}
+                                onMouseLeave={() => setShowTooltip(false)}
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                <p className="whitespace-normal leading-normal">
                                     This report is generated using data from our comprehensive criminals database, providing detailed and accurate information for investigative purposes.
                                 </p>
                             </div>
                         )}
                     </div>
-                    <ExclamationIcon
-                        className="mt-2 hover:cursor-pointer"
-                        onMouseEnter={() => setShowTooltip(true)}
-                        onMouseLeave={() => setShowTooltip(false)}
-                    />
                 </div>
             </div>
             
             {/* Report Message Section */}
             {reportMessage && (
-                <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                    <h3 className="text-sm font-semibold text-blue-900 mb-2">AI Analysis Summary</h3>
-                    <p className="text-blue-800 text-sm leading-relaxed">{reportMessage}</p>
+                <div className="mt-3 xs:mt-4 sm:mt-6 p-2 xs:p-3 sm:p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                    <h3 className="text-[10px] xs:text-xs sm:text-sm font-semibold text-blue-900 mb-1 xs:mb-2">AI Analysis Summary</h3>
+                    <p className="text-blue-800 text-[10px] xs:text-xs sm:text-sm leading-relaxed break-words">{reportMessage}</p>
                     {reportUser && (
-                        <div className="mt-3 pt-3 border-t border-blue-200">
-                            <p className="text-xs text-blue-700">
+                        <div className="mt-2 sm:mt-3 pt-2 sm:pt-3 border-t border-blue-200">
+                            <p className="text-[10px] xs:text-xs text-blue-700 break-words">
                                 <span className="font-medium">Generated by:</span> {reportUser.full_name} ({reportUser.email})
                             </p>
                             {reportCreatedAt && (
-                                <p className="text-xs text-blue-700">
+                                <p className="text-[10px] xs:text-xs text-blue-700">
                                     <span className="font-medium">Created:</span> {new Date(reportCreatedAt).toLocaleDateString()}
                                 </p>
                             )}

@@ -43,7 +43,7 @@ const drawerAtom = atom<DrawerTypes>({
   placement: 'right',
   customSize: '320px',
   closeOnPathnameChange: true,
-  containerClassName: 'w-[500px] bg-white',
+  containerClassName: 'w-full sm:w-[500px] bg-white',
   onTopOfModal: false,
   onCloseHandler: () => {},
 });
@@ -74,7 +74,7 @@ export function useDrawer(
       customSize,
       onCloseHandler: onClose,
       closeOnPathnameChange,
-      containerClassName: cn('w-[500px] bg-white', containerClassName),
+      containerClassName: cn('w-full sm:w-[500px] bg-white', containerClassName),
       onTopOfModal,
     });
   };

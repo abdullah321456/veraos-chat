@@ -41,7 +41,7 @@ export function DisplayStepMarker() {
   const { currentStep } = useSignupMultiStep();
   return (
     <Suspense>
-      <div className="grid grid-cols-11 gap-4 mb-8 w-[630px] mx-auto">
+      <div className="grid grid-cols-3 sm:grid-cols-11 gap-2 sm:gap-4 mb-6 sm:mb-8 w-full max-w-[630px] mx-auto px-4 sm:px-0">
         {steps.map((step, index) => (
           <Fragment key={step.stepKey}>
             <StepMarker
@@ -54,7 +54,7 @@ export function DisplayStepMarker() {
               isLastIndex={index === steps.length - 1}
             />
             {index < steps.length - 1 && (
-              <div className="flex justify-center pt-5">
+              <div className="hidden sm:flex justify-center pt-5">
                 <div
                   className={cn(
                     'w-20 h-0.5 bg-gray-300 scale-x-[3] relative duration-300',
@@ -90,22 +90,22 @@ function StepMarker({
   const Icon = icon;
 
   return (
-    <div className="col-span-3">
-      <div className="flex flex-col items-center gap-2 mx-auto">
+    <div className="col-span-1 sm:col-span-3">
+      <div className="flex flex-col items-center gap-1 sm:gap-2 mx-auto">
         {isDone && (
-          <span className="h-11 w-11 flex justify-center items-center bg-primary/10 rounded-full">
-            <TickIcon className="w-6 h-6 text-primary" />
+          <span className="h-9 w-9 sm:h-11 sm:w-11 flex justify-center items-center bg-primary/10 rounded-full">
+            <TickIcon className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
           </span>
         )}
         {isOnlyCurrent ? (
-          <span className="h-11 w-11 flex justify-center items-center text-primary rounded-full border-2 border-primary">
-            <Icon className="w-6 h-6" />
+          <span className="h-9 w-9 sm:h-11 sm:w-11 flex justify-center items-center text-primary rounded-full border-2 border-primary">
+            <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
           </span>
         ) : (
-          !isDone && <span className="h-11 w-11 rounded-full border border-dashed border-gray-600"></span>
+          !isDone && <span className="h-9 w-9 sm:h-11 sm:w-11 rounded-full border border-dashed border-gray-600"></span>
         )}
         <span
-          className={cn('text-gray-600 pt-2 text-xs font-semibold text-center whitespace-nowrap duration-300', isOnlyCurrent && 'text-primary')}
+          className={cn('text-gray-600 pt-1 sm:pt-2 text-[10px] sm:text-xs font-semibold text-center duration-300', isOnlyCurrent && 'text-primary')}
         >
           {name}
         </span>

@@ -87,21 +87,21 @@ export function Uploader({ onUpload, onRemove, uploadedDocuments, error }: Uploa
 
   return (
     <div className="w-full mt-4">
-      <p className={labelClassName}>Upload ID</p>
+      <p className={labelClassName}>Upload your ID</p>
       <div
         onDragOver={handleDragOver}
         onDragLeave={() => setFileOnBoard(false)}
         onDrop={handleDrop}
         className={cn(
-          'cursor-grab duration-300 flex flex-col items-center border border-dashed border-primary rounded-lg p-4 py-10 bg-primary/10',
+          'cursor-grab duration-300 flex flex-col items-center border border-dashed border-primary rounded-lg p-4 sm:p-4 py-8 sm:py-10 bg-primary/10',
           fileOnBoard && 'bg-primary/20'
         )}
       >
         {uploadedDocuments.length === 0 ? (
           <div className="w-full flex flex-col items-center gap-2">
-            <CloudIcon className="w-11 h-11" />
-            <p className="font-bold text-sm">{fileOnBoard ? 'Drop the file here' : 'Upload ID'}</p>
-            <p className="text-center max-w-[48ch] text-xs mb-2">Add ID by dragging and dropping here to uploading it from your desktop.</p>
+            <CloudIcon className="w-9 h-9 sm:w-11 sm:h-11" />
+            <p className="font-bold text-xs sm:text-sm">{fileOnBoard ? 'Drop the file here' : 'Upload ID'}</p>
+            <p className="text-center max-w-[48ch] text-[10px] sm:text-xs mb-2 px-2">Add ID by dragging and dropping here to uploading it from your desktop.</p>
             <input 
               id="file-upload" 
               type="file" 
@@ -112,9 +112,10 @@ export function Uploader({ onUpload, onRemove, uploadedDocuments, error }: Uploa
             />
             <Button
               onClick={() => inputRef.current?.click()}
+              style={{height:"36px"}}
               className="bg-white text-primary border-white border hover:border-primary duration-300 hover:bg-white"
             >
-              Upload File
+              Upload
             </Button>
           </div>
         ) : isPending ? (

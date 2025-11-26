@@ -6,10 +6,10 @@ import { DefaultSearch } from "./default-search";
 export default function Page() {
   return (
     <FadeAnimation>
-      <div className="rounded-[10px] shadow-lg w-[600px] border border-gray-50">
+      <div className="w-full sm:w-auto sm:rounded-[10px] sm:shadow-lg sm:max-w-[600px] sm:border sm:border-gray-50">
         <div>
-          <div className="p-[18px] space-y-3">
-            <h2 className="text-black text-base font-bold">
+          <div className="p-4 sm:p-[18px] space-y-3">
+            <h2 className="text-black text-sm sm:text-base font-bold">
               Search Preferences
             </h2>
             <DefaultSearch/>
@@ -87,8 +87,8 @@ export default function Page() {
             </div>
           </div> */}
         </div>
-        <div className="flex justify-end py-6 mt-20 pr-[18px] mb-5">
-          <Button>Save Changes</Button>
+        <div className="flex justify-end py-4 sm:py-6 mt-10 sm:mt-20 px-4 sm:pr-[18px] mb-5">
+          <Button className="w-full sm:w-auto">Save Changes</Button>
         </div>
       </div>
     </FadeAnimation>

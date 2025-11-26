@@ -14,6 +14,7 @@ import { Button } from '@/components/atom/button';
 import { useUser } from '@/lib/hooks/use-user';
 import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/config/routes';
+import Image from 'next/image';
 
 interface ApiMessage {
     _id: string;
@@ -361,6 +362,7 @@ export function Conversation() {
     };
 
     const [messages, setMessages] = useState<ConversationData[]>([]);
+    const [conversationTitle, setConversationTitle] = useState<string>('');
     const [isLoading, setIsLoading] = useState(false);
     const [isSending, setIsSending] = useState(false);
     const [isExecutingQuery, setIsExecutingQuery] = useState(false);
@@ -476,6 +478,19 @@ export function Conversation() {
         setIsLoading(true);
         try {
             const response = await apiService.getData(`/chat/${id}/messages`);
+            
+            // Fetch chat details to get the title
+            try {
+                const chatDetails = await apiService.getData(`/chat`);
+                const currentChat = chatDetails.data.find((chat: any) => chat._id === id);
+                if (currentChat) {
+                    setConversationTitle(currentChat.question_preview || 'Conversation');
+                }
+            } catch (error) {
+                console.error('Error fetching chat details:', error);
+                setConversationTitle('Conversation');
+            }
+            
             const mappedMessages = response.data.map((msg: ApiMessage) => {
                 return {
                     msg: msg.message,
@@ -515,93 +530,179 @@ export function Conversation() {
                                 <p>Here's how you can search using natural language:</p>
                                 <br />
                                 <div className="space-y-2">
-                                    <div className="flex items-center">
-                                        <span>• Find Jodi Arias in California; she's in her 40s.</span>
+                                    <div className="flex items-center justify-between gap-2">
+                                        <span className="flex items-center gap-2">
+                                            <Image src="/logo.png" alt="logo" width={17} height={17} />
+                                            Find Jodi Arias in California; she's in her 40s.
+                                        </span>
                                         <button 
                                             onClick={() => handleShowMore("Find Jodi Arias in California; she's in her 40s")}
-                                            className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                            className="px-2 py-1 text-xs bg-[#5C39D91A] text-[#5C39D9] border border-primary rounded-[6px] hover:bg-primary hover:text-white transition-colors flex-shrink-0 flex items-center gap-1"
                                         >
+                                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                            </svg>
                                             Show Me
                                         </button>
                                     </div>
-                                    <div className="flex items-center">
-                                        <span>• Find Yarly Reyes he has brown eyes.</span>
+                                    <div className="flex items-center justify-between gap-2">
+                                        <span className="flex items-center gap-2">
+                                            <Image src="/logo.png" alt="logo" width={17} height={17} />
+                                            Find Yarly Reyes he has brown eyes.
+                                        </span>
                                         <button 
                                             onClick={() => handleShowMore("Find Yarly Reyes he has brown eyes")}
-                                            className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                            className="px-2 py-1 text-xs bg-[#5C39D91A] text-[#5C39D9] border border-primary rounded-[6px] hover:bg-primary hover:text-white transition-colors flex-shrink-0 flex items-center gap-1"
                                         >
+                                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                            </svg>
                                             Show Me
                                         </button>
                                     </div>
-                                    <div className="flex items-center">
-                                        <span>• Whose phone number is (727) 504-2129?</span>
+                                    <div className="flex items-center justify-between gap-2">
+                                        <span className="flex items-center gap-2">
+                                            <Image src="/logo.png" alt="logo" width={17} height={17} />
+                                            Whose phone number is (727) 504-2129?
+                                        </span>
                                         <button 
                                             onClick={() => handleShowMore("Whose phone number is (727) 504-2129")}
-                                            className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                            className="px-2 py-1 text-xs bg-[#5C39D91A] text-[#5C39D9] border border-primary rounded-[6px] hover:bg-primary hover:text-white transition-colors flex-shrink-0 flex items-center gap-1"
                                         >
+                                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                            </svg>
                                             Show Me
                                         </button>
                                     </div>
-                                    <div className="flex items-center">
-                                        <span>• Find Ghislaine Maxwell; she owns a Cadillac.</span>
+                                    <div className="flex items-center justify-between gap-2">
+                                        <span className="flex items-center gap-2">
+                                            <Image src="/logo.png" alt="logo" width={17} height={17} />
+                                            Find Ghislaine Maxwell; she owns a Cadillac.
+                                        </span>
                                         <button 
                                             onClick={() => handleShowMore("Find Ghislaine Maxwell; she owns a Cadillac")}
-                                            className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                            className="px-2 py-1 text-xs bg-[#5C39D91A] text-[#5C39D9] border border-primary rounded-[6px] hover:bg-primary hover:text-white transition-colors flex-shrink-0 flex items-center gap-1"
                                         >
+                                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                            </svg>
                                             Show Me
                                         </button>
                                     </div>
-                                    <div className="flex items-center">
-                                        <span>• Whose email address is DonaldTrump@hotmail.com?</span>
+                                    <div className="flex items-center justify-between gap-2">
+                                        <span className="flex items-center gap-2">
+                                            <Image src="/logo.png" alt="logo" width={17} height={17} />
+                                            Whose email address is DonaldTrump@hotmail.com?
+                                        </span>
                                         <button 
                                             onClick={() => handleShowMore("Whose email address is DonaldTrump@hotmail.com")}
-                                            className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                            className="px-2 py-1 text-xs bg-[#5C39D91A] text-[#5C39D9] border border-primary rounded-[6px] hover:bg-primary hover:text-white transition-colors flex-shrink-0 flex items-center gap-1"
                                         >
+                                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                            </svg>
                                             Show Me
                                         </button>
                                     </div>
-                                    <div className="flex items-center">
-                                        <span>• Who lives at 523 Covena Ave, Modesto, CA 95354?</span>
+                                    <div className="flex items-center justify-between gap-2">
+                                        <span className="flex items-center gap-2">
+                                            <Image src="/logo.png" alt="logo" width={17} height={17} />
+                                            Who lives at 523 Covena Ave, Modesto, CA 95354?
+                                        </span>
                                         <button 
                                             onClick={() => handleShowMore("Who lives at 523 Covena Ave, Modesto, CA 95354")}
-                                            className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                            className="px-2 py-1 text-xs bg-[#5C39D91A] text-[#5C39D9] border border-primary rounded-[6px] hover:bg-primary hover:text-white transition-colors flex-shrink-0 flex items-center gap-1"
                                         >
+                                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                            </svg>
                                             Show Me
                                         </button>
                                     </div>
-                                    <div className="flex items-center">
-                                        <span>• Whose IP address is 152.72.121.172?</span>
+                                    <div className="flex items-center justify-between gap-2">
+                                        <span className="flex items-center gap-2">
+                                            <Image src="/logo.png" alt="logo" width={17} height={17} />
+                                            Whose IP address is 152.72.121.172?
+                                        </span>
                                         <button 
                                             onClick={() => handleShowMore("Whose IP address is 152.72.121.172")}
-                                            className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                            className="px-2 py-1 text-xs bg-[#5C39D91A] text-[#5C39D9] border border-primary rounded-[6px] hover:bg-primary hover:text-white transition-colors flex-shrink-0 flex items-center gap-1"
                                         >
+                                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                            </svg>
                                             Show Me
                                         </button>
                                     </div>
-                                    <div className="flex items-center">
-                                        <span>• Whose car is this VIN Number: 1GKFK66U95J223404</span>
+                                    <div className="flex items-center justify-between gap-2">
+                                        <span className="flex items-center gap-2">
+                                            <Image src="/logo.png" alt="logo" width={17} height={17} />
+                                            Whose car is this VIN Number: 1GKFK66U95J223404
+                                        </span>
                                         <button 
                                             onClick={() => handleShowMore("Whose car is this VIN Number: 1GKFK66U95J223404")}
-                                            className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                            className="px-2 py-1 text-xs bg-[#5C39D91A] text-[#5C39D9] border border-primary rounded-[6px] hover:bg-primary hover:text-white transition-colors flex-shrink-0 flex items-center gap-1"
                                         >
+                                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                            </svg>
                                             Show Me
                                         </button>
                                     </div>
-                                    <div className="flex items-center">
-                                        <span>• Find Heather Kennedy who lives with Andy</span>
+                                    <div className="flex items-center justify-between gap-2">
+                                        <span className="flex items-center gap-2">
+                                            <Image src="/logo.png" alt="logo" width={17} height={17} />
+                                            Find Heather Kennedy who lives with Andy
+                                        </span>
                                         <button 
                                             onClick={() => handleShowMore("Find Heather Kennedy who lives with Andy")}
-                                            className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                            className="px-2 py-1 text-xs bg-[#5C39D91A] text-[#5C39D9] border border-primary rounded-[6px] hover:bg-primary hover:text-white transition-colors flex-shrink-0 flex items-center gap-1"
                                         >
+                                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                            </svg>
                                             Show Me
                                         </button>
                                     </div>
-                                    <div className="flex items-center">
-                                        <span>• Whose device is 7C0F9238-F328-4A72-8764-C4133F48F74B</span>
+                                    <div className="flex items-center justify-between gap-2">
+                                        <span className="flex items-center gap-2">
+                                            <Image src="/logo.png" alt="logo" width={17} height={17} />
+                                            Whose device is 7C0F9238-F328-4A72-8764-C4133F48F74B
+                                        </span>
                                         <button 
                                             onClick={() => handleShowMore("Whose device is 7C0F9238-F328-4A72-8764-C4133F48F74B")}
-                                            className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                            className="px-2 py-1 text-xs bg-[#5C39D91A] text-[#5C39D9] border border-primary rounded-[6px] hover:bg-primary hover:text-white transition-colors flex-shrink-0 flex items-center gap-1"
                                         >
+                                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                            </svg>
+                                            Show Me
+                                        </button>
+                                    </div>
+                                    <div className="flex items-center justify-between gap-2 border-t-2 border-b-2 border-gray-200 py-2">
+                                        <span className="flex items-center gap-2">
+                                            <Image src="/logo.png" alt="logo" width={17} height={17} />
+                                            Find a Middle Eastern man, with black hair and brown eyes, who is 6 feet tall with a stocky build in their 20s who drives a Toyota Camry in Tennessee.
+                                        </span>
+                                        <button 
+                                            onClick={() => handleShowMore("Find a Middle Eastern man, with black hair and brown eyes, who is 6 feet tall with a stocky build in their 20s who drives a Toyota Camry in Tennessee.")}
+                                            className="px-2 py-1 text-xs bg-[#5C39D91A] text-[#5C39D9] border border-primary rounded-[6px] hover:bg-primary hover:text-white transition-colors flex-shrink-0 flex items-center gap-1"
+                                        >
+                                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                            </svg>
                                             Show Me
                                         </button>
                                     </div>
@@ -612,10 +713,6 @@ export function Conversation() {
                                 <p>Search for Joshua Jones</p>
                                 <p>(Results appear then add additional context)</p>
                                 <p>Limit to Delray Beach, Florida.</p>
-                                <br />
-                                <p>You can add further context at anytime.</p>
-                                <br />
-                                <p>When you're ready to do a new search simply press the create new chat button.</p>
                             </div>
                         ),
                         sender: SenderOption.ai,
@@ -775,93 +872,179 @@ export function Conversation() {
                         <p>Here's how you can search using natural language:</p>
                         <br />
                         <div className="space-y-2">
-                            <div className="flex items-center">
-                                <span>• Find Jodi Arias in California; she's in her 40s.</span>
+                            <div className="flex items-center justify-between gap-2">
+                                <span className="flex items-center gap-2">
+                                    <Image src="/logo.png" alt="logo" width={17} height={17} />
+                                    Find Jodi Arias in California; she's in her 40s.
+                                </span>
                                 <button 
                                     onClick={() => handleShowMore("Find Jodi Arias in California; she's in her 40s")}
-                                    className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                    className="px-2 py-1 text-xs bg-[#5C39D91A] text-[#5C39D9] border border-primary rounded-[6px] hover:bg-primary hover:text-white transition-colors flex-shrink-0 flex items-center gap-1"
                                 >
+                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
                                     Show Me
                                 </button>
                             </div>
-                            <div className="flex items-center">
-                                <span>• Find Yarly Reyes he has brown eyes.</span>
+                            <div className="flex items-center justify-between gap-2">
+                                <span className="flex items-center gap-2">
+                                    <Image src="/logo.png" alt="logo" width={17} height={17} />
+                                    Find Yarly Reyes he has brown eyes.
+                                </span>
                                 <button 
                                     onClick={() => handleShowMore("Find Yarly Reyes he has brown eyes")}
-                                    className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                    className="px-2 py-1 text-xs bg-[#5C39D91A] text-[#5C39D9] border border-primary rounded-[6px] hover:bg-primary hover:text-white transition-colors flex-shrink-0 flex items-center gap-1"
                                 >
+                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
                                     Show Me
                                 </button>
                             </div>
-                            <div className="flex items-center">
-                                <span>• Whose phone number is (727) 504-2129?</span>
+                            <div className="flex items-center justify-between gap-2">
+                                <span className="flex items-center gap-2">
+                                    <Image src="/logo.png" alt="logo" width={17} height={17} />
+                                    Whose phone number is (727) 504-2129?
+                                </span>
                                 <button 
                                     onClick={() => handleShowMore("Whose phone number is (727) 504-2129")}
-                                    className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                    className="px-2 py-1 text-xs bg-[#5C39D91A] text-[#5C39D9] border border-primary rounded-[6px] hover:bg-primary hover:text-white transition-colors flex-shrink-0 flex items-center gap-1"
                                 >
+                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
                                     Show Me
                                 </button>
                             </div>
-                            <div className="flex items-center">
-                                <span>• Find Ghislaine Maxwell; she owns a Cadillac.</span>
+                            <div className="flex items-center justify-between gap-2">
+                                <span className="flex items-center gap-2">
+                                    <Image src="/logo.png" alt="logo" width={17} height={17} />
+                                    Find Ghislaine Maxwell; she owns a Cadillac.
+                                </span>
                                 <button 
                                     onClick={() => handleShowMore("Find Ghislaine Maxwell; she owns a Cadillac")}
-                                    className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                    className="px-2 py-1 text-xs bg-[#5C39D91A] text-[#5C39D9] border border-primary rounded-[6px] hover:bg-primary hover:text-white transition-colors flex-shrink-0 flex items-center gap-1"
                                 >
+                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
                                     Show Me
                                 </button>
                             </div>
-                            <div className="flex items-center">
-                                <span>• Whose email address is DonaldTrump@hotmail.com?</span>
+                            <div className="flex items-center justify-between gap-2">
+                                <span className="flex items-center gap-2">
+                                    <Image src="/logo.png" alt="logo" width={17} height={17} />
+                                    Whose email address is DonaldTrump@hotmail.com?
+                                </span>
                                 <button 
                                     onClick={() => handleShowMore("Whose email address is DonaldTrump@hotmail.com")}
-                                    className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                    className="px-2 py-1 text-xs bg-[#5C39D91A] text-[#5C39D9] border border-primary rounded-[6px] hover:bg-primary hover:text-white transition-colors flex-shrink-0 flex items-center gap-1"
                                 >
+                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
                                     Show Me
                                 </button>
                             </div>
-                            <div className="flex items-center">
-                                <span>• Who lives at 523 Covena Ave, Modesto, CA 95354?</span>
+                            <div className="flex items-center justify-between gap-2">
+                                <span className="flex items-center gap-2">
+                                    <Image src="/logo.png" alt="logo" width={17} height={17} />
+                                    Who lives at 523 Covena Ave, Modesto, CA 95354?
+                                </span>
                                 <button 
                                     onClick={() => handleShowMore("Who lives at 523 Covena Ave, Modesto, CA 95354")}
-                                    className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                    className="px-2 py-1 text-xs bg-[#5C39D91A] text-[#5C39D9] border border-primary rounded-[6px] hover:bg-primary hover:text-white transition-colors flex-shrink-0 flex items-center gap-1"
                                 >
+                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
                                     Show Me
                                 </button>
                             </div>
-                            <div className="flex items-center">
-                                <span>• Whose IP address is 152.72.121.172?</span>
+                            <div className="flex items-center justify-between gap-2">
+                                <span className="flex items-center gap-2">
+                                    <Image src="/logo.png" alt="logo" width={17} height={17} />
+                                    Whose IP address is 152.72.121.172?
+                                </span>
                                 <button 
                                     onClick={() => handleShowMore("Whose IP address is 152.72.121.172")}
-                                    className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                    className="px-2 py-1 text-xs bg-[#5C39D91A] text-[#5C39D9] border border-primary rounded-[6px] hover:bg-primary hover:text-white transition-colors flex-shrink-0 flex items-center gap-1"
                                 >
+                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
                                     Show Me
                                 </button>
                             </div>
-                            <div className="flex items-center">
-                                <span>• Whose car is this VIN Number: 1GKFK66U95J223404</span>
+                            <div className="flex items-center justify-between gap-2">
+                                <span className="flex items-center gap-2">
+                                    <Image src="/logo.png" alt="logo" width={17} height={17} />
+                                    Whose car is this VIN Number: 1GKFK66U95J223404
+                                </span>
                                 <button 
                                     onClick={() => handleShowMore("Whose car is this VIN Number: 1GKFK66U95J223404")}
-                                    className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                    className="px-2 py-1 text-xs bg-[#5C39D91A] text-[#5C39D9] border border-primary rounded-[6px] hover:bg-primary hover:text-white transition-colors flex-shrink-0 flex items-center gap-1"
                                 >
+                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
                                     Show Me
                                 </button>
                             </div>
-                            <div className="flex items-center">
-                                <span>• Find Heather Kennedy who lives with Andy</span>
+                            <div className="flex items-center justify-between gap-2">
+                                <span className="flex items-center gap-2">
+                                    <Image src="/logo.png" alt="logo" width={17} height={17} />
+                                    Find Heather Kennedy who lives with Andy
+                                </span>
                                 <button 
                                     onClick={() => handleShowMore("Find Heather Kennedy who lives with Andy")}
-                                    className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                    className="px-2 py-1 text-xs bg-[#5C39D91A] text-[#5C39D9] border border-primary rounded-[6px] hover:bg-primary hover:text-white transition-colors flex-shrink-0 flex items-center gap-1"
                                 >
+                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
                                     Show Me
                                 </button>
                             </div>
-                            <div className="flex items-center">
-                                <span>• Whose device is 7C0F9238-F328-4A72-8764-C4133F48F74B</span>
+                            <div className="flex items-center justify-between gap-2">
+                                <span className="flex items-center gap-2">
+                                    <Image src="/logo.png" alt="logo" width={17} height={17} />
+                                    Whose device is 7C0F9238-F328-4A72-8764-C4133F48F74B
+                                </span>
                                 <button 
                                     onClick={() => handleShowMore("Whose device is 7C0F9238-F328-4A72-8764-C4133F48F74B")}
-                                    className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                    className="px-2 py-1 text-xs bg-[#5C39D91A] text-[#5C39D9] border border-primary rounded-[6px] hover:bg-primary hover:text-white transition-colors flex-shrink-0 flex items-center gap-1"
                                 >
+                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                    Show Me
+                                </button>
+                            </div>
+                            <div className="flex items-center justify-between gap-2 border-t-2 border-b-2 border-gray-200 py-2">
+                                <span className="flex items-center gap-2">
+                                    <Image src="/logo.png" alt="logo" width={17} height={17} />
+                                    Find a Middle Eastern man, with black hair and brown eyes, who is 6 feet tall with a stocky build in their 20s who drives a Toyota Camry in Tennessee.
+                                </span>
+                                <button 
+                                    onClick={() => handleShowMore("Find a Middle Eastern man, with black hair and brown eyes, who is 6 feet tall with a stocky build in their 20s who drives a Toyota Camry in Tennessee.")}
+                                    className="px-2 py-1 text-xs bg-[#5C39D91A] text-[#5C39D9] border border-primary rounded-[6px] hover:bg-primary hover:text-white transition-colors flex-shrink-0 flex items-center gap-1"
+                                >
+                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
                                     Show Me
                                 </button>
                             </div>
@@ -872,10 +1055,6 @@ export function Conversation() {
                         <p>Search for Joshua Jones</p>
                         <p>(Results appear then add additional context)</p>
                         <p>Limit to Delray Beach, Florida.</p>
-                        <br />
-                        <p>You can add further context at anytime.</p>
-                        <br />
-                        <p>When you're ready to do a new search simply press the create new chat button.</p>
                     </div>
                 );
                 responseDetails = undefined; // No response details for help message
@@ -1055,93 +1234,179 @@ export function Conversation() {
                         <p>Here's how you can search using natural language:</p>
                         <br />
                         <div className="space-y-2">
-                            <div className="flex items-center">
-                                <span>• Find Jodi Arias in California; she's in her 40s.</span>
+                            <div className="flex items-center justify-between gap-2">
+                                <span className="flex items-center gap-2">
+                                    <Image src="/logo.png" alt="logo" width={17} height={17} />
+                                    Find Jodi Arias in California; she's in her 40s.
+                                </span>
                                 <button 
                                     onClick={() => handleShowMore("Find Jodi Arias in California; she's in her 40s")}
-                                    className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                    className="px-2 py-1 text-xs bg-[#5C39D91A] text-[#5C39D9] border border-primary rounded-[6px] hover:bg-primary hover:text-white transition-colors flex-shrink-0 flex items-center gap-1"
                                 >
+                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
                                     Show Me
                                 </button>
                             </div>
-                            <div className="flex items-center">
-                                <span>• Find Yarly Reyes he has brown eyes.</span>
+                            <div className="flex items-center justify-between gap-2">
+                                <span className="flex items-center gap-2">
+                                    <Image src="/logo.png" alt="logo" width={17} height={17} />
+                                    Find Yarly Reyes he has brown eyes.
+                                </span>
                                 <button 
                                     onClick={() => handleShowMore("Find Yarly Reyes he has brown eyes")}
-                                    className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                    className="px-2 py-1 text-xs bg-[#5C39D91A] text-[#5C39D9] border border-primary rounded-[6px] hover:bg-primary hover:text-white transition-colors flex-shrink-0 flex items-center gap-1"
                                 >
+                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
                                     Show Me
                                 </button>
                             </div>
-                            <div className="flex items-center">
-                                <span>• Whose phone number is (727) 504-2129?</span>
+                            <div className="flex items-center justify-between gap-2">
+                                <span className="flex items-center gap-2">
+                                    <Image src="/logo.png" alt="logo" width={17} height={17} />
+                                    Whose phone number is (727) 504-2129?
+                                </span>
                                 <button 
                                     onClick={() => handleShowMore("Whose phone number is (727) 504-2129")}
-                                    className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                    className="px-2 py-1 text-xs bg-[#5C39D91A] text-[#5C39D9] border border-primary rounded-[6px] hover:bg-primary hover:text-white transition-colors flex-shrink-0 flex items-center gap-1"
                                 >
+                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
                                     Show Me
                                 </button>
                             </div>
-                            <div className="flex items-center">
-                                <span>• Find Ghislaine Maxwell; she owns a Cadillac.</span>
+                            <div className="flex items-center justify-between gap-2">
+                                <span className="flex items-center gap-2">
+                                    <Image src="/logo.png" alt="logo" width={17} height={17} />
+                                    Find Ghislaine Maxwell; she owns a Cadillac.
+                                </span>
                                 <button 
                                     onClick={() => handleShowMore("Find Ghislaine Maxwell; she owns a Cadillac")}
-                                    className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                    className="px-2 py-1 text-xs bg-[#5C39D91A] text-[#5C39D9] border border-primary rounded-[6px] hover:bg-primary hover:text-white transition-colors flex-shrink-0 flex items-center gap-1"
                                 >
+                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
                                     Show Me
                                 </button>
                             </div>
-                            <div className="flex items-center">
-                                <span>• Whose email address is DonaldTrump@hotmail.com?</span>
+                            <div className="flex items-center justify-between gap-2">
+                                <span className="flex items-center gap-2">
+                                    <Image src="/logo.png" alt="logo" width={17} height={17} />
+                                    Whose email address is DonaldTrump@hotmail.com?
+                                </span>
                                 <button 
                                     onClick={() => handleShowMore("Whose email address is DonaldTrump@hotmail.com")}
-                                    className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                    className="px-2 py-1 text-xs bg-[#5C39D91A] text-[#5C39D9] border border-primary rounded-[6px] hover:bg-primary hover:text-white transition-colors flex-shrink-0 flex items-center gap-1"
                                 >
+                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
                                     Show Me
                                 </button>
                             </div>
-                            <div className="flex items-center">
-                                <span>• Who lives at 523 Covena Ave, Modesto, CA 95354?</span>
+                            <div className="flex items-center justify-between gap-2">
+                                <span className="flex items-center gap-2">
+                                    <Image src="/logo.png" alt="logo" width={17} height={17} />
+                                    Who lives at 523 Covena Ave, Modesto, CA 95354?
+                                </span>
                                 <button 
                                     onClick={() => handleShowMore("Who lives at 523 Covena Ave, Modesto, CA 95354")}
-                                    className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                    className="px-2 py-1 text-xs bg-[#5C39D91A] text-[#5C39D9] border border-primary rounded-[6px] hover:bg-primary hover:text-white transition-colors flex-shrink-0 flex items-center gap-1"
                                 >
+                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
                                     Show Me
                                 </button>
                             </div>
-                            <div className="flex items-center">
-                                <span>• Whose IP address is 152.72.121.172?</span>
+                            <div className="flex items-center justify-between gap-2">
+                                <span className="flex items-center gap-2">
+                                    <Image src="/logo.png" alt="logo" width={17} height={17} />
+                                    Whose IP address is 152.72.121.172?
+                                </span>
                                 <button 
                                     onClick={() => handleShowMore("Whose IP address is 152.72.121.172")}
-                                    className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                    className="px-2 py-1 text-xs bg-[#5C39D91A] text-[#5C39D9] border border-primary rounded-[6px] hover:bg-primary hover:text-white transition-colors flex-shrink-0 flex items-center gap-1"
                                 >
+                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
                                     Show Me
                                 </button>
                             </div>
-                            <div className="flex items-center">
-                                <span>• Whose car is this VIN Number: 1GKFK66U95J223404</span>
+                            <div className="flex items-center justify-between gap-2">
+                                <span className="flex items-center gap-2">
+                                    <Image src="/logo.png" alt="logo" width={17} height={17} />
+                                    Whose car is this VIN Number: 1GKFK66U95J223404
+                                </span>
                                 <button 
                                     onClick={() => handleShowMore("Whose car is this VIN Number: 1GKFK66U95J223404")}
-                                    className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                    className="px-2 py-1 text-xs bg-[#5C39D91A] text-[#5C39D9] border border-primary rounded-[6px] hover:bg-primary hover:text-white transition-colors flex-shrink-0 flex items-center gap-1"
                                 >
+                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
                                     Show Me
                                 </button>
                             </div>
-                            <div className="flex items-center">
-                                <span>• Find Heather Kennedy who lives with Andy</span>
+                            <div className="flex items-center justify-between gap-2">
+                                <span className="flex items-center gap-2">
+                                    <Image src="/logo.png" alt="logo" width={17} height={17} />
+                                    Find Heather Kennedy who lives with Andy
+                                </span>
                                 <button 
                                     onClick={() => handleShowMore("Find Heather Kennedy who lives with Andy")}
-                                    className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                    className="px-2 py-1 text-xs bg-[#5C39D91A] text-[#5C39D9] border border-primary rounded-[6px] hover:bg-primary hover:text-white transition-colors flex-shrink-0 flex items-center gap-1"
                                 >
+                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
                                     Show Me
                                 </button>
                             </div>
-                            <div className="flex items-center">
-                                <span>• Whose device is 7C0F9238-F328-4A72-8764-C4133F48F74B</span>
+                            <div className="flex items-center justify-between gap-2">
+                                <span className="flex items-center gap-2">
+                                    <Image src="/logo.png" alt="logo" width={17} height={17} />
+                                    Whose device is 7C0F9238-F328-4A72-8764-C4133F48F74B
+                                </span>
                                 <button 
                                     onClick={() => handleShowMore("Whose device is 7C0F9238-F328-4A72-8764-C4133F48F74B")}
-                                    className="ml-2 px-2 py-1 text-xs bg-transparent text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-colors"
+                                    className="px-2 py-1 text-xs bg-[#5C39D91A] text-[#5C39D9] border border-primary rounded-[6px] hover:bg-primary hover:text-white transition-colors flex-shrink-0 flex items-center gap-1"
                                 >
+                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                    Show Me
+                                </button>
+                            </div>
+                            <div className="flex items-center justify-between gap-2 border-t-2 border-b-2 border-gray-200 py-2">
+                                <span className="flex items-center gap-2">
+                                    <Image src="/logo.png" alt="logo" width={17} height={17} />
+                                    Find a Middle Eastern man, with black hair and brown eyes, who is 6 feet tall with a stocky build in their 20s who drives a Toyota Camry in Tennessee.
+                                </span>
+                                <button 
+                                    onClick={() => handleShowMore("Find a Middle Eastern man, with black hair and brown eyes, who is 6 feet tall with a stocky build in their 20s who drives a Toyota Camry in Tennessee.")}
+                                    className="px-2 py-1 text-xs bg-[#5C39D91A] text-[#5C39D9] border border-primary rounded-[6px] hover:bg-primary hover:text-white transition-colors flex-shrink-0 flex items-center gap-1"
+                                >
+                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
                                     Show Me
                                 </button>
                             </div>
@@ -1152,10 +1417,6 @@ export function Conversation() {
                         <p>Search for Joshua Jones</p>
                         <p>(Results appear then add additional context)</p>
                         <p>Limit to Delray Beach, Florida.</p>
-                        <br />
-                        <p>You can add further context at anytime.</p>
-                        <br />
-                        <p>When you're ready to do a new search simply press the create new chat button.</p>
                     </div>
                 );
                 responseDetails = undefined; // No response details for help message
@@ -1210,10 +1471,27 @@ export function Conversation() {
 
 
     console.log("previous = ",previousText)
+    
     return (
-        <div className="pr-6">
+        <div className="pr-2 sm:pr-4 md:pr-6 px-2 sm:px-4 md:px-0">
+            {/* Back button with conversation title for mobile - only show when chatId exists */}
+            {chatId && (
+                <div className="flex sm:hidden items-center gap-2 pb-3 border-b border-gray-200 mb-2">
+                    <button
+                        onClick={() => router.push(ROUTES.AI_SEARCH.INDEX)}
+                        className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors min-w-0"
+                    >
+                        <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                        </svg>
+                        <span className="text-sm font-medium truncate">
+                            {conversationTitle || 'Conversation'}
+                        </span>
+                    </button>
+                </div>
+            )}
             <div ref={scrollRef}
-                 className="h-[calc(100vh-176px)] overflow-y-auto flex flex-col space-y-4">
+                 className="h-[calc(100vh-200px)] sm:h-[calc(100vh-200px)] overflow-y-auto flex flex-col space-y-3 sm:space-y-4">
                 {isLoading || isExecutingQuery ? (
                     <div className="flex justify-center items-center h-full">
                         <LoadingDots />
@@ -1233,10 +1511,10 @@ export function Conversation() {
                     </>
                 )}
             </div>
-            <div>
+            <div className="pt-2 sm:pt-0">
                 <SearchInput onTextSearch={addMessage} startTransition={startImgInputTransition}
                              onImageSearch={handleImageSearch} onNewChat={handleNewChat}/>
-                <p className="pt-4 text-xs text-gray-500 font-medium">
+                <p className="pt-3 sm:pt-4 text-[10px] sm:text-xs text-gray-500 font-medium">
                     By using Veraos, you agree to abide by our terms of use and acceptable use cases.&nbsp;
                     <button
                         onClick={handleTermsClick}

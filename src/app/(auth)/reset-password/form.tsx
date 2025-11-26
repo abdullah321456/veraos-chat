@@ -99,19 +99,19 @@ export function ResetPasswordForm() {
 
   if (isValidating) {
     return (
-      <div className="w-[420px] text-center">
+      <div className="w-full max-w-[420px] mx-auto text-center px-4 sm:px-0">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-        <p className="text-sm mt-2 text-gray-600">Validating reset link...</p>
+        <p className="text-xs sm:text-sm mt-2 text-gray-600">Validating reset link...</p>
       </div>
     );
   }
 
   if (!isValidCode) {
     return (
-      <div className="w-[420px] text-center">
-        <p className="text-red-600 mb-4">Invalid or expired reset link</p>
+      <div className="w-full max-w-[420px] mx-auto text-center px-4 sm:px-0">
+        <p className="text-xs sm:text-sm md:text-base text-red-600 mb-4">Invalid or expired reset link</p>
         <Link 
-          className="text-primary hover:underline font-medium" 
+          className="text-xs sm:text-sm md:text-base text-primary hover:underline font-medium" 
           href={ROUTES.AUTH.FORGOT_PASSWORD}
         >
           Request a new password reset
@@ -121,7 +121,7 @@ export function ResetPasswordForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="w-[420px]">
+    <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-[420px] mx-auto px-4 sm:px-0">
       <div className="space-y-4">
         <Input 
           label="Email Address" 
@@ -150,12 +150,12 @@ export function ResetPasswordForm() {
         )}
       </div>
       
-      <div className="pt-6 space-y-5">
+      <div className="pt-4 sm:pt-6 space-y-4 sm:space-y-5">
         <Button type="submit" className="w-full" disabled={isSubmitting}>
           {isSubmitting ? 'Resetting...' : 'Reset Password'}
         </Button>
         <p className="text-center">
-          <Link className="hover:underline text-gray-600 font-normal text-sm" href={ROUTES.AUTH.LOGIN}>
+          <Link className="hover:underline text-gray-600 font-normal text-xs sm:text-sm" href={ROUTES.AUTH.LOGIN}>
             Back to Login
           </Link>
         </p>

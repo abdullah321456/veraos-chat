@@ -16,6 +16,8 @@ export function middleware(request: NextRequest) {
         ROUTES.FAQ.INDEX,
         ROUTES.FAQ.HELP_CENTER,
         ROUTES.FAQ.TERMS_OF_USE,
+        ROUTES.AUTH.PENDING_APPROVAL,
+
     ];
 
     const path = request.nextUrl.pathname;

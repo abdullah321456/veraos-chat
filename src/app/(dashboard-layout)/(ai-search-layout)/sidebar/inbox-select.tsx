@@ -31,7 +31,7 @@ export function InboxSelection({ data }: { data: InboxNavigationData[] }) {
   };
 
   return (
-    <div className={cn('mt-2 -mx-4 overflow-y-auto')}>
+    <div className={cn('mt-2 -mx-4')}>
       {data.map((item) => (
         <SingleInboxSelect
           key={item.id}
@@ -61,11 +61,23 @@ function SingleInboxSelect({ id, title, time, description, onClick }: InboxNavig
   }
 
   return (
-    <div onClick={handleClick} className={cn('cursor-pointer p-4', isCurrent && 'bg-primary/10 border-r-4 border-r-primary')}>
-      <div className="flex gap-3 text-sm font-bold mb-2">
+    <div 
+      onClick={handleClick} 
+      className={cn('cursor-pointer px-4 py-2 mx-4 mb-2 rounded-[10px] border')}
+      style={isCurrent ? {
+        background: 'linear-gradient(92.09deg, #F3F0FF 3.04%, #EAE6FF 99.55%)',
+        borderWidth: '1px',
+        borderColor: '#5C39D9'
+      } : {
+        background: '#F7F7FA',
+        borderWidth: '1px',
+        borderColor: 'transparent'
+      }}
+    >
+      <div className="flex gap-3 text-sm font-bold mb-2 items-center">
         {isSelectable && <Checkbox checked={selectedIds.includes(id)} onChange={handleChangeCheckbox} />}
-        <p className="whitespace-nowrap text-ellipsis overflow-hidden">{title}</p>
-        <span className="text-xs font-medium mt-[3px]">{time}</span>
+        <p className="whitespace-nowrap text-ellipsis overflow-hidden flex-1">{title}</p>
+        <span className="text-xs font-medium ml-auto" style={{ color: '#616166' }}>{time}</span>
       </div>
       <p className="whitespace-nowrap text-ellipsis overflow-hidden text-xs text-gray-600 pr-6">{description}</p>
     </div>

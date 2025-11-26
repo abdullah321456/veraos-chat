@@ -38,9 +38,9 @@ export function SingleConversation({ sender, message, cta, aiResponseDetails, im
 
   console.log("aiResponseDetails = ",aiResponseDetails)
   return (
-    <div id={questionId} className="pt-1 pb-3 pr-3 group">
-      <p className={cn('px-16 mb-1.5 text-sm font-medium', isLeft ? 'text-left' : 'text-right')}>{isLeft ? 'Tin Man' : 'You'}</p>
-      <div className={cn('flex w-full items-center gap-4', isLeft ? 'justify-start' : 'flex-row-reverse')}>
+    <div id={questionId} className="pt-1 pb-3 pr-1 sm:pr-3 group">
+      <p className={cn('px-2 sm:px-4 md:px-8 lg:px-16 mb-1.5 text-xs sm:text-sm font-medium', isLeft ? 'text-left' : 'text-right')} style={{ color: '#616166' }}>{isLeft ? 'Tin Man' : 'You'}</p>
+      <div className={cn('flex w-full items-center gap-2 sm:gap-4', isLeft ? 'justify-start' : 'flex-row-reverse')}>
         <Avatar sender={sender} />
         <div className="flex items-center">
           <RenderMessageOrImages message={message} isLeft={isLeft} images={localImages} />
@@ -59,10 +59,29 @@ type RenderMessageOrImagesProps = {
 };
 
 function RenderMessageOrImages({ message, isLeft, images }: RenderMessageOrImagesProps) {
+  const baseClassName = 'max-w-full sm:max-w-[500px] md:max-w-[650px] p-3 sm:p-4 text-xs sm:text-sm relative';
   const className = cn(
-    'max-w-[650px] p-4 rounded-2xl text-sm relative',
-    isLeft ? 'bg-[#F6F6F9] rounded-es-sm' : 'bg-[#4795f9] text-white rounded-ee-sm'
+    baseClassName,
+    !isLeft ? 'bg-[#4795f9] text-white rounded-2xl rounded-ee-sm' : ''
   );
+  
+  const leftStyle = isLeft ? {
+    backgroundColor: '#F6F6F9',
+    boxShadow: '0px 2px 16px 0px #191A6024 inset',
+    borderTopRightRadius: '15px',
+    borderBottomRightRadius: '15px',
+    borderBottomLeftRadius: '15px',
+    borderTopLeftRadius: '0px'
+  } : {
+    backgroundColor: '#F4F3FF',
+    boxShadow: '0px -4px 8.6px 0px #E2DFF0 inset',
+    color:"#000000",
+    borderTopRightRadius: '0px',
+    borderBottomRightRadius: '15px',
+    borderBottomLeftRadius: '15px',
+    borderTopLeftRadius: '15px'
+  };
+
 
   const actionButtonClassName = cn(
     'absolute top-1/2 -translate-y-1/2 w-8 h-8 group-hover:visible invisible',
@@ -74,19 +93,19 @@ function RenderMessageOrImages({ message, isLeft, images }: RenderMessageOrImage
 
   if (message) {
     return (
-      <div className={className}>
+      <div className={className} style={leftStyle}>
         {message}
       </div>
     );
   }
 
   return (
-    <div className={cn(className, 'flex gap-4 flex-wrap')}>
+    <div className={cn(className, 'flex gap-2 sm:gap-4 flex-wrap')} style={leftStyle}>
       {images?.map((item, index) => (
         // eslint-disable-next-line @next/next/no-img-element
-        <img key={index} src={item.url} alt="" className="min-w-32 inline-block max-w-32 h-auto" />
+        <img key={index} src={item.url} alt="" className="min-w-24 sm:min-w-32 inline-block max-w-24 sm:max-w-32 h-auto" />
       ))}
-      {ActionIcon && <button className={actionButtonClassName}>{<ActionIcon className="w-5 h-5" />}</button>}
+      {ActionIcon && <button className={actionButtonClassName}>{<ActionIcon className="w-4 h-4 sm:w-5 sm:h-5" />}</button>}
     </div>
   );
 }

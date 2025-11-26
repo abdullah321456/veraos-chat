@@ -12,12 +12,12 @@ import { useUser } from '@/lib/hooks/use-user';
 export function PasswordSecurity() {
   const { openModal } = useModal();
   return (
-    <div className="mt-[14px] space-y-3 ">
+    <div className="mt-[14px] space-y-3">
       <h5 className="text-black text-xs font-medium">Password</h5>
       <button
         onClick={() =>
           openModal({
-            containerClassName: 'w-[500px]',
+            containerClassName: 'w-full max-w-[500px] mx-4 sm:mx-0',
             view: (
               <div>
                 <ModalHeader title="Change Password" />
@@ -26,11 +26,11 @@ export function PasswordSecurity() {
             ),
           })
         }
-        className="text-white text-xs font-normal bg-[#38366C] rounded-[10px] hover:bg-[#494780] py-3 px-5"
+        className="text-white text-xs font-normal bg-[#38366C] rounded-[10px] hover:bg-[#494780] py-3 px-5 w-full sm:w-auto"
       >
         Change Password
       </button>
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center gap-3">
         <h5 className="text-black text-xs font-medium">Enable Two-factor Authentication</h5>
         <Switch />
       </div>

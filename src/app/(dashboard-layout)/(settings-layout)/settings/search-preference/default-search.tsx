@@ -20,7 +20,7 @@ export function DefaultSearch() {
 
   return (
     <div>
-      <h4 className="text-black text-sm font-bold flex justify-between items-center">
+      <h4 className="text-black text-xs sm:text-sm font-bold flex justify-between items-center mb-2">
         Global Data{' '}
         <Switch
           onChange={(e) => {
@@ -29,10 +29,10 @@ export function DefaultSearch() {
           checked={false}
         />
       </h4>
-      <div key={String(isSelectable)}>
+      <div key={String(isSelectable)} className="space-y-2">
         {regions?.map((item, index) => (
-          <div key={index} className="flex justify-between items-center">
-            <h5 className="text-sm font-normal text-black">{item}</h5>
+          <div key={index} className="flex justify-between items-center py-1">
+            <h5 className="text-xs sm:text-sm font-normal text-black">{item}</h5>
             <Switch
               onChange={(e) => {
                 // Only allow North America to be toggled, ignore changes to other switches

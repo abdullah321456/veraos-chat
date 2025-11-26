@@ -3,11 +3,58 @@
   <component name="ChangeListManager">
     <list default="true" id="31f38edd-b261-4f74-9fe3-a56331e865fe" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(auth)/_components/auth-logo.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(auth)/_components/auth-logo.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(auth)/_components/auth-page-header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(auth)/_components/auth-page-header.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(auth)/forgot-password/form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(auth)/forgot-password/form.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(auth)/invite-signup/form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(auth)/invite-signup/form.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(auth)/login/form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(auth)/login/form.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(auth)/reset-password/form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(auth)/reset-password/form.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(auth)/reset-password/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(auth)/reset-password/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(auth)/signup/_components/display-form-step.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(auth)/signup/_components/display-form-step.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(auth)/signup/_components/icons.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(auth)/signup/_components/icons.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(auth)/signup/_components/submission-done.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(auth)/signup/_components/submission-done.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(auth)/signup/_forms/account-and-organization-info.form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(auth)/signup/_forms/account-and-organization-info.form.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(auth)/signup/_forms/data-access.form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(auth)/signup/_forms/data-access.form.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(auth)/signup/_forms/final-submission.form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(auth)/signup/_forms/final-submission.form.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(auth)/signup/_forms/uploader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(auth)/signup/_forms/uploader.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(auth)/template.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(auth)/template.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/_view/conversation/avatar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/_view/conversation/avatar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/_view/conversation/cta.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/_view/conversation/cta.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/_view/conversation/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/_view/conversation/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/_view/conversation/response-details.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/_view/conversation/response-details.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/_view/conversation/search-input.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/_view/conversation/search-input.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/_view/conversation/single-conversation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/_view/conversation/single-conversation.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/_view/conversation/type.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/_view/conversation/type.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/full-report/_view/full-report/education/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/full-report/_view/full-report/education/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/full-report/_view/full-report/employment/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/full-report/_view/full-report/employment/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/full-report/_view/full-report/identification-contact-info.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/full-report/_view/full-report/identification-contact-info.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/full-report/_view/full-report/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/full-report/_view/full-report/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/full-report/_view/full-report/personal-info.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/full-report/_view/full-report/personal-info.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/full-report/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/full-report/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/client-layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/client-layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/sidebar/inbox-select.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/sidebar/inbox-select.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/sidebar/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/sidebar/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(faq-help-layout)/link-menu.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(faq-help-layout)/link-menu.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(faq-help-layout)/terms-of-use/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(faq-help-layout)/terms-of-use/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(settings-layout)/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(settings-layout)/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(settings-layout)/link-menu.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(settings-layout)/link-menu.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(settings-layout)/settings/account/_view/tab-view.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(settings-layout)/settings/account/_view/tab-view.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(settings-layout)/settings/notification/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(settings-layout)/settings/notification/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(settings-layout)/settings/privacy/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(settings-layout)/settings/privacy/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(settings-layout)/settings/search-preference/default-search.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(settings-layout)/settings/search-preference/default-search.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(settings-layout)/settings/search-preference/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(settings-layout)/settings/search-preference/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/atom/form-elements/input.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/atom/form-elements/input.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/atom/form-elements/password-input/password-input.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/atom/form-elements/password-input/password-input.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/atom/form-elements/textarea.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/atom/form-elements/textarea.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/atom/icons/ai-search/exclamation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/atom/icons/ai-search/exclamation.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/atom/password-difficulty/password-difficulty.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/atom/password-difficulty/password-difficulty.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/dashboard-children-wrapper.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard-children-wrapper.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/drawer-views/use-drawer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/drawer-views/use-drawer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/settings/account-settings/password-security.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/settings/account-settings/password-security.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/settings/account-settings/profile-information.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/settings/account-settings/profile-information.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/sidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/sidebar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config/routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/routes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/middleware.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/middleware.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,7 +83,7 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;E:/practice/veraos-chat&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/practice/veraos-chat/public&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
@@ -45,11 +92,11 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\practice\veraos-chat\public" />
       <recent name="E:\practice\veraos-chat" />
       <recent name="D:\practice\veraos-chat-frontend\User Interface\src\app" />
       <recent name="D:\practice\veraos-chat-frontend\User Interface\public" />
       <recent name="D:\practice\veraos-chat-frontend\User Interface" />
-      <recent name="D:\practice\veraos-chat-frontend\User Interface\src\config" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -177,7 +224,12 @@
       <workItem from="1761580924077" duration="641000" />
       <workItem from="1761583217538" duration="4377000" />
       <workItem from="1761635776888" duration="4770000" />
-      <workItem from="1762865559782" duration="2251000" />
+      <workItem from="1762865559782" duration="2584000" />
+      <workItem from="1763124290770" duration="2577000" />
+      <workItem from="1763982266361" duration="6975000" />
+      <workItem from="1764061714934" duration="12895000" />
+      <workItem from="1764132172520" duration="83000" />
+      <workItem from="1764152845980" duration="5939000" />
     </task>
     <servers />
   </component>

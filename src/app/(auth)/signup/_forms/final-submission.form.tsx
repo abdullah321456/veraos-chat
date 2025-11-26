@@ -86,13 +86,6 @@ export function FinalSubmissionForm() {
             // Register user
             const response = await apiService.postData('/users/register', registrationData);
 
-            // Save access token
-            if (response.data?.access_token) {
-                authUtils.setToken(response.data.access_token);
-                // Set flag to indicate coming from registration
-                sessionStorage.setItem('fromLogin', 'true');
-            }
-
             toast.dismiss(loadingToast);
             toast.success('Registration successful!');
             handleNext();
@@ -115,12 +108,12 @@ export function FinalSubmissionForm() {
     const isLoading = isUploading || isRegistering;
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-6 sm:space-y-8 w-full max-w-[560px] mx-auto px-4 sm:px-6 md:px-0">
             <ScrollToTop/>
 
             {/* Document Upload Section */}
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-                <h3 className="text-lg font-semibold mb-4">Upload Required Documents</h3>
+            <div className="bg-white p-4 sm:p-6 rounded-lg shadow-sm w-full">
+                {/*<h3 className="text-base sm:text-lg font-semibold mb-4">Upload Required Documents</h3>*/}
                 <Uploader
                     onUpload={handleDocumentUpload}
                     onRemove={handleDocumentRemove}
@@ -129,28 +122,31 @@ export function FinalSubmissionForm() {
                 />
             </div>
 
-            <div className="col-span-full flex justify-end gap-3 pt-4">
+            <div className="col-span-full flex flex-col sm:flex-row justify-end gap-3 sm:gap-4 pt-4">
                 <Button
                     variant="outline"
                     onClick={() => router.back()}
                     disabled={isLoading}
+                    className="w-full sm:w-auto rounded-[8px] h-[36px] text-sm sm:text-base"
                 >
                     Back
                 </Button>
                 <Button
                     onClick={handleSubmit(onSubmit)}
                     disabled={isLoading || !documents.length}
-                    className={!documents.length ? 'opacity-50 cursor-not-allowed' : ''}
+                    className={cn('w-full sm:w-auto rounded-[8px] h-[36px] text-sm sm:text-base', !documents.length && 'opacity-50 cursor-not-allowed')}
+                    style={{ background: 'linear-gradient(113.07deg, #5C39D9 15.59%, #7B6FFF 64.93%)' }}
                 >
                     {isLoading ? (
-                        <span className="flex items-center gap-2">
+                        <span className="flex items-center gap-2 text-xs sm:text-sm">
               <span className="animate-spin">⏳</span>
-                            {isUploading ? 'Uploading documents...' : 'Registering account...'}
+                            <span className="hidden sm:inline">{isUploading ? 'Uploading documents...' : 'Registering account...'}</span>
+                            <span className="sm:hidden">{isUploading ? 'Uploading...' : 'Registering...'}</span>
             </span>
                     ) : documents.length ? (
                         'Submit for Review'
                     ) : (
-                        'Please upload at least one document'
+                        <span className="text-xs sm:text-sm">Please upload at least one document</span>
                     )}
                 </Button>
             </div>

@@ -90,7 +90,7 @@ export function DashboardSidebar({ isExpanded }: Props) {
       icon: LogoutIcon,
       name: 'Log Out',
       iconClassName: 'w-5  h-5 relative -left-0.5',
-        onClick: () => {
+      onClick: () => {
         authUtils.logout();
       },
     },
@@ -104,81 +104,83 @@ export function DashboardSidebar({ isExpanded }: Props) {
   ];
 
   return (
-    <aside
-      style={{
-        width: IS_SIDEBAR_EXPANDED ? '76px' : '200px',
-      }}
-      className={cn(
-        'fixed duration-300 transition-[width,background-color] z-30 left-0 top-0 bottom-0 h-screen bg-[#171137] w-[100px] flex flex-col px-3 py-4'
-      )}
-    >
-      <div className="mb-10">
-        <Link href={ROUTES.HOME}>
-          <Image src="/logo.png" alt="logo" width={100} height={100} quality={100} className="w-[52px] h-[52px] brightness-0 invert" />
-        </Link>
-      </div>
-      <div className="flex flex-col gap-2 w-full">
-        {menuItems.map((item, index) => {
-          if (item.separator) {
-            return <span key={index} className="h-px w-full my-2 bg-white/20" />;
-          }
-          if (!item.icon) return null;
-          const Icon = item.icon;
+      <aside
+          style={{
+            width: IS_SIDEBAR_EXPANDED ? '76px' : '200px',
+          }}
+          className={cn(
+              'fixed duration-300 transition-[width,background-color] z-30 left-0 top-0 bottom-0 h-screen bg-[#171137] w-[100px] flex flex-col px-3 py-4',
+              // Hide on small screens by default
+              'hidden sm:flex'
+          )}
+      >
+        <div className="mb-10">
+          <Link href={ROUTES.HOME}>
+            <Image src="/logo.png" alt="logo" width={100} height={100} quality={100} className="w-[52px] h-[52px] brightness-0 invert" />
+          </Link>
+        </div>
+        <div className="flex flex-col gap-2 w-full">
+          {menuItems.map((item, index) => {
+            if (item.separator) {
+              return <span key={index} className="h-px w-full my-2 bg-white/20" />;
+            }
+            if (!item.icon) return null;
+            const Icon = item.icon;
 
-          if (!item.href) {
-            const onClick = item.onClick ?? (() => {});
-            return (
-              <span
-                onClick={onClick}
-                key={index}
-                className="w-[60px] cursor-pointer relative h-[60px] rounded-full flex items-center justify-center text-white/50"
-              >
+            if (!item.href) {
+              const onClick = item.onClick ?? (() => {});
+              return (
+                  <span
+                      onClick={onClick}
+                      key={index}
+                      className="w-[60px] cursor-pointer relative h-[60px] rounded-full flex items-center justify-center text-white/50"
+                  >
                 <Icon className={cn('w-6 h-6 mx-auto', item?.iconClassName)} />
                 <span
-                  className={cn(
-                    'absolute top-4 left-[50px] whitespace-nowrap text-left duration-300',
-                    IS_SIDEBAR_EXPANDED ? 'opacity-0 invisible' : 'opacity-100'
-                  )}
+                    className={cn(
+                        'absolute top-4 left-[50px] whitespace-nowrap text-left duration-300',
+                        IS_SIDEBAR_EXPANDED ? 'opacity-0 invisible' : 'opacity-100'
+                    )}
                 >
                   {item?.name}
                 </span>
               </span>
-            );
-          }
-          const isActive = item?.activePathnames && (item.activePathnames as string[]).includes(pathname);
-          return (
-            <Link
-              key={index}
-              href={item.href}
-              onMouseEnter={() => preloadRoute(item.href)}
-              onClick={(e) => {
-                // Ensure clean navigation by preventing any query parameter conflicts
-                if (item.href === ROUTES.AI_SEARCH.INDEX) {
-                  // Clear any conflicting query parameters when navigating to AI Search
-                  const url = new URL(item.href, window.location.origin);
-                  e.currentTarget.href = url.toString();
-                }
-              }}
-              className={cn(
-                'h-12 flex items-center duration-300 text-white/50 relative',
-                isActive && 'bg-[#5C39D9] text-white',
-                IS_SIDEBAR_EXPANDED ? 'rounded-full w-12 justify-center' : 'rounded-lg w-[unset] justify-start ps-[18px]'
-              )}
-            >
-              {/* <span className="w-full inline-flex bg-red-400 h-full"></span> */}
-              <Icon className={cn('w-5 h-5', item?.iconClassName)} />
-              <span
-                className={cn(
-                  'absolute top-3 left-[50px] whitespace-nowrap text-left duration-300',
-                  IS_SIDEBAR_EXPANDED ? 'opacity-0 invisible' : 'opacity-100'
-                )}
-              >
+              );
+            }
+            const isActive = item?.activePathnames && (item.activePathnames as string[]).includes(pathname);
+            return (
+                <Link
+                    key={index}
+                    href={item.href}
+                    onMouseEnter={() => preloadRoute(item.href)}
+                    onClick={(e) => {
+                      // Ensure clean navigation by preventing any query parameter conflicts
+                      if (item.href === ROUTES.AI_SEARCH.INDEX) {
+                        // Clear any conflicting query parameters when navigating to AI Search
+                        const url = new URL(item.href, window.location.origin);
+                        e.currentTarget.href = url.toString();
+                      }
+                    }}
+                    className={cn(
+                        'h-12 flex items-center duration-300 text-white/50 relative',
+                        isActive && 'bg-[#5C39D9] text-white',
+                        IS_SIDEBAR_EXPANDED ? 'rounded-full w-12 justify-center' : 'rounded-lg w-[unset] justify-start ps-[18px]'
+                    )}
+                >
+                  {/* <span className="w-full inline-flex bg-red-400 h-full"></span> */}
+                  <Icon className={cn('w-5 h-5', item?.iconClassName)} />
+                  <span
+                      className={cn(
+                          'absolute top-3 left-[50px] whitespace-nowrap text-left duration-300',
+                          IS_SIDEBAR_EXPANDED ? 'opacity-0 invisible' : 'opacity-100'
+                      )}
+                  >
                 {item?.name}
               </span>
-            </Link>
-          );
-        })}
-      </div>
-    </aside>
+                </Link>
+            );
+          })}
+        </div>
+      </aside>
   );
 }

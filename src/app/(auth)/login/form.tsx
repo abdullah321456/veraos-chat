@@ -9,88 +9,126 @@ import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { LoginFormInputType, LoginFormSchema } from './validation';
-import { useRouter } from 'next-nprogress-bar';
+import { useRouter as useNProgressRouter } from 'next-nprogress-bar';
+import { useRouter } from 'next/navigation';
 import { apiService } from '@/services/apiService';
 import { authUtils } from '@/lib/utils/auth';
 
 export function LoginForm() {
-  const router = useRouter();
-  const form = useForm<LoginFormInputType>({
-    resolver: zodResolver(LoginFormSchema),
-    defaultValues: {
-      email: '',
-      password: '',
-    },
-  });
+    const router = useNProgressRouter();
+    const nextRouter = useRouter();
+    const form = useForm<LoginFormInputType>({
+        resolver: zodResolver(LoginFormSchema),
+        defaultValues: {
+            email: '',
+            password: '',
+        },
+    });
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = form;
+    const {
+        register,
+        handleSubmit,
+        formState: { errors, isSubmitting },
+    } = form;
 
-  async function onSubmit(inputs: LoginFormInputType) {
-    try {
-      const response = await apiService.postData('/users/login', inputs);
+    async function onSubmit(inputs: LoginFormInputType) {
+        try {
+            const response = await apiService.postData('/users/login', inputs);
 
-      if (response.access_token) {
-        // Save the access token
-        authUtils.setToken(response.access_token);
-        
-        // Set flag to indicate coming from login
-        sessionStorage.setItem('fromLogin', 'true');
+            if (response.access_token) {
+                // Save the access token
+                authUtils.setToken(response.access_token);
 
-        toast.success('Login successful!', {
-          duration: 2000,
-          position: 'top-right',
-        });
-        router.push(ROUTES.HOME);
-        return true;
-      }
+                // Set flag to indicate coming from login
+                sessionStorage.setItem('fromLogin', 'true');
 
-      toast.error(response.message || 'Invalid credentials');
-      return false;
-    } catch (error: any) {
-      if (error?.response?.data?.message) {
-        toast.error(error.response.data.message);
-      } else {
-        toast.error('Something went wrong!');
-      }
-      return false;
+                toast.success('Login successful!', {
+                    duration: 2000,
+                    position: 'top-right',
+                });
+                router.push(ROUTES.HOME);
+            } else {
+                toast.error(response.message || 'Invalid credentials');
+            }
+        } catch (error: any) {
+            // Prevent any default behavior or page refresh
+            console.error('Login error:', error);
+            console.log('Error response:', error?.response);
+            console.log('Error data:', error?.response?.data);
+
+            const errorMessage = error?.response?.data?.message || error?.message || '';
+            console.log('Error message:', errorMessage);
+
+            // Check if account is not approved yet (check multiple variations)
+            const notApprovedKeywords = ['not approved', 'pending approval', 'not yet approved', 'approval pending'];
+            const isNotApproved = notApprovedKeywords.some(keyword =>
+                errorMessage.toLowerCase().includes(keyword)
+            );
+
+            console.log('Is not approved:', isNotApproved);
+
+            if (isNotApproved) {
+                console.log('Redirecting to pending approval page');
+                // Redirect to pending approval page with email using Next.js router
+                nextRouter.push(`${ROUTES.AUTH.PENDING_APPROVAL}?email=${encodeURIComponent(inputs.email)}`);
+                return;
+            }
+
+            if (errorMessage) {
+                toast.error(errorMessage);
+            } else {
+                toast.error('Something went wrong!');
+            }
+            // Explicitly prevent any further error propagation
+        }
     }
-  }
 
-  return (
-      <form onSubmit={handleSubmit(onSubmit)} className="w-[420px]">
-          <div className="space-y-4">
+    const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+        try {
+            await handleSubmit(onSubmit)(e);
+        } catch (error) {
+            // Catch any unhandled errors to prevent page refresh
+            console.error('Form submission error:', error);
+        }
+    };
 
-              <Input {...register('email')} isRequired label="Email Address" type="email" placeholder="Enter your email" error={errors.email?.message} />
-              <div className="relative">
-                  <Link href={ROUTES.AUTH.FORGOT_PASSWORD} className="absolute -top-0.5 text-sm font-normal right-0 underline text-primary">
-                      Forgot Password?
-                  </Link>
-                  <PasswordInput isRequired {...register('password')} label="Password" placeholder="Enter your password" error={errors.password?.message} />
-              </div>
-              <div>
-                  <Checkbox label="Remember Password" labelClassName="select-none" />
-              </div>
-              <div className="pt-3 space-y-5">
-                  <Button type="submit" className="w-full" disabled={isSubmitting}>
-                      {isSubmitting ? 'Logging in...' : 'Login'}
-                  </Button>
-                  <p className="text-center">
-                      <span className="text-gray-600">Don&apos;t have an account? </span>
-                      <Link className="underline text-primary font-semibold" href={ROUTES.AUTH.SIGNUP}>
-                          Create a new one
-                      </Link>
-                  </p>
-              </div>
-          </div>
-          <p className="text-center mt-2">
-              <Link className="underline text-primary font-medium" href={ROUTES.AUTH.JOIN_WITH_INVITE_CODE}>
-                  Join With Invitation Code
-              </Link>
-          </p>
-      </form>
-  );
+    return (
+        <form onSubmit={handleFormSubmit} className="w-full max-w-[420px] mx-auto px-4 sm:px-0">
+            <div className="space-y-4">
+
+                <Input {...register('email')} isRequired label="Email Address" type="email" placeholder="Enter your email" error={errors.email?.message} />
+                <div className="space-y-2">
+                    <PasswordInput isRequired {...register('password')} label="Password" placeholder="Enter your password" error={errors.password?.message} />
+                    <div className="flex justify-end -mt-1">
+                        <Link href={ROUTES.AUTH.FORGOT_PASSWORD} className="text-xs sm:text-sm font-normal underline text-primary">
+                            Forgot Password?
+                        </Link>
+                    </div>
+                </div>
+                <div>
+                    <Checkbox label="Remember Password" labelClassName="select-none" />
+                </div>
+                <div className="pt-3 space-y-4 sm:space-y-5">
+                    <Button type="submit" className="w-full" disabled={isSubmitting}>
+                        {isSubmitting ? 'Logging in...' : 'Login'}
+                    </Button>
+                    <p className="text-center text-xs sm:text-sm md:text-base px-2">
+                        <span className="text-gray-600">Don&apos;t have an account? </span>
+                        <Link className="underline text-primary font-semibold" href={ROUTES.AUTH.SIGNUP}>
+                            Create a new one
+                        </Link>
+                    </p>
+                </div>
+            </div>
+            <p className="text-center mt-4 sm:mt-6 text-xs sm:text-sm md:text-base px-2">
+                <Link className="underline text-primary font-medium" href={ROUTES.AUTH.JOIN_WITH_INVITE_CODE}>
+                    Join With Invitation Code
+                </Link>
+            </p>
+        </form>
+    );
 }
+
+

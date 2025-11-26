@@ -8,7 +8,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   return (
     <div className="pt-20">
       <DashboardSidebar isExpanded={isExpanded} />
-      <DashboardHeader />
+      <DashboardHeader isExpanded={isExpanded} />
       <DashboardChildrenWrapper isExpanded={isExpanded}>{children}</DashboardChildrenWrapper>
     </div>
   );

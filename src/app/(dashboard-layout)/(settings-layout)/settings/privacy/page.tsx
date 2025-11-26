@@ -29,14 +29,14 @@ export default function Page() {
 
   return (
     <FadeAnimation>
-      <div className="rounded-[10px] shadow-lg w-[600px] border border-gray-50">
-        <div className="p-[18px] space-y-3">
-          <h2 className="text-black text-base font-bold">Privacy & Security</h2>
-          <h4 className="text-black text-sm font-bold">
+      <div className="w-full sm:w-auto sm:rounded-[10px] sm:shadow-lg sm:max-w-[600px] sm:border sm:border-gray-50">
+        <div className="p-4 sm:p-[18px] space-y-3">
+          <h2 className="text-black text-sm sm:text-base font-bold">Privacy & Security</h2>
+          <h4 className="text-black text-xs sm:text-sm font-bold">
             Data Retention Policy
           </h4>
-          <div className="flex justify-between items-center">
-            <h5 className="text-sm font-normal text-black">
+          <div className="flex justify-between items-center py-1">
+            <h5 className="text-xs sm:text-sm font-normal text-black">
               Auto-delete chats after 90 days
             </h5>
             <Switch />
@@ -44,12 +44,12 @@ export default function Page() {
         </div>
         {/* session management  */}
         <div className="border-t border-b border-gray-100">
-          <div className="px-[18px] py-4 space-y-3">
-            <h4 className="text-black text-sm font-bold">Session Management</h4>
+          <div className="px-4 sm:px-[18px] py-4 space-y-3">
+            <h4 className="text-black text-xs sm:text-sm font-bold">Session Management</h4>
             <button 
               onClick={handleForceLogoutAllDevices}
               disabled={isLoggingOut}
-              className="text-white text-xs font-normal bg-[#38366C] rounded-[10px] hover:bg-[#494780] py-3 px-5 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="text-white text-xs font-normal bg-[#38366C] rounded-[10px] hover:bg-[#494780] py-3 px-5 disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto"
             >
               {isLoggingOut ? 'Logging Out...' : 'Log Out from All Devices'}
             </button>
@@ -67,8 +67,8 @@ export default function Page() {
             </div>
           </div>
         </div> */}
-        <div className="flex justify-end py-7  pr-[18px] mb-5">
-          <Button>Save Changes</Button>
+        <div className="flex justify-end py-4 sm:py-7 px-4 sm:pr-[18px] mb-5">
+          <Button className="w-full sm:w-auto">Save Changes</Button>
         </div>
       </div>
     </FadeAnimation>

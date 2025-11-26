@@ -18,16 +18,16 @@ export function TabView() {
     : baseTabs;
   
   return (
-    <div className="p-5 mb-10 rounded-[10px] shadow-lg w-[600px] border border-gray-50">
+    <div className="w-full sm:w-auto p-4 sm:p-5 mb-10 sm:rounded-[10px] sm:shadow-lg sm:max-w-[600px] sm:border sm:border-gray-50 sm:mx-auto">
       <div>
-        <h2 className="text-black text-base font-bold">Account Settings</h2>
+        <h2 className="text-black text-sm sm:text-base font-bold">Account Settings</h2>
         {/* Tabs  */}
-        <div className="mt-3 flex justify-between">
+        <div className="mt-3 flex flex-row gap-2 sm:gap-0 sm:justify-between overflow-x-auto">
           {allTabs.map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`mr-4 py-[11px] w-full px-[18px] rounded-[37px] text-xs font-bold whitespace-nowrap  transition-all ${
+              className={`sm:mr-4 py-2 sm:py-[11px] flex-1 sm:w-full px-3 sm:px-[18px] rounded-[37px] text-xs font-bold whitespace-nowrap transition-all ${
                 activeTab === tab ? 'bg-[#5C39D9] bg-opacity-10 text-[#5C39D9]' : ' text-[#616166]'
               }`}
             >

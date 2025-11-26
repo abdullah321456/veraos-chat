@@ -47,7 +47,7 @@ export function AiResponseDetails({detailsData}: { detailsData: (AIResponseDetai
     function handleFullReport(props: AIResponseDetail) {
         openDrawer({
             closeOnPathnameChange: true,
-            containerClassName: 'w-[470px]',
+            containerClassName: 'w-full sm:w-[470px]',
             view: (
                 <div className="h-screen">
                     <DrawerHeader details={props}/>
@@ -60,7 +60,7 @@ export function AiResponseDetails({detailsData}: { detailsData: (AIResponseDetai
     }
 
     return (
-        <div className="grid grid-cols-3 gap-3 pl-1 pr-6 py-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pl-1 pr-2 sm:pr-4 md:pr-6 py-4 sm:py-6">
             {detailsData?.map((item) => (
                 <SingleDetails key={item.id} {...item} />
             ))}
@@ -280,7 +280,7 @@ function SingleDetails(props: AIResponseDetail) {
 
         openDrawer({
             closeOnPathnameChange: true,
-            containerClassName: 'w-[470px]',
+            containerClassName: 'w-full sm:w-[470px]',
             view: (
                 <div className="h-screen">
                     <DrawerHeader details={props}/>
@@ -294,43 +294,46 @@ function SingleDetails(props: AIResponseDetail) {
 
     return (
         <div className={cn(
-            "px-3 py-3 shadow-lg shadow-gray-200/70 border rounded-xl",
+            "px-2 sm:px-3 py-2 sm:py-3 shadow-lg shadow-gray-200/70 border rounded-[8px]",
             (props._index === 'criminals_small' || props._index === 'criminals' ||
                 (props.criminals && props.criminals.length>0) ||
                 (props.criminals_small && props.criminals_small.length>0)
             ) ? 'border-red-500' : 'border-gray-100'
-        )}>
-            <div className="flex justify-between items-center mb-3">
-                <p className="font-bold">{`${toEnhancedTitleCase(props.FIRST)} ${toEnhancedTitleCase(props.MID)} ${toEnhancedTitleCase(props.LAST)}`}</p>
+        )}
+        style={{ boxShadow: '0px -1px 8.1px 0px #C6C4E840 inset' }}
+        >
+            <div className="flex justify-between items-start sm:items-center mb-2 sm:mb-3 gap-2">
+                <p className="font-bold text-xs sm:text-sm break-words">{`${toEnhancedTitleCase(props.FIRST)} ${toEnhancedTitleCase(props.MID)} ${toEnhancedTitleCase(props.LAST)}`}</p>
                 <span
-                    className={cn('text-[#C51FA0] text-xs py-1.5 px-2.5 bg-[#C51FA0]/10 rounded-md', !props.isExactMatch && 'invisible')}>
+                    className={cn('text-[#C51FA0] text-[10px] sm:text-xs py-1 sm:py-1.5 px-2 sm:px-2.5 bg-[#C51FA0]/10 rounded-md flex-shrink-0', !props.isExactMatch && 'invisible')}>
           Exact Match
         </span>
             </div>
-            <div className="text-xs space-y-2.5">
-                <div className="flex items-center gap-2">
+            <div className="text-[10px] sm:text-xs space-y-2 sm:space-y-2.5">
+                <div className="flex items-end gap-1.5 sm:gap-2">
                     <CalendarIcon
-                        className="w-4 h-4"/> Age: {(props.DOB || (props.criminals && props.criminals.length>0)) ?
-                    `${calculateAge(props.DOB || props.criminals[0].DOB)} Years Old` : ' N/A'}
+                        className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0"/> <span>Age: {(props.DOB || (props.criminals && props.criminals.length>0)) ?
+                    `${calculateAge(props.DOB || props.criminals[0].DOB)} Years Old` : ' N/A'}</span>
                 </div>
-                <div className="flex items-center gap-2">
-                    <LocationIcon className="w-4 h-4"/>
-                    <div className="text-xs">
+                <div className="flex items-end gap-1.5 sm:gap-2">
+                    <LocationIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0"/>
+                    <div className="text-[10px] sm:text-xs break-words">
                         {getLocations().length > 0 ? getLocations().join(' | ') : 'No location data'}
                     </div>
                 </div>
-                <div className="grid grid-cols-2 gap-5 text-[11px] whitespace-nowrap">
-                    <div className="flex items-center gap-2">
-                        <CellPhoneIcon className="w-4 h-4"/> {getPhoneCount()} Mobile Numbers
+                <div className="flex flex-col gap-2 sm:gap-3 text-[10px] sm:text-[11px]">
+                    <div className="flex items-end gap-1.5 sm:gap-2">
+                        <CellPhoneIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0"/> <span>{getPhoneCount()} Mobile Numbers</span>
                     </div>
-                    <div className="flex items-center gap-2">
-                        <EnvelopIcon className="w-4 h-4"/> {getEmailCount()} Email Addresses
+                    <div className="flex items-end gap-1.5 sm:gap-2">
+                        <EnvelopIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0"/> <span>{getEmailCount()} Email Addresses</span>
                     </div>
                 </div>
             </div>
             <button onClick={(e) => handleFullReport(props)}
-                    className="inline-flex gap-1 font-bold text-xs text-primary cursor-pointer items-center mt-4">
-                View Report <PiArrowRight className="w-4 h-4 text-primary-dark"/>
+                    className="inline-flex gap-1 font-normal text-[10px] sm:text-xs cursor-pointer items-center mt-2 sm:mt-3 px-3 py-2.5 rounded-[6px]"
+                    style={{ backgroundColor: '#5C39D91A', color: '#5C39D9' }}>
+                View Report <PiArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" style={{ color: '#5C39D9' }}/>
             </button>
         </div>
     );

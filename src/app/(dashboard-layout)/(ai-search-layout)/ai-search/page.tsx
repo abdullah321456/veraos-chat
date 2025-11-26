@@ -53,7 +53,7 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="ml-[30px]">
+    <div className="ml-0 sm:ml-[30px]">
       <Suspense fallback={<LoadingSpinner size="lg" className="h-64" />}>
         <Conversation />
       </Suspense>

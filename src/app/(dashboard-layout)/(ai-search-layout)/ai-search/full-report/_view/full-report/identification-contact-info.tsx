@@ -177,6 +177,9 @@ export function IdentificationAndContact({
     };
 
     const getEmails = () => {
+
+        console.log("getEmails = ",details)
+
         if (!details) return [];
 
         if(details.Know_Emails){
@@ -209,6 +212,8 @@ export function IdentificationAndContact({
             ...normalizeMergeResponse(details.devices)
 
         ];
+
+        console.log("emails = ",records)
 
         records.forEach(record => {
             if (record?.email || record?.Email || record?.EMAIL) {

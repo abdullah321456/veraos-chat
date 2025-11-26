@@ -49,7 +49,7 @@ export function ConversationCta({ message }: { message?: string | ReactNode }) {
     
     openDrawer({
       closeOnPathnameChange: true,
-      containerClassName: 'w-[470px]',
+      containerClassName: 'w-full sm:w-[470px]',
       view: (
         <div className="h-screen">
           {/* <Link href={parsePathnameWithQuery(ROUTES.AI_SEARCH.FULL_REPORT, queryParams)}>Click here</Link>
@@ -71,11 +71,11 @@ export function ConversationCta({ message }: { message?: string | ReactNode }) {
   }, []);
 
   return (
-    <div className="flex gap-3 px-16 pt-3">
-      <Button variant="outline" size="md" disableTitleCase>
+    <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 px-2 sm:px-4 md:px-8 lg:px-16 pt-3">
+      <Button variant="outline" size="md" disableTitleCase className="w-full sm:w-auto">
         View Matching Records
       </Button>
-      <Button onClick={handleFullReport} size="md" disableTitleCase>
+      <Button onClick={handleFullReport} size="md" disableTitleCase className="w-full sm:w-auto">
         Full Report
       </Button>
     </div>
@@ -106,11 +106,11 @@ export function DrawerHeader({ details }: { details?: any } = {}) {
   }
 
   return (
-    <div className="h-14 bg-gray-100 flex items-center justify-between px-4 py-2">
-      <span className="font-bold text-lg text-gray-500">Current Record</span>
-      <div className="flex items-center gap-5">
-        <Link href={parsePathnameWithQuery(ROUTES.AI_SEARCH.FULL_REPORT, queryParams)} onClick={handleExpand}>
-          <DrawerHeaderExpandIcon className="w-5 h-5 text-gray-600" />
+    <div className="h-14 bg-gray-100 flex items-center justify-between px-3 sm:px-4 py-2">
+      <span className="font-bold text-sm sm:text-lg text-gray-500">Current Record</span>
+      <div className="flex items-center gap-3 sm:gap-5">
+        <Link href={parsePathnameWithQuery(ROUTES.AI_SEARCH.FULL_REPORT, queryParams)} onClick={handleExpand} className="hidden sm:block">
+          <DrawerHeaderExpandIcon className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" />
         </Link>
         <button onClick={handleClose} className="border-2 border-gray-500 rounded-full">
           <ModalCloseIcon />

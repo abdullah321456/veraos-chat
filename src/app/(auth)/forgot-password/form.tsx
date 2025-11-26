@@ -48,7 +48,7 @@ export function ForgotPasswordForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="w-[420px]">
+    <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-[420px] mx-auto px-4 sm:px-0">
       <Input 
         {...register('email')} 
         isRequired 
@@ -57,13 +57,13 @@ export function ForgotPasswordForm() {
         placeholder="Enter your email" 
         error={errors.email?.message} 
       />
-      <p className="text-sm mt-2 text-gray-600">We&apos;ll send you a reset instruction via email</p>
-      <div className="pt-6 space-y-5">
+      <p className="text-xs sm:text-sm mt-2 text-gray-600 px-1">We&apos;ll send you a reset instruction via email</p>
+      <div className="pt-4 sm:pt-6 space-y-4 sm:space-y-5">
         <Button type="submit" className="w-full" disabled={isSubmitting}>
           {isSubmitting ? 'Sending...' : 'Send Link'}
         </Button>
         <p className="text-center">
-          <Link className="hover:underline text-gray-600 font-normal text-sm" href={ROUTES.AUTH.LOGIN}>
+          <Link className="hover:underline text-gray-600 font-normal text-xs sm:text-sm" href={ROUTES.AUTH.LOGIN}>
             Back to Login
           </Link>
         </p>

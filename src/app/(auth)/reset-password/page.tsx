@@ -16,16 +16,16 @@ function ResetPasswordContent() {
 
 export default function ResetPasswordPage() {
   return (
-    <Suspense fallback={
-      <FadeAnimation>
-        <AuthLogo />
-        <AuthPageHeader title="Reset your password" />
-        <div className="w-[420px] text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-          <p className="text-sm mt-2 text-gray-600">Loading...</p>
-        </div>
-      </FadeAnimation>
-    }>
+      <Suspense fallback={
+        <FadeAnimation>
+          <AuthLogo />
+          <AuthPageHeader title="Reset your password" />
+          <div className="w-full max-w-[420px] mx-auto text-center px-4 sm:px-0">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+            <p className="text-xs sm:text-sm mt-2 text-gray-600">Loading...</p>
+          </div>
+        </FadeAnimation>
+      }>
       <ResetPasswordContent />
     </Suspense>
   );

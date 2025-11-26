@@ -112,6 +112,7 @@ export type AIResponseDetail = {
     Education_Records:any;
     Employment_Records:any;
     Death_Record:any;
+    PhoneNumber:any;
 };
 
 export type OnImageSearchHandlerParam = { file?: File; url: string }[];

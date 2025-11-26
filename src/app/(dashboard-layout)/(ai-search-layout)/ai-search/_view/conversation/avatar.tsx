@@ -6,14 +6,14 @@ export function Avatar({ sender }: { sender: Sender }) {
     return (
       <div
         className={cn(
-          'rounded-full inline-flex items-center justify-center aspect-square min-w-12 bg-black/10 relative',
+          'rounded-full inline-flex items-center justify-center aspect-square min-w-10 sm:min-w-12 bg-black/10 relative flex-shrink-0',
           sender === 'ai' ? 'bg-white shadow-lg border border-gray-100' : 'bg-[#D1CEDA]'
         )}
       >
         {sender === 'ai' ? (
-          <Image src="/logo.png" alt="veraos" width={24} height={24} className="scale-110 translate-y-[2px]" />
+          <Image src="/logo.png" alt="veraos" width={24} height={24} className="scale-110 translate-y-[2px] w-5 h-5 sm:w-6 sm:h-6" />
         ) : (
-          <UserIcon className="w-6 h-6 text-white" />
+          <UserIcon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
         )}
       </div>
     );
