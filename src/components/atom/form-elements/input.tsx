@@ -14,7 +14,7 @@ import { inputLabelStyles } from './styles/label-styles';
 export type InputSize = keyof typeof inputLabelStyles.size;
 
 const inputStyles = {
-  base: 'flex items-center peer w-full transition duration-200 border [&.is-focus]:ring-[0.8px] ring-[0.6px] ring-[#E1E1E1] [&.is-hover]:border-[#E1E1E1] [&.is-focus]:border-primary [&.is-focus]:ring-primary font-medium shadow-md shadow-[#ccd3d94b] [&.is-focus]:shadow-primary/10',
+  base: 'flex items-center peer w-full min-w-0 transition duration-200 border [&.is-focus]:ring-[0.8px] ring-[0.6px] ring-[#E1E1E1] [&.is-hover]:border-[#E1E1E1] [&.is-focus]:border-primary [&.is-focus]:ring-primary font-medium shadow-md shadow-[#ccd3d94b] [&.is-focus]:shadow-primary/10',
   disabled: '!bg-muted/70 backdrop-blur cursor-not-allowed !border-muted',
   error: '!border-red-500 !ring-[1px] [&.is-hover]:!border-red-500 [&.is-focus]:!border-red-500 !ring-red-500 !bg-red-200/20',
   size: {
@@ -39,7 +39,7 @@ const inputStyles = {
 };
 
 const inputFieldStyles = {
-  base: 'w-full border-0 bg-transparent p-0 focus:outline-none focus:ring-0',
+  base: 'w-full min-w-0 border-0 bg-transparent p-0 focus:outline-none focus:ring-0 box-border',
   reset:
     '[&::-ms-clear]:hidden [&::-ms-reveal]:hidden [&::-webkit-search-cancel-button]:hidden [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none',
   disabled: 'cursor-not-allowed placeholder:text-gray-300 text-[#565555]/80',
@@ -135,8 +135,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     const processedLabel = typeof label === 'string' ? toEnhancedTitleCase(label) : label;
 
     return (
-      <div className={cn('flex flex-col', className)}>
-        <label className="block">
+      <div className={cn('flex flex-col w-full min-w-0 box-border', className)}>
+        <label className="block w-full min-w-0">
           {label ? (
             <span
               className={cn(
@@ -166,6 +166,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               disabled && inputStyles.disabled,
               error && inputStyles.error,
               readOnly && readonlyStyles[variant as keyof typeof readonlyStyles],
+              'box-border',
               inputClassName
             )}
             data-focus={isFocus}

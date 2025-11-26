@@ -355,7 +355,7 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
                         <div className="text-xs font-medium text-gray-500 mt-2 mb-1">
                           {groupLabels[key as keyof typeof groupLabels]} ({conversations.length})
                         </div>
-                        <div className="max-w-[280px]">
+                        <div className="w-full sm:max-w-[280px]">
                           <InboxSelection data={conversations} />
                         </div>
                       </div>
@@ -371,7 +371,7 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
         </div>
 
         {isSelectable && (
-            <div className={cn('fixed bottom-0 w-[280px] bg-white p-4 border-t border-gray-200', IS_SIDEBAR_EXPANDED ? 'left-[76px]' : 'left-[200px]')}>
+            <div className={cn('fixed bottom-0 w-full sm:w-[280px] bg-white p-4 border-t border-gray-200 left-0 sm:left-auto', IS_SIDEBAR_EXPANDED ? 'sm:left-[76px]' : 'sm:left-[200px]')}>
               <div className="grid grid-cols-2 gap-2">
                 <Button onClick={() => setIsSelectable(false)} variant="outline" size="sm">
                   Cancel Selection

@@ -95,38 +95,38 @@ export function LoginForm() {
     };
 
     return (
-        <form onSubmit={handleFormSubmit} className="w-full max-w-[420px] mx-auto px-4 sm:px-0">
-            <div className="space-y-4">
+        <form onSubmit={handleFormSubmit} className="w-full max-w-full sm:max-w-[420px] mx-auto min-w-0 box-border">
+            <div className="space-y-3 sm:space-y-4 w-full min-w-0 box-border">
 
-                <Input {...register('email')} isRequired label="Email Address" type="email" placeholder="Enter your email" error={errors.email?.message} />
                 <div className="space-y-2">
-                    <PasswordInput isRequired {...register('password')} label="Password" placeholder="Enter your password" error={errors.password?.message} />
+                    <Input {...register('email')} isRequired label="Email Address" type="email" placeholder="Enter your email" error={errors.email?.message} />
                     <div className="flex justify-end -mt-1">
                         <Link href={ROUTES.AUTH.FORGOT_PASSWORD} className="text-xs sm:text-sm font-normal underline text-primary">
                             Forgot Password?
                         </Link>
                     </div>
                 </div>
+                <PasswordInput isRequired {...register('password')} label="Password" placeholder="Enter your password" error={errors.password?.message} />
                 <div>
                     <Checkbox label="Remember Password" labelClassName="select-none" />
                 </div>
-                <div className="pt-3 space-y-4 sm:space-y-5">
-                    <Button type="submit" className="w-full" disabled={isSubmitting}>
+                <div className="pt-2 sm:pt-4 space-y-3 sm:space-y-4">
+                    <Button 
+                        type="submit" 
+                        className="w-full text-sm sm:text-base rounded-[10px] border-0" 
+                        style={{ background: 'linear-gradient(113.07deg, #5C39D9 15.59%, #7B6FFF 64.93%)' }}
+                        disabled={isSubmitting}
+                    >
                         {isSubmitting ? 'Logging in...' : 'Login'}
                     </Button>
-                    <p className="text-center text-xs sm:text-sm md:text-base px-2">
+                    <p className="text-center text-xs sm:text-sm md:text-base px-2 break-words">
                         <span className="text-gray-600">Don&apos;t have an account? </span>
-                        <Link className="underline text-primary font-semibold" href={ROUTES.AUTH.SIGNUP}>
+                        <Link className="underline text-primary font-semibold break-words" href={ROUTES.AUTH.SIGNUP}>
                             Create a new one
                         </Link>
                     </p>
                 </div>
             </div>
-            <p className="text-center mt-4 sm:mt-6 text-xs sm:text-sm md:text-base px-2">
-                <Link className="underline text-primary font-medium" href={ROUTES.AUTH.JOIN_WITH_INVITE_CODE}>
-                    Join With Invitation Code
-                </Link>
-            </p>
         </form>
     );
 }

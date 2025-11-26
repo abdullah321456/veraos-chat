@@ -38,11 +38,11 @@ export function SingleConversation({ sender, message, cta, aiResponseDetails, im
 
   console.log("aiResponseDetails = ",aiResponseDetails)
   return (
-    <div id={questionId} className="pt-1 pb-3 pr-1 sm:pr-3 group">
-      <p className={cn('px-2 sm:px-4 md:px-8 lg:px-16 mb-1.5 text-xs sm:text-sm font-medium', isLeft ? 'text-left' : 'text-right')} style={{ color: '#616166' }}>{isLeft ? 'Tin Man' : 'You'}</p>
-      <div className={cn('flex w-full items-center gap-2 sm:gap-4', isLeft ? 'justify-start' : 'flex-row-reverse')}>
+    <div id={questionId} className="pt-1 pb-3 pr-0.5 sm:pr-3 group w-full min-w-0 box-border">
+      <p className={cn('px-1 sm:px-4 md:px-8 lg:px-16 mb-1.5 text-xs sm:text-sm font-medium', isLeft ? 'text-left' : 'text-right')} style={{ color: '#616166' }}>{isLeft ? 'Tin Man' : 'You'}</p>
+      <div className={cn('flex w-full items-center gap-1 sm:gap-4 min-w-0', isLeft ? 'justify-start' : 'flex-row-reverse')}>
         <Avatar sender={sender} />
-        <div className="flex items-center">
+        <div className="flex items-center min-w-0 flex-1">
           <RenderMessageOrImages message={message} isLeft={isLeft} images={localImages} />
         </div>
       </div>
@@ -59,7 +59,7 @@ type RenderMessageOrImagesProps = {
 };
 
 function RenderMessageOrImages({ message, isLeft, images }: RenderMessageOrImagesProps) {
-  const baseClassName = 'max-w-full sm:max-w-[500px] md:max-w-[650px] p-3 sm:p-4 text-xs sm:text-sm relative';
+  const baseClassName = 'max-w-full sm:max-w-[500px] md:max-w-[650px] p-2 sm:p-4 text-xs sm:text-sm relative w-full min-w-0 box-border break-words';
   const className = cn(
     baseClassName,
     !isLeft ? 'bg-[#4795f9] text-white rounded-2xl rounded-ee-sm' : ''

@@ -52,9 +52,9 @@ export function SearchInput({ onTextSearch, onImageSearch, onNewChat, startTrans
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex justify-between gap-1.5 sm:gap-2">
+    <form onSubmit={handleSubmit} className="flex justify-between gap-1 sm:gap-2 w-full min-w-0 box-border">
       <div 
-        className="w-full rounded-[14px] overflow-hidden relative"
+        className="w-full min-w-0 rounded-[14px] overflow-hidden relative box-border"
         style={{ background: 'linear-gradient(90deg, rgba(92, 57, 217, 0.1) 0%, rgba(197, 31, 160, 0.1) 100%)' }}
       >
         <textarea
@@ -67,7 +67,7 @@ export function SearchInput({ onTextSearch, onImageSearch, onNewChat, startTrans
             }
           }}
           placeholder="Ask me anything.... "
-          className="w-full min-h-[64px] sm:min-h-[64px] px-4 py-3 pr-14 sm:pr-16 text-sm sm:text-base bg-transparent border-0 focus:outline-none resize-none rounded-[14px]"
+          className="w-full min-h-[64px] sm:min-h-[64px] px-2 sm:px-4 py-3 pr-10 sm:pr-16 text-sm sm:text-base bg-transparent border-0 focus:outline-none resize-none rounded-[14px] box-border"
           rows={1}
           onInput={(e) => {
             const target = e.target as HTMLTextAreaElement;
@@ -77,9 +77,9 @@ export function SearchInput({ onTextSearch, onImageSearch, onNewChat, startTrans
         />
         <button
           type="submit"
-          className="absolute right-2 sm:right-3 bottom-2 sm:bottom-3 bg-primary text-white p-2 rounded-full hover:bg-primary-dark duration-300 flex items-center justify-center"
+          className="absolute right-1 sm:right-3 bottom-1 sm:bottom-3 bg-primary text-white p-1.5 sm:p-2 rounded-full hover:bg-primary-dark duration-300 flex items-center justify-center flex-shrink-0"
         >
-          <Send className="w-[14px] h-[14px]" />
+          <Send className="w-[12px] h-[12px] sm:w-[14px] sm:h-[14px]" />
         </button>
       </div>
     </form>

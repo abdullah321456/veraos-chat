@@ -21,8 +21,8 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
-        <body className={cn(inter.className, 'antialiased')}>
+        <html lang="en" className="w-full overflow-x-hidden">
+        <body className={cn(inter.className, 'antialiased w-full overflow-x-hidden')}>
         <AnalyticsWrapper />
         {children}
         <Toaster

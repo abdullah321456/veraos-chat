@@ -94,7 +94,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
     },
     ref
   ) => (
-    <div className={cn(`checkbox-root`, 'flex flex-col', className)}>
+    <div className={cn(`checkbox-root`, 'flex flex-col w-full min-w-0', className)}>
       <label
         className={cn(
           `checkbox-container`,
