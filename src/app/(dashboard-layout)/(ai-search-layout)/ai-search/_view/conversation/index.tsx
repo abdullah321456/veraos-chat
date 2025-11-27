@@ -693,10 +693,10 @@ export function Conversation() {
                                     <div className="flex items-center justify-between gap-1 sm:gap-2 border-t-2 border-b-2 border-gray-200 py-2 min-w-0">
                                         <span className="flex items-center gap-1 sm:gap-2 min-w-0 flex-1">
                                             <Image src="/logo.png" alt="logo" width={17} height={17} className="flex-shrink-0" />
-                                            <span className="text-xs sm:text-sm truncate">Find a Middle Eastern man, with black hair and brown eyes, who is 6 feet tall with a stocky build in their 20s who drives a Toyota Camry in Tennessee.</span>
+                                            <span className="text-xs sm:text-sm break-words">Find a Middle Eastern man, with black hair and brown eyes, who is 6 feet tall with a stocky build in their 30s who drives a Toyota Camry in Tennessee.</span>
                                         </span>
                                         <button 
-                                            onClick={() => handleShowMore("Find a Middle Eastern man, with black hair and brown eyes, who is 6 feet tall with a stocky build in their 20s who drives a Toyota Camry in Tennessee.")}
+                                            onClick={() => handleShowMore("Find a Middle Eastern man, with black hair and brown eyes, who is 6 feet tall with a stocky build in their 30s who drives a Toyota Camry in Tennessee.")}
                                             className="px-1.5 sm:px-2 py-1 text-xs bg-[#5C39D91A] text-[#5C39D9] border border-primary rounded-[6px] hover:bg-primary hover:text-white transition-colors flex-shrink-0 flex items-center gap-0.5 sm:gap-1"
                                         >
                                             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -1032,13 +1032,13 @@ export function Conversation() {
                                     Show Me
                                 </button>
                             </div>
-                            <div className="flex items-center justify-between gap-2 border-t-2 border-b-2 border-gray-200 py-2">
-                                <span className="flex items-center gap-2">
-                                    <Image src="/logo.png" alt="logo" width={17} height={17} />
-                                    Find a Middle Eastern man, with black hair and brown eyes, who is 6 feet tall with a stocky build in their 20s who drives a Toyota Camry in Tennessee.
+                            <div className="flex items-center justify-between gap-2 border-t-2 border-b-2 border-gray-200 py-2 min-w-0">
+                                <span className="flex items-center gap-2 min-w-0 flex-1">
+                                    <Image src="/logo.png" alt="logo" width={17} height={17} className="flex-shrink-0" />
+                                    <span className="text-xs sm:text-sm break-words">Find a Middle Eastern man, with black hair and brown eyes, who is 6 feet tall with a stocky build in their 30s who drives a Toyota Camry in Tennessee.</span>
                                 </span>
                                 <button 
-                                    onClick={() => handleShowMore("Find a Middle Eastern man, with black hair and brown eyes, who is 6 feet tall with a stocky build in their 20s who drives a Toyota Camry in Tennessee.")}
+                                    onClick={() => handleShowMore("Find a Middle Eastern man, with black hair and brown eyes, who is 6 feet tall with a stocky build in their 30s who drives a Toyota Camry in Tennessee.")}
                                     className="px-2 py-1 text-xs bg-[#5C39D91A] text-[#5C39D9] border border-primary rounded-[6px] hover:bg-primary hover:text-white transition-colors flex-shrink-0 flex items-center gap-1"
                                 >
                                     <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -1394,13 +1394,13 @@ export function Conversation() {
                                     Show Me
                                 </button>
                             </div>
-                            <div className="flex items-center justify-between gap-2 border-t-2 border-b-2 border-gray-200 py-2">
-                                <span className="flex items-center gap-2">
-                                    <Image src="/logo.png" alt="logo" width={17} height={17} />
-                                    Find a Middle Eastern man, with black hair and brown eyes, who is 6 feet tall with a stocky build in their 20s who drives a Toyota Camry in Tennessee.
+                            <div className="flex items-center justify-between gap-2 border-t-2 border-b-2 border-gray-200 py-2 min-w-0">
+                                <span className="flex items-center gap-2 min-w-0 flex-1">
+                                    <Image src="/logo.png" alt="logo" width={17} height={17} className="flex-shrink-0" />
+                                    <span className="text-xs sm:text-sm break-words">Find a Middle Eastern man, with black hair and brown eyes, who is 6 feet tall with a stocky build in their 30s who drives a Toyota Camry in Tennessee.</span>
                                 </span>
                                 <button 
-                                    onClick={() => handleShowMore("Find a Middle Eastern man, with black hair and brown eyes, who is 6 feet tall with a stocky build in their 20s who drives a Toyota Camry in Tennessee.")}
+                                    onClick={() => handleShowMore("Find a Middle Eastern man, with black hair and brown eyes, who is 6 feet tall with a stocky build in their 30s who drives a Toyota Camry in Tennessee.")}
                                     className="px-2 py-1 text-xs bg-[#5C39D91A] text-[#5C39D9] border border-primary rounded-[6px] hover:bg-primary hover:text-white transition-colors flex-shrink-0 flex items-center gap-1"
                                 >
                                     <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

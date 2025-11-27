@@ -80,7 +80,7 @@ export function BillingAddress() {
 
   if (loading) {
     return (
-      <div className="shadow-lg p-4 border border-gray-100 rounded-[10px]">
+      <div className="shadow-lg p-3 sm:p-4 border border-gray-100 rounded-[10px]">
         <div className="animate-pulse">
           <div className="h-6 bg-gray-200 rounded w-1/4 mb-4"></div>
           <div className="space-y-4">
@@ -95,21 +95,21 @@ export function BillingAddress() {
 
   if (error) {
     return (
-      <div className="shadow-lg p-4 border border-gray-100 rounded-[10px]">
-        <div className="text-red-500 text-center py-8">
-          <p>Failed to load billing information</p>
-          <p className="text-sm text-gray-500 mt-2">{error}</p>
+      <div className="shadow-lg p-3 sm:p-4 border border-gray-100 rounded-[10px]">
+        <div className="text-red-500 text-center py-6 sm:py-8">
+          <p className="text-sm sm:text-base">Failed to load billing information</p>
+          <p className="text-xs sm:text-sm text-gray-500 mt-2 break-words">{error}</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="shadow-lg p-4 border border-gray-100 rounded-[10px]">
+    <div className="shadow-lg p-3 sm:p-4 border border-gray-100 rounded-[10px]">
       <div className="space-y-4">
         <div className="col-span-full">
           <CustomInputLabel label="Billing Address" isRequired />
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <Input 
               isRequired 
               placeholder="Address" 
@@ -142,7 +142,7 @@ export function BillingAddress() {
               onChange={(e) => handleInputChange('postalCode', e.target.value)}
             />
             <Select
-              dropdownMenuClassName="w-[215px]"
+              dropdownMenuClassName="w-full sm:w-[215px]"
               placeholder="Choose Country *"
               labelClassName={labelClassName}
               selected={countryOptions.find(option => option.value === formData.country)}
@@ -160,8 +160,8 @@ export function BillingAddress() {
             />
           </div>
         </div>
-        <div className="pt-3">
-          <Button onClick={handleUpdate} disabled={updating}>
+        <div className="pt-2 sm:pt-3">
+          <Button onClick={handleUpdate} disabled={updating} className="w-full sm:w-auto">
             {updating ? 'Updating...' : 'Update Billing Address'}
           </Button>
         </div>
