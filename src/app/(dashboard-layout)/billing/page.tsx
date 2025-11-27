@@ -11,8 +11,8 @@ export default function Page() {
 
   if (loading) {
     return (
-      <div className="w-[720px] mx-auto">
-        <div className="animate-pulse space-y-8">
+      <div className="w-full max-w-[720px] mx-auto px-4 sm:px-6 md:px-0">
+        <div className="animate-pulse space-y-6 sm:space-y-8">
           <div className="h-32 bg-gray-200 rounded"></div>
           <div className="h-32 bg-gray-200 rounded"></div>
           <div className="h-32 bg-gray-200 rounded"></div>
@@ -22,8 +22,8 @@ export default function Page() {
   }
 
   return (
-    <div className="w-[720px] mx-auto">
-      <FadeAnimation className="space-y-8">
+    <div className="w-full max-w-[720px] mx-auto px-4 sm:px-6 md:px-0">
+      <FadeAnimation className="space-y-6 sm:space-y-8">
         <PlanLimit isEditable={isOrganization} />
         <BillingAddress isEditable={isOrganization} />
         <RecentPayments />

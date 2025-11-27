@@ -4,9 +4,9 @@ export function CountryIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={66}
-      height={66}
+      viewBox="0 0 66 66"
       fill="none"
+      preserveAspectRatio="xMidYMid meet"
       {...props}>
       <path fill="#F0F0F0" d="M66 11H0v44h66V11Z" />
       <path

@@ -59,7 +59,12 @@ export function ForgotPasswordForm() {
       />
       <p className="text-xs sm:text-sm mt-2 text-gray-600 px-1">We&apos;ll send you a reset instruction via email</p>
       <div className="pt-4 sm:pt-6 space-y-4 sm:space-y-5">
-        <Button type="submit" className="w-full" disabled={isSubmitting}>
+        <Button 
+          type="submit" 
+          className="w-full text-sm sm:text-base rounded-[10px] border-0" 
+          style={{ background: 'linear-gradient(113.07deg, #5C39D9 15.59%, #7B6FFF 64.93%)' }}
+          disabled={isSubmitting}
+        >
           {isSubmitting ? 'Sending...' : 'Send Link'}
         </Button>
         <p className="text-center">

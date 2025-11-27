@@ -59,7 +59,7 @@ export function DashboardHeader({ isExpanded }: Props = {}) {
               className="fixed inset-0 bg-black/50 z-[60] sm:hidden"
               onClick={() => setIsMobileMenuOpen(false)}
             />
-            <div className="fixed left-0 top-0 bottom-0 w-[200px] bg-[#171137] z-[70] sm:hidden">
+            <div className="fixed left-0 top-0 bottom-0 w-[200px] bg-[#0F141E] z-[70] sm:hidden">
               <MobileDashboardMenu onClose={() => setIsMobileMenuOpen(false)} />
             </div>
           </>
@@ -135,15 +135,15 @@ function MobileDashboardMenu({ onClose }: { onClose: () => void }) {
   return (
     <div className="flex flex-col h-full px-3 py-4">
       {/* Logo and Close Button */}
-      <div className="flex items-center justify-between mb-10">
+      <div className="flex items-center justify-between mb-6 sm:mb-10">
         <Link href={ROUTES.HOME} onClick={onClose}>
           <Image
-            src="/logo.png"
-            alt="logo"
-            width={52}
-            height={52}
+            src="/logo-with-label.png"
+            alt="Overwatch AI"
+            width={200}
+            height={100}
             quality={100}
-            className="brightness-0 invert"
+            className="brightness-0 invert object-contain h-[32px] sm:h-[40px] w-auto max-w-[140px] sm:max-w-[160px]"
           />
         </Link>
         <button

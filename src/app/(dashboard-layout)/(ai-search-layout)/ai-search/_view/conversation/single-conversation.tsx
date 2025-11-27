@@ -40,9 +40,11 @@ export function SingleConversation({ sender, message, cta, aiResponseDetails, im
   return (
     <div id={questionId} className="pt-1 pb-3 pr-0.5 sm:pr-3 group w-full min-w-0 box-border">
       <p className={cn('px-1 sm:px-4 md:px-8 lg:px-16 mb-1.5 text-xs sm:text-sm font-medium', isLeft ? 'text-left' : 'text-right')} style={{ color: '#616166' }}>{isLeft ? 'Tin Man' : 'You'}</p>
-      <div className={cn('flex w-full items-center gap-1 sm:gap-4 min-w-0', isLeft ? 'justify-start' : 'flex-row-reverse')}>
-        <Avatar sender={sender} />
-        <div className="flex items-center min-w-0 flex-1">
+      <div className={cn('flex w-full gap-1 sm:gap-4 min-w-0', isLeft ? 'items-end justify-start' : 'items-end justify-end flex-row-reverse')}>
+        <div className="flex-shrink-0 self-end">
+          <Avatar sender={sender} />
+        </div>
+        <div className={cn('flex min-w-0 flex-1', isLeft ? 'items-end' : 'items-end justify-end self-end')}>
           <RenderMessageOrImages message={message} isLeft={isLeft} images={localImages} />
         </div>
       </div>

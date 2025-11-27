@@ -94,6 +94,7 @@ export function DashboardSidebar({ isExpanded }: Props) {
         authUtils.logout();
       },
     },
+    { separator: true },
     {
       href: '',
       icon: ExtendIcon,
@@ -109,14 +110,26 @@ export function DashboardSidebar({ isExpanded }: Props) {
             width: IS_SIDEBAR_EXPANDED ? '76px' : '200px',
           }}
           className={cn(
-              'fixed duration-300 transition-[width,background-color] z-30 left-0 top-0 bottom-0 h-screen bg-[#171137] w-[100px] flex flex-col px-3 py-4',
+              'fixed duration-300 transition-[width,background-color] z-30 left-0 top-0 bottom-0 h-screen bg-[#0F141E] w-[100px] flex flex-col px-2 sm:px-3 py-3 sm:py-4',
               // Hide on small screens by default
               'hidden sm:flex'
           )}
       >
-        <div className="mb-10">
-          <Link href={ROUTES.HOME}>
-            <Image src="/logo.png" alt="logo" width={100} height={100} quality={100} className="w-[52px] h-[52px] brightness-0 invert" />
+        <div className="mb-6 sm:mb-10">
+          <Link href={ROUTES.HOME} className={cn('flex-shrink-0 flex items-center', IS_SIDEBAR_EXPANDED ? 'justify-center' : 'justify-start')}>
+            <Image 
+              src={IS_SIDEBAR_EXPANDED ? "/logo.png" : "/logo-with-label.png"} 
+              alt="Overwatch AI" 
+              width={IS_SIDEBAR_EXPANDED ? 100 : 200} 
+              height={IS_SIDEBAR_EXPANDED ? 100 : 100} 
+              quality={100} 
+              className={cn(
+                'brightness-0 invert object-contain',
+                IS_SIDEBAR_EXPANDED 
+                  ? 'w-[32px] sm:w-[40px] h-[32px] sm:h-[40px]' 
+                  : 'h-[32px] sm:h-[40px] w-auto max-w-[140px] sm:max-w-[160px]'
+              )} 
+            />
           </Link>
         </div>
         <div className="flex flex-col gap-2 w-full">
@@ -163,9 +176,10 @@ export function DashboardSidebar({ isExpanded }: Props) {
                     }}
                     className={cn(
                         'h-12 flex items-center duration-300 text-white/50 relative',
-                        isActive && 'bg-[#5C39D9] text-white',
+                        isActive && 'bg-[#343A46] text-white',
                         IS_SIDEBAR_EXPANDED ? 'rounded-full w-12 justify-center' : 'rounded-lg w-[unset] justify-start ps-[18px]'
                     )}
+                    style={isActive ? { boxShadow: '0px 3px 10px 0px #1C0E350A' } : undefined}
                 >
                   {/* <span className="w-full inline-flex bg-red-400 h-full"></span> */}
                   <Icon className={cn('w-5 h-5', item?.iconClassName)} />

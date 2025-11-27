@@ -3,20 +3,14 @@
   <component name="ChangeListManager">
     <list default="true" id="31f38edd-b261-4f74-9fe3-a56331e865fe" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(auth)/_components/auth-logo.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(auth)/_components/auth-logo.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(auth)/_components/auth-page-header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(auth)/_components/auth-page-header.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(auth)/login/form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(auth)/login/form.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(auth)/template.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(auth)/template.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/_view/conversation/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/_view/conversation/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/_view/conversation/search-input.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/_view/conversation/search-input.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(auth)/forgot-password/form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(auth)/forgot-password/form.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/_view/conversation/single-conversation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/_view/conversation/single-conversation.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/sidebar/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/sidebar/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/globals.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/atom/fade-animatation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/atom/fade-animatation.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/atom/form-elements/checkbox.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/atom/form-elements/checkbox.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/atom/form-elements/input.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/atom/form-elements/input.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/atom/form-elements/password-input/password-input.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/atom/form-elements/password-input/password-input.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/full-report/_view/full-report/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/full-report/_view/full-report/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/billing/_components/plan-limit.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/billing/_components/plan-limit.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/billing/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/billing/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/atom/icons/ai-search/country.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/atom/icons/ai-search/country.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/sidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/sidebar.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -191,7 +185,8 @@
       <workItem from="1763982266361" duration="6975000" />
       <workItem from="1764061714934" duration="12895000" />
       <workItem from="1764132172520" duration="83000" />
-      <workItem from="1764152845980" duration="9456000" />
+      <workItem from="1764152845980" duration="9554000" />
+      <workItem from="1764235483920" duration="4898000" />
     </task>
     <servers />
   </component>
