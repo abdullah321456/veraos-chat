@@ -176,9 +176,14 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
       console.log('Adding new chat to conversations list:', newChat);
       setConversations(prev => [newChat, ...prev]);
 
-      // Navigate to AI Search with the new chatId
-      console.log('Navigating to new chat:', newChatId);
-      router.push(`${ROUTES.AI_SEARCH.INDEX}?chatId=${newChatId}`);
+      // Navigate to AI Search with the new chatId (only on non-small devices)
+      const isNotSmallDevice = typeof window !== 'undefined' && window.innerWidth >= 640;
+      if (isNotSmallDevice) {
+        console.log('Navigating to new chat:', newChatId);
+        router.push(`${ROUTES.AI_SEARCH.INDEX}?chatId=${newChatId}`);
+      } else {
+        console.log('Skipping navigation on small device');
+      }
 
     } catch (error) {
       console.error('Error creating new chat:', error);
@@ -204,6 +209,13 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
 
     if (!isOnAiSearch || queryParams?.chatId || queryParams?.query || hasQueryInUrl) return;
 
+    // Only create new chat automatically if device is not small (>= 640px, Tailwind's sm breakpoint)
+    const isNotSmallDevice = typeof window !== 'undefined' && window.innerWidth >= 640;
+    if (!isNotSmallDevice) {
+      console.log('Skipping automatic chat creation on small device');
+      return;
+    }
+
     console.log('Handling chat selection on AI Search load:', { 
       conversationsLength: conversations.length,
       isOnAiSearch,
@@ -212,7 +224,7 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
       hasQueryInUrl
     });
 
-    // Always create a new chat when AI Search page loads
+    // Always create a new chat when AI Search page loads (only on non-small devices)
     console.log('AI Search page loaded - creating new chat...');
     await handleNewChat();
   }, [conversations, queryParams?.chatId, queryParams?.query, router, handleNewChat]);
@@ -237,7 +249,10 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
     const urlParams = new URLSearchParams(window.location.search);
     const hasQueryInUrl = urlParams.has('query');
     
-    if (isChatFetched && pathname === ROUTES.AI_SEARCH.INDEX && !queryParams?.chatId && !queryParams?.query && !hasQueryInUrl && !hasCreatedChatForThisSession.current) {
+    // Only create new chat automatically if device is not small (>= 640px, Tailwind's sm breakpoint)
+    const isNotSmallDevice = typeof window !== 'undefined' && window.innerWidth >= 640;
+    
+    if (isChatFetched && pathname === ROUTES.AI_SEARCH.INDEX && !queryParams?.chatId && !queryParams?.query && !hasQueryInUrl && !hasCreatedChatForThisSession.current && isNotSmallDevice) {
       console.log('AI Search page loaded - creating new chat automatically');
       handleChatSelection();
     }
