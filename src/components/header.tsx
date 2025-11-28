@@ -23,6 +23,16 @@ type Props = {
 export function DashboardHeader({ isExpanded }: Props = {}) {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSmallDevice, setIsSmallDevice] = useState(false);
+  
+  useEffect(() => {
+    const checkDevice = () => {
+      setIsSmallDevice(window.innerWidth < 640);
+    };
+    checkDevice();
+    window.addEventListener('resize', checkDevice);
+    return () => window.removeEventListener('resize', checkDevice);
+  }, []);
   
   // Get the current page title from the mapping
   const getCurrentPageTitle = () => {
@@ -38,16 +48,35 @@ export function DashboardHeader({ isExpanded }: Props = {}) {
   const currentPageTitle = getCurrentPageTitle();
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-20 bg-white border-b border-gray-200 h-16 flex justify-between items-center px-4 sm:px-6">
-      <h1 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 ml-0 sm:ml-[200px] truncate pr-2">{currentPageTitle}</h1>
+    <div 
+      className="fixed top-0 left-0 right-0 z-20 h-16 flex justify-between items-center px-4 sm:px-6 border-b border-gray-200 bg-white sm:bg-white" 
+      style={{ backgroundColor: isSmallDevice ? '#0F141E' : '#ffffff' }}
+    >
+      <div className="flex items-center gap-3">
+        {/* Logo - only show on small devices */}
+        <div className="block sm:hidden">
+          <Link href={ROUTES.HOME}>
+            <Image
+              src="/logo-with-label.png"
+              alt="Overwatch AI"
+              width={120}
+              height={40}
+              quality={100}
+              className="h-6 w-auto object-contain"
+            />
+          </Link>
+        </div>
+        {/* Page title - show on large devices */}
+        <h1 className="hidden sm:block text-base sm:text-lg md:text-xl font-bold text-gray-900 ml-0 sm:ml-[200px] truncate pr-2">{currentPageTitle}</h1>
+      </div>
       <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
         {/* Mobile Menu Toggle - only show on small screens */}
         <button
           onClick={() => setIsMobileMenuOpen(true)}
-          className="block sm:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          className="block sm:hidden p-2 hover:bg-gray-800 rounded-lg transition-colors"
           aria-label="Toggle menu"
         >
-          <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>

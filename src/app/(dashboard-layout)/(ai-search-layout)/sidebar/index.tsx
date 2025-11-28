@@ -8,7 +8,7 @@ import cn from '@/lib/utils/cn';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { ChangeEvent, useEffect, useState, useRef, useCallback } from 'react';
-import { PiMagnifyingGlass, PiPencilLine, PiPlus } from 'react-icons/pi';
+import { PiMagnifyingGlass, PiPencilLine, PiPlus, PiTrash } from 'react-icons/pi';
 import { InboxSelection } from './inbox-select';
 import { InboxNavigationData } from './types';
 import { useConversationSidebarSelectionState } from './utils';
@@ -114,7 +114,7 @@ type Props = {
 export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
   const { isExpanded: isExpandedState } = useSidebarExpand(isExpanded);
   const IS_SIDEBAR_EXPANDED = getIsSidebarExpandedOnClient(isExpanded, isExpandedState);
-  const { isSelectable, setIsSelectable, selectedIds } = useConversationSidebarSelectionState();
+  const { isSelectable, setIsSelectable, selectedIds, selectMultiple, clearSelection } = useConversationSidebarSelectionState();
   const [conversations, setConversations] = useState<InboxNavigationData[]>([]);
   const { setQueryParams, queryParams } = useQueryParams();
   const [isDeleting, setIsDeleting] = useState(false);
@@ -134,14 +134,24 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
 
       const mappedConversations: InboxNavigationData[] = data.data.map((conv: ApiConversation) => ({
         id: conv._id,
-        title: conv.question_preview,
+        title: conv.question_preview || 'New Chat',
         time: getRelativeTime(conv.timestamp),
         timestamp: conv.timestamp,
-        description: conv.message,
+        description: conv.message || 'Start a new conversation',
       }));
 
       console.log('Fetched conversations:', mappedConversations);
-      setConversations(mappedConversations);
+      // Merge with existing conversations to preserve any that were added via lastMessage
+      setConversations(prev => {
+        const merged = [...mappedConversations];
+        // Add any conversations from prev that don't exist in fetched data
+        prev.forEach(conv => {
+          if (!merged.find(c => c.id === conv.id)) {
+            merged.push(conv);
+          }
+        });
+        return merged;
+      });
       setIsChatFetched(true);
     } catch (error) {
       console.error('Error fetching conversations:', error);
@@ -260,18 +270,40 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
 
   useEffect(() => {
     if (lastMessage) {
-      setConversations(prev => prev.map(conv => {
-        if (conv.id === lastMessage.chatId) {
-          return {
-            ...conv,
-            title: lastMessage.message,
-            description: lastMessage.message,
+      console.log('Last message received:', lastMessage);
+      setConversations(prev => {
+        const existingIndex = prev.findIndex(conv => conv.id === lastMessage.chatId);
+        console.log('Existing conversation index:', existingIndex, 'Current conversations:', prev.length);
+        
+        if (existingIndex !== -1) {
+          // Update existing conversation
+          const updated = prev.map(conv => {
+            if (conv.id === lastMessage.chatId) {
+              return {
+                ...conv,
+                title: lastMessage.message || conv.title,
+                description: lastMessage.message || conv.description,
+                time: getRelativeTime(new Date().toISOString()),
+                timestamp: new Date().toISOString()
+              };
+            }
+            return conv;
+          });
+          console.log('Updated conversation:', updated.find(c => c.id === lastMessage.chatId));
+          return updated;
+        } else {
+          // Add new conversation if it doesn't exist
+          const newConversation: InboxNavigationData = {
+            id: lastMessage.chatId,
+            title: lastMessage.message || 'New Chat',
+            description: lastMessage.message || 'Start a new conversation',
             time: getRelativeTime(new Date().toISOString()),
             timestamp: new Date().toISOString()
           };
+          console.log('Adding new conversation:', newConversation);
+          return [newConversation, ...prev];
         }
-        return conv;
-      }));
+      });
     }
   }, [lastMessage]);
 
@@ -345,14 +377,54 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
   return (
       <div
           className={cn(
-            'h-screen duration-300 bg-white fixed p-4',
-            'top-0 sm:top-16',
+            'h-[calc(100vh-64px)] sm:h-screen duration-300 bg-white fixed p-4',
+            'top-16 sm:top-16',
             'w-full sm:w-[320px]',
             'left-0 sm:left-[76px]',
             IS_SIDEBAR_EXPANDED ? 'sm:left-[76px]' : 'sm:left-[200px]',
-            'z-40 sm:z-auto'
+            'z-10 sm:z-auto'
           )}
       >
+        {/* Header with Overwatch AI and Edit icon - only show on small devices */}
+        <div className="flex sm:hidden items-center gap-3 pb-3 mb-2 border-b border-gray-200">
+          {!isSelectable ? (
+            <>
+              <h2 className="text-base font-bold text-gray-900">Overwatch AI</h2>
+              <button 
+                onClick={() => {
+                  clearSelection();
+                  setIsSelectable(true);
+                }} 
+                className="p-1 hover:bg-gray-100 rounded transition-colors ml-auto"
+              >
+                <PiPencilLine className="w-5 h-5 text-gray-500" />
+              </button>
+            </>
+          ) : (
+            <>
+              <h2 className="text-base font-bold text-gray-900">Overwatch AI</h2>
+              <div className="flex items-center gap-2 ml-auto">
+                <button 
+                  onClick={() => setIsSelectable(false)} 
+                  className="px-3 py-1.5 text-sm text-primary hover:bg-gray-100 rounded transition-colors"
+                >
+                  Cancel All Selection
+                </button>
+                <button
+                  onClick={handleDeleteChats}
+                  disabled={selectedIds.length === 0 || isDeleting}
+                  className="w-10 h-10 flex items-center justify-center bg-pink-100 hover:bg-pink-200 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isDeleting ? (
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-pink-600"></div>
+                  ) : (
+                    <PiTrash className="w-5 h-5 text-pink-600" />
+                  )}
+                </button>
+              </div>
+            </>
+          )}
+        </div>
         <NavigationElement />
         {/*<Input*/}
         {/*    placeholder="Search here..."*/}
@@ -360,15 +432,21 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
         {/*    inputClassName="rounded-full h-9"*/}
         {/*    prefix={<PiMagnifyingGlass className="scale-[1.3] ms-1 text-gray-500" />}*/}
         {/*/>*/}
-        <Toolbar inboxNavigationData={conversations} onNewChat={handleNewChat} />
+        <div className="hidden sm:block">
+          <Toolbar inboxNavigationData={conversations} onNewChat={handleNewChat} />
+        </div>
 
-        <div className="overflow-y-auto overflow-x-hidden h-[calc(100vh-200px)] pb-16 pl-2">
+        <div className="overflow-y-auto overflow-x-hidden h-[calc(100vh-200px)] pb-24 sm:pb-16 pl-2">
 
           {Object.entries(groupedConversations).map(([key, conversations]) =>
                   conversations.length > 0 && (
                       <div key={key}>
-                        <div className="text-xs font-medium text-gray-500 mt-2 mb-1">
-                          {groupLabels[key as keyof typeof groupLabels]} ({conversations.length})
+                        <div 
+                          className="text-xs font-medium mt-2 mb-1"
+                          style={{ color: (key === 'today' || key === 'yesterday') ? '#000000' : '#6B7280' }}
+                        >
+                          {groupLabels[key as keyof typeof groupLabels]}
+                          {(key !== 'today' && key !== 'yesterday') && ` (${conversations.length})`}
                         </div>
                         <div className="w-full sm:max-w-[280px]">
                           <InboxSelection data={conversations} />
@@ -386,7 +464,7 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
         </div>
 
         {isSelectable && (
-            <div className={cn('fixed bottom-0 w-full sm:w-[280px] bg-white p-4 border-t border-gray-200 left-0 sm:left-auto', IS_SIDEBAR_EXPANDED ? 'sm:left-[76px]' : 'sm:left-[200px]')}>
+            <div className={cn('hidden sm:block fixed bottom-0 w-full sm:w-[280px] bg-white p-4 border-t border-gray-200 left-0 sm:left-auto', IS_SIDEBAR_EXPANDED ? 'sm:left-[76px]' : 'sm:left-[200px]')}>
               <div className="grid grid-cols-2 gap-2">
                 <Button onClick={() => setIsSelectable(false)} variant="outline" size="sm">
                   Cancel Selection
@@ -408,6 +486,18 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
                 </Button>
               </div>
             </div>
+        )}
+
+        {/* Floating Add Button for small devices */}
+        {!isSelectable && (
+          <button
+            onClick={() => handleNewChat(true)}
+            className="fixed bottom-6 right-6 sm:hidden w-14 h-14 rounded-full shadow-lg flex items-center justify-center text-primary border border-transparent transition-colors"
+            style={{ backgroundColor: '#5C39D91A', zIndex: 9999 }}
+            aria-label="New Chat"
+          >
+            <PiPlus className="w-6 h-6" />
+          </button>
         )}
       </div>
   );
@@ -474,7 +564,10 @@ function Toolbar({ inboxNavigationData, onNewChat }: { inboxNavigationData: Inbo
         <span></span>
         {!isSelectable ? (
             <div className="flex gap-2 items-center">
-              <button onClick={() => setIsSelectable(true)} className="flex items-center gap-1 px-3 py-1.5 rounded-[6px] border border-transparent" style={{ backgroundColor: '#6161661A' }}>
+              <button onClick={() => {
+                clearSelection();
+                setIsSelectable(true);
+              }} className="flex items-center gap-1 px-3 py-1.5 rounded-[6px] border border-transparent" style={{ backgroundColor: '#6161661A' }}>
                 <PiPencilLine /> Edit
               </button>
               {/*<span className="w-px h-4 bg-gray-400" />*/}

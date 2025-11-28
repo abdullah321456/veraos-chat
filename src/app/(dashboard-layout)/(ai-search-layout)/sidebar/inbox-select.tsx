@@ -75,11 +75,15 @@ function SingleInboxSelect({ id, title, time, description, onClick }: InboxNavig
       }}
     >
       <div className="flex gap-3 text-sm font-bold mb-2 items-center">
-        {isSelectable && <Checkbox checked={selectedIds.includes(id)} onChange={handleChangeCheckbox} />}
-        <p className="whitespace-nowrap text-ellipsis overflow-hidden flex-1">{title}</p>
-        <span className="text-xs font-medium ml-auto" style={{ color: '#616166' }}>{time}</span>
+        {isSelectable && (
+          <div className="flex-shrink-0">
+            <Checkbox checked={selectedIds.includes(id)} onChange={handleChangeCheckbox} />
+          </div>
+        )}
+        <p className="whitespace-nowrap text-ellipsis overflow-hidden flex-1 min-w-0">{title || 'New Chat'}</p>
+        <span className="text-xs font-medium ml-auto flex-shrink-0" style={{ color: '#616166' }}>{time}</span>
       </div>
-      <p className="whitespace-nowrap text-ellipsis overflow-hidden text-xs text-gray-600 pr-6">{description}</p>
+      <p className="whitespace-nowrap text-ellipsis overflow-hidden text-xs text-gray-600 pr-6">{description || 'Start a new conversation'}</p>
     </div>
   );
 }
