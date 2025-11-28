@@ -292,22 +292,39 @@ function SingleDetails(props: AIResponseDetail) {
         });
     }
 
+    const isCriminal = props._index === 'criminals_small' || props._index === 'criminals' ||
+        (props.criminals && props.criminals.length>0) ||
+        (props.criminals_small && props.criminals_small.length>0);
+
     return (
         <div className={cn(
-            "px-2 sm:px-3 py-2 sm:py-3 shadow-lg shadow-gray-200/70 border rounded-[8px]",
-            (props._index === 'criminals_small' || props._index === 'criminals' ||
-                (props.criminals && props.criminals.length>0) ||
-                (props.criminals_small && props.criminals_small.length>0)
-            ) ? 'border-red-500' : 'border-gray-100'
+            "px-2 sm:px-3 py-2 sm:py-3 shadow-lg shadow-gray-200/70 border rounded-[8px] relative",
+            isCriminal ? 'border-gray-200' : 'border-gray-100'
         )}
-        style={{ boxShadow: '0px -1px 8.1px 0px #C6C4E840 inset' }}
+        style={{ 
+            boxShadow: '0px -1px 8.1px 0px #C6C4E840 inset',
+            background: isCriminal ? 'linear-gradient(302.79deg, #FFF3F3 20.81%, #FBFBFC 91.35%)' : undefined
+        }}
         >
+            {isCriminal && (
+                <div 
+                    className="absolute left-0 top-0 bottom-0 w-1 rounded-l-[8px]"
+                    style={{ background: 'linear-gradient(180deg, #FF6363 0%, #D50A58 100%)' }}
+                />
+            )}
             <div className="flex justify-between items-start sm:items-center mb-2 sm:mb-3 gap-2">
                 <p className="font-bold text-xs sm:text-sm break-words">{`${toEnhancedTitleCase(props.FIRST)} ${toEnhancedTitleCase(props.MID)} ${toEnhancedTitleCase(props.LAST)}`}</p>
-                <span
-                    className={cn('text-[#C51FA0] text-[10px] sm:text-xs py-1 sm:py-1.5 px-2 sm:px-2.5 bg-[#C51FA0]/10 rounded-md flex-shrink-0', !props.isExactMatch && 'invisible')}>
-          Exact Match
-        </span>
+                <div className="flex items-center gap-2 flex-shrink-0">
+                    <span
+                        className={cn('text-[#C51FA0] text-[10px] sm:text-xs py-1 sm:py-1.5 px-2 sm:px-2.5 bg-[#C51FA0]/10 rounded-md', !props.isExactMatch && 'invisible')}>
+                        Exact Match
+                    </span>
+                    {isCriminal && (
+                        <span className="text-red-600 text-[10px] sm:text-xs py-1 sm:py-1.5 px-2 sm:px-2.5 bg-red-100 rounded-md">
+                            Criminal
+                        </span>
+                    )}
+                </div>
             </div>
             <div className="text-[10px] sm:text-xs space-y-2 sm:space-y-2.5">
                 <div className="flex items-end gap-1.5 sm:gap-2">
