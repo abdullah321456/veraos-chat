@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="31f38edd-b261-4f74-9fe3-a56331e865fe" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/dashboard-children-wrapper.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard-children-wrapper.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -186,7 +184,7 @@
       <workItem from="1764412816047" duration="12873000" />
       <workItem from="1764501533219" duration="11723000" />
       <workItem from="1764528547509" duration="6000" />
-      <workItem from="1764528583397" duration="1098000" />
+      <workItem from="1764528583397" duration="1331000" />
     </task>
     <servers />
   </component>

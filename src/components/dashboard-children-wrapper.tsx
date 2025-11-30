@@ -22,7 +22,7 @@ export function DashboardChildrenWrapper({ children, isExpanded }: Props) {
       ? 'pl-0 sm:pl-[320px] md:pl-[220px] md:pr-6'
       : 'pl-0 sm:pl-[200px] md:pl-[215px] md:pr-6',
     expanded: largePaddingRoutes.includes(pathname) 
-      ? 'pl-0 sm:pl-[90px] md:pl-[90px]'
+      ? 'pl-0 sm:pl-[90px] md:pl-[90px] md:pr-6'
       : 'pl-0 sm:pl-[76px] md:pl-[90px]',
   };
 
