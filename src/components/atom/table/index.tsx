@@ -111,7 +111,7 @@ export function Table<T>({
         >
           {table.getHeaderGroups().map((headerGroup: HeaderGroup<unknown>) => (
             <Fragment key={headerGroup.id}>
-              <div className="flex justify-between rounded-lg bg-[#F9F9F9] py-1 text-xs text-slate-800">
+              <div className="flex justify-between bg-[#F6F6F9] sm:bg-[#F6F6F9] py-1 text-xs text-slate-800 sticky top-0 z-10">
                 {headerGroup.headers.map((header: Header<unknown, unknown>) => {
                   // @ts-ignore
                   const isSortable = header.column.columnDef.meta?.sortable;

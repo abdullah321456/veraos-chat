@@ -68,9 +68,9 @@ export const createColumns = (onOpenModal?: (report: Report) => void): ColumnDef
     cell: ({ row }) => (
       <div className="text-xs">
         <p className="font-medium mb-1 line-clamp-2">{row.original.title}</p>
-        <p className="text-xs text-gray-600 text-[10px]">
-          Created: {new Date(row.original.createdAt).toLocaleDateString()}
-        </p>
+        {/*<p className="text-xs text-gray-600 text-[10px]">*/}
+        {/*  Created: {new Date(row.original.createdAt).toLocaleDateString()}*/}
+        {/*</p>*/}
       </div>
     ),
   },
@@ -94,33 +94,33 @@ export const createColumns = (onOpenModal?: (report: Report) => void): ColumnDef
       );
     },
   },
-  {
-    id: 'actions',
-    size: 50,
-    cell: ({ row }) => {
-      return (
-        <Dropdown>
-          {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-          {/* @ts-expect-error */}
-          <Dropdown.Trigger 
-            className="cursor-pointer"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <MoreHorizontal className="h-4 w-4" />
-          </Dropdown.Trigger>
-          <Dropdown.Menu className="bg-white border shadow-md w-[150px]">
-                   <Dropdown.Item 
-                     className="text-xs font-medium hover:bg-primary-dark/10 duration-150 cursor-pointer"
-                     onClick={(e) => {
-                       e.stopPropagation();
-                       handleViewDetails(row.original, onOpenModal);
-                     }}
-                   >
-              <PiEyeFill className="w-4 h-4 text-gray-500 mr-1.5" /> View Details
-            </Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
-      );
-    },
-  },
+  // {
+  //   id: 'actions',
+  //   size: 50,
+  //   cell: ({ row }) => {
+  //     return (
+  //       <Dropdown>
+  //         {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+  //         {/* @ts-expect-error */}
+  //         <Dropdown.Trigger
+  //           className="cursor-pointer"
+  //           onClick={(e) => e.stopPropagation()}
+  //         >
+  //           <MoreHorizontal className="h-4 w-4" />
+  //         </Dropdown.Trigger>
+  //         <Dropdown.Menu className="bg-white border shadow-md w-[150px]">
+  //                  <Dropdown.Item
+  //                    className="text-xs font-medium hover:bg-primary-dark/10 duration-150 cursor-pointer"
+  //                    onClick={(e) => {
+  //                      e.stopPropagation();
+  //                      handleViewDetails(row.original, onOpenModal);
+  //                    }}
+  //                  >
+  //             <PiEyeFill className="w-4 h-4 text-gray-500 mr-1.5" /> View Details
+  //           </Dropdown.Item>
+  //         </Dropdown.Menu>
+  //       </Dropdown>
+  //     );
+  //   },
+  // },
 ];

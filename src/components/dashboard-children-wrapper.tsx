@@ -19,8 +19,8 @@ export function DashboardChildrenWrapper({ children, isExpanded }: Props) {
 
   const paddingClassName = {
     notExpanded: largePaddingRoutes.includes(pathname) 
-      ? 'pl-0 sm:pl-[320px] md:pl-[500px]' 
-      : 'pl-0 sm:pl-[200px] md:pl-[215px]',
+      ? 'pl-0 sm:pl-[320px] md:pl-[220px] md:pr-6'
+      : 'pl-0 sm:pl-[200px] md:pl-[215px] md:pr-6',
     expanded: largePaddingRoutes.includes(pathname) 
       ? 'pl-0 sm:pl-[280px] md:pl-[370px]' 
       : 'pl-0 sm:pl-[76px] md:pl-[90px]',

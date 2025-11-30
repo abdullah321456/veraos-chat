@@ -2,9 +2,13 @@ import { FadeAnimation } from "@/components/atom/fade-animatation";
 
 export default function TermsOfUsePage() {
   return (
-    <div className="w-full max-w-[800px] mx-auto px-4 sm:px-6 md:px-8">
+    <div className="w-full mx-auto px-4 sm:px-6 md:px-8 pr-6 min-h-[calc(100vh-120px)] max-h-[calc(100vh-120px)] sm:min-h-[calc(100vh-130px)] sm:max-h-[calc(100vh-130px)] sm:rounded-[20px] bg-white overflow-hidden flex flex-col"
+    >
+
+
+      <div className="flex-1 overflow-y-auto min-h-0">
       <FadeAnimation>
-        <h1 className="text-black text-lg sm:text-xl md:text-[24px] font-bold text-center my-6 sm:my-8">
+        <h1 className="text-black text-lg sm:text-xl md:text-[24px] font-bold text-center mt-2 sm:mt-4 mb-6 sm:mb-8">
           Terms of Use & Acceptable Use Cases
         </h1>
         
@@ -164,6 +168,7 @@ export default function TermsOfUsePage() {
           </section>
         </div>
       </FadeAnimation>
+      </div>
     </div>
   );
 }

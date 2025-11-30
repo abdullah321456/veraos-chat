@@ -4,6 +4,7 @@ import {Sidebar} from './sidebar';
 import {createContext, useContext, useState} from 'react';
 import {IsExpandedType} from '@/lib/hooks/use-sidebar-expand';
 import {useSearchParams} from 'next/navigation';
+import cn from '@/lib/utils/cn';
 
 interface MessageContextType {
     onNewMessage: (message: { chatId: string; message: string }) => void;
@@ -49,21 +50,26 @@ export function ClientLayout({children, isExpanded}: ClientLayoutProps) {
             onNewMessage,
             onNewChat
         }}>
-            <div className="relative w-full">
-                    {/* Sidebar - full screen on mobile when no conversation selected, normal on desktop */}
-                    <div className={showSidebarFullScreen ? 'block sm:block' : 'hidden sm:block'}>
-                        <Sidebar
-                            isExpanded={isExpanded}
-                            lastMessage={lastMessage}
-                            newChatId={newChatId}
-                        />
-                    </div>
-
-                    {/* Conversation content - only show on mobile when chatId exists */}
-                    <div className={showConversation ? 'block w-full' : 'hidden sm:block w-full'}>
-                        {children}
-                    </div>
+            <div className="w-full overflow-x-hidden sm:border sm:border-transparent sm:rounded-[20px] sm:relative sm:overflow-hidden sm:-mt-[15px] min-h-[calc(100vh-80px)] max-h-[calc(100vh-80px)] sm:min-h-[calc(100vh-90px)] sm:max-h-[calc(100vh-90px)]"
+                 style={{ background:"white" }}>
+                {/* Sidebar - full screen on mobile when no conversation selected, normal on desktop */}
+                <div className={showSidebarFullScreen ? 'block sm:block' : 'hidden sm:block'}>
+                    <Sidebar
+                        isExpanded={isExpanded}
+                        lastMessage={lastMessage}
+                        newChatId={newChatId}
+                    />
                 </div>
+
+                {/* Conversation content - only show on mobile when chatId exists */}
+                <div className={cn(
+                    showConversation ? 'block' : 'hidden sm:block',
+                    'w-full overflow-x-hidden',
+                    'sm:ml-[325px] sm:relative sm:z-0'
+                )}>
+                    {children}
+                </div>
+            </div>
         </MessageContext.Provider>
     );
 } 

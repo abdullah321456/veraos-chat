@@ -160,7 +160,7 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
 
   const handleNewChat = useCallback(async (isManualClick = false) => {
     if (isCreatingChat) return; // Prevent multiple calls
-    
+
     // Only check the guard for automatic creation, not manual clicks
     if (!isManualClick && hasCreatedChatForThisSession.current) return;
 
@@ -212,7 +212,7 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
   const handleChatSelection = useCallback(async () => {
     const currentPathname = window.location.pathname;
     const isOnAiSearch = currentPathname === ROUTES.AI_SEARCH.INDEX;
-    
+
     // Check URL directly for query parameter as well
     const urlParams = new URLSearchParams(window.location.search);
     const hasQueryInUrl = urlParams.has('query');
@@ -226,7 +226,7 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
       return;
     }
 
-    console.log('Handling chat selection on AI Search load:', { 
+    console.log('Handling chat selection on AI Search load:', {
       conversationsLength: conversations.length,
       isOnAiSearch,
       hasChatId: !!queryParams?.chatId,
@@ -258,10 +258,10 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
     // Check URL directly for query parameter as well
     const urlParams = new URLSearchParams(window.location.search);
     const hasQueryInUrl = urlParams.has('query');
-    
+
     // Only create new chat automatically if device is not small (>= 640px, Tailwind's sm breakpoint)
     const isNotSmallDevice = typeof window !== 'undefined' && window.innerWidth >= 640;
-    
+
     if (isChatFetched && pathname === ROUTES.AI_SEARCH.INDEX && !queryParams?.chatId && !queryParams?.query && !hasQueryInUrl && !hasCreatedChatForThisSession.current && isNotSmallDevice) {
       console.log('AI Search page loaded - creating new chat automatically');
       handleChatSelection();
@@ -274,7 +274,7 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
       setConversations(prev => {
         const existingIndex = prev.findIndex(conv => conv.id === lastMessage.chatId);
         console.log('Existing conversation index:', existingIndex, 'Current conversations:', prev.length);
-        
+
         if (existingIndex !== -1) {
           // Update existing conversation
           const updated = prev.map(conv => {
@@ -354,7 +354,7 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
         timestamp: new Date().toISOString(),
         description: 'Start a new conversation',
       };
-      
+
       setConversations(prev => [newChat, ...prev]);
     }
   }, [newChatId]);
@@ -377,52 +377,56 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
   return (
       <div
           className={cn(
-            'h-[calc(100vh-64px)] sm:h-screen duration-300 bg-white fixed p-4',
-            'top-16 sm:top-16',
+            'h-[calc(100vh-64px)] sm:h-full duration-300 bg-white fixed sm:absolute p-4',
+            'top-16 sm:top-0',
             'w-full sm:w-[320px]',
-            'left-0 sm:left-[76px]',
-            IS_SIDEBAR_EXPANDED ? 'sm:left-[76px]' : 'sm:left-[200px]',
-            'z-10 sm:z-auto'
+            'left-0 sm:left-0',
+            'z-10 sm:z-10',
+            'sm:overflow-hidden',
+            'sm:border-r-2'
           )}
+          style={{
+            borderRightColor: 'rgba(97, 97, 102, 0.1)'
+          }}
       >
         {/* Header with Overwatch AI and Edit icon - only show on small devices */}
         <div className="flex sm:hidden items-center gap-3 pb-3 mb-2 border-b border-gray-200">
           {!isSelectable ? (
-            <>
-              <h2 className="text-base font-bold text-gray-900">Overwatch AI</h2>
-              <button 
-                onClick={() => {
-                  clearSelection();
-                  setIsSelectable(true);
-                }} 
-                className="p-1 hover:bg-gray-100 rounded transition-colors ml-auto"
-              >
-                <PiPencilLine className="w-5 h-5 text-gray-500" />
-              </button>
-            </>
-          ) : (
-            <>
-              <h2 className="text-base font-bold text-gray-900">Overwatch AI</h2>
-              <div className="flex items-center gap-2 ml-auto">
-                <button 
-                  onClick={() => setIsSelectable(false)} 
-                  className="px-3 py-1.5 text-sm text-primary hover:bg-gray-100 rounded transition-colors"
-                >
-                  Cancel All Selection
-                </button>
+              <>
+                <h2 className="text-base font-bold text-gray-900">Overwatch AI</h2>
                 <button
-                  onClick={handleDeleteChats}
-                  disabled={selectedIds.length === 0 || isDeleting}
-                  className="w-10 h-10 flex items-center justify-center bg-pink-100 hover:bg-pink-200 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    onClick={() => {
+                      clearSelection();
+                      setIsSelectable(true);
+                    }}
+                    className="p-1 hover:bg-gray-100 rounded transition-colors ml-auto"
                 >
-                  {isDeleting ? (
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-pink-600"></div>
-                  ) : (
-                    <PiTrash className="w-5 h-5 text-pink-600" />
-                  )}
+                  <PiPencilLine className="w-5 h-5 text-gray-500" />
                 </button>
-              </div>
-            </>
+              </>
+          ) : (
+              <>
+                <h2 className="text-base font-bold text-gray-900">Overwatch AI</h2>
+                <div className="flex items-center gap-2 ml-auto">
+                  <button
+                      onClick={() => setIsSelectable(false)}
+                      className="px-3 py-1.5 text-sm text-primary hover:bg-gray-100 rounded transition-colors"
+                  >
+                    Cancel All Selection
+                  </button>
+                  <button
+                      onClick={handleDeleteChats}
+                      disabled={selectedIds.length === 0 || isDeleting}
+                      className="w-10 h-10 flex items-center justify-center bg-pink-100 hover:bg-pink-200 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isDeleting ? (
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-pink-600"></div>
+                    ) : (
+                        <PiTrash className="w-5 h-5 text-pink-600" />
+                    )}
+                  </button>
+                </div>
+              </>
           )}
         </div>
         <NavigationElement />
@@ -441,9 +445,9 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
           {Object.entries(groupedConversations).map(([key, conversations]) =>
                   conversations.length > 0 && (
                       <div key={key}>
-                        <div 
-                          className="text-xs font-medium mt-2 mb-1"
-                          style={{ color: (key === 'today' || key === 'yesterday') ? '#000000' : '#6B7280' }}
+                        <div
+                            className="text-xs font-medium mt-2 mb-1"
+                            style={{ color: (key === 'today' || key === 'yesterday') ? '#000000' : '#6B7280' }}
                         >
                           {groupLabels[key as keyof typeof groupLabels]}
                           {(key !== 'today' && key !== 'yesterday') && ` (${conversations.length})`}
@@ -490,14 +494,14 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
 
         {/* Floating Add Button for small devices */}
         {!isSelectable && (
-          <button
-            onClick={() => handleNewChat(true)}
-            className="fixed bottom-6 right-6 sm:hidden w-14 h-14 rounded-full shadow-lg flex items-center justify-center text-primary border border-transparent transition-colors"
-            style={{ backgroundColor: '#5C39D91A', zIndex: 9999 }}
-            aria-label="New Chat"
-          >
-            <PiPlus className="w-6 h-6" />
-          </button>
+            <button
+                onClick={() => handleNewChat(true)}
+                className="fixed bottom-6 right-6 sm:hidden w-14 h-14 rounded-full shadow-lg flex items-center justify-center text-primary border border-transparent transition-colors"
+                style={{ backgroundColor: '#5C39D91A', zIndex: 9999 }}
+                aria-label="New Chat"
+            >
+              <PiPlus className="w-6 h-6" />
+            </button>
         )}
       </div>
   );

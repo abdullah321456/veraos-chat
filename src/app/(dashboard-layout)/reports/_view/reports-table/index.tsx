@@ -108,7 +108,7 @@ export const ReportsTable = React.memo(function ReportsTable() {
 
   if (loading) {
     return (
-      <div className="pr-6 flex items-center justify-center min-h-[calc(100vh-100px)]">
+      <div className="sm:pr-6 flex items-center justify-center min-h-[calc(100vh-100px)]">
         <LoadingSpinner size="lg" className="h-32" />
       </div>
     );
@@ -116,7 +116,7 @@ export const ReportsTable = React.memo(function ReportsTable() {
 
   if (error) {
     return (
-      <div className="pr-6 flex items-center justify-center min-h-[calc(100vh-100px)]">
+      <div className="sm:pr-6 flex items-center justify-center">
         <div className="text-center">
           <p className="text-red-500 mb-4">{error}</p>
           <Button onClick={() => window.location.reload()} variant="outline">
@@ -129,31 +129,33 @@ export const ReportsTable = React.memo(function ReportsTable() {
 
   return (
     <>
-      <div className="pr-6">
-        <div className="flex justify-between items-center mb-2">
-          <h2 className="text-lg font-bold -mb-1 p-4 rounded-t-lg">Reports</h2>
-          {reports.length > 0 && (
-            <Button 
-              onClick={handleClearAll} 
-              size="sm" 
-              variant="outline" 
-              color="danger" 
-              className="rounded-md"
-            >
-              <PiTrash className="w-4 h-4 me-1" />
-              Clear All
-            </Button>
-          )}
+      <div className="w-full sm:pr-6 h-full flex flex-col">
+        <div className="flex justify-between items-center mb-2 flex-shrink-0 w-full">
+          <h2 className="text-lg font-bold -mb-1 px-2 py-0 sm:p-4 bg-transparent sm:bg-white rounded-tl-lg rounded-tr-lg w-full">Reports</h2>
+          {/*{reports.length > 0 && (*/}
+          {/*  <Button */}
+          {/*    onClick={handleClearAll} */}
+          {/*    size="sm" */}
+          {/*    variant="outline" */}
+          {/*    color="danger" */}
+          {/*    className="rounded-md"*/}
+          {/*  >*/}
+          {/*    <PiTrash className="w-4 h-4 me-1" />*/}
+          {/*    Clear All*/}
+          {/*  </Button>*/}
+          {/*)}*/}
         </div>
-        <Table<Report>
-          key={String(renderReports)}
-          columns={createColumns(handleOpenModal)}
-          data={reports || []}
-          size={10}
-          rowClassName="py-1 cursor-pointer hover:bg-gray-50"
-          className="border-0 bg-white p-0 min-h-[calc(100vh-100px)] shadow-lg border-gray-50"
-          onRowClick={handleOpenModal}
-        />
+        <div className="flex-1 overflow-y-auto max-h-[calc(100vh-130px)] sm:max-h-[calc(100vh-160px)] pb-6">
+          <Table<Report>
+            key={String(renderReports)}
+            columns={createColumns(handleOpenModal)}
+            data={reports || []}
+            size={10}
+            rowClassName="py-1 cursor-pointer hover:bg-gray-50"
+            className="border-0 bg-white p-0 shadow-lg border-gray-50"
+            onRowClick={handleOpenModal}
+          />
+        </div>
       </div>
       
       {/* Report Details Modal */}

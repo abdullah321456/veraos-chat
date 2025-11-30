@@ -6,7 +6,7 @@ import { getIsSidebarExpandedOnServer } from '@/lib/utils/server-cookies';
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const isExpanded = getIsSidebarExpandedOnServer();
   return (
-    <div className="pt-20">
+    <div className="pt-20" style={{background:"#F6F6F9",height:"100vh",overflow:"hidden"}}>
       <DashboardSidebar isExpanded={isExpanded} />
       <DashboardHeader isExpanded={isExpanded} />
       <DashboardChildrenWrapper isExpanded={isExpanded}>{children}</DashboardChildrenWrapper>

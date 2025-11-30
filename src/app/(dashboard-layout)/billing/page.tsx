@@ -11,23 +11,35 @@ export default function Page() {
 
   if (loading) {
     return (
-      <div className="w-full max-w-[720px] mx-auto px-4 sm:px-6 md:px-0">
-        <div className="animate-pulse space-y-6 sm:space-y-8">
-          <div className="h-32 bg-gray-200 rounded"></div>
-          <div className="h-32 bg-gray-200 rounded"></div>
-          <div className="h-32 bg-gray-200 rounded"></div>
+      <div className="w-full min-h-[calc(100vh-80px)] max-h-[calc(100vh-80px)] sm:min-h-[calc(100vh-130px)] sm:max-h-[calc(100vh-130px)] sm:rounded-[20px] bg-white overflow-hidden flex flex-col">
+        <div className="flex-1 overflow-y-auto min-h-0">
+          <div className="w-full max-w-[720px] mx-auto px-4 sm:px-6 md:px-0 sm:pr-8">
+            <div className="animate-pulse space-y-6 sm:space-y-8">
+              <div className="h-32 bg-gray-200 rounded"></div>
+              <div className="h-32 bg-gray-200 rounded"></div>
+              <div className="h-32 bg-gray-200 rounded"></div>
+            </div>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="w-full max-w-[720px] mx-auto px-4 sm:px-6 md:px-0">
-      <FadeAnimation className="space-y-6 sm:space-y-8">
-        <PlanLimit isEditable={isOrganization} />
-        <BillingAddress isEditable={isOrganization} />
-        <RecentPayments />
-      </FadeAnimation>
+    <div className="w-full min-h-[calc(100vh-80px)] max-h-[calc(100vh-80px)] sm:min-h-[calc(100vh-110px)] sm:max-h-[calc(100vh-110px)] sm:rounded-[20px] bg-white overflow-hidden flex flex-col sm:pr-6">
+      <div className="flex-1 overflow-y-auto min-h-0">
+        {/* Header for small devices */}
+        <div className="flex justify-between items-center flex-shrink-0 w-full sm:hidden" style={{ backgroundColor: '#F6F6F9', paddingBottom: '10px' }}>
+          <h2 className="text-lg font-bold px-2 py-0 rounded-tl-lg rounded-tr-lg w-full">Billing</h2>
+        </div>
+        <div className="w-full max-w-[720px] mx-auto px-4 sm:px-6 md:px-0 sm:pr-8">
+          <FadeAnimation className="space-y-6 sm:space-y-8">
+            <PlanLimit isEditable={isOrganization} />
+            <BillingAddress isEditable={isOrganization} />
+            <RecentPayments />
+          </FadeAnimation>
+        </div>
+      </div>
     </div>
   );
 }

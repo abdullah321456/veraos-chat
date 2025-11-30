@@ -49,8 +49,8 @@ export function DashboardHeader({ isExpanded }: Props = {}) {
 
   return (
     <div 
-      className="fixed top-0 left-0 right-0 z-20 h-16 flex justify-between items-center px-4 sm:px-6 border-b border-gray-200 bg-white sm:bg-white" 
-      style={{ backgroundColor: isSmallDevice ? '#0F141E' : '#ffffff' }}
+      className="fixed top-0 left-0 right-0 z-20 h-16 flex justify-between items-center px-4 sm:px-6 border-gray-200 bg-white sm:bg-white"
+      style={{ backgroundColor: isSmallDevice ? '#0F141E' : 'transparent' }}
     >
       <div className="flex items-center gap-3">
         {/* Logo - only show on small devices */}
@@ -93,24 +93,24 @@ export function DashboardHeader({ isExpanded }: Props = {}) {
             </div>
           </>
         )}
-        {/* Temporarily hidden - buttons don't work currently
-        <AdvanceSwitch
-          positiveIcon={<LightModeIcon className="w-[18px] h-[18px]" />}
-          negativeIcon={<DarkModeIcon className="w-[18px] h-[18px]" />}
-        />
-        <AdvanceSwitch
-          positiveIcon={<CameraActiveIcon className="w-[18px] h-[18px]" />}
-          negativeIcon={<CameraInActiveIcon className="w-[18px] h-[18px]" />}
-        />
-        <AdvanceSwitch
-          positiveIcon={<MicActiveIcon className="w-[18px] h-[18px]" />}
-          negativeIcon={<MicInActiveIcon className="w-[18px] h-[18px]" />}
-        />
-        <AdvanceSwitch
-          positiveIcon={<SoundActiveIcon className="w-[18px] h-[18px]" />}
-          negativeIcon={<SoundInActiveIcon className="w-[18px] h-[18px]" />}
-        />
-        */}
+        <div className="hidden sm:block">
+          <AdvanceSwitch
+            positiveIcon={<LightModeIcon className="w-[18px] h-[18px]" />}
+            negativeIcon={<DarkModeIcon className="w-[18px] h-[18px]" />}
+          />
+        </div>
+        {/*<AdvanceSwitch*/}
+        {/*  positiveIcon={<CameraActiveIcon className="w-[18px] h-[18px]" />}*/}
+        {/*  negativeIcon={<CameraInActiveIcon className="w-[18px] h-[18px]" />}*/}
+        {/*/>*/}
+        {/*<AdvanceSwitch*/}
+        {/*  positiveIcon={<MicActiveIcon className="w-[18px] h-[18px]" />}*/}
+        {/*  negativeIcon={<MicInActiveIcon className="w-[18px] h-[18px]" />}*/}
+        {/*/>*/}
+        {/*<AdvanceSwitch*/}
+        {/*  positiveIcon={<SoundActiveIcon className="w-[18px] h-[18px]" />}*/}
+        {/*  negativeIcon={<SoundInActiveIcon className="w-[18px] h-[18px]" />}*/}
+        {/*/>*/}
       </div>
     </div>
   );

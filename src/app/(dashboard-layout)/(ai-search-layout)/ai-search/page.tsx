@@ -53,7 +53,7 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="ml-0 sm:ml-[30px]">
+    <div className="ml-0 sm:ml-0 w-full sm:w-[calc(100%-320px)] sm:max-w-[calc(100%-320px)] overflow-x-hidden box-border">
       <Suspense fallback={<LoadingSpinner size="lg" className="h-64" />}>
         <Conversation />
       </Suspense>

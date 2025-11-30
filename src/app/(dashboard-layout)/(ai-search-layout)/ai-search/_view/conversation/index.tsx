@@ -1476,7 +1476,7 @@ export function Conversation() {
         <div className="pr-1 sm:pr-4 md:pr-6 px-1 sm:px-4 md:px-0 w-full min-w-0 overflow-x-hidden box-border">
             {/* Back button with conversation title for mobile - only show when chatId exists */}
             {chatId && (
-                <div className="flex sm:hidden items-center gap-2 pb-3 border-b border-gray-200 mb-2">
+                <div className="flex sm:hidden items-center gap-2 pb-3 border-b border-gray-200 mb-2" style={{background:"#F6F6F9"}}>
                     <button
                         onClick={() => router.push(ROUTES.AI_SEARCH.INDEX)}
                         className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors min-w-0"
@@ -1491,7 +1491,7 @@ export function Conversation() {
                 </div>
             )}
             <div ref={scrollRef}
-                 className="h-[calc(100vh-250px)] sm:h-[calc(100vh-200px)] overflow-y-auto overflow-x-hidden flex flex-col space-y-2 sm:space-y-4 w-full min-w-0 box-border">
+                 className="h-[calc(100vh-200px)] sm:h-[calc(100vh-170px)] overflow-y-auto overflow-x-hidden flex flex-col space-y-2 sm:space-y-4 w-full min-w-0 box-border">
                 {isLoading || isExecutingQuery ? (
                     <div className="flex justify-center items-center h-full">
                         <LoadingDots />
@@ -1514,15 +1514,15 @@ export function Conversation() {
             <div className="pt-2 sm:pt-0 w-full min-w-0 box-border">
                 <SearchInput onTextSearch={addMessage} startTransition={startImgInputTransition}
                              onImageSearch={handleImageSearch} onNewChat={handleNewChat}/>
-                <p className="pt-3 sm:pt-4 text-[10px] sm:text-xs text-gray-500 font-medium break-words">
-                    By using Veraos, you agree to abide by our terms of use and acceptable use cases.&nbsp;
-                    <button
-                        onClick={handleTermsClick}
-                        className="cursor-pointer underline text-primary hover:text-primary/80 transition-colors"
-                    >
-                        Read here for more information.
-                    </button>
-                </p>
+                {/*<p className="pt-3 sm:pt-4 text-[10px] sm:text-xs text-gray-500 font-medium break-words">*/}
+                {/*    By using Veraos, you agree to abide by our terms of use and acceptable use cases.&nbsp;*/}
+                {/*    <button*/}
+                {/*        onClick={handleTermsClick}*/}
+                {/*        className="cursor-pointer underline text-primary hover:text-primary/80 transition-colors"*/}
+                {/*    >*/}
+                {/*        Read here for more information.*/}
+                {/*    </button>*/}
+                {/*</p>*/}
             </div>
         </div>
     );

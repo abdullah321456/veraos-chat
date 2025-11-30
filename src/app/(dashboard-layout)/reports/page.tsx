@@ -10,7 +10,7 @@ const ReportsTable = dynamic(() => import('./_view/reports-table').then((mod) =>
 
 export default function Reports() {
   return (
-    <div>
+    <div className="w-full min-h-[calc(100vh-80px)] max-h-[calc(100vh-80px)] sm:min-h-[calc(100vh-90px)] sm:max-h-[calc(100vh-90px)]">
       <Suspense fallback={<LoadingSpinner size="lg" className="h-64" />}>
         <ReportsTable />
       </Suspense>
