@@ -3,22 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="31f38edd-b261-4f74-9fe3-a56331e865fe" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/_view/conversation/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/_view/conversation/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/client-layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/client-layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/sidebar/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/sidebar/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(faq-help-layout)/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(faq-help-layout)/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(faq-help-layout)/link-menu.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(faq-help-layout)/link-menu.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(faq-help-layout)/terms-of-use/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(faq-help-layout)/terms-of-use/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(settings-layout)/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(settings-layout)/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(settings-layout)/link-menu.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(settings-layout)/link-menu.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(settings-layout)/settings/account/_view/tab-view.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(settings-layout)/settings/account/_view/tab-view.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/billing/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/billing/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/reports/_view/reports-table/columns.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/reports/_view/reports-table/columns.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/reports/_view/reports-table/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/reports/_view/reports-table/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/reports/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/reports/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/atom/table/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/atom/table/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/dashboard-children-wrapper.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard-children-wrapper.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header.tsx" afterDir="false" />
     </list>
@@ -200,7 +184,9 @@
       <workItem from="1764267518664" duration="1421000" />
       <workItem from="1764328468553" duration="6617000" />
       <workItem from="1764412816047" duration="12873000" />
-      <workItem from="1764501533219" duration="11075000" />
+      <workItem from="1764501533219" duration="11723000" />
+      <workItem from="1764528547509" duration="6000" />
+      <workItem from="1764528583397" duration="1098000" />
     </task>
     <servers />
   </component>

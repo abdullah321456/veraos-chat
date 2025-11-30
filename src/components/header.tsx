@@ -4,7 +4,7 @@ import cn from '@/lib/utils/cn';
 import { usePathname } from 'next/navigation';
 import { MAP_PAGE_HEADER_TITLE } from '@/config/routes';
 import { ROUTES } from '@/config/routes';
-import { IsExpandedType } from '@/lib/hooks/use-sidebar-expand';
+import { IsExpandedType, useSidebarExpand, getIsSidebarExpandedOnClient } from '@/lib/hooks/use-sidebar-expand';
 import Link from 'next/link';
 import Image from 'next/image';
 import { BoxIcon } from './atom/icons/side-bar/box';
@@ -24,6 +24,8 @@ export function DashboardHeader({ isExpanded }: Props = {}) {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSmallDevice, setIsSmallDevice] = useState(false);
+  const { isExpanded: isExpandedState } = useSidebarExpand(isExpanded);
+  const IS_EXPANDED = getIsSidebarExpandedOnClient(isExpanded, isExpandedState);
   
   useEffect(() => {
     const checkDevice = () => {
@@ -67,7 +69,10 @@ export function DashboardHeader({ isExpanded }: Props = {}) {
           </Link>
         </div>
         {/* Page title - show on large devices */}
-        <h1 className="hidden sm:block text-base sm:text-lg md:text-xl font-bold text-gray-900 ml-0 sm:ml-[200px] truncate pr-2">{currentPageTitle}</h1>
+        <h1 className={cn(
+          "hidden sm:block text-base sm:text-lg md:text-xl font-bold text-gray-900 ml-0 truncate pr-2",
+          IS_EXPANDED ? "sm:ml-[80px]" : "sm:ml-[200px]"
+        )}>{currentPageTitle}</h1>
       </div>
       <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
         {/* Mobile Menu Toggle - only show on small screens */}
