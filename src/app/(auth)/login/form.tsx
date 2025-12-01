@@ -100,13 +100,18 @@ export function LoginForm() {
 
                 <div className="space-y-2">
                     <Input {...register('email')} isRequired label="Email Address" type="email" placeholder="Enter your email" error={errors.email?.message} />
-                    <div className="flex justify-end -mt-1">
+                </div>
+                <div className="space-y-2">
+                    <div className="flex justify-between items-center">
+                        <label className="block text-sm font-medium text-black">
+                            Password <span className="text-red-500">*</span>
+                        </label>
                         <Link href={ROUTES.AUTH.FORGOT_PASSWORD} className="text-xs sm:text-sm font-normal underline text-primary">
                             Forgot Password?
                         </Link>
                     </div>
+                    <PasswordInput isRequired {...register('password')} placeholder="Enter your password" error={errors.password?.message} />
                 </div>
-                <PasswordInput isRequired {...register('password')} label="Password" placeholder="Enter your password" error={errors.password?.message} />
                 <div>
                     <Checkbox label="Remember Password" labelClassName="select-none" />
                 </div>

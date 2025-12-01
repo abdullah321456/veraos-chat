@@ -201,7 +201,19 @@ function UserInfo() {
         />
         
         <div className="flex justify-end gap-3 col-span-full">
-          <Button type="button" onClick={handleSaveClick} disabled={updating} className="w-full sm:w-auto">
+          <Button 
+            type="button" 
+            onClick={handleSaveClick} 
+            disabled={updating} 
+            className="w-full sm:w-auto rounded-[6px] border-0"
+            style={{
+              background: 'linear-gradient(113.07deg, #5C39D9 15.59%, #7B6FFF 64.93%)',
+              paddingTop: '11px',
+              paddingRight: '20px',
+              paddingBottom: '11px',
+              paddingLeft: '20px'
+            }}
+          >
             {updating ? 'Saving...' : 'Save'}
           </Button>
         </div>
@@ -368,7 +380,19 @@ function OrganizationInfo() {
         </div>
         
         <div className="flex justify-end gap-3 col-span-full">
-          <Button type="button" onClick={handleSaveClick} disabled={updating} className="w-full sm:w-auto">
+          <Button 
+            type="button" 
+            onClick={handleSaveClick} 
+            disabled={updating} 
+            className="w-full sm:w-auto rounded-[6px] border-0"
+            style={{
+              background: 'linear-gradient(113.07deg, #5C39D9 15.59%, #7B6FFF 64.93%)',
+              paddingTop: '11px',
+              paddingRight: '20px',
+              paddingBottom: '11px',
+              paddingLeft: '20px'
+            }}
+          >
             {updating ? 'Saving...' : 'Save'}
           </Button>
         </div>

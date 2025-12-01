@@ -31,7 +31,7 @@ const steps: Step[] = [
     icon: SIGNUP_STEP_ICONS['data_access_needs_and_use_cases'],
   },
   {
-    name: 'Final Submission',
+    name: 'Upload ID & Final Submission',
     stepKey: 'final_submission',
     icon: SIGNUP_STEP_ICONS['final_submission'],
   },

@@ -100,8 +100,8 @@ export function DashboardHeader({ isExpanded }: Props = {}) {
         )}
         <div className="hidden sm:block">
           <AdvanceSwitch
-            positiveIcon={<LightModeIcon className="w-[18px] h-[18px]" />}
-            negativeIcon={<DarkModeIcon className="w-[18px] h-[18px]" />}
+            positiveIcon={<LightModeIcon className="w-[14px] h-[14px]" />}
+            negativeIcon={<DarkModeIcon className="w-[14px] h-[14px]" />}
           />
         </div>
         {/*<AdvanceSwitch*/}
@@ -244,7 +244,7 @@ function AdvanceSwitch({ positiveIcon, negativeIcon }: { positiveIcon: ReactNode
   return (
     <div
       onClick={() => setIsChecked(!isChecked)}
-      className="inline-flex gap-1 select-none cursor-pointer items-center justify-center h-9 bg-gray-200/70 rounded-full p-1"
+      className="inline-flex gap-1 select-none cursor-pointer items-center justify-center h-7 bg-gray-200/70 rounded-full p-0.5"
     >
       <span
         className={cn(

@@ -341,7 +341,28 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
     }
   };
 
-  const groupedConversations = groupConversationsByDate(JSON.parse(JSON.stringify(conversations)));
+  const groupLabels = {
+    today: 'Today',
+    yesterday: 'Yesterday',
+    lastWeek: 'Last Week',
+    lastMonth: 'Last Month',
+    older: 'Older'
+  };
+
+  const groupedConversations = groupConversationsByDate(JSON.parse(JSON.stringify(conversations || [])));
+
+  // Get the first group that has conversations
+  const getFirstGroupWithConversations = () => {
+    const groupOrder = ['today', 'yesterday', 'lastWeek', 'lastMonth', 'older'];
+    for (const groupKey of groupOrder) {
+      if (groupedConversations[groupKey as keyof GroupedConversations].length > 0) {
+        return groupKey as keyof typeof groupLabels;
+      }
+    }
+    return null;
+  };
+
+  const firstGroupKey = getFirstGroupWithConversations();
 
   // Handle new chat from external component (like + button)
   useEffect(() => {
@@ -364,14 +385,6 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
     console.log('Conversations updated:', conversations);
     console.log('Grouped conversations:', groupedConversations);
   }, [conversations, groupedConversations]);
-
-  const groupLabels = {
-    today: 'Today',
-    yesterday: 'Yesterday',
-    lastWeek: 'Last Week',
-    lastMonth: 'Last Month',
-    older: 'Older'
-  };
 
 
   return (
@@ -407,22 +420,39 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
           ) : (
               <>
                 <h2 className="text-base font-bold text-gray-900">Overwatch AI</h2>
-                <div className="flex items-center gap-2 ml-auto">
+                <div className="flex items-center justify-between gap-2 flex-1">
                   <button
                       onClick={() => setIsSelectable(false)}
-                      className="px-3 py-1.5 text-sm text-primary hover:bg-gray-100 rounded transition-colors"
+                      className="px-3 py-1.5 rounded transition-colors"
+                      style={{ 
+                        color: '#5C39D9', 
+                        background: 'transparent', 
+                        border: '1px solid transparent',
+                        fontSize: '12px'
+                      }}
                   >
                     Cancel All Selection
                   </button>
                   <button
                       onClick={handleDeleteChats}
                       disabled={selectedIds.length === 0 || isDeleting}
-                      className="w-10 h-10 flex items-center justify-center bg-pink-100 hover:bg-pink-200 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="px-3 py-1.5 flex items-center gap-1.5 justify-center transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      style={{ 
+                        background: '#D50A581A', 
+                        borderColor: '#D50A58',
+                        borderRadius: '6px',
+                        border: '1px solid #D50A58',
+                        color: '#D50A58',
+                        fontSize: '12px'
+                      }}
                   >
                     {isDeleting ? (
-                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-pink-600"></div>
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-[#D50A58]"></div>
                     ) : (
-                        <PiTrash className="w-5 h-5 text-pink-600" />
+                        <>
+                          <PiTrash className="w-4 h-4" />
+                          <span>Delete</span>
+                        </>
                     )}
                   </button>
                 </div>
@@ -437,7 +467,19 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
         {/*    prefix={<PiMagnifyingGlass className="scale-[1.3] ms-1 text-gray-500" />}*/}
         {/*/>*/}
         <div className="hidden sm:block">
-          <Toolbar inboxNavigationData={conversations} onNewChat={handleNewChat} />
+          <div className="flex justify-between items-center my-4 text-xs">
+            {firstGroupKey ? (
+              <div
+                className="font-medium"
+                style={{ fontSize: '14px', color: '#000000', marginLeft: '7px' }}
+              >
+                {groupLabels[firstGroupKey]}
+              </div>
+            ) : (
+              <span></span>
+            )}
+            <ToolbarContent inboxNavigationData={conversations} onNewChat={handleNewChat} />
+          </div>
         </div>
 
         <div className="overflow-y-auto overflow-x-hidden h-[calc(100vh-200px)] pb-24 sm:pb-16 pl-2">
@@ -445,13 +487,15 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
           {Object.entries(groupedConversations).map(([key, conversations]) =>
                   conversations.length > 0 && (
                       <div key={key}>
-                        <div
-                            className="text-xs font-medium mt-2 mb-1"
-                            style={{ color: (key === 'today' || key === 'yesterday') ? '#000000' : '#6B7280' }}
-                        >
-                          {groupLabels[key as keyof typeof groupLabels]}
-                          {(key !== 'today' && key !== 'yesterday') && ` (${conversations.length})`}
-                        </div>
+                        {key !== firstGroupKey && (
+                          <div
+                              className="text-xs font-medium mt-2 mb-1"
+                              style={{ color: (key === 'yesterday') ? '#000000' : '#6B7280' }}
+                          >
+                            {groupLabels[key as keyof typeof groupLabels]}
+                            {(key !== 'today' && key !== 'yesterday') && ` (${conversations.length})`}
+                          </div>
+                        )}
                         <div className="w-full sm:max-w-[280px]">
                           <InboxSelection data={conversations} />
                         </div>
@@ -468,26 +512,45 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
         </div>
 
         {isSelectable && (
-            <div className={cn('hidden sm:block fixed bottom-0 w-full sm:w-[280px] bg-white p-4 border-t border-gray-200 left-0 sm:left-auto', IS_SIDEBAR_EXPANDED ? 'sm:left-[76px]' : 'sm:left-[200px]')}>
-              <div className="grid grid-cols-2 gap-2">
-                <Button onClick={() => setIsSelectable(false)} variant="outline" size="sm">
-                  Cancel Selection
-                </Button>
-                <Button
-                    color="danger"
-                    size="sm"
+            <div style={{ marginLeft: '25px' }} className={cn('hidden sm:block fixed bottom-0 w-full sm:w-[280px] bg-white p-4 border-t border-gray-200 left-0 sm:left-auto', IS_SIDEBAR_EXPANDED ? 'sm:left-[76px]' : 'sm:left-[200px]')}>
+              <div className="flex justify-between gap-2 w-full sm:max-w-[280px]">
+                <button
+                    onClick={() => setIsSelectable(false)}
+                    className="px-3 py-1.5 rounded transition-colors"
+                    style={{ 
+                      color: '#5C39D9', 
+                      background: 'transparent', 
+                      border: '1px solid transparent',
+                      fontSize: '12px'
+                    }}
+                >
+                  Cancel All Selection
+                </button>
+                <button
                     onClick={handleDeleteChats}
                     disabled={selectedIds.length === 0 || isDeleting}
+                    className="px-3 py-1.5 flex items-center gap-1.5 justify-center transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    style={{ 
+                      background: '#D50A581A', 
+                      borderColor: '#D50A58',
+                      borderRadius: '6px',
+                      border: '1px solid #D50A58',
+                      color: '#D50A58',
+                      fontSize: '12px'
+                    }}
                 >
                   {isDeleting ? (
                       <div className="flex items-center gap-2">
-                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-[#D50A58]"></div>
                         Deleting...
                       </div>
                   ) : (
-                      'Delete Chats'
+                      <>
+                        <PiTrash className="w-4 h-4" />
+                        <span>Delete</span>
+                      </>
                   )}
-                </Button>
+                </button>
               </div>
             </div>
         )}
@@ -549,7 +612,7 @@ function NavigationElement() {
 }
 
 
-function Toolbar({ inboxNavigationData, onNewChat }: { inboxNavigationData: InboxNavigationData[]; onNewChat: (isManualClick?: boolean) => void }) {
+function ToolbarContent({ inboxNavigationData, onNewChat }: { inboxNavigationData: InboxNavigationData[]; onNewChat: (isManualClick?: boolean) => void }) {
   const { isSelectable, setIsSelectable, selectMultiple, clearSelection } = useConversationSidebarSelectionState();
 
   const allIds = inboxNavigationData?.map((item) => item.id);
@@ -564,8 +627,7 @@ function Toolbar({ inboxNavigationData, onNewChat }: { inboxNavigationData: Inbo
   }
 
   return (
-      <div className="flex justify-between items-center my-4 text-xs">
-        <span></span>
+      <>
         {!isSelectable ? (
             <div className="flex gap-2 items-center">
               <button onClick={() => {
@@ -584,7 +646,7 @@ function Toolbar({ inboxNavigationData, onNewChat }: { inboxNavigationData: Inbo
           <Checkbox labelClassName="text-xs" label="Select all" onChange={handleChangeCheckbox} />
         </span>
         )}
-      </div>
+      </>
   );
 }
 

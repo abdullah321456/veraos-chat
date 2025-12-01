@@ -27,19 +27,19 @@ export default function SettingsLayout({
         <div className="flex justify-between items-center mb-2 flex-shrink-0 w-full sm:hidden" style={{ marginBottom: '8px' }}>
           <h2 className="text-lg font-bold -mb-1 px-2 py-0 bg-transparent rounded-tl-lg rounded-tr-lg w-full">Settings</h2>
         </div>
-        {/* Mobile: Tabs at top */}
-        <div className="block sm:hidden">
-          <SettingsLinkMenu />
-          <div className="w-full">
-            {children}
-          </div>
+      {/* Mobile: Tabs at top */}
+      <div className="block sm:hidden">
+        <SettingsLinkMenu />
+        <div className="w-full">
+          {children}
         </div>
+      </div>
 
         {/* Desktop: Sidebar and content side by side, centered */}
         <div className="hidden sm:flex justify-center items-start">
-          <SettingsLinkMenu />
+        <SettingsLinkMenu />
           <div className="flex-shrink-0">
-            {children}
+        {children}
           </div>
         </div>
       </div>

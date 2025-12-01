@@ -101,7 +101,7 @@ export function Table<T>({
   };
 
   return (
-    <div className={cn('relative rounded-xl border p-5', loading && 'pointer-events-none', className)}>
+    <div className={cn('relative rounded-t-xl rounded-b-[20px] border p-5', loading && 'pointer-events-none', className)}>
       <div className={cn('relative overflow-x-auto pb-3 focus-visible:!outline-none')}>
         <div
           className="w-full focus-visible:!outline-none"
@@ -165,7 +165,7 @@ export function Table<T>({
                 <Fragment key={row.id}>
                   <div
                     className={cn(
-                      'flex w-full justify-between border-b border-[#ECECEC] last-of-type:border-b-0',
+                      'flex w-full justify-between border-b border-[#ECECEC]',
                       ROW_CLASS_NAME,
                       onRowClick && 'cursor-pointer'
                       // row.getIsSelected() &&

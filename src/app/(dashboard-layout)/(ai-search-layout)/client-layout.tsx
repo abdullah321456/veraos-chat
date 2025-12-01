@@ -52,24 +52,24 @@ export function ClientLayout({children, isExpanded}: ClientLayoutProps) {
         }}>
             <div className="w-full overflow-x-hidden sm:border sm:border-transparent sm:rounded-[20px] sm:relative sm:overflow-hidden sm:-mt-[15px] min-h-[calc(100vh-80px)] max-h-[calc(100vh-80px)] sm:min-h-[calc(100vh-90px)] sm:max-h-[calc(100vh-90px)]"
                  style={{ background:"white" }}>
-                {/* Sidebar - full screen on mobile when no conversation selected, normal on desktop */}
-                <div className={showSidebarFullScreen ? 'block sm:block' : 'hidden sm:block'}>
-                    <Sidebar
-                        isExpanded={isExpanded}
-                        lastMessage={lastMessage}
-                        newChatId={newChatId}
-                    />
-                </div>
+                    {/* Sidebar - full screen on mobile when no conversation selected, normal on desktop */}
+                    <div className={showSidebarFullScreen ? 'block sm:block' : 'hidden sm:block'}>
+                        <Sidebar
+                            isExpanded={isExpanded}
+                            lastMessage={lastMessage}
+                            newChatId={newChatId}
+                        />
+                    </div>
 
-                {/* Conversation content - only show on mobile when chatId exists */}
+                    {/* Conversation content - only show on mobile when chatId exists */}
                 <div className={cn(
                     showConversation ? 'block' : 'hidden sm:block',
                     'w-full overflow-x-hidden',
                     'sm:ml-[325px] sm:relative sm:z-0'
                 )}>
-                    {children}
+                        {children}
+                    </div>
                 </div>
-            </div>
         </MessageContext.Provider>
     );
 } 

@@ -29,7 +29,8 @@ export default function Page() {
 
   return (
     <FadeAnimation>
-      <div className="w-full sm:w-auto sm:rounded-[10px] sm:shadow-lg sm:max-w-[600px] sm:border sm:border-gray-50">
+      <div className="w-full sm:w-auto sm:rounded-[10px] sm:shadow-lg sm:min-w-[600px] sm:max-w-[600px] sm:border sm:border-gray-50"
+      style={{background:"white"}}>
         <div className="p-4 sm:p-[18px] space-y-3">
           <h2 className="text-black text-sm sm:text-base font-bold">Privacy & Security</h2>
           <h4 className="text-black text-xs sm:text-sm font-bold">
@@ -68,7 +69,18 @@ export default function Page() {
           </div>
         </div> */}
         <div className="flex justify-end py-4 sm:py-7 px-4 sm:pr-[18px] mb-5">
-          <Button className="w-full sm:w-auto">Save Changes</Button>
+          <Button 
+            className="w-full sm:w-auto rounded-[6px] border-0"
+            style={{
+              background: 'linear-gradient(113.07deg, #5C39D9 15.59%, #7B6FFF 64.93%)',
+              paddingTop: '11px',
+              paddingRight: '20px',
+              paddingBottom: '11px',
+              paddingLeft: '20px'
+            }}
+          >
+            Save Changes
+          </Button>
         </div>
       </div>
     </FadeAnimation>

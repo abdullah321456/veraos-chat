@@ -2,7 +2,23 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="31f38edd-b261-4f74-9fe3-a56331e865fe" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/components/dashboard-children-wrapper.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard-children-wrapper.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(auth)/login/form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(auth)/login/form.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(auth)/pending-approval/form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(auth)/pending-approval/form.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(auth)/signup/_components/display-form-step.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(auth)/signup/_components/display-form-step.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(auth)/signup/_components/submission-done.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(auth)/signup/_components/submission-done.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/_view/conversation/response-details.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/_view/conversation/response-details.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/client-layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/client-layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/sidebar/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/sidebar/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(settings-layout)/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(settings-layout)/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(settings-layout)/settings/account/_view/tab-view.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(settings-layout)/settings/account/_view/tab-view.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(settings-layout)/settings/notification/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(settings-layout)/settings/notification/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(settings-layout)/settings/privacy/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(settings-layout)/settings/privacy/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(settings-layout)/settings/search-preference/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(settings-layout)/settings/search-preference/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/reports/_view/reports-table/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/reports/_view/reports-table/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/atom/table/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/atom/table/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/settings/account-settings/profile-information.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/settings/account-settings/profile-information.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -184,7 +200,8 @@
       <workItem from="1764412816047" duration="12873000" />
       <workItem from="1764501533219" duration="11723000" />
       <workItem from="1764528547509" duration="6000" />
-      <workItem from="1764528583397" duration="1331000" />
+      <workItem from="1764528583397" duration="1523000" />
+      <workItem from="1764598857360" duration="6123000" />
     </task>
     <servers />
   </component>

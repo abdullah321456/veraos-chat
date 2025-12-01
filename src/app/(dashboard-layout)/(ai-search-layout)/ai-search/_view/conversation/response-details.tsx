@@ -315,10 +315,10 @@ function SingleDetails(props: AIResponseDetail) {
             <div className="flex justify-between items-start sm:items-center mb-2 sm:mb-3 gap-2">
                 <p className="font-bold text-xs sm:text-sm break-words">{`${toEnhancedTitleCase(props.FIRST)} ${toEnhancedTitleCase(props.MID)} ${toEnhancedTitleCase(props.LAST)}`}</p>
                 <div className="flex items-center gap-2 flex-shrink-0">
-                    <span
+                <span
                         className={cn('text-[#C51FA0] text-[10px] sm:text-xs py-1 sm:py-1.5 px-2 sm:px-2.5 bg-[#C51FA0]/10 rounded-md', !props.isExactMatch && 'invisible')}>
-                        Exact Match
-                    </span>
+          Exact Match
+        </span>
                     {isCriminal && (
                         <span className="text-red-600 text-[10px] sm:text-xs py-1 sm:py-1.5 px-2 sm:px-2.5 bg-red-100 rounded-md">
                             Criminal

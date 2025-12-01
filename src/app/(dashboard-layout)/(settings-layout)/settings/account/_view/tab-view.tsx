@@ -23,15 +23,30 @@ export function TabView() {
       <div className="p-4 sm:p-5">
         <h2 className="text-black text-sm sm:text-base font-bold">Account Settings</h2>
         {/* Tabs  */}
-        <div className="mt-3 flex flex-row gap-2 sm:gap-0 sm:justify-between overflow-x-auto">
+        <div className="mt-3 flex flex-row gap-2 sm:gap-2 overflow-x-auto">
           {allTabs.map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`sm:mr-4 py-2 sm:py-[11px] flex-1 sm:w-full px-3 sm:px-[18px] rounded-[37px] text-xs font-bold whitespace-nowrap transition-all ${
+              className={`sm:w-auto font-bold whitespace-nowrap transition-all ${
                 activeTab === tab ? 'text-[#5C39D9]' : ' text-[#616166]'
               }`}
-              style={activeTab === tab ? { backgroundColor: '#F6F6F9' } : {}}
+              style={activeTab === tab ? { 
+                backgroundColor: '#5C39D91A',
+                borderRadius: '7px',
+                paddingTop: '11px',
+                paddingRight: '18px',
+                paddingBottom: '11px',
+                paddingLeft: '18px',
+                color: '#5C39D9',
+                fontSize: '12px'
+              } : {
+                paddingTop: '11px',
+                paddingRight: '18px',
+                paddingBottom: '11px',
+                paddingLeft: '18px',
+                fontSize: '12px'
+              }}
             >
               {tab}
             </button>

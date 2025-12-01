@@ -85,11 +85,11 @@ function PendingApprovalContent() {
       </div>
 
       {/* Footer - Aligned at bottom */}
-      <p className="text-sm text-gray-500 mt-auto pt-8">
+      <p className="text-sm text-gray-500 mt-auto">
         Need help? Contact{' '}
         <a 
           href="mailto:support@veraos.com" 
-          className="underline text-gray-600 hover:text-[#5C39D9]"
+          className="underline text-gray-600 hover:text-[#5C39D9] font-bold"
         >
           support@veraos.com
         </a>

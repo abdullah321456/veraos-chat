@@ -145,16 +145,20 @@ export const ReportsTable = React.memo(function ReportsTable() {
           {/*  </Button>*/}
           {/*)}*/}
         </div>
-        <div className="flex-1 overflow-y-auto max-h-[calc(100vh-130px)] sm:max-h-[calc(100vh-160px)] pb-6">
-          <Table<Report>
-            key={String(renderReports)}
-            columns={createColumns(handleOpenModal)}
-            data={reports || []}
-            size={10}
-            rowClassName="py-1 cursor-pointer hover:bg-gray-50"
-            className="border-0 bg-white p-0 shadow-lg border-gray-50"
-            onRowClick={handleOpenModal}
-          />
+        <div className="flex-1 min-h-[calc(100vh-155px)] max-h-[calc(100vh-130px)]
+        sm:max-h-[calc(100vh-160px)] flex flex-col rounded-b-[20px] overflow-hidden"
+        style={{background:"white"}}>
+          <div className="flex-1 overflow-y-auto pb-6" style={{paddingRight: '0px'}}>
+            <Table<Report>
+              key={String(renderReports)}
+              columns={createColumns(handleOpenModal)}
+              data={reports || []}
+              size={10}
+              rowClassName="py-1 cursor-pointer hover:bg-gray-50"
+              className="border-0 bg-white p-0 border-gray-50 h-full flex flex-col"
+              onRowClick={handleOpenModal}
+            />
+          </div>
         </div>
       </div>
       
