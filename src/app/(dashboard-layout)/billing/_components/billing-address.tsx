@@ -161,7 +161,18 @@ export function BillingAddress() {
           </div>
         </div>
         <div className="pt-2 sm:pt-3">
-          <Button onClick={handleUpdate} disabled={updating} className="w-full sm:w-auto">
+          <Button 
+            onClick={handleUpdate} 
+            disabled={updating} 
+            className="w-full sm:w-auto rounded-[6px] border-0"
+            style={{
+              background: 'linear-gradient(113.07deg, #5C39D9 15.59%, #7B6FFF 64.93%)',
+              paddingTop: '11px',
+              paddingRight: '20px',
+              paddingBottom: '11px',
+              paddingLeft: '20px'
+            }}
+          >
             {updating ? 'Updating...' : 'Update Billing Address'}
           </Button>
         </div>

@@ -214,7 +214,7 @@ function UserInfo() {
               paddingLeft: '20px'
             }}
           >
-            {updating ? 'Saving...' : 'Save'}
+            {updating ? 'Saving...' : 'Save Changes'}
           </Button>
         </div>
       </form>
@@ -393,7 +393,7 @@ function OrganizationInfo() {
               paddingLeft: '20px'
             }}
           >
-            {updating ? 'Saving...' : 'Save'}
+            {updating ? 'Saving...' : 'Save Changes'}
           </Button>
         </div>
       </form>
