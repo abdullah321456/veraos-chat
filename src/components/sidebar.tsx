@@ -64,9 +64,9 @@ export function DashboardSidebar({ isExpanded }: Props) {
       name: 'Archive',
     },
     {
-      href: ROUTES.FAQ.TERMS_OF_USE,
+      href: ROUTES.FAQ.INDEX,
       icon: QuestionIcon,
-      activePathnames: [ROUTES.FAQ.TERMS_OF_USE],
+      activePathnames: [ROUTES.FAQ.INDEX, ROUTES.FAQ.HELP_CENTER, ROUTES.FAQ.TERMS_OF_USE],
       name: 'Faq',
     },
     {

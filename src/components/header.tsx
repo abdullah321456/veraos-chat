@@ -138,9 +138,9 @@ function MobileDashboardMenu({ onClose }: { onClose: () => void }) {
       name: 'Archive',
     },
     {
-      href: ROUTES.FAQ.TERMS_OF_USE,
+      href: ROUTES.FAQ.INDEX,
       icon: QuestionIcon,
-      activePathnames: [ROUTES.FAQ.TERMS_OF_USE],
+      activePathnames: [ROUTES.FAQ.INDEX, ROUTES.FAQ.HELP_CENTER, ROUTES.FAQ.TERMS_OF_USE],
       name: 'Faq',
     },
     {
@@ -275,9 +275,9 @@ function AdvanceSwitch({ positiveIconSrc, negativeIconSrc }: { positiveIconSrc: 
         <Image 
           src={positiveIconSrc} 
           alt="Light mode" 
-          width={14} 
-          height={14} 
-          className="w-[14px] h-[14px] object-contain" 
+          width={18} 
+          height={18} 
+          className="w-[18px] h-[18px] object-contain" 
         />
       </span>
       <span
@@ -289,9 +289,9 @@ function AdvanceSwitch({ positiveIconSrc, negativeIconSrc }: { positiveIconSrc: 
         <Image 
           src={negativeIconSrc} 
           alt="Dark mode" 
-          width={14} 
-          height={14} 
-          className="w-[14px] h-[14px] object-contain" 
+          width={18} 
+          height={18} 
+          className="w-[18px] h-[18px] object-contain" 
         />
       </span>
     </div>
