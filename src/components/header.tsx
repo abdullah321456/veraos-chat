@@ -1,5 +1,5 @@
 'use client';
-import { ReactNode, SVGProps, useState, useEffect } from 'react';
+import { SVGProps, useState, useEffect } from 'react';
 import cn from '@/lib/utils/cn';
 import { usePathname } from 'next/navigation';
 import { MAP_PAGE_HEADER_TITLE } from '@/config/routes';
@@ -12,7 +12,6 @@ import { HeadphoneIcon } from './atom/icons/side-bar/headphone';
 import { LogoutIcon } from './atom/icons/side-bar/logout';
 import { PaperIcon } from './atom/icons/side-bar/paper';
 import { QuestionIcon } from './atom/icons/side-bar/question';
-import { SearchStarIcon } from './atom/icons/side-bar/search-star';
 import { SettingIcon } from './atom/icons/side-bar/setting';
 import { authUtils } from '@/lib/utils/auth';
 
@@ -100,8 +99,8 @@ export function DashboardHeader({ isExpanded }: Props = {}) {
         )}
         <div className="hidden sm:block">
           <AdvanceSwitch
-            positiveIcon={<LightModeIcon className="w-[14px] h-[14px]" />}
-            negativeIcon={<DarkModeIcon className="w-[14px] h-[14px]" />}
+            positiveIconSrc="/light-mode.svg"
+            negativeIconSrc="/dark-mode.svg"
           />
         </div>
         {/*<AdvanceSwitch*/}
@@ -127,7 +126,8 @@ function MobileDashboardMenu({ onClose }: { onClose: () => void }) {
   const menuItems = [
     {
       href: ROUTES.AI_SEARCH.INDEX,
-      icon: SearchStarIcon,
+      icon: null, // Using image instead
+      imageSrc: '/updated-ai-search-tab.png',
       activePathnames: [ROUTES.AI_SEARCH.INDEX],
       name: 'Overwatch AI',
     },
@@ -197,7 +197,7 @@ function MobileDashboardMenu({ onClose }: { onClose: () => void }) {
           if (item.separator) {
             return <span key={index} className="h-px w-full my-2 bg-white/20" />;
           }
-          if (!item.icon) return null;
+          if (!item.icon && !item.imageSrc) return null;
           const Icon = item.icon;
 
           if (!item.href) {
@@ -211,7 +211,17 @@ function MobileDashboardMenu({ onClose }: { onClose: () => void }) {
                 key={index}
                 className="h-12 flex items-center rounded-lg w-full justify-start ps-[18px] text-white/50 hover:bg-white/10 transition-colors"
               >
-                <Icon className={cn('w-5 h-5', item?.iconClassName)} />
+                {Icon ? (
+                  <Icon className={cn('w-5 h-5', item?.iconClassName)} />
+                ) : item.imageSrc ? (
+                  <Image 
+                    src={item.imageSrc} 
+                    alt={item.name || ''} 
+                    width={20} 
+                    height={20} 
+                    className={cn('w-5 h-5 object-contain', item?.iconClassName)} 
+                  />
+                ) : null}
                 <span className="ml-4 whitespace-nowrap text-left">{item?.name}</span>
               </button>
             );
@@ -228,7 +238,17 @@ function MobileDashboardMenu({ onClose }: { onClose: () => void }) {
                 isActive && 'bg-[#5C39D9] text-white'
               )}
             >
-              <Icon className={cn('w-5 h-5', item?.iconClassName)} />
+              {Icon ? (
+                <Icon className={cn('w-5 h-5', item?.iconClassName)} />
+              ) : item.imageSrc ? (
+                <Image 
+                  src={item.imageSrc} 
+                  alt={item.name || ''} 
+                  width={20} 
+                  height={20} 
+                  className={cn('w-5 h-5 object-contain', item?.iconClassName)} 
+                />
+              ) : null}
               <span className="ml-4 whitespace-nowrap text-left">{item?.name}</span>
             </Link>
           );
@@ -238,13 +258,13 @@ function MobileDashboardMenu({ onClose }: { onClose: () => void }) {
   );
 }
 
-function AdvanceSwitch({ positiveIcon, negativeIcon }: { positiveIcon: ReactNode; negativeIcon: ReactNode }) {
+function AdvanceSwitch({ positiveIconSrc, negativeIconSrc }: { positiveIconSrc: string; negativeIconSrc: string }) {
   const [isChecked, setIsChecked] = useState(true);
   const activeClassName = 'text-primary bg-white shadow-lg';
   return (
     <div
       onClick={() => setIsChecked(!isChecked)}
-      className="inline-flex gap-1 select-none cursor-pointer items-center justify-center h-7 bg-gray-200/70 rounded-full p-0.5"
+      className="inline-flex gap-1 select-none cursor-pointer items-center justify-center h-7 bg-white rounded-full p-0.5"
     >
       <span
         className={cn(
@@ -252,7 +272,13 @@ function AdvanceSwitch({ positiveIcon, negativeIcon }: { positiveIcon: ReactNode
           isChecked && activeClassName
         )}
       >
-        {positiveIcon}
+        <Image 
+          src={positiveIconSrc} 
+          alt="Light mode" 
+          width={14} 
+          height={14} 
+          className="w-[14px] h-[14px] object-contain" 
+        />
       </span>
       <span
         className={cn(
@@ -260,43 +286,18 @@ function AdvanceSwitch({ positiveIcon, negativeIcon }: { positiveIcon: ReactNode
           !isChecked && activeClassName
         )}
       >
-        {negativeIcon}
+        <Image 
+          src={negativeIconSrc} 
+          alt="Dark mode" 
+          width={14} 
+          height={14} 
+          className="w-[14px] h-[14px] object-contain" 
+        />
       </span>
     </div>
   );
 }
 
-const LightModeIcon = (props: SVGProps<SVGSVGElement>) => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 18" fill="none" {...props}>
-    <g clipPath="url(#aLightModeIcon)">
-      <path
-        fill="currentColor"
-        d="M12.46 5.994a4.47 4.47 0 0 0-3.14-1.313 4.37 4.37 0 0 0-3.142 1.313 4.47 4.47 0 0 0-1.314 3.142 4.47 4.47 0 0 0 1.314 3.143 4.47 4.47 0 0 0 3.142 1.313 4.373 4.373 0 0 0 3.142-1.314 4.47 4.47 0 0 0 1.313-3.142 4.372 4.372 0 0 0-1.313-3.142Zm-.843 5.44a3.244 3.244 0 0 1-2.298.938 3.244 3.244 0 0 1-2.298-.938 3.243 3.243 0 0 1-.938-2.298c0-.89.352-1.711.938-2.298A3.243 3.243 0 0 1 9.319 5.9c.89 0 1.711.352 2.298.938.586.587.938 1.407.938 2.298s-.352 1.712-.938 2.298Zm5.956-2.907h-1.806a.62.62 0 0 0-.61.61.62.62 0 0 0 .61.609h1.806a.62.62 0 0 0 .61-.61.62.62 0 0 0-.61-.61Zm-8.254 6.448a.62.62 0 0 0-.61.61v1.805c0 .329.281.61.61.61a.62.62 0 0 0 .61-.61v-1.805a.62.62 0 0 0-.61-.61Zm6.26-.422-1.29-1.29c-.21-.234-.609-.234-.843 0a.594.594 0 0 0 0 .845l1.29 1.29a.594.594 0 0 0 .843 0 .594.594 0 0 0 0-.845ZM9.32.273a.62.62 0 0 0-.61.61v1.805c0 .328.281.61.61.61a.62.62 0 0 0 .61-.61V.882a.62.62 0 0 0-.61-.61Zm6.284 2.603a.594.594 0 0 0-.844 0l-1.29 1.29a.595.595 0 0 0 0 .843c.211.235.61.235.844 0l1.29-1.29a.594.594 0 0 0 0-.843ZM2.87 8.526H1.065a.62.62 0 0 0-.61.61c0 .329.258.61.61.61H2.87a.62.62 0 0 0 .61-.61.62.62 0 0 0-.61-.61Zm2.298 4.737c-.21-.234-.61-.234-.844 0l-1.29 1.29a.594.594 0 0 0 0 .844c.235.235.61.235.845 0l1.29-1.29a.594.594 0 0 0 0-.844Zm0-9.098-1.29-1.29a.594.594 0 0 0-.844 0 .594.594 0 0 0 0 .845l1.29 1.29c.235.234.61.234.844 0a.594.594 0 0 0 0-.845Z"
-      />
-    </g>
-    <defs>
-      <clipPath id="aLightModeIcon">
-        <path fill="#fff" d="M.455.273h17.727V18H.455z" />
-      </clipPath>
-    </defs>
-  </svg>
-);
-
-const DarkModeIcon = (props: SVGProps<SVGSVGElement>) => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" fill="none" {...props}>
-    <g clipPath="url(#aDarkModeIcon)">
-      <path
-        fill="currentColor"
-        d="M17.192 11.198a.554.554 0 0 0-.577-.13 7.436 7.436 0 0 1-9.501-9.502.554.554 0 0 0-.707-.708 8.428 8.428 0 0 0-3.173 2.007 8.543 8.543 0 1 0 14.09 8.91.555.555 0 0 0-.132-.577Zm-2.659 2.966A7.436 7.436 0 1 1 5.748 2.358a8.594 8.594 0 0 0 2.327 7.747 8.593 8.593 0 0 0 7.747 2.327 7.401 7.401 0 0 1-1.289 1.732Z"
-      />
-    </g>
-    <defs>
-      <clipPath id="aDarkModeIcon">
-        <path fill="#fff" d="M.182.273h17.727V18H.182z" />
-      </clipPath>
-    </defs>
-  </svg>
-);
 
 const CameraActiveIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" fill="none" {...props}>

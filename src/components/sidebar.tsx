@@ -10,12 +10,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { BoxIcon } from './atom/icons/side-bar/box';
-import { ExtendIcon } from './atom/icons/side-bar/extend';
 import { HeadphoneIcon } from './atom/icons/side-bar/headphone';
 import { LogoutIcon } from './atom/icons/side-bar/logout';
 import { PaperIcon } from './atom/icons/side-bar/paper';
 import { QuestionIcon } from './atom/icons/side-bar/question';
-import { SearchStarIcon } from './atom/icons/side-bar/search-star';
 import { SettingIcon } from './atom/icons/side-bar/setting';
 import { authUtils } from '@/lib/utils/auth';
 import { useEffect, useCallback } from 'react';
@@ -54,7 +52,8 @@ export function DashboardSidebar({ isExpanded }: Props) {
   const menuItems = [
     {
       href: ROUTES.AI_SEARCH.INDEX,
-      icon: SearchStarIcon,
+      icon: null, // Using image instead
+      imageSrc: '/ai-search-tab.svg',
       activePathnames: [ROUTES.AI_SEARCH.INDEX],
       name: 'Overwatch AI',
     },
@@ -85,22 +84,22 @@ export function DashboardSidebar({ isExpanded }: Props) {
       icon: PaperIcon,
       activePathnames: [ROUTES.BILLING],
     },
+    { separator: true },
+    {
+      href: '',
+      icon: null, // Using image instead
+      imageSrc: '/menu-collapse.svg',
+      onClick: () => toggle(!IS_SIDEBAR_EXPANDED),
+      name: 'Collapse',
+    },
+    { separator: true },
     {
       //href: ROUTES.AUTH.LOGIN,
       icon: LogoutIcon,
       name: 'Log Out',
-      iconClassName: 'w-5  h-5 relative -left-0.5',
       onClick: () => {
         authUtils.logout();
       },
-    },
-    { separator: true },
-    {
-      href: '',
-      icon: ExtendIcon,
-      onClick: () => toggle(!IS_SIDEBAR_EXPANDED),
-      name: 'Collapse',
-      iconClassName: cn('w-5  h-5 relative -left-1.5 duration-300', !IS_SIDEBAR_EXPANDED && '-left-1.5'),
     },
   ];
 
@@ -132,23 +131,70 @@ export function DashboardSidebar({ isExpanded }: Props) {
             />
           </Link>
         </div>
-        <div className="flex flex-col gap-2 w-full">
+        <div className="flex flex-col gap-2 w-full flex-1">
           {menuItems.map((item, index) => {
+            
             if (item.separator) {
               return <span key={index} className="h-px w-full my-2 bg-white/20" />;
             }
-            if (!item.icon) return null;
+            if (!item.icon && !item.imageSrc) return null;
             const Icon = item.icon;
 
             if (!item.href) {
               const onClick = item.onClick ?? (() => {});
+              const isCollapse = item.name === 'Collapse';
+              const isLogout = item.name === 'Log Out';
+              // Render collapse and logout similar to billing (as a Link-like component)
+              if (isCollapse || isLogout) {
+                return (
+                  <span
+                    onClick={onClick}
+                    key={index}
+                    className={cn(
+                      'h-12 flex items-center duration-300 text-white/50 relative cursor-pointer',
+                      IS_SIDEBAR_EXPANDED ? 'rounded-full w-12 justify-center' : 'rounded-lg w-[unset] justify-start ps-[18px]'
+                    )}
+                  >
+                    {Icon ? (
+                      <Icon className={cn('w-5 h-5', item?.iconClassName)} />
+                    ) : item.imageSrc ? (
+                      <Image 
+                        src={item.imageSrc} 
+                        alt={item.name || ''} 
+                        width={20} 
+                        height={20} 
+                        className={cn('w-5 h-5 object-contain', item?.iconClassName)} 
+                      />
+                    ) : null}
+                    <span
+                      className={cn(
+                        'absolute top-3 left-[50px] whitespace-nowrap text-left duration-300',
+                        IS_SIDEBAR_EXPANDED ? 'opacity-0 invisible' : 'opacity-100'
+                      )}
+                    >
+                      {item?.name}
+                    </span>
+                  </span>
+                );
+              }
+              // For other items without href
               return (
                   <span
                       onClick={onClick}
                       key={index}
                       className="w-[60px] cursor-pointer relative h-[60px] rounded-full flex items-center justify-center text-white/50"
                   >
-                <Icon className={cn('w-6 h-6 mx-auto', item?.iconClassName)} />
+                {Icon ? (
+                  <Icon className={cn('w-6 h-6 mx-auto', item?.iconClassName)} />
+                ) : item.imageSrc ? (
+                  <Image 
+                    src={item.imageSrc} 
+                    alt={item.name || ''} 
+                    width={24} 
+                    height={24} 
+                    className={cn('w-6 h-6 mx-auto object-contain', item?.iconClassName)} 
+                  />
+                ) : null}
                 <span
                     className={cn(
                         'absolute top-4 left-[50px] whitespace-nowrap text-left duration-300',
@@ -182,7 +228,17 @@ export function DashboardSidebar({ isExpanded }: Props) {
                     style={isActive ? { boxShadow: '0px 3px 10px 0px #1C0E350A' } : undefined}
                 >
                   {/* <span className="w-full inline-flex bg-red-400 h-full"></span> */}
-                  <Icon className={cn('w-5 h-5', item?.iconClassName)} />
+                  {Icon ? (
+                    <Icon className={cn('w-5 h-5', item?.iconClassName)} />
+                  ) : item.imageSrc ? (
+                    <Image 
+                      src={item.imageSrc} 
+                      alt={item.name || ''} 
+                      width={20} 
+                      height={20} 
+                      className={cn('w-5 h-5 object-contain', item?.iconClassName)} 
+                    />
+                  ) : null}
                   <span
                       className={cn(
                           'absolute top-3 left-[50px] whitespace-nowrap text-left duration-300',

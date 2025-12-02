@@ -36,7 +36,7 @@ export default function Page() {
         <h1 className="text-black text-lg font-bold text-center my-6">
           Commonly Asked Questions
         </h1>
-        <div className="space-y-5 w-[450px] mx-auto">
+        <div className="space-y-5 w-full max-w-full sm:max-w-[450px] mx-auto">
           {faqList.map((faq, index) => (
             <article key={index} className="">
               <h2 className="text-black/80 text-base font-semibold">{faq.question}</h2>

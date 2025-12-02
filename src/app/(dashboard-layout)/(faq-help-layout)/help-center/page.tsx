@@ -7,7 +7,7 @@ export default function Page(props: unknown) {
   console.log(props);
 
   return (
-    <div className="w-[424px] mx-auto">
+    <div className="w-full max-w-full sm:max-w-[424px] mx-auto">
       <FadeAnimation>
         <h1 className="text-black text-[20px] font-bold text-center my-6">
           Help Center
@@ -16,7 +16,7 @@ export default function Page(props: unknown) {
           How can we help you?
         </h5>
 
-        <div className="grid grid-cols-2 gap-4 items-center my-6 w-[420px]">
+        <div className="grid grid-cols-2 gap-4 items-center my-6 w-full max-w-full sm:max-w-[420px]">
           <div className="rounded-[10px] shadow-lg py-[14px] px-[25px] text-center flex flex-col items-center ">
             <div className="rounded-full bg-[#5C39D9] bg-opacity-10 p-3 w-11 h-11 flex items-center">
               <BookIcon  />
