@@ -91,7 +91,7 @@ export function InputArrayDataCell({
   const doneButtonVisibility = newValue && newFieldState;
 
   return (
-    <div className="border rounded-lg py-2 px-2.5">
+    <div className="border border-gray-200 rounded-lg bg-gray-50 py-2 px-2.5">
       <div className="flex justify-between relative mb-2.5">
         <p className="text-xs">{label}</p>
         {editable && (
@@ -109,12 +109,12 @@ export function InputArrayDataCell({
           const value = hasValueLabel ? val?.split(':')[1] : val;
           return (
             <div
-              className={cn('flex justify-between items-center relative pe-7 gap-2 text-xs rounded bg-gray-50 px-3 py-3', rowClassName)}
+              className={cn('flex justify-between items-center relative pe-7 gap-2 text-xs rounded bg-gray-50 py-3', rowClassName)}
               key={index}
             >
-              <div className="flex items-start gap-1.5">
+              <div className="flex items-center gap-1.5">
                 {bullet && <Bullet />}
-                {!!entryPrefix && entryPrefix}
+                {!!entryPrefix && <span className="flex-shrink-0">{entryPrefix}</span>}
                 {serial && <span>{index + 1}.</span>}
                 <p title={val} className={cn('break-all', rowTextClassName)}>
                   {hasValueLabel && <span className="font-semibold">{valueLabel + ':'}</span>}

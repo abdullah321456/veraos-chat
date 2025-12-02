@@ -149,7 +149,8 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
     };
 
     function handleCloseFullReport() {
-        if (typeof window !== 'undefined') {
+        // Only navigate if not in drawer/overlay mode
+        if (!isDrawer && typeof window !== 'undefined') {
             window.location.href = parsePathnameWithQuery(ROUTES.AI_SEARCH.INDEX, {
                 ...queryParams,
                 open_current_record_drawer: 'true'
@@ -196,7 +197,7 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
     console.log("report message111 = ",localDetails)
 
     return (
-        <div className={cn('p-2 xs:p-3 sm:p-6 border border-gray-50 rounded-[10px] w-full mx-auto mr-0 sm:mr-3 overflow-visible sm:overflow-hidden', isDrawer && 'p-4 mr-0')}>
+        <div className={cn('p-2 sm:p-4 w-full max-w-full overflow-visible sm:overflow-hidden', isDrawer ? 'p-4 mr-0 border-0 rounded-none' : 'border border-gray-50 rounded-[10px] sm:max-w-[500px] md:max-w-[650px] mx-auto')}>
             {!isDrawer && (
                 <>
                     {isDossierAssistantTop ? (
@@ -208,7 +209,17 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
                             <div
                                 className="flex items-center justify-between border-b border-b-gray-300 -mx-2 xs:-mx-3 sm:-mx-6 px-2 xs:px-3 sm:px-6 pb-3 xs:pb-4 sm:pb-6">
                                 <h4 className="text-black text-sm xs:text-base sm:text-lg md:text-[22px] font-bold">Full Report</h4>
-                                <CrossIcon onClick={handleCloseFullReport} className="cursor-pointer w-4 h-4 xs:w-5 xs:h-5 sm:w-6 sm:h-6 flex-shrink-0"/>
+                                <button
+                                    type="button"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        handleCloseFullReport();
+                                    }}
+                                    className="cursor-pointer flex-shrink-0"
+                                >
+                                    <CrossIcon className="w-4 h-4 xs:w-5 xs:h-5 sm:w-6 sm:h-6" />
+                                </button>
                             </div>
                         </>
                     )}
@@ -270,7 +281,7 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
                         }}
                     >
                         <CountryIcon
-                            className="hover:cursor-pointer w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 flex-shrink-0"
+                            className="hover:cursor-pointer w-6 h-6 sm:w-16 sm:h-16 flex-shrink-0"
                         />
                         <ExclamationIcon
                             className="hover:cursor-pointer w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4 flex-shrink-0"

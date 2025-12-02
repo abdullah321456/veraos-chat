@@ -1532,7 +1532,7 @@ export function Conversation() {
     console.log("previous = ",previousText)
     
     return (
-        <div className="pr-1 sm:pr-4 md:pr-6 px-1 sm:px-4 md:px-0 w-full min-w-0 max-w-full overflow-x-hidden box-border">
+        <div className="pr-1 sm:pr-4 md:pr-6 px-1 sm:px-4 md:px-0 w-full min-w-0 max-w-full overflow-x-hidden box-border relative">
             {/* Back button with conversation title for mobile - only show when chatId exists */}
             {chatId && (
                 <div className="flex sm:hidden items-center gap-2 pb-3 border-b border-gray-200 mb-2" style={{background:"#F6F6F9"}}>

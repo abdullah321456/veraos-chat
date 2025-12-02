@@ -5,8 +5,10 @@ import { FullReport } from './_view/full-report';
 export default function AiSearchPage() {
   return (
     <FadeAnimation>
-      <div className="ml-0 sm:ml-[30px]">
-        <FullReport />
+      <div className="ml-0 sm:ml-0 w-full sm:w-[calc(100%-320px)] sm:max-w-[calc(100%-320px)] overflow-x-hidden box-border pr-1 sm:pr-4 md:pr-6 px-1 sm:px-4 md:px-0">
+        <div className="w-full min-w-0 max-w-full box-border">
+          <FullReport />
+        </div>
       </div>
     </FadeAnimation>
   );

@@ -258,9 +258,9 @@ export function VehicleOwnership({ isEditable = false, isDrawer, details }: Vehi
         actionButton: <AccordionActionButton setEditable={setEditable} mode={actionButtonMode} onClick={handleActionButtonClick} />,
       })}
     >
-      <div className={cn(isDrawer ? 'grid grid-cols-1 gap-2' : 'grid grid-cols-1 gap-3')}>
+      <div className={cn('grid grid-cols-1 sm:grid-cols-2 gap-4 mt-3')}>
         {uniqueVehicles.map((car, index) => (
-          <RenderExistingVehicle key={car.vin || `vehicle-${index}`} {...car} isEditable={editable} isDrawer={isDrawer} />
+          <RenderExistingVehicle key={car.vin || `vehicle-${index}`} {...car} isEditable={editable} isDrawer={isDrawer} carNumber={index + 1} />
         ))}
         {newVehicle && editable && <AddNewVehicleForm setNewVehicle={setNewVehicle} />}
       </div>
@@ -288,57 +288,46 @@ function RenderExistingVehicle({
   vehicleType,
   isEditable,
   isDrawer,
-}: Car & { isEditable: boolean; isDrawer?: boolean }) {
+  carNumber,
+}: Car & { isEditable: boolean; isDrawer?: boolean; carNumber?: number }) {
   return (
-    <div className="border rounded-lg py-3 px-4 w-full">
-      <div className="flex items-center justify-between">
-        <p className="text-sm font-medium">{name}</p>
+    <div className="border border-gray-200 rounded-lg bg-gray-50 p-4 w-full">
+      <div className="flex items-center justify-between mb-3">
+        <p className="text-sm font-semibold text-black">Car {carNumber}</p>
         {isEditable && (
           <button className="text-red-500">
             <PiTrash />
           </button>
         )}
       </div>
-      <div className="space-y-2 mt-3 flex justify-between">
-        <div className="w-full">
-          {vin && (
-            <p className="text-black font-medium text-sm leading-5">
-              VIN Number: <span className="text-black text-sm font-normal leading-4">{vin}</span>
-            </p>
-          )}
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex-1 space-y-2">
           {make && (
-            <p className="text-black font-medium text-sm leading-5">
-              Make: <span className="text-black text-sm font-normal leading-4">{make}</span>
+            <p className="text-black font-medium text-xs leading-5">
+              Make: <span className="text-black text-xs font-normal leading-4">{make}</span>
             </p>
           )}
           {model && (
-            <p className="text-black font-medium text-sm leading-5">
-              Model: <span className="text-black text-sm font-normal leading-4">{model}</span>
+            <p className="text-black font-medium text-xs leading-5">
+              Model: <span className="text-black text-xs font-normal leading-4">{model}</span>
             </p>
           )}
           {year && (
-            <p className="text-black font-medium text-sm leading-5">
-              Year: <span className="text-black text-sm font-normal leading-4">{year}</span>
+            <p className="text-black font-medium text-xs leading-5">
+              Year: <span className="text-black text-xs font-normal leading-4">{year}</span>
             </p>
           )}
-          {color && color !== 'N/A' && (
-            <p className="text-black font-medium text-sm leading-5">
-              {vehicleType === 'motorcycle' ? 'Style' : 'Color'}: <span className="text-black text-sm font-normal leading-4">{color}</span>
+          {vin && (
+            <p className="text-black font-medium text-xs leading-5">
+              VIN Number: <span className="text-black text-xs font-normal leading-4">{vin}</span>
             </p>
           )}
-          {licNumber && (
-            <p className="text-black font-medium text-sm leading-5">
-              License Number: <span className="text-black text-sm font-normal leading-4">{licNumber}</span>
-            </p>
-          )}
-          {licState && (
-            <p className="text-black font-medium text-sm leading-5">
-              License State: <span className="text-black text-sm font-normal leading-4">{licState}</span>
-            </p>
-          )}
-
         </div>
-        {!isDrawer && (vin || make || model) && <Image src={image} alt="black-car" width={202} height={118} />}
+        {(vin || make || model) && (
+          <div className="flex-shrink-0">
+            <Image src={image} alt={name || 'vehicle'} width={202} height={118} className="object-contain" />
+          </div>
+        )}
       </div>
     </div>
   );

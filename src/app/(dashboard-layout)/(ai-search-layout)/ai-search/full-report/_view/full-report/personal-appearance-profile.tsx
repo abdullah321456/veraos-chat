@@ -99,7 +99,7 @@ export function PersonalAppearanceProfile({
                 ),
             })}>
             {hasMain && (
-                <div className={cn("grid gap-4", isDrawer ? "grid grid-cols-2" : "grid-cols-4 gap-4 mt-3")}>
+                <div className={cn("grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-3")}>
                     {(details?.HEIGHT || (details?.criminals && details?.criminals.length > 0 && details?.criminals[0].HEIGHT)) && (
                         <InputDataCell
                             label="Height"

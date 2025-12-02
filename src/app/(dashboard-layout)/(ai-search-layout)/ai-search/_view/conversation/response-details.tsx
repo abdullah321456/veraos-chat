@@ -3,13 +3,14 @@ import cn from '@/lib/utils/cn';
 import {SVGProps} from 'react';
 import {PiArrowRight} from 'react-icons/pi';
 import {AIResponseDetail} from './type';
+import {FullReportOverlay} from './full-report-overlay';
 import {useDrawer} from '@/components/drawer-views/use-drawer';
 import {DrawerHeader} from './cta';
 import {FullReport} from '../../full-report/_view/full-report';
 import {toEnhancedTitleCase} from '@/lib/utils/title-case';
 import {normalizeMergeResponse} from "../../../../../../types";
 import {apiService} from '@/services/apiService';
-// REMOVE: import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 
 const capitalizeState = (str: string): string => {
@@ -40,36 +41,63 @@ const capitalizeWords = (str: string): string => {
 };
 
 export function AiResponseDetails({detailsData}: { detailsData: (AIResponseDetail & { _index?: string })[] }) {
+    const [showFullReport, setShowFullReport] = useState(false);
+    const [fullReportDetails, setFullReportDetails] = useState<AIResponseDetail | null>(null);
+    const [isLargeDevice, setIsLargeDevice] = useState(false);
     const {openDrawer} = useDrawer();
-    // REMOVE: const [showFullReport, setShowFullReport] = useState(false);
-    // REMOVE: const [fullReportDetails, setFullReportDetails] = useState<AIResponseDetail | null>(null);
+
+    useEffect(() => {
+        const checkDeviceSize = () => {
+            setIsLargeDevice(window.innerWidth >= 640);
+        };
+        
+        checkDeviceSize();
+        window.addEventListener('resize', checkDeviceSize);
+        return () => window.removeEventListener('resize', checkDeviceSize);
+    }, []);
 
     function handleFullReport(props: AIResponseDetail) {
-        openDrawer({
-            closeOnPathnameChange: true,
-            containerClassName: 'w-full sm:w-[470px]',
-            view: (
-                <div className="h-screen">
-                    <DrawerHeader details={props}/>
-                    <div className="h-[calc(100vh-56px)] overflow-y-auto">
-                        <FullReport isDrawer details={props}/>
+        if (isLargeDevice) {
+            // Use overlay for large devices
+            setFullReportDetails(props);
+            setShowFullReport(true);
+        } else {
+            // Use drawer for small devices
+            openDrawer({
+                closeOnPathnameChange: true,
+                containerClassName: 'w-full sm:w-[470px]',
+                view: (
+                    <div className="h-screen">
+                        <DrawerHeader details={props}/>
+                        <div className="h-[calc(100vh-56px)] overflow-y-auto">
+                            <FullReport isDrawer details={props}/>
+                        </div>
                     </div>
-                </div>
-            ),
-        });
+                ),
+            });
+        }
     }
 
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pl-1 pr-2 sm:pr-4 md:pr-6 py-4 sm:py-6">
-            {detailsData?.map((item) => (
-                <SingleDetails key={item.id} {...item} />
-            ))}
-        </div>
+        <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pl-1 pr-2 sm:pr-4 md:pr-6 py-4 sm:py-6">
+                {detailsData?.map((item) => (
+                    <SingleDetails key={item.id} {...item} onFullReport={handleFullReport} />
+                ))}
+            </div>
+            {/* Only show overlay on large devices */}
+            {isLargeDevice && (
+                <FullReportOverlay 
+                    isOpen={showFullReport} 
+                    onClose={() => setShowFullReport(false)} 
+                    details={fullReportDetails || undefined}
+                />
+            )}
+        </>
     );
 }
 
-function SingleDetails(props: AIResponseDetail) {
-    const {openDrawer} = useDrawer();
+function SingleDetails(props: AIResponseDetail & { onFullReport?: (details: AIResponseDetail) => void }) {
 
     const calculateAge = (birthdate: string) => {
         const today = new Date();
@@ -266,30 +294,18 @@ function SingleDetails(props: AIResponseDetail) {
         return uniquePhones.size;
     };
 
-    async function handleFullReport(props: AIResponseDetail) {
+    async function handleFullReportClick() {
         try {
-
-
             apiService.postData('/users/reports', {
                 message: JSON.stringify(props), title: props.message
             });
-
         } catch (error) {
             console.error('Error creating report from response-details:', error);
         }
-
-        openDrawer({
-            closeOnPathnameChange: true,
-            containerClassName: 'w-full sm:w-[470px]',
-            view: (
-                <div className="h-screen">
-                    <DrawerHeader details={props}/>
-                    <div className="h-[calc(100vh-56px)] overflow-y-auto">
-                        <FullReport isDrawer details={props}/>
-                    </div>
-                </div>
-            ),
-        });
+        
+        if (props.onFullReport) {
+            props.onFullReport(props);
+        }
     }
 
     const isCriminal = props._index === 'criminals_small' || props._index === 'criminals' ||
@@ -347,7 +363,7 @@ function SingleDetails(props: AIResponseDetail) {
                     </div>
                 </div>
             </div>
-            <button onClick={(e) => handleFullReport(props)}
+            <button onClick={handleFullReportClick}
                     className="inline-flex gap-1 font-normal text-[10px] sm:text-xs cursor-pointer items-center mt-2 sm:mt-3 px-3 py-2.5 rounded-[6px]"
                     style={{ backgroundColor: '#5C39D91A', color: '#5C39D9' }}>
                 View Report <PiArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" style={{ color: '#5C39D9' }}/>

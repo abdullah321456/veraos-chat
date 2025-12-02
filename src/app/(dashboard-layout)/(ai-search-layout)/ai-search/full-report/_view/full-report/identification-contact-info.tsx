@@ -609,7 +609,7 @@ export function IdentificationAndContact({
             {hasAnyData && (
                 <div
                     className={cn(
-                        isDrawer ? "grid gap-4 mt-3" : "grid grid-cols-2 gap-4 mt-3"
+                        "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-3"
                     )}>
                     {phones.length > 0 && (
                         <InputArrayDataCell
@@ -632,7 +632,7 @@ export function IdentificationAndContact({
                     {ips.length > 0 && (
                         <InputArrayDataCell
                             entryPrefix={<IpAddressIcon className="text-primary min-w-4 h-4"/>}
-                            label="IP Addresses"
+                            label="Known IP Addresses"
                             editable={editable}
                             onDone={(value) => console.log("ip-addresses", value)}
                             values={ips}
@@ -641,7 +641,7 @@ export function IdentificationAndContact({
                     {uuids.length > 0 && (
                         <InputArrayDataCell
                             entryPrefix={<IpAddressIcon className="text-primary min-w-4 h-4"/>}
-                            label="Mobile Device Identifiers"
+                            label="Unique Device Identifiers (UDID)"
                             editable={editable}
                             onDone={(value) => console.log("uuids", value)}
                             values={uuids}
@@ -659,7 +659,7 @@ export function IdentificationAndContact({
                     {fullAddress.length > 0 && (
                         <InputArrayDataCell
                             entryPrefix={<BlueLocationIcon className="min-w-4 h-4"/>}
-                            label="Full Residential Address"
+                            label="Primary Address"
                             editable={editable}
                             onDone={(value) => console.log("full-residential-address", value)}
                             values={fullAddress}
