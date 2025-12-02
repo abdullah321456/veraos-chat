@@ -1,38 +1,71 @@
 'use client';
 import { Button } from '@/components/atom/button';
 import { ModalCloseIcon } from '@/components/atom/icons/ai-search/modal-close';
-import { useDrawer } from '@/components/drawer-views/use-drawer';
 import { ROUTES } from '@/config/routes';
 import useQueryParams from '@/lib/hooks/use-query-params';
 import { parsePathnameWithQuery } from '@/lib/utils/parse-pathname-with-query';
 import { trackDrawerExpand } from '@/lib/gtag';
 import Link from 'next/link';
-import { SVGProps, useEffect, ReactNode } from 'react';
+import { SVGProps, useEffect, ReactNode, useState } from 'react';
+import { FullReportOverlay } from './full-report-overlay';
+import { AIResponseDetail } from './type';
+import { useDrawer } from '@/components/drawer-views/use-drawer';
 import { FullReport } from '../../full-report/_view/full-report';
 
-export function ConversationCta({ message }: { message?: string | ReactNode }) {
-  const { openDrawer } = useDrawer();
+type ConversationCtaProps = {
+  message?: string | ReactNode;
+  onShowFullReport?: (show: boolean) => void;
+  fullReportDetails?: AIResponseDetail;
+};
+
+export function ConversationCta({ message, onShowFullReport, fullReportDetails }: ConversationCtaProps) {
   const { queryParams } = useQueryParams();
+  const { openDrawer } = useDrawer();
+  const [showFullReport, setShowFullReport] = useState(false);
+  const [isLargeDevice, setIsLargeDevice] = useState(false);
+
+  useEffect(() => {
+    const checkDeviceSize = () => {
+      setIsLargeDevice(window.innerWidth >= 640);
+    };
+    
+    checkDeviceSize();
+    window.addEventListener('resize', checkDeviceSize);
+    return () => window.removeEventListener('resize', checkDeviceSize);
+  }, []);
+
+  useEffect(() => {
+    if (queryParams?.open_current_record_drawer) {
+      handleFullReport();
+    }
+  }, [queryParams?.open_current_record_drawer]);
 
   function handleFullReport() {
-    // Store the message in localStorage for the full report to access
-    if (message) {
+    // Store the message and details in localStorage for the full report to access
+    if (message || fullReportDetails) {
       try {
         // Convert message to string if it's not already
-        const messageString = typeof message === 'string' ? message : String(message);
+        const messageString = message ? (typeof message === 'string' ? message : String(message)) : '';
         
         const currentData = localStorage.getItem('fullReportDetails');
         let reportData = currentData ? JSON.parse(currentData) : {};
         
+        // Store details if provided
+        if (fullReportDetails) {
+          reportData.details = fullReportDetails;
+        }
+        
         // If it's the new format, update the message
         if (reportData.details) {
-          reportData.message = messageString;
-          // Also store message in details object
-          reportData.details.message = messageString;
+          if (messageString) {
+            reportData.message = messageString;
+            // Also store message in details object
+            reportData.details.message = messageString;
+          }
         } else {
           // If it's the old format, create new format
           reportData = {
-            details: {
+            details: fullReportDetails || {
               ...reportData,
               message: messageString
             },
@@ -47,38 +80,49 @@ export function ConversationCta({ message }: { message?: string | ReactNode }) {
       }
     }
     
-    openDrawer({
-      closeOnPathnameChange: true,
-      containerClassName: 'w-full sm:w-[470px]',
-      view: (
-        <div className="h-screen">
-          {/* <Link href={parsePathnameWithQuery(ROUTES.AI_SEARCH.FULL_REPORT, queryParams)}>Click here</Link>
-          <br />
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cupiditate impedit ab architecto soluta. Natus quod illum assumenda
-          consequatur error cum hic, vel dolor nulla a exercitationem modi iste optio facere! */}
-          <DrawerHeader />
-          <div className="h-[calc(100vh-56px)] overflow-y-auto">
-            <FullReport isDrawer />
+    if (isLargeDevice) {
+      // Use overlay for large devices
+      setShowFullReport(true);
+      onShowFullReport?.(true);
+    } else {
+      // Use drawer for small devices
+      openDrawer({
+        closeOnPathnameChange: true,
+        containerClassName: 'w-full sm:w-[470px]',
+        view: (
+          <div className="h-screen">
+            <DrawerHeader details={fullReportDetails} />
+            <div className="h-[calc(100vh-56px)] overflow-y-auto">
+              <FullReport isDrawer details={fullReportDetails} />
+            </div>
           </div>
-        </div>
-      ),
-    });
+        ),
+      });
+    }
   }
 
-  useEffect(() => {
-    if (!queryParams?.open_current_record_drawer) return;
-      handleFullReport();
-  }, []);
-
   return (
-    <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 px-2 sm:px-4 md:px-8 lg:px-16 pt-3">
-      <Button variant="outline" size="md" disableTitleCase className="w-full sm:w-auto">
-        View Matching Records
-      </Button>
-      <Button onClick={handleFullReport} size="md" disableTitleCase className="w-full sm:w-auto">
-        Full Report
-      </Button>
-    </div>
+    <>
+      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 px-2 sm:px-4 md:px-8 lg:px-16 pt-3 relative">
+        <Button variant="outline" size="md" disableTitleCase className="w-full sm:w-auto">
+          View Matching Records
+        </Button>
+        <Button onClick={handleFullReport} size="md" disableTitleCase className="w-full sm:w-auto">
+          Full Report
+        </Button>
+        {/* Only show overlay on large devices - positioned relative to parent */}
+        {isLargeDevice && (
+          <FullReportOverlay 
+            isOpen={showFullReport} 
+            onClose={() => {
+              setShowFullReport(false);
+              onShowFullReport?.(false);
+            }} 
+            details={fullReportDetails}
+          />
+        )}
+      </div>
+    </>
   );
 }
 
@@ -107,7 +151,16 @@ export function DrawerHeader({ details }: { details?: any } = {}) {
 
   return (
     <div className="h-14 bg-gray-100 flex items-center justify-between px-3 sm:px-4 py-2">
-      <span className="font-bold text-sm sm:text-lg text-gray-500">Current Record</span>
+      <button
+        type="button"
+        onClick={handleClose}
+        className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+      >
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        </svg>
+        <span className="text-sm font-medium">Back to Previous Results</span>
+      </button>
       <div className="flex items-center gap-3 sm:gap-5">
         <Link href={parsePathnameWithQuery(ROUTES.AI_SEARCH.FULL_REPORT, queryParams)} onClick={handleExpand} className="hidden sm:block">
           <DrawerHeaderExpandIcon className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" />

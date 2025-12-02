@@ -48,7 +48,7 @@ export function SingleConversation({ sender, message, cta, aiResponseDetails, im
           <RenderMessageOrImages message={message} isLeft={isLeft} images={localImages} />
         </div>
       </div>
-      {cta && <ConversationCta message={message} />}
+      {cta && <ConversationCta message={message} fullReportDetails={aiResponseDetails?.[0]} />}
       <AiResponseDetails detailsData={aiResponseDetails ?? []} />
     </div>
   );
