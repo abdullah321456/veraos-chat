@@ -4,7 +4,7 @@ import { Input } from '@/components/atom/form-elements/input';
 import { fileToBase64 } from '@/lib/utils/file-to-base64';
 import { trackAISearch } from '@/lib/gtag';
 import { Send, Plus } from 'lucide-react';
-import { SVGProps, TransitionStartFunction, useState } from 'react';
+import { SVGProps, TransitionStartFunction, useState, useEffect, useRef } from 'react';
 import { toast } from 'sonner';
 import { OnImageSearchHandlerParam } from './type';
 
@@ -18,6 +18,55 @@ type Props = {
 
 export function SearchInput({ onTextSearch, onImageSearch, onNewChat, startTransition, defaultValue }: Props) {
   const [searchValue, setSearchValue] = useState(defaultValue || '');
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  
+  // Handle Safari mobile - only fix textarea itself, not global viewport
+  useEffect(() => {
+    if (typeof window !== 'undefined' && textareaRef.current) {
+      const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent) || 
+                      /iPhone|iPad|iPod/.test(navigator.userAgent);
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) && window.innerWidth <= 768;
+      
+      if (isSafari && isMobile) {
+        const textarea = textareaRef.current;
+        const form = formRef.current;
+        const container = textarea.parentElement;
+        
+        // Apply constraints only to textarea and its immediate containers
+        const applyConstraints = () => {
+          if (textarea) {
+            textarea.style.maxWidth = '100%';
+            textarea.style.width = '100%';
+            textarea.style.boxSizing = 'border-box';
+          }
+          if (form) {
+            form.style.maxWidth = '100%';
+            form.style.width = '100%';
+          }
+          if (container) {
+            container.style.maxWidth = '100%';
+            container.style.width = '100%';
+          }
+        };
+        
+        applyConstraints();
+        
+        // Apply on focus and input
+        const handleFocus = () => applyConstraints();
+        const handleInput = () => applyConstraints();
+        
+        textarea.addEventListener('focus', handleFocus);
+        textarea.addEventListener('input', handleInput);
+        
+        return () => {
+          textarea.removeEventListener('focus', handleFocus);
+          textarea.removeEventListener('input', handleInput);
+        };
+      }
+    }
+  }, []);
+  
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (searchValue.trim()) {
@@ -52,12 +101,13 @@ export function SearchInput({ onTextSearch, onImageSearch, onNewChat, startTrans
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex justify-between gap-1 sm:gap-2 w-full min-w-0 box-border">
+    <form ref={formRef} onSubmit={handleSubmit} className="flex justify-between gap-1 sm:gap-2 w-full min-w-0 box-border max-w-full">
       <div 
-        className="w-full min-w-0 rounded-[14px] overflow-hidden relative box-border"
+        className="w-full min-w-0 max-w-full rounded-[14px] overflow-hidden relative box-border"
         style={{ background: 'linear-gradient(90deg, rgba(92, 57, 217, 0.1) 0%, rgba(197, 31, 160, 0.1) 100%)' }}
       >
         <textarea
+          ref={textareaRef}
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
           onKeyDown={(e) => {
@@ -67,8 +117,9 @@ export function SearchInput({ onTextSearch, onImageSearch, onNewChat, startTrans
             }
           }}
           placeholder="Ask me anything.... "
-          className="w-full min-h-[64px] sm:min-h-[64px] px-2 sm:px-4 py-3 pr-10 sm:pr-16 text-sm sm:text-base bg-transparent border-0 focus:outline-none resize-none rounded-[14px] box-border"
+          className="w-full min-h-[64px] sm:min-h-[64px] px-2 sm:px-4 py-3 pr-10 sm:pr-16 text-base sm:text-base bg-transparent border-0 focus:outline-none resize-none rounded-[14px] box-border max-w-full"
           rows={1}
+          style={{ fontSize: '16px' }}
           onInput={(e) => {
             const target = e.target as HTMLTextAreaElement;
             target.style.height = 'auto';

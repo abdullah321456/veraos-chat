@@ -370,6 +370,65 @@ export function Conversation() {
     const scrollRef = useRef<HTMLDivElement>(null);
     const executionId = useRef(Math.random().toString(36).substr(2, 9));
     
+    // Safari mobile fix - only for scrollRef div
+    useEffect(() => {
+        if (typeof window !== 'undefined' && scrollRef.current) {
+            const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent) || 
+                            /iPhone|iPad|iPod/.test(navigator.userAgent);
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) && window.innerWidth <= 768;
+            
+            if (isSafari && isMobile) {
+                const scrollContainer = scrollRef.current;
+                
+                // Apply constraints to scrollRef div and its children
+                const applyConstraints = () => {
+                    if (scrollContainer) {
+                        scrollContainer.style.overflowX = 'hidden';
+                        scrollContainer.style.maxWidth = '100%';
+                        scrollContainer.style.width = '100%';
+                        
+                        // Apply to all children
+                        const children = scrollContainer.querySelectorAll('*');
+                        children.forEach((child) => {
+                            const el = child as HTMLElement;
+                            el.style.maxWidth = '100%';
+                            el.style.boxSizing = 'border-box';
+                        });
+                    }
+                };
+                
+                // Handle scroll events on this container only
+                const handleScroll = () => {
+                    if (scrollContainer.scrollLeft !== 0) {
+                        scrollContainer.scrollLeft = 0;
+                    }
+                };
+                
+                // Initial application
+                applyConstraints();
+                
+                // Monitor for changes
+                const observer = new MutationObserver(() => {
+                    applyConstraints();
+                });
+                
+                observer.observe(scrollContainer, {
+                    childList: true,
+                    subtree: true,
+                    attributes: true,
+                    attributeFilter: ['style', 'class']
+                });
+                
+                scrollContainer.addEventListener('scroll', handleScroll, { passive: true });
+                
+                return () => {
+                    observer.disconnect();
+                    scrollContainer.removeEventListener('scroll', handleScroll);
+                };
+            }
+        }
+    }, []);
+    
     console.log(`[${executionId.current}] Conversation component mounted/rendered`);
     const [, startImgInputTransition] = useTransition();
     const searchParams = useSearchParams();
@@ -1473,7 +1532,7 @@ export function Conversation() {
     console.log("previous = ",previousText)
     
     return (
-        <div className="pr-1 sm:pr-4 md:pr-6 px-1 sm:px-4 md:px-0 w-full min-w-0 overflow-x-hidden box-border">
+        <div className="pr-1 sm:pr-4 md:pr-6 px-1 sm:px-4 md:px-0 w-full min-w-0 max-w-full overflow-x-hidden box-border">
             {/* Back button with conversation title for mobile - only show when chatId exists */}
             {chatId && (
                 <div className="flex sm:hidden items-center gap-2 pb-3 border-b border-gray-200 mb-2" style={{background:"#F6F6F9"}}>
@@ -1491,7 +1550,7 @@ export function Conversation() {
                 </div>
             )}
             <div ref={scrollRef}
-                 className="h-[calc(100vh-200px)] sm:h-[calc(100vh-170px)] overflow-y-auto overflow-x-hidden flex flex-col space-y-2 sm:space-y-4 w-full min-w-0 box-border">
+                 className="h-[calc(100vh-200px)] sm:h-[calc(100vh-170px)] overflow-y-auto overflow-x-hidden flex flex-col space-y-2 sm:space-y-4 w-full min-w-0 max-w-full box-border">
                 {isLoading || isExecutingQuery ? (
                     <div className="flex justify-center items-center h-full">
                         <LoadingDots />
@@ -1511,7 +1570,7 @@ export function Conversation() {
                     </>
                 )}
             </div>
-            <div className="pt-2 sm:pt-0 w-full min-w-0 box-border">
+            <div className="pt-2 sm:pt-0 w-full min-w-0 max-w-full box-border overflow-x-hidden">
                 <SearchInput onTextSearch={addMessage} startTransition={startImgInputTransition}
                              onImageSearch={handleImageSearch} onNewChat={handleNewChat}/>
                 {/*<p className="pt-3 sm:pt-4 text-[10px] sm:text-xs text-gray-500 font-medium break-words">*/}
