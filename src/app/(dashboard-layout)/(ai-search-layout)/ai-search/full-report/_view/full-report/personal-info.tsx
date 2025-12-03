@@ -123,6 +123,38 @@ export function PersonalInfo({
                     />
                 ),
             })}>
+            {(() => {
+                const deathRecord = (details as any)?.Death_Record || 
+                                   ((details as any)?.criminals && (details as any).criminals.length > 0 && (details as any).criminals[0]?.Death_Record);
+                
+                if (deathRecord) {
+                    return (
+                        <div className="mb-4 border border-red-500 bg-pink-50 rounded-md overflow-hidden">
+                            <div className="flex flex-col sm:flex-row">
+                                {deathRecord.Death_Index_Match !== undefined && (
+                                    <div className="flex-1 px-4 py-3 border-b border-red-500 sm:border-b-0 sm:border-r last:border-b-0 last:border-r-0">
+                                        <div className="text-xs font-medium text-gray-700 mb-1">Death Index Match</div>
+                                        <div className="text-sm text-gray-900 font-semibold">{deathRecord.Death_Index_Match ? "Yes" : "No"}</div>
+                                    </div>
+                                )}
+                                {deathRecord.Death_Date && (
+                                    <div className="flex-1 px-4 py-3 border-b border-red-500 sm:border-b-0 sm:border-r last:border-b-0 last:border-r-0">
+                                        <div className="text-xs font-medium text-gray-700 mb-1">Death Date</div>
+                                        <div className="text-sm text-gray-900 font-semibold">{deathRecord.Death_Date}</div>
+                                    </div>
+                                )}
+                                {deathRecord.Cause_of_Death && (
+                                    <div className="flex-1 px-4 py-3">
+                                        <div className="text-xs font-medium text-gray-700 mb-1">Death Cause</div>
+                                        <div className="text-sm text-gray-900 font-semibold">{deathRecord.Cause_of_Death}</div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    );
+                }
+                return null;
+            })()}
             <div className={cn("grid gap-4", isDrawer ? "grid" : "grid-cols-6")}>
                 {/* <InputDataCell label="Death index match" value="" editable={editable} onDone={(value) => console.log("value", value)} /> */}
                 {/* <InputDataCell label="Name Prefix" value="Mr." editable={editable}/> */}
@@ -267,39 +299,6 @@ export function PersonalInfo({
                 {details?.DOD && (
                     <InputDataCell label="Date of Death" value={capitalizeWords(details.DOD)} editable={editable}/>
                 )}
-                {(() => {
-                    const deathRecord = (details as any)?.Death_Record || 
-                                       ((details as any)?.criminals && (details as any).criminals.length > 0 && (details as any).criminals[0]?.Death_Record);
-                    
-                    if (deathRecord) {
-                        return (
-                            <>
-                                {deathRecord.Death_Index_Match !== undefined && (
-                                    <InputDataCell 
-                                        label="Death Index Match" 
-                                        value={deathRecord.Death_Index_Match ? "Yes" : "No"} 
-                                        editable={editable}
-                                    />
-                                )}
-                                {deathRecord.Death_Date && (
-                                    <InputDataCell 
-                                        label="Death Date" 
-                                        value={deathRecord.Death_Date} 
-                                        editable={editable}
-                                    />
-                                )}
-                                {deathRecord.Cause_of_Death && (
-                                    <InputDataCell 
-                                        label="Cause of Death" 
-                                        value={deathRecord.Cause_of_Death} 
-                                        editable={editable}
-                                    />
-                                )}
-                            </>
-                        );
-                    }
-                    return null;
-                })()}
                 {/* <InputDataCell label="Religion" value="" editable={editable}/> */}
             </div>
             {/* <div className="grid grid-cols-3 gap-4 mt-3">

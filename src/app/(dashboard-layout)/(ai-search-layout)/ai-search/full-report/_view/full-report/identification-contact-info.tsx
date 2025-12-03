@@ -613,7 +613,7 @@ export function IdentificationAndContact({
                     )}>
                     {phones.length > 0 && (
                         <InputArrayDataCell
-                            entryPrefix={<PiPhone className="text-primary min-w-4 h-4"/>}
+                            entryPrefix={<img src="/cell-icon-report.svg" alt="Cell Phone" className="min-w-4 h-4 w-4"/>}
                             label="Verified Cell Phone Numbers"
                             editable={editable}
                             onDone={(value) => console.log("phone-numbers", value)}
@@ -622,7 +622,7 @@ export function IdentificationAndContact({
                     )}
                     {emails.length > 0 && (
                         <InputArrayDataCell
-                            entryPrefix={<PiEnvelope className="text-primary min-w-4 h-4"/>}
+                            entryPrefix={<img src="/mail-icon-report.svg" alt="Email" className="min-w-4 h-4 w-4"/>}
                             label="Email Addresses"
                             editable={editable}
                             onDone={(value) => console.log("email", value)}
@@ -631,7 +631,7 @@ export function IdentificationAndContact({
                     )}
                     {ips.length > 0 && (
                         <InputArrayDataCell
-                            entryPrefix={<IpAddressIcon className="text-primary min-w-4 h-4"/>}
+                            entryPrefix={<img src="/ip-icon-report.svg" alt="IP Address" className="min-w-4 h-4 w-4"/>}
                             label="Known IP Addresses"
                             editable={editable}
                             onDone={(value) => console.log("ip-addresses", value)}
@@ -640,7 +640,7 @@ export function IdentificationAndContact({
                     )}
                     {uuids.length > 0 && (
                         <InputArrayDataCell
-                            entryPrefix={<IpAddressIcon className="text-primary min-w-4 h-4"/>}
+                            entryPrefix={<img src="/uuid-icon-report.svg" alt="UUID" className="min-w-4 h-4 w-4"/>}
                             label="Unique Device Identifiers (UDID)"
                             editable={editable}
                             onDone={(value) => console.log("uuids", value)}
@@ -658,7 +658,7 @@ export function IdentificationAndContact({
                     {/*)}*/}
                     {fullAddress.length > 0 && (
                         <InputArrayDataCell
-                            entryPrefix={<BlueLocationIcon className="min-w-4 h-4"/>}
+                            entryPrefix={<img src="/location-icon-report.svg" alt="Location" className="min-w-4 h-4 w-4"/>}
                             label="Primary Address"
                             editable={editable}
                             onDone={(value) => console.log("full-residential-address", value)}
@@ -676,7 +676,7 @@ export function IdentificationAndContact({
                     )}
                     {locations.length > 0 && (!exPatriotDates || exPatriotDates.length < 1) && (
                         <InputArrayDataCell
-                            entryPrefix={<BlueLocationIcon className="min-w-4 h-4"/>}
+                            entryPrefix={<img src="/location-icon-report.svg" alt="Location" className="min-w-4 h-4 w-4"/>}
                             label="Address History"
                             editable={editable}
                             onDone={(value) => console.log("address-history", value)}

@@ -156,13 +156,36 @@ export function getVehicleImageUrl(
 ): string {
   const fileName = getVehicleImageFileName(make, model, year);
   
-  if (!fileName) {
-    // Return default image if no match found
-    return '/red-car.png';
-  }
-
   // Get base URL from environment variable or use default
   const baseUrl = process.env.NEXT_PUBLIC_VEHICLE_IMAGES_BASE_URL || process.env.NEXT_PUBLIC_API_URL?.replace('/api', '') || '';
+  
+  if (!fileName) {
+    // Return default image if no match found: base_url/vehicles/ZZdefaultnocar
+    if (baseUrl && typeof window !== 'undefined') {
+      try {
+        const baseUrlObj = new URL(baseUrl);
+        const currentOrigin = window.location.origin;
+        
+        // If base URL matches current origin, use relative path to avoid Next.js image config issues
+        if (baseUrlObj.origin === currentOrigin) {
+          return '/vehicles/ZZdefaultnocar';
+        }
+      } catch (e) {
+        // If baseUrl is not a valid URL, treat it as a relative path prefix
+        if (!baseUrl.startsWith('http://') && !baseUrl.startsWith('https://')) {
+          return `${baseUrl}/vehicles/ZZdefaultnocar`;
+        }
+      }
+    }
+    
+    // Construct the full URL: base_url/vehicles/ZZdefaultnocar
+    if (baseUrl) {
+      return `${baseUrl}/vehicles/ZZdefaultnocar`;
+    }
+    
+    // Fallback to relative path if no base URL is configured
+    return '/vehicles/ZZdefaultnocar';
+  }
   
   // If base URL is provided, check if it's the same origin
   if (baseUrl && typeof window !== 'undefined') {

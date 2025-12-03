@@ -37,7 +37,7 @@ export function SingleConversation({ sender, message, cta, aiResponseDetails, im
   };
 
   console.log("aiResponseDetails = ",aiResponseDetails)
-  return (
+    return (
     <div id={questionId} className="pt-1 pb-3 pr-0.5 sm:pr-3 group w-full min-w-0 box-border">
       <p className={cn('px-1 sm:px-4 md:px-8 lg:px-16 mb-1.5 text-xs sm:text-sm font-medium', isLeft ? 'text-left' : 'text-right')} style={{ color: '#616166' }}>{isLeft ? 'Tin Man' : 'You'}</p>
       <div className={cn('flex w-full gap-1 sm:gap-4 min-w-0', isLeft ? 'items-end justify-start' : 'items-end justify-end flex-row-reverse')}>
@@ -61,7 +61,7 @@ type RenderMessageOrImagesProps = {
 };
 
 function RenderMessageOrImages({ message, isLeft, images }: RenderMessageOrImagesProps) {
-  const baseClassName = 'max-w-full sm:max-w-[500px] md:max-w-[650px] p-2 sm:p-4 text-xs sm:text-sm relative w-full min-w-0 box-border break-words';
+  const baseClassName = 'max-w-full sm:max-w-[500px] md:max-w-[650px] py-5 px-2 sm:py-4 sm:px-4 text-xs sm:text-sm relative w-full min-w-0 box-border break-words' ;
   const className = cn(
     baseClassName,
     !isLeft ? 'bg-[#4795f9] text-white rounded-2xl rounded-ee-sm' : ''

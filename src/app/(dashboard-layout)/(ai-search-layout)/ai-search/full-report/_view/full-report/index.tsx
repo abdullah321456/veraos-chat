@@ -197,7 +197,7 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
     console.log("report message111 = ",localDetails)
 
     return (
-        <div className={cn('p-2 sm:p-4 w-full max-w-full overflow-visible sm:overflow-hidden', isDrawer ? 'p-4 mr-0 border-0 rounded-none' : 'border border-gray-50 rounded-[10px] sm:max-w-[500px] md:max-w-[650px] mx-auto')}>
+        <div className={cn('p-2 sm:p-4 pb-6 sm:pb-8 w-full max-w-full overflow-visible sm:overflow-hidden', isDrawer ? 'p-4 pb-6 sm:pb-8 mr-0 border-0 rounded-none' : 'border border-gray-50 rounded-[10px] sm:max-w-[500px] md:max-w-[650px] mx-auto')}>
             {!isDrawer && (
                 <>
                     {isDossierAssistantTop ? (
@@ -329,7 +329,7 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
           </Button>
         </div>
       )} */}
-            <div className={cn('pt-4 space-y-4', isDrawer && 'block')}>
+            <div className={cn('pt-4 space-y-4 pb-6 sm:pb-8', isDrawer && 'block')}>
                 {/* <ThreatAssessment isEditable={editable}/> */}
                 <PersonalInfo isEditable={editable} isDrawer={isDrawer} details={localDetails}/>
                 <PersonalAppearanceProfile isEditable={editable} isDrawer={isDrawer} details={localDetails}/>
@@ -407,20 +407,21 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
                                 const finalUrl = link.startsWith('http') ? link : `${platform.baseUrl}${link.replace('@', '')}`;
 
                                 return (
-                                    <div key={index} className="flex items-center p-3 bg-gray-50 rounded-lg border">
-                                        <div className="flex items-center gap-3">
-                                            <div className={`w-8 h-8 ${platform.bgColor} rounded-full flex items-center justify-center`}>
+                                    <div key={index} className="flex items-center p-3 bg-gray-50 rounded-lg border overflow-hidden">
+                                        <div className="flex items-center gap-3 min-w-0 flex-1">
+                                            <div className={`w-8 h-8 ${platform.bgColor} rounded-full flex items-center justify-center flex-shrink-0`}>
                                                 <span className={platform.iconColor}>
                                                     {platform.icon}
                                                 </span>
                                             </div>
-                                            <div>
-                                                <p className="text-sm font-medium text-gray-900">{platform.name} Profile</p>
+                                            <div className="min-w-0 flex-1 overflow-hidden">
+                                                <p className="text-sm font-medium text-gray-900 truncate">{platform.name} Profile</p>
                                                 <a 
                                                     href={finalUrl}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                    className={`text-xs ${platform.linkColor} hover:underline cursor-pointer truncate max-w-xs block`}
+                                                    className={`text-xs ${platform.linkColor} hover:underline cursor-pointer block truncate break-all`}
+                                                    title={link}
                                                 >
                                                     {link}
                                                 </a>
