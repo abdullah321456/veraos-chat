@@ -3,11 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="31f38edd-b261-4f74-9fe3-a56331e865fe" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/next.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/next.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/_view/conversation/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/_view/conversation/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/_view/conversation/search-input.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/_view/conversation/search-input.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/full-report/_view/full-report/vehicle-ownership.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/ai-search/full-report/_view/full-report/vehicle-ownership.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/sidebar/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(dashboard-layout)/(ai-search-layout)/sidebar/index.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -193,7 +188,7 @@
       <workItem from="1764598857360" duration="7271000" />
       <workItem from="1764672771687" duration="16000" />
       <workItem from="1764672805425" duration="15177000" />
-      <workItem from="1764745408526" duration="2574000" />
+      <workItem from="1764745408526" duration="3193000" />
     </task>
     <servers />
   </component>

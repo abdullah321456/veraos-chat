@@ -60,6 +60,18 @@ module.exports = {
                 hostname: '192.168.18.7',
                 port: '',
                 pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'backend.veraos.io',
+                port: '',
+                pathname: '/**',
+            },
+            {
+                protocol: 'http',
+                hostname: 'backend.veraos.io',
+                port: '',
+                pathname: '/**',
             }
         ],
     },
