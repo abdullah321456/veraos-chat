@@ -186,13 +186,14 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
       console.log('Adding new chat to conversations list:', newChat);
       setConversations(prev => [newChat, ...prev]);
 
-      // Navigate to AI Search with the new chatId (only on non-small devices)
+      // Navigate to AI Search with the new chatId
+      // Always navigate for manual clicks, only skip for automatic creation on small devices
       const isNotSmallDevice = typeof window !== 'undefined' && window.innerWidth >= 640;
-      if (isNotSmallDevice) {
-        console.log('Navigating to new chat:', newChatId);
+      if (isManualClick || isNotSmallDevice) {
+        console.log('Navigating to new chat:', newChatId, isManualClick ? '(manual click)' : '(automatic)');
         router.push(`${ROUTES.AI_SEARCH.INDEX}?chatId=${newChatId}`);
       } else {
-        console.log('Skipping navigation on small device');
+        console.log('Skipping navigation on small device (automatic creation)');
       }
 
     } catch (error) {

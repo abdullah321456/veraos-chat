@@ -1,0 +1,2116 @@
+[
+  {
+    "Make": "Acura",
+    "Model": "MDX",
+    "Starting Year": 2001,
+    "Ending Year": 2006,
+    "File Name": "AcuraMDXGen1.png"
+  },
+  {
+    "Make": "Acura",
+    "Model": "MDX",
+    "Starting Year": 2007,
+    "Ending Year": 2013,
+    "File Name": "AcuraMDXGen2.png"
+  },
+  {
+    "Make": "Acura",
+    "Model": "MDX",
+    "Starting Year": 2014,
+    "Ending Year": 2020,
+    "File Name": "AcuraMDXGen3.png"
+  },
+  {
+    "Make": "Acura",
+    "Model": "MDX",
+    "Starting Year": 2022,
+    "Ending Year": 2025,
+    "File Name": "AcuraMDXGen4.png"
+  },
+  {
+    "Make": "Acura",
+    "Model": "TL",
+    "Starting Year": 1996,
+    "Ending Year": 1998,
+    "File Name": "AcuraTLGen1.png"
+  },
+  {
+    "Make": "Acura",
+    "Model": "TL",
+    "Starting Year": 1999,
+    "Ending Year": 2003,
+    "File Name": "AcuraTLGen2.png"
+  },
+  {
+    "Make": "Acura",
+    "Model": "TL",
+    "Starting Year": 2004,
+    "Ending Year": 2008,
+    "File Name": "AcuraTLGen3.png"
+  },
+  {
+    "Make": "Acura",
+    "Model": "TL",
+    "Starting Year": 2009,
+    "Ending Year": 2014,
+    "File Name": "AcuraTLGen4.png"
+  },
+  {
+    "Make": "BMW",
+    "Model": "7 Series",
+    "Starting Year": 2009,
+    "Ending Year": 2015,
+    "File Name": "BMW7Gen6.png"
+  },
+  {
+    "Make": "BMW",
+    "Model": "3 Series",
+    "Starting Year": 1999,
+    "Ending Year": 2005,
+    "File Name": "BMWE46.png"
+  },
+  {
+    "Make": "Buick",
+    "Model": "Enclave",
+    "Starting Year": 2008,
+    "Ending Year": 2017,
+    "File Name": "BuickEnclaveGen1.png"
+  },
+  {
+    "Make": "Buick",
+    "Model": "Enclave",
+    "Starting Year": 2018,
+    "Ending Year": 2024,
+    "File Name": "BuickEnclaveGen2.png"
+  },
+  {
+    "Make": "Buick",
+    "Model": "Enclave",
+    "Starting Year": 2025,
+    "Ending Year": 2025,
+    "File Name": "BuickEnclaveGen3.png"
+  },
+  {
+    "Make": "Buick",
+    "Model": "Lacrosse",
+    "Starting Year": 2005,
+    "Ending Year": 2009,
+    "File Name": "BuickLaCrosseGen1.png"
+  },
+  {
+    "Make": "Buick",
+    "Model": "Lacrosse",
+    "Starting Year": 2010,
+    "Ending Year": 2016,
+    "File Name": "BuickLaCrosseGen2.png"
+  },
+  {
+    "Make": "Buick",
+    "Model": "Lacrosse",
+    "Starting Year": 2017,
+    "Ending Year": 2019,
+    "File Name": "BuickLaCrosseGen3.png"
+  },
+  {
+    "Make": "Cadillac",
+    "Model": "CTS",
+    "Starting Year": 2003,
+    "Ending Year": 2007,
+    "File Name": "CadillacCTSGen1.png"
+  },
+  {
+    "Make": "Cadillac",
+    "Model": "CTS",
+    "Starting Year": 2008,
+    "Ending Year": 2014,
+    "File Name": "CadillacCTSGen2.png"
+  },
+  {
+    "Make": "Cadillac",
+    "Model": "CTS",
+    "Starting Year": 2015,
+    "Ending Year": 2019,
+    "File Name": "CadillacCTSGen3.png"
+  },
+  {
+    "Make": "Cadillac",
+    "Model": "Escalade ESV",
+    "Starting Year": 2000,
+    "Ending Year": 2006,
+    "File Name": "CadillacEscaladeESVGen1.png"
+  },
+  {
+    "Make": "Cadillac",
+    "Model": "Escalade ESV",
+    "Starting Year": 2007,
+    "Ending Year": 2014,
+    "File Name": "CadillacEscaladeESVGen2.png"
+  },
+  {
+    "Make": "Cadillac",
+    "Model": "Escalade",
+    "Starting Year": 2000,
+    "Ending Year": 2006,
+    "File Name": "CadillacEscaladeGen1.png"
+  },
+  {
+    "Make": "Cadillac",
+    "Model": "Escalade",
+    "Starting Year": 2007,
+    "Ending Year": 2014,
+    "File Name": "CadillacEscaladeGen2.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Avalanche",
+    "Starting Year": 2002,
+    "Ending Year": 2006,
+    "File Name": "ChevroletAvalancheGen1.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Avalanche",
+    "Starting Year": 2007,
+    "Ending Year": 2013,
+    "File Name": "ChevroletAvalancheGen2.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Camaro",
+    "Starting Year": 1967,
+    "Ending Year": 1969,
+    "File Name": "ChevroletCamaroGen1.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Camaro",
+    "Starting Year": 1970,
+    "Ending Year": 1981,
+    "File Name": "ChevroletCamaroGen2.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Camaro",
+    "Starting Year": 1982,
+    "Ending Year": 1992,
+    "File Name": "ChevroletCamaroGen3.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Camaro",
+    "Starting Year": 1993,
+    "Ending Year": 2002,
+    "File Name": "ChevroletCamaroGen4.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Camaro",
+    "Starting Year": 2010,
+    "Ending Year": 2015,
+    "File Name": "ChevroletCamaroGen5.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Camaro",
+    "Starting Year": 2016,
+    "Ending Year": 2024,
+    "File Name": "ChevroletCamaroGen6.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Cobalt",
+    "Starting Year": 2005,
+    "Ending Year": 2010,
+    "File Name": "ChevroletCobalt.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Colorado",
+    "Starting Year": 2004,
+    "Ending Year": 2012,
+    "File Name": "ChevroletColoradoGen1.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Colorado",
+    "Starting Year": 2015,
+    "Ending Year": 2022,
+    "File Name": "ChevroletColoradoGen2.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Colorado",
+    "Starting Year": 2023,
+    "Ending Year": 2025,
+    "File Name": "ChevroletColoradoGen3.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Cruze",
+    "Starting Year": 2011,
+    "Ending Year": 2016,
+    "File Name": "ChevroletCruzeGen1.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Cruze",
+    "Starting Year": 2017,
+    "Ending Year": 2019,
+    "File Name": "ChevroletCruzeGen2.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Equinox",
+    "Starting Year": 2005,
+    "Ending Year": 2009,
+    "File Name": "ChevroletEquinoxGEN1.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Equinox",
+    "Starting Year": 2010,
+    "Ending Year": 2017,
+    "File Name": "ChevroletEquinoxGEN2.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Equinox",
+    "Starting Year": 2018,
+    "Ending Year": 2025,
+    "File Name": "ChevroletEquinoxGEN3.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Impala",
+    "Starting Year": 2017,
+    "Ending Year": 2020,
+    "File Name": "ChevroletImpalaGen10.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Impala",
+    "Starting Year": 1994,
+    "Ending Year": 1996,
+    "File Name": "ChevroletImpalaGen7.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Impala",
+    "Starting Year": 2000,
+    "Ending Year": 2005,
+    "File Name": "ChevroletImpalaGen8.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Impala",
+    "Starting Year": 2006,
+    "Ending Year": 2016,
+    "File Name": "ChevroletImpalaGen9.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Malibu",
+    "Starting Year": 1997,
+    "Ending Year": 2003,
+    "File Name": "ChevroletMalibuGen5.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Malibu",
+    "Starting Year": 2004,
+    "Ending Year": 2007,
+    "File Name": "ChevroletMalibuGen6.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Malibu",
+    "Starting Year": 2008,
+    "Ending Year": 2012,
+    "File Name": "ChevroletMalibuGen7.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Malibu",
+    "Starting Year": 2013,
+    "Ending Year": 2015,
+    "File Name": "ChevroletMalibuGen8.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Malibu",
+    "Starting Year": 2016,
+    "Ending Year": 2025,
+    "File Name": "ChevroletMalibuGen9.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Suburban",
+    "Starting Year": 2000,
+    "Ending Year": 2006,
+    "File Name": "ChevroletSuburbanGen9.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "K2500 Suburban",
+    "Starting Year": 2000,
+    "Ending Year": 2006,
+    "File Name": "ChevroletSuburbanGen9.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Blazer",
+    "Starting Year": 2019,
+    "Ending Year": 2023,
+    "File Name": "ChevyBlazerGen2.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Silverado 1500",
+    "Starting Year": 1999,
+    "Ending Year": 2006,
+    "File Name": "ChevroletSilverado1500Gen1.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Silverado 1500",
+    "Starting Year": 2007,
+    "Ending Year": 2013,
+    "File Name": "ChevroletSilverado1500Gen2.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Silverado 1500",
+    "Starting Year": 2014,
+    "Ending Year": 2018,
+    "File Name": "ChevroletSilverado1500Gen3.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Silverado 1500",
+    "Starting Year": 2019,
+    "Ending Year": 2023,
+    "File Name": "ChevroletSilverado1500Gen4.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Silverado 1500",
+    "Starting Year": 2024,
+    "Ending Year": 2025,
+    "File Name": "ChevroletSilverado1500Gen5.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Silverado",
+    "Starting Year": 1999,
+    "Ending Year": 2006,
+    "File Name": "ChevroletSilverado1500Gen1.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Silverado",
+    "Starting Year": 2007,
+    "Ending Year": 2013,
+    "File Name": "ChevroletSilverado1500Gen2.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Silverado",
+    "Starting Year": 2014,
+    "Ending Year": 2018,
+    "File Name": "ChevroletSilverado1500Gen3.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Silverado",
+    "Starting Year": 2019,
+    "Ending Year": 2023,
+    "File Name": "ChevroletSilverado1500Gen4.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Silverado",
+    "Starting Year": 2024,
+    "Ending Year": 2025,
+    "File Name": "ChevroletSilverado1500Gen5.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Silverado 2500HD",
+    "Starting Year": 2001,
+    "Ending Year": 2006,
+    "File Name": "ChevroletSilverado2500Gen1.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Silverado 2500HD",
+    "Starting Year": 2007,
+    "Ending Year": 2014,
+    "File Name": "ChevroletSilverado2500Gen2.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Silverado 2500HD",
+    "Starting Year": 2015,
+    "Ending Year": 2019,
+    "File Name": "ChevroletSilverado2500Gen3.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Silverado 2500HD",
+    "Starting Year": 2020,
+    "Ending Year": 2023,
+    "File Name": "ChevroletSilverado2500Gen4.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Silverado 2500HD",
+    "Starting Year": 2024,
+    "Ending Year": 2025,
+    "File Name": "ChevroletSilverado2500Gen5.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Tahoe",
+    "Starting Year": 1995,
+    "Ending Year": 1999,
+    "File Name": "ChevroletTahoeGen1.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Tahoe",
+    "Starting Year": 2000,
+    "Ending Year": 2006,
+    "File Name": "ChevroletTahoeGen2.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Tahoe",
+    "Starting Year": 2007,
+    "Ending Year": 2014,
+    "File Name": "ChevroletTahoeGen3.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Tahoe",
+    "Starting Year": 2015,
+    "Ending Year": 2020,
+    "File Name": "ChevroletTahoeGen4.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Tahoe",
+    "Starting Year": 2021,
+    "Ending Year": 2025,
+    "File Name": "ChevroletTahoeGen5.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Trailblazer",
+    "Starting Year": 2002,
+    "Ending Year": 2009,
+    "File Name": "ChevroletTrailBlazerGen1.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Trailblazer",
+    "Starting Year": 2021,
+    "Ending Year": 2025,
+    "File Name": "ChevroletTrailBlazerGen3.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Traverse",
+    "Starting Year": 2009,
+    "Ending Year": 2017,
+    "File Name": "ChevroletTraverseGen1.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Traverse",
+    "Starting Year": 2018,
+    "Ending Year": 2023,
+    "File Name": "ChevroletTraverseGen2.png"
+  },
+  {
+    "Make": "Chevrolet",
+    "Model": "Traverse",
+    "Starting Year": 2024,
+    "Ending Year": 2025,
+    "File Name": "ChevroletTraverseGen3.png"
+  },
+  {
+    "Make": "Chrysler",
+    "Model": "Sebring",
+    "Starting Year": 1995,
+    "Ending Year": 2000,
+    "File Name": "ChryslersebringGen1.png"
+  },
+  {
+    "Make": "Chrysler",
+    "Model": "Sebring",
+    "Starting Year": 2001,
+    "Ending Year": 2006,
+    "File Name": "ChryslersebringGen2.png"
+  },
+  {
+    "Make": "Chrysler",
+    "Model": "Sebring",
+    "Starting Year": 2007,
+    "Ending Year": 2010,
+    "File Name": "ChryslersebringGen3.png"
+  },
+  {
+    "Make": "Chrysler",
+    "Model": "200",
+    "Starting Year": 2011,
+    "Ending Year": 2014,
+    "File Name": "Chrysler200Gen1.png"
+  },
+  {
+    "Make": "Chrysler",
+    "Model": "200",
+    "Starting Year": 2015,
+    "Ending Year": 2017,
+    "File Name": "Chrysler200Gen2.png"
+  },
+  {
+    "Make": "Chrysler",
+    "Model": "300",
+    "Starting Year": 2005,
+    "Ending Year": 2010,
+    "File Name": "Chrysler300Gen1.png"
+  },
+  {
+    "Make": "Chrysler",
+    "Model": "300",
+    "Starting Year": 2011,
+    "Ending Year": 2023,
+    "File Name": "Chrysler300Gen2.png"
+  },
+  {
+    "Make": "Chrysler",
+    "Model": "PT Cruiser",
+    "Starting Year": 2001,
+    "Ending Year": 2005,
+    "File Name": "ChryslerPTCruiserGen1.png"
+  },
+  {
+    "Make": "Chrysler",
+    "Model": "PT Cruiser",
+    "Starting Year": 2006,
+    "Ending Year": 2010,
+    "File Name": "ChryslerPTCruiserGen2.png"
+  },
+  {
+    "Make": "Chrysler",
+    "Model": "Town & Country",
+    "Starting Year": 1990,
+    "Ending Year": 1995,
+    "File Name": "ChryslerTown&CountryGen1.png"
+  },
+  {
+    "Make": "Chrysler",
+    "Model": "Town & Country",
+    "Starting Year": 1996,
+    "Ending Year": 2000,
+    "File Name": "ChryslerTown&CountryGen2.png"
+  },
+  {
+    "Make": "Chrysler",
+    "Model": "Town & Country",
+    "Starting Year": 2001,
+    "Ending Year": 2007,
+    "File Name": "ChryslerTown&CountryGen3.png"
+  },
+  {
+    "Make": "Chrysler",
+    "Model": "Town & Country",
+    "Starting Year": 2008,
+    "Ending Year": 2010,
+    "File Name": "ChryslerTown&CountryGen4.png"
+  },
+  {
+    "Make": "Chrysler",
+    "Model": "Town & Country",
+    "Starting Year": 2011,
+    "Ending Year": 2016,
+    "File Name": "ChryslerTown&CountryGen5.png"
+  },
+  {
+    "Make": "Chrysler",
+    "Model": "Town and Country",
+    "Starting Year": 1990,
+    "Ending Year": 1995,
+    "File Name": "ChryslerTown&CountryGen1.png"
+  },
+  {
+    "Make": "Chrysler",
+    "Model": "Town and Country",
+    "Starting Year": 1996,
+    "Ending Year": 2000,
+    "File Name": "ChryslerTown&CountryGen2.png"
+  },
+  {
+    "Make": "Chrysler",
+    "Model": "Town and Country",
+    "Starting Year": 2001,
+    "Ending Year": 2007,
+    "File Name": "ChryslerTown&CountryGen3.png"
+  },
+  {
+    "Make": "Chrysler",
+    "Model": "Town and Country",
+    "Starting Year": 2008,
+    "Ending Year": 2010,
+    "File Name": "ChryslerTown&CountryGen4.png"
+  },
+  {
+    "Make": "Chrysler",
+    "Model": "Town and Country",
+    "Starting Year": 2011,
+    "Ending Year": 2016,
+    "File Name": "ChryslerTown&CountryGen5.png"
+  },
+  {
+    "Make": "Dodge",
+    "Model": "Avenger",
+    "Starting Year": 1995,
+    "Ending Year": 2000,
+    "File Name": "dodgeavengerGen1.png"
+  },
+  {
+    "Make": "Dodge",
+    "Model": "Avenger",
+    "Starting Year": 2008,
+    "Ending Year": 2014,
+    "File Name": "dodgeavengerGen2.png"
+  },
+  {
+    "Make": "Dodge",
+    "Model": "Caravan",
+    "Starting Year": 1984,
+    "Ending Year": 1990,
+    "File Name": "DodgeCaravanGen1.png"
+  },
+  {
+    "Make": "Dodge",
+    "Model": "Caravan",
+    "Starting Year": 1991,
+    "Ending Year": 1995,
+    "File Name": "DodgeCaravanGen2.png"
+  },
+  {
+    "Make": "Dodge",
+    "Model": "Caravan",
+    "Starting Year": 1996,
+    "Ending Year": 2000,
+    "File Name": "DodgeCaravanGen3.png"
+  },
+  {
+    "Make": "Dodge",
+    "Model": "Caravan",
+    "Starting Year": 2001,
+    "Ending Year": 2007,
+    "File Name": "DodgeCaravanGen4.png"
+  },
+  {
+    "Make": "Dodge",
+    "Model": "Caravan",
+    "Starting Year": 2008,
+    "Ending Year": 2020,
+    "File Name": "DodgeCaravanGen5.png"
+  },
+  {
+    "Make": "Dodge",
+    "Model": "Charger",
+    "Starting Year": 1966,
+    "Ending Year": 1967,
+    "File Name": "DodgeChargerGen1.png"
+  },
+  {
+    "Make": "Dodge",
+    "Model": "Charger",
+    "Starting Year": 1968,
+    "Ending Year": 1970,
+    "File Name": "DodgeChargerGen2.png"
+  },
+  {
+    "Make": "Dodge",
+    "Model": "Charger",
+    "Starting Year": 1971,
+    "Ending Year": 1974,
+    "File Name": "DodgeChargerGen3.png"
+  },
+  {
+    "Make": "Dodge",
+    "Model": "Charger",
+    "Starting Year": 1975,
+    "Ending Year": 1978,
+    "File Name": "DodgeChargerGen4.png"
+  },
+  {
+    "Make": "Dodge",
+    "Model": "Charger",
+    "Starting Year": 1982,
+    "Ending Year": 1987,
+    "File Name": "DodgeChargerGen5.png"
+  },
+  {
+    "Make": "Dodge",
+    "Model": "Charger",
+    "Starting Year": 2006,
+    "Ending Year": 2023,
+    "File Name": "DodgeChargerGen6.png"
+  },
+  {
+    "Make": "Dodge",
+    "Model": "Charger",
+    "Starting Year": 2024,
+    "Ending Year": 2025,
+    "File Name": "DodgeChargerGen7.png"
+  },
+  {
+    "Make": "Dodge",
+    "Model": "Dakota",
+    "Starting Year": 1987,
+    "Ending Year": 1996,
+    "File Name": "DodgeDakotaGen1.png"
+  },
+  {
+    "Make": "Dodge",
+    "Model": "Dakota",
+    "Starting Year": 1997,
+    "Ending Year": 2004,
+    "File Name": "DodgeDakotaGen2.png"
+  },
+  {
+    "Make": "Dodge",
+    "Model": "Dakota",
+    "Starting Year": 2005,
+    "Ending Year": 2011,
+    "File Name": "DodgeDakotaGen3.png"
+  },
+  {
+    "Make": "Dodge",
+    "Model": "Durango",
+    "Starting Year": 1998,
+    "Ending Year": 2003,
+    "File Name": "DodgeDurangoGen1.png"
+  },
+  {
+    "Make": "Dodge",
+    "Model": "Durango",
+    "Starting Year": 2004,
+    "Ending Year": 2009,
+    "File Name": "DodgeDurangoGen2.png"
+  },
+  {
+    "Make": "Dodge",
+    "Model": "Durango",
+    "Starting Year": 2011,
+    "Ending Year": 2023,
+    "File Name": "DodgeDurangoGen3.png"
+  },
+  {
+    "Make": "Dodge",
+    "Model": "Durango",
+    "Starting Year": 2024,
+    "Ending Year": 2025,
+    "File Name": "DodgeDurangoGen4.png"
+  },
+  {
+    "Make": "Dodge",
+    "Model": "Grand Caravan",
+    "Starting Year": 1984,
+    "Ending Year": 1990,
+    "File Name": "DodgeCaravanGen1.png"
+  },
+  {
+    "Make": "Dodge",
+    "Model": "Grand Caravan",
+    "Starting Year": 1991,
+    "Ending Year": 1995,
+    "File Name": "DodgeCaravanGen2.png"
+  },
+  {
+    "Make": "Dodge",
+    "Model": "Grand Caravan",
+    "Starting Year": 1996,
+    "Ending Year": 2000,
+    "File Name": "DodgeCaravanGen3.png"
+  },
+  {
+    "Make": "Dodge",
+    "Model": "Grand Caravan",
+    "Starting Year": 2001,
+    "Ending Year": 2007,
+    "File Name": "DodgeCaravanGen4.png"
+  },
+  {
+    "Make": "Dodge",
+    "Model": "Grand Caravan",
+    "Starting Year": 2008,
+    "Ending Year": 2020,
+    "File Name": "DodgeCaravanGen5.png"
+  },
+  {
+    "Make": "Dodge",
+    "Model": "Journey",
+    "Starting Year": 2009,
+    "Ending Year": 2010,
+    "File Name": "DodgeJourneyGen1.png"
+  },
+  {
+    "Make": "Dodge",
+    "Model": "Journey",
+    "Starting Year": 2011,
+    "Ending Year": 2020,
+    "File Name": "DodgeJourneyGen2.png"
+  },
+  {
+    "Make": "Dodge",
+    "Model": "Ram",
+    "Starting Year": 1981,
+    "Ending Year": 1993,
+    "File Name": "DodgeRamGen1.png"
+  },
+  {
+    "Make": "Dodge",
+    "Model": "Ram",
+    "Starting Year": 1994,
+    "Ending Year": 2001,
+    "File Name": "DodgeRamGen2.png"
+  },
+  {
+    "Make": "Dodge",
+    "Model": "Ram",
+    "Starting Year": 2002,
+    "Ending Year": 2008,
+    "File Name": "DodgeRamGen3.png"
+  },
+  {
+    "Make": "Dodge",
+    "Model": "Ram",
+    "Starting Year": 2009,
+    "Ending Year": 2018,
+    "File Name": "DodgeRamGen4.png"
+  },
+  {
+    "Make": "Dodge",
+    "Model": "Ram",
+    "Starting Year": 2019,
+    "Ending Year": 2025,
+    "File Name": "DodgeRamGen5.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "Edge",
+    "Starting Year": 2007,
+    "Ending Year": 2014,
+    "File Name": "fordedgeGen1.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "Edge",
+    "Starting Year": 2015,
+    "Ending Year": 2023,
+    "File Name": "fordedgeGen2.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "Fusion Hybrid",
+    "Starting Year": 2010,
+    "Ending Year": 2012,
+    "File Name": "FordFusionHybridGen1.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "Taurus",
+    "Starting Year": 1986,
+    "Ending Year": 1991,
+    "File Name": "fordtaurusGEN1.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "Taurus",
+    "Starting Year": 1992,
+    "Ending Year": 1995,
+    "File Name": "fordtaurusGen2.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "Taurus",
+    "Starting Year": 1996,
+    "Ending Year": 1999,
+    "File Name": "fordtaurusGen3.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "Taurus",
+    "Starting Year": 2000,
+    "Ending Year": 2007,
+    "File Name": "fordtaurusGen4.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "Escape",
+    "Starting Year": 2001,
+    "Ending Year": 2007,
+    "File Name": "FordEscapeGen1.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "Escape",
+    "Starting Year": 2008,
+    "Ending Year": 2012,
+    "File Name": "FordEscapeGen2.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "Escape",
+    "Starting Year": 2013,
+    "Ending Year": 2019,
+    "File Name": "FordEscapeGen3.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "Escape",
+    "Starting Year": 2020,
+    "Ending Year": 2025,
+    "File Name": "FordEscapeGen4.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "Expedition",
+    "Starting Year": 1997,
+    "Ending Year": 2002,
+    "File Name": "FordExpeditionGen1.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "Expedition",
+    "Starting Year": 2003,
+    "Ending Year": 2006,
+    "File Name": "FordExpeditionGen2.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "Expedition",
+    "Starting Year": 2007,
+    "Ending Year": 2017,
+    "File Name": "FordExpeditionGen3.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "Expedition",
+    "Starting Year": 2018,
+    "Ending Year": 2025,
+    "File Name": "FordExpeditionGen4.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "Explorer",
+    "Starting Year": 1991,
+    "Ending Year": 1994,
+    "File Name": "FordExplorerGen1.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "Explorer",
+    "Starting Year": 1995,
+    "Ending Year": 2001,
+    "File Name": "FordExplorerGen2.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "Explorer",
+    "Starting Year": 2002,
+    "Ending Year": 2005,
+    "File Name": "FordExplorerGen3.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "Explorer",
+    "Starting Year": 2006,
+    "Ending Year": 2010,
+    "File Name": "FordExplorerGen4.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "Explorer",
+    "Starting Year": 2011,
+    "Ending Year": 2019,
+    "File Name": "FordExplorerGen5.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "Explorer",
+    "Starting Year": 2020,
+    "Ending Year": 2025,
+    "File Name": "FordExplorerGen6.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "F-150",
+    "Starting Year": 1973,
+    "Ending Year": 1979,
+    "File Name": "FordF150Gen6.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "F-150",
+    "Starting Year": 1980,
+    "Ending Year": 1986,
+    "File Name": "FordF150Gen7.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "F-150",
+    "Starting Year": 1987,
+    "Ending Year": 1991,
+    "File Name": "FordF150Gen8.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "F-150",
+    "Starting Year": 1992,
+    "Ending Year": 1996,
+    "File Name": "FordF150Gen9.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "F-150",
+    "Starting Year": 1997,
+    "Ending Year": 2003,
+    "File Name": "FordF150Gen10.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "F-150",
+    "Starting Year": 2004,
+    "Ending Year": 2008,
+    "File Name": "FordF150Gen11.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "F-150",
+    "Starting Year": 2009,
+    "Ending Year": 2014,
+    "File Name": "FordF150Gen12.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "F-150",
+    "Starting Year": 2015,
+    "Ending Year": 2020,
+    "File Name": "FordF150Gen13.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "F-150",
+    "Starting Year": 2021,
+    "Ending Year": 2025,
+    "File Name": "FordF150Gen14.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "F150",
+    "Starting Year": 1973,
+    "Ending Year": 1979,
+    "File Name": "FordF150Gen6.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "F150",
+    "Starting Year": 1980,
+    "Ending Year": 1986,
+    "File Name": "FordF150Gen7.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "F150",
+    "Starting Year": 1987,
+    "Ending Year": 1991,
+    "File Name": "FordF150Gen8.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "F150",
+    "Starting Year": 1992,
+    "Ending Year": 1996,
+    "File Name": "FordF150Gen9.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "F150",
+    "Starting Year": 1997,
+    "Ending Year": 2003,
+    "File Name": "FordF150Gen10.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "F150",
+    "Starting Year": 2004,
+    "Ending Year": 2008,
+    "File Name": "FordF150Gen11.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "F150",
+    "Starting Year": 2009,
+    "Ending Year": 2014,
+    "File Name": "FordF150Gen12.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "F150",
+    "Starting Year": 2015,
+    "Ending Year": 2020,
+    "File Name": "FordF150Gen13.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "F150",
+    "Starting Year": 2021,
+    "Ending Year": 2025,
+    "File Name": "FordF150Gen14.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "Focus",
+    "Starting Year": 1998,
+    "Ending Year": 2007,
+    "File Name": "FordFocusGen1.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "Focus",
+    "Starting Year": 2008,
+    "Ending Year": 2011,
+    "File Name": "FordFocusGen2.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "Focus",
+    "Starting Year": 2012,
+    "Ending Year": 2018,
+    "File Name": "FordFocusGen3.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "Focus",
+    "Starting Year": 2019,
+    "Ending Year": 2023,
+    "File Name": "FordFocusGen4.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "Fusion",
+    "Starting Year": 2006,
+    "Ending Year": 2012,
+    "File Name": "FordFusionGen1.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "Fusion",
+    "Starting Year": 2013,
+    "Ending Year": 2020,
+    "File Name": "FordFusionGen2.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "Mustang",
+    "Starting Year": 1964,
+    "Ending Year": 1973,
+    "File Name": "FordMustangGen1.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "Mustang",
+    "Starting Year": 1974,
+    "Ending Year": 1978,
+    "File Name": "FordMustangGen2.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "Mustang",
+    "Starting Year": 1979,
+    "Ending Year": 1993,
+    "File Name": "FordMustangGen3.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "Mustang",
+    "Starting Year": 1994,
+    "Ending Year": 2004,
+    "File Name": "FordMustangGen4.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "Mustang",
+    "Starting Year": 2005,
+    "Ending Year": 2014,
+    "File Name": "FordMustangGen5.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "Mustang",
+    "Starting Year": 2015,
+    "Ending Year": 2023,
+    "File Name": "FordMustangGen6.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "Mustang",
+    "Starting Year": 2024,
+    "Ending Year": 2025,
+    "File Name": "FordMustangGen7.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "Ranger",
+    "Starting Year": 1983,
+    "Ending Year": 1992,
+    "File Name": "FordRangerGen1.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "Ranger",
+    "Starting Year": 1993,
+    "Ending Year": 1997,
+    "File Name": "FordRangerGen2.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "Ranger",
+    "Starting Year": 1998,
+    "Ending Year": 2012,
+    "File Name": "FordRangerGen3.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "Ranger",
+    "Starting Year": 2019,
+    "Ending Year": 2022,
+    "File Name": "FordRangerGen4.png"
+  },
+  {
+    "Make": "Ford",
+    "Model": "Ranger",
+    "Starting Year": 2023,
+    "Ending Year": 2025,
+    "File Name": "FordRangerGen5.png"
+  },
+  {
+    "Make": "GMC",
+    "Model": "Acadia",
+    "Starting Year": 2007,
+    "Ending Year": 2016,
+    "File Name": "GMCAcadiaGen1.png"
+  },
+  {
+    "Make": "GMC",
+    "Model": "Acadia",
+    "Starting Year": 2017,
+    "Ending Year": 2023,
+    "File Name": "GMCAcadiaGen2.png"
+  },
+  {
+    "Make": "GMC",
+    "Model": "Acadia",
+    "Starting Year": 2024,
+    "Ending Year": 2025,
+    "File Name": "GMCAcadiaGen3.png"
+  },
+  {
+    "Make": "GMC",
+    "Model": "Yukon Denali",
+    "Starting Year": 2001,
+    "Ending Year": 2006,
+    "File Name": "GMCYukonDenaliGen2.png"
+  },
+  {
+    "Make": "GMC",
+    "Model": "Envoy",
+    "Starting Year": 1998,
+    "Ending Year": 2000,
+    "File Name": "GMCEnvoyGen1.png"
+  },
+  {
+    "Make": "GMC",
+    "Model": "Envoy",
+    "Starting Year": 2002,
+    "Ending Year": 2009,
+    "File Name": "GMCEnvoyGen2.png"
+  },
+  {
+    "Make": "GMC",
+    "Model": "Sierra",
+    "Starting Year": 1999,
+    "Ending Year": 2006,
+    "File Name": "GMCsierraGen1.png"
+  },
+  {
+    "Make": "GMC",
+    "Model": "Sierra",
+    "Starting Year": 2007,
+    "Ending Year": 2013,
+    "File Name": "GMCsierraGen2.png"
+  },
+  {
+    "Make": "GMC",
+    "Model": "Sierra",
+    "Starting Year": 2014,
+    "Ending Year": 2018,
+    "File Name": "GMCsierraGen3.png"
+  },
+  {
+    "Make": "GMC",
+    "Model": "Sierra",
+    "Starting Year": 2019,
+    "Ending Year": 2023,
+    "File Name": "GMCsierraGen4.png"
+  },
+  {
+    "Make": "GMC",
+    "Model": "Sierra",
+    "Starting Year": 2024,
+    "Ending Year": 2025,
+    "File Name": "GMCsierraGen5.png"
+  },
+  {
+    "Make": "GMC",
+    "Model": "Terrain",
+    "Starting Year": 2010,
+    "Ending Year": 2017,
+    "File Name": "GMCTerrainGen1.png"
+  },
+  {
+    "Make": "GMC",
+    "Model": "Terrain",
+    "Starting Year": 2018,
+    "Ending Year": 2025,
+    "File Name": "GMCTerrainGen2.png"
+  },
+  {
+    "Make": "GMC",
+    "Model": "Yukon",
+    "Starting Year": 1992,
+    "Ending Year": 1999,
+    "File Name": "GMCYukonGen1.png"
+  },
+  {
+    "Make": "GMC",
+    "Model": "Yukon",
+    "Starting Year": 2000,
+    "Ending Year": 2006,
+    "File Name": "GMCYukonGen2.png"
+  },
+  {
+    "Make": "GMC",
+    "Model": "Yukon",
+    "Starting Year": 2007,
+    "Ending Year": 2014,
+    "File Name": "GMCYukonGen3.png"
+  },
+  {
+    "Make": "GMC",
+    "Model": "Yukon",
+    "Starting Year": 2015,
+    "Ending Year": 2020,
+    "File Name": "GMCYukonGen4.png"
+  },
+  {
+    "Make": "GMC",
+    "Model": "Yukon",
+    "Starting Year": 2021,
+    "Ending Year": 2025,
+    "File Name": "GMCYukonGen5.png"
+  },
+  {
+    "Make": "Honda",
+    "Model": "Accord",
+    "Starting Year": 2018,
+    "Ending Year": 2022,
+    "File Name": "HondaAccordGen10.png"
+  },
+  {
+    "Make": "Honda",
+    "Model": "Accord",
+    "Starting Year": 2023,
+    "Ending Year": 2025,
+    "File Name": "HondaAccordGen11.png"
+  },
+  {
+    "Make": "Honda",
+    "Model": "Accord",
+    "Starting Year": 2003,
+    "Ending Year": 2007,
+    "File Name": "HondaAccordGen7.png"
+  },
+  {
+    "Make": "Honda",
+    "Model": "Accord",
+    "Starting Year": 2008,
+    "Ending Year": 2012,
+    "File Name": "HondaAccordGen8.png"
+  },
+  {
+    "Make": "Honda",
+    "Model": "Accord",
+    "Starting Year": 2013,
+    "Ending Year": 2017,
+    "File Name": "HondaAccordGen9.png"
+  },
+  {
+    "Make": "Honda",
+    "Model": "Pilot",
+    "Starting Year": 2009,
+    "Ending Year": 2015,
+    "File Name": "HondaPilotGen2.png"
+  },
+  {
+    "Make": "Honda",
+    "Model": "Civic",
+    "Starting Year": 1972,
+    "Ending Year": 1979,
+    "File Name": "HondaCivicGen1.png"
+  },
+  {
+    "Make": "Honda",
+    "Model": "Civic",
+    "Starting Year": 1980,
+    "Ending Year": 1983,
+    "File Name": "HondaCivicGen2.png"
+  },
+  {
+    "Make": "Honda",
+    "Model": "Civic",
+    "Starting Year": 1984,
+    "Ending Year": 1987,
+    "File Name": "HondaCivicGen3.png"
+  },
+  {
+    "Make": "Honda",
+    "Model": "Civic",
+    "Starting Year": 1988,
+    "Ending Year": 1991,
+    "File Name": "HondaCivicGen4.png"
+  },
+  {
+    "Make": "Honda",
+    "Model": "Civic",
+    "Starting Year": 1992,
+    "Ending Year": 1995,
+    "File Name": "HondaCivicGen5.png"
+  },
+  {
+    "Make": "Honda",
+    "Model": "Civic",
+    "Starting Year": 1996,
+    "Ending Year": 2000,
+    "File Name": "HondaCivicGen6.png"
+  },
+  {
+    "Make": "Honda",
+    "Model": "Civic",
+    "Starting Year": 2001,
+    "Ending Year": 2005,
+    "File Name": "HondaCivicGen7.png"
+  },
+  {
+    "Make": "Honda",
+    "Model": "Civic",
+    "Starting Year": 2006,
+    "Ending Year": 2011,
+    "File Name": "HondaCivicGen8.png"
+  },
+  {
+    "Make": "Honda",
+    "Model": "Civic",
+    "Starting Year": 2012,
+    "Ending Year": 2015,
+    "File Name": "HondaCivicGen9.png"
+  },
+  {
+    "Make": "Honda",
+    "Model": "Civic",
+    "Starting Year": 2016,
+    "Ending Year": 2021,
+    "File Name": "HondaCivicGen10.png"
+  },
+  {
+    "Make": "Honda",
+    "Model": "Civic",
+    "Starting Year": 2022,
+    "Ending Year": 2025,
+    "File Name": "HondaCivicGen11.png"
+  },
+  {
+    "Make": "Honda",
+    "Model": "CR-V",
+    "Starting Year": 1997,
+    "Ending Year": 2001,
+    "File Name": "HondaCRVGen1.png"
+  },
+  {
+    "Make": "Honda",
+    "Model": "CR-V",
+    "Starting Year": 2002,
+    "Ending Year": 2006,
+    "File Name": "HondaCRVGen2.png"
+  },
+  {
+    "Make": "Honda",
+    "Model": "CR-V",
+    "Starting Year": 2007,
+    "Ending Year": 2011,
+    "File Name": "HondaCRVGen3.png"
+  },
+  {
+    "Make": "Honda",
+    "Model": "CR-V",
+    "Starting Year": 2012,
+    "Ending Year": 2016,
+    "File Name": "HondaCRVGen4.png"
+  },
+  {
+    "Make": "Honda",
+    "Model": "CR-V",
+    "Starting Year": 2017,
+    "Ending Year": 2022,
+    "File Name": "HondaCRVGen5.png"
+  },
+  {
+    "Make": "Honda",
+    "Model": "CR-V",
+    "Starting Year": 2023,
+    "Ending Year": 2025,
+    "File Name": "HondaCRVGen6.png"
+  },
+  {
+    "Make": "Honda",
+    "Model": "Odyssey",
+    "Starting Year": 1995,
+    "Ending Year": 1998,
+    "File Name": "HondaOdysseyGen1.png"
+  },
+  {
+    "Make": "Honda",
+    "Model": "Odyssey",
+    "Starting Year": 1999,
+    "Ending Year": 2004,
+    "File Name": "HondaOdysseyGen2.png"
+  },
+  {
+    "Make": "Honda",
+    "Model": "Odyssey",
+    "Starting Year": 2005,
+    "Ending Year": 2010,
+    "File Name": "HondaOdysseyGen3.png"
+  },
+  {
+    "Make": "Honda",
+    "Model": "Odyssey",
+    "Starting Year": 2011,
+    "Ending Year": 2017,
+    "File Name": "HondaOdysseyGen4.png"
+  },
+  {
+    "Make": "Honda",
+    "Model": "Odyssey",
+    "Starting Year": 2018,
+    "Ending Year": 2025,
+    "File Name": "HondaOdysseyGen5.png"
+  },
+  {
+    "Make": "Hyundai",
+    "Model": "Sonata",
+    "Starting Year": 1999,
+    "Ending Year": 2005,
+    "File Name": "HyundaiSonataGen4.png"
+  },
+  {
+    "Make": "Hyundai",
+    "Model": "Sonata",
+    "Starting Year": 2006,
+    "Ending Year": 2010,
+    "File Name": "HyundaiSonataGen5.png"
+  },
+  {
+    "Make": "Hyundai",
+    "Model": "Sonata",
+    "Starting Year": 2011,
+    "Ending Year": 2014,
+    "File Name": "HyundaiSonataGen6.png"
+  },
+  {
+    "Make": "Hyundai",
+    "Model": "Sonata",
+    "Starting Year": 2015,
+    "Ending Year": 2019,
+    "File Name": "HyundaiSonataGen7.png"
+  },
+  {
+    "Make": "Hyundai",
+    "Model": "Sonata",
+    "Starting Year": 2020,
+    "Ending Year": 2025,
+    "File Name": "HyundaiSonataGen8.png"
+  },
+  {
+    "Make": "Hyundai",
+    "Model": "Accent",
+    "Starting Year": 1995,
+    "Ending Year": 1999,
+    "File Name": "HyundaiAccentGen1.png"
+  },
+  {
+    "Make": "Hyundai",
+    "Model": "Accent",
+    "Starting Year": 2000,
+    "Ending Year": 2005,
+    "File Name": "HyundaiAccentGen2.png"
+  },
+  {
+    "Make": "Hyundai",
+    "Model": "Accent",
+    "Starting Year": 2006,
+    "Ending Year": 2011,
+    "File Name": "HyundaiAccentGen3.png"
+  },
+  {
+    "Make": "Hyundai",
+    "Model": "Accent",
+    "Starting Year": 2012,
+    "Ending Year": 2017,
+    "File Name": "HyundaiAccentGen4.png"
+  },
+  {
+    "Make": "Hyundai",
+    "Model": "Accent",
+    "Starting Year": 2018,
+    "Ending Year": 2022,
+    "File Name": "HyundaiAccentGen5.png"
+  },
+  {
+    "Make": "Hyundai",
+    "Model": "Elantra",
+    "Starting Year": 1991,
+    "Ending Year": 1995,
+    "File Name": "HyundaiElantraGen1.png"
+  },
+  {
+    "Make": "Hyundai",
+    "Model": "Elantra",
+    "Starting Year": 1996,
+    "Ending Year": 2000,
+    "File Name": "HyundaiElantraGen2.png"
+  },
+  {
+    "Make": "Hyundai",
+    "Model": "Elantra",
+    "Starting Year": 2001,
+    "Ending Year": 2006,
+    "File Name": "HyundaiElantraGen3.png"
+  },
+  {
+    "Make": "Hyundai",
+    "Model": "Elantra",
+    "Starting Year": 2007,
+    "Ending Year": 2010,
+    "File Name": "HyundaiElantraGen4.png"
+  },
+  {
+    "Make": "Hyundai",
+    "Model": "Elantra",
+    "Starting Year": 2011,
+    "Ending Year": 2016,
+    "File Name": "HyundaiElantraGen5.png"
+  },
+  {
+    "Make": "Hyundai",
+    "Model": "Elantra",
+    "Starting Year": 2017,
+    "Ending Year": 2020,
+    "File Name": "HyundaiElantraGen6.png"
+  },
+  {
+    "Make": "Hyundai",
+    "Model": "Elantra",
+    "Starting Year": 2021,
+    "Ending Year": 2025,
+    "File Name": "HyundaiElantraGen7.png"
+  },
+  {
+    "Make": "Hyundai",
+    "Model": "Santa Fe",
+    "Starting Year": 2001,
+    "Ending Year": 2006,
+    "File Name": "HyundaiSantaFeGen1.png"
+  },
+  {
+    "Make": "Hyundai",
+    "Model": "Santa Fe",
+    "Starting Year": 2007,
+    "Ending Year": 2012,
+    "File Name": "HyundaiSantaFeGen2.png"
+  },
+  {
+    "Make": "Hyundai",
+    "Model": "Santa Fe",
+    "Starting Year": 2013,
+    "Ending Year": 2018,
+    "File Name": "HyundaiSantaFeGen3.png"
+  },
+  {
+    "Make": "Hyundai",
+    "Model": "Santa Fe",
+    "Starting Year": 2019,
+    "Ending Year": 2023,
+    "File Name": "HyundaiSantaFeGen4.png"
+  },
+  {
+    "Make": "Hyundai",
+    "Model": "Santa Fe",
+    "Starting Year": 2024,
+    "Ending Year": 2025,
+    "File Name": "HyundaiSantaFeGen5.png"
+  },
+  {
+    "Make": "Hyundai",
+    "Model": "Tucson",
+    "Starting Year": 2004,
+    "Ending Year": 2009,
+    "File Name": "HyundaiTucsonGen1.png"
+  },
+  {
+    "Make": "Hyundai",
+    "Model": "Tucson",
+    "Starting Year": 2010,
+    "Ending Year": 2015,
+    "File Name": "HyundaiTucsonGen2.png"
+  },
+  {
+    "Make": "Hyundai",
+    "Model": "Tucson",
+    "Starting Year": 2016,
+    "Ending Year": 2020,
+    "File Name": "HyundaiTucsonGen3.png"
+  },
+  {
+    "Make": "Hyundai",
+    "Model": "Tucson",
+    "Starting Year": 2021,
+    "Ending Year": 2025,
+    "File Name": "HyundaiTucsonGen4.png"
+  },
+  {
+    "Make": "Jeep",
+    "Model": "Grand Cherokee",
+    "Starting Year": 2005,
+    "Ending Year": 2010,
+    "File Name": "JeepGrandCherokeeGen3.png"
+  },
+  {
+    "Make": "Jeep",
+    "Model": "Grand Cherokee",
+    "Starting Year": 2011,
+    "Ending Year": 2021,
+    "File Name": "JeepGrandCherokeeGen4.png"
+  },
+  {
+    "Make": "Jeep",
+    "Model": "Liberty",
+    "Starting Year": 2002,
+    "Ending Year": 2007,
+    "File Name": "JeepLibertyGen1.png"
+  },
+  {
+    "Make": "Jeep",
+    "Model": "Liberty",
+    "Starting Year": 2008,
+    "Ending Year": 2012,
+    "File Name": "JeepLibertyGen2.png"
+  },
+  {
+    "Make": "Jeep",
+    "Model": "Wrangler Unlimited",
+    "Starting Year": 2007,
+    "Ending Year": 2018,
+    "File Name": "JeepWranglerUnlimitedGen1.png"
+  },
+  {
+    "Make": "Jeep",
+    "Model": "Wrangler Unlimited",
+    "Starting Year": 2019,
+    "Ending Year": 2023,
+    "File Name": "JeepWranglerUnlimitedGen2.png"
+  },
+  {
+    "Make": "Jeep",
+    "Model": "Wrangler Unlimited",
+    "Starting Year": 2024,
+    "Ending Year": 2025,
+    "File Name": "JeepWranglerUnlimitedGen3.png"
+  },
+  {
+    "Make": "Jeep",
+    "Model": "Wrangler",
+    "Starting Year": 1987,
+    "Ending Year": 1995,
+    "File Name": "JeepWranglerGen1.png"
+  },
+  {
+    "Make": "Jeep",
+    "Model": "Wrangler",
+    "Starting Year": 1997,
+    "Ending Year": 2006,
+    "File Name": "JeepWranglerGen2.png"
+  },
+  {
+    "Make": "Jeep",
+    "Model": "Wrangler",
+    "Starting Year": 2007,
+    "Ending Year": 2018,
+    "File Name": "JeepWranglerGen3.png"
+  },
+  {
+    "Make": "Jeep",
+    "Model": "Wrangler",
+    "Starting Year": 2019,
+    "Ending Year": 2025,
+    "File Name": "JeepWranglerGen4.png"
+  },
+  {
+    "Make": "Mercedes Benz",
+    "Model": "C Class",
+    "Starting Year": 2007,
+    "Ending Year": 2014,
+    "File Name": "MercedesW204.png"
+  },
+  {
+    "Make": "Nissan",
+    "Model": "Altima",
+    "Starting Year": 1998,
+    "Ending Year": 2001,
+    "File Name": "NissanAltimaGen2.png"
+  },
+  {
+    "Make": "Nissan",
+    "Model": "Altima",
+    "Starting Year": 2002,
+    "Ending Year": 2006,
+    "File Name": "NissanAltimaGen3.png"
+  },
+  {
+    "Make": "Nissan",
+    "Model": "Altima",
+    "Starting Year": 2007,
+    "Ending Year": 2012,
+    "File Name": "NissanAltimaGen4.png"
+  },
+  {
+    "Make": "Nissan",
+    "Model": "Altima",
+    "Starting Year": 2013,
+    "Ending Year": 2018,
+    "File Name": "NissanAltimaGen5.png"
+  },
+  {
+    "Make": "Nissan",
+    "Model": "Altima",
+    "Starting Year": 2019,
+    "Ending Year": 2025,
+    "File Name": "NissanAltimaGen7.png"
+  },
+  {
+    "Make": "Nissan",
+    "Model": "Pathfinder",
+    "Starting Year": 1986,
+    "Ending Year": 1995,
+    "File Name": "NissanPathfinderGen1.png"
+  },
+  {
+    "Make": "Nissan",
+    "Model": "Pathfinder",
+    "Starting Year": 1996,
+    "Ending Year": 2004,
+    "File Name": "NissanPathfinderGen2.png"
+  },
+  {
+    "Make": "Nissan",
+    "Model": "Pathfinder",
+    "Starting Year": 2005,
+    "Ending Year": 2012,
+    "File Name": "NissanPathfinderGen3.png"
+  },
+  {
+    "Make": "Nissan",
+    "Model": "Pathfinder",
+    "Starting Year": 2013,
+    "Ending Year": 2020,
+    "File Name": "NissanPathfinderGen4.png"
+  },
+  {
+    "Make": "Nissan",
+    "Model": "Pathfinder",
+    "Starting Year": 2022,
+    "Ending Year": 2025,
+    "File Name": "NissanPathfinderGen5.png"
+  },
+  {
+    "Make": "Ram",
+    "Model": "Ram Pickup 1500",
+    "Starting Year": 1981,
+    "Ending Year": 1993,
+    "File Name": "DodgeRamGen1.png"
+  },
+  {
+    "Make": "Ram",
+    "Model": "Ram Pickup 1500",
+    "Starting Year": 1994,
+    "Ending Year": 2001,
+    "File Name": "DodgeRamGen2.png"
+  },
+  {
+    "Make": "Ram",
+    "Model": "Ram Pickup 1500",
+    "Starting Year": 2002,
+    "Ending Year": 2008,
+    "File Name": "DodgeRamGen3.png"
+  },
+  {
+    "Make": "Ram",
+    "Model": "Ram Pickup 1500",
+    "Starting Year": 2009,
+    "Ending Year": 2018,
+    "File Name": "DodgeRamGen4.png"
+  },
+  {
+    "Make": "Ram",
+    "Model": "Ram Pickup 1500",
+    "Starting Year": 2019,
+    "Ending Year": 2025,
+    "File Name": "DodgeRamGen5.png"
+  },
+  {
+    "Make": "Toyota",
+    "Model": "Highlander",
+    "Starting Year": 2001,
+    "Ending Year": 2007,
+    "File Name": "ToyotaHighlanderGen1.png"
+  },
+  {
+    "Make": "Toyota",
+    "Model": "Highlander",
+    "Starting Year": 2007,
+    "Ending Year": 2013,
+    "File Name": "ToyotaHighlanderGen2.png"
+  },
+  {
+    "Make": "Toyota",
+    "Model": "Highlander",
+    "Starting Year": 2014,
+    "Ending Year": 2019,
+    "File Name": "ToyotaHighlanderGen3.png"
+  },
+  {
+    "Make": "Toyota",
+    "Model": "Highlander",
+    "Starting Year": 2020,
+    "Ending Year": 2025,
+    "File Name": "ToyotaHighlanderGen4.png"
+  },
+  {
+    "Make": "Toyota",
+    "Model": "Camry",
+    "Starting Year": 1983,
+    "Ending Year": 1986,
+    "File Name": "ToyotaCamryGen1.png"
+  },
+  {
+    "Make": "Toyota",
+    "Model": "Camry",
+    "Starting Year": 1987,
+    "Ending Year": 1991,
+    "File Name": "ToyotaCamryGen2.png"
+  },
+  {
+    "Make": "Toyota",
+    "Model": "Camry",
+    "Starting Year": 1992,
+    "Ending Year": 1996,
+    "File Name": "ToyotaCamryGen3.png"
+  },
+  {
+    "Make": "Toyota",
+    "Model": "Camry",
+    "Starting Year": 1997,
+    "Ending Year": 2001,
+    "File Name": "ToyotaCamryGen4.png"
+  },
+  {
+    "Make": "Toyota",
+    "Model": "Camry",
+    "Starting Year": 2002,
+    "Ending Year": 2006,
+    "File Name": "ToyotaCamryGen5.png"
+  },
+  {
+    "Make": "Toyota",
+    "Model": "Camry",
+    "Starting Year": 2007,
+    "Ending Year": 2011,
+    "File Name": "ToyotaCamryGen6.png"
+  },
+  {
+    "Make": "Toyota",
+    "Model": "Camry",
+    "Starting Year": 2012,
+    "Ending Year": 2017,
+    "File Name": "ToyotaCamryGen7.png"
+  },
+  {
+    "Make": "Toyota",
+    "Model": "Camry",
+    "Starting Year": 2018,
+    "Ending Year": 2024,
+    "File Name": "ToyotaCamryGen8.png"
+  },
+  {
+    "Make": "Volkswagen",
+    "Model": "Jetta",
+    "Starting Year": 1993,
+    "Ending Year": 1998,
+    "File Name": "VolkswagenJettaGen3.png"
+  },
+  {
+    "Make": "Volkswagen",
+    "Model": "Jetta",
+    "Starting Year": 1999,
+    "Ending Year": 2004,
+    "File Name": "VolkswagenJettaGen4.png"
+  },
+  {
+    "Make": "Volkswagen",
+    "Model": "Jetta",
+    "Starting Year": 2005,
+    "Ending Year": 2010,
+    "File Name": "VolkswagenJettaGen5.png"
+  },
+  {
+    "Make": "Volkswagen",
+    "Model": "Jetta",
+    "Starting Year": 2011,
+    "Ending Year": 2018,
+    "File Name": "VolkswagenJettaGen6.png"
+  },
+  {
+    "Make": "Volkswagen",
+    "Model": "Jetta",
+    "Starting Year": 2019,
+    "Ending Year": 2024,
+    "File Name": "VolkswagenJettaGen7.png"
+  }
+]

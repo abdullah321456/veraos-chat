@@ -1,6 +1,7 @@
 import { Button } from '@/components/atom/button';
 import { Input } from '@/components/atom/form-elements/input';
 import cn from '@/lib/utils/cn';
+import { getVehicleImageUrl } from '@/lib/utils/vehicle-image';
 import Image from 'next/image';
 import { Dispatch, SetStateAction, SVGProps, useState } from 'react';
 import { PiTrash } from 'react-icons/pi';
@@ -65,16 +66,19 @@ export function VehicleOwnership({ isEditable = false, isDrawer, details }: Vehi
     // If automobile is an array, map through each vehicle
     details.automobile.forEach((vehicle: any) => {
       if (vehicle && (vehicle.MAKE || vehicle.MODEL || vehicle.VIN)) {
+        const make = capitalizeWords(vehicle.MAKE || '');
+        const model = capitalizeWords(vehicle.MODEL || '');
+        const year = vehicle.YEAR?.toString() || '';
         vehicleData.push({
-          name: `${capitalizeWords(vehicle.MAKE || '')} ${capitalizeWords(vehicle.MODEL || '')}`,
-          make: capitalizeWords(vehicle.MAKE || ''),
-          model: capitalizeWords(vehicle.MODEL || ''),
-          year: vehicle.YEAR?.toString() || '',
+          name: `${make} ${model}`,
+          make,
+          model,
+          year,
           color: vehicle.COLOR || 'N/A',
           vin: vehicle.VIN || '',
           licNumber: vehicle.LIC_NUMBER || '',
           licState: vehicle.LIC_STATE || '',
-          image: '/red-car.png',
+          image: getVehicleImageUrl(make, model, year),
           vehicleType: 'car',
         });
       }
@@ -83,16 +87,19 @@ export function VehicleOwnership({ isEditable = false, isDrawer, details }: Vehi
     // Fallback: if automobile is a single object, convert to array format
     const vehicle = details.automobile;
     if (vehicle.MAKE || vehicle.MODEL || vehicle.VIN) {
+      const make = capitalizeWords(vehicle.MAKE || '');
+      const model = capitalizeWords(vehicle.MODEL || '');
+      const year = vehicle.YEAR?.toString() || '';
       vehicleData.push({
-        name: `${capitalizeWords(vehicle.MAKE || '')} ${capitalizeWords(vehicle.MODEL || '')}`,
-        make: capitalizeWords(vehicle.MAKE || ''),
-        model: capitalizeWords(vehicle.MODEL || ''),
-        year: vehicle.YEAR?.toString() || '',
+        name: `${make} ${model}`,
+        make,
+        model,
+        year,
         color: vehicle.COLOR || 'N/A',
         vin: vehicle.VIN || '',
         licNumber: vehicle.LIC_NUMBER || '',
         licState: vehicle.LIC_STATE || '',
-        image: '/red-car.png',
+        image: getVehicleImageUrl(make, model, year),
         vehicleType: 'car',
       });
     }
@@ -103,16 +110,19 @@ export function VehicleOwnership({ isEditable = false, isDrawer, details }: Vehi
     // If motorcycles is an array, map through each motorcycle
     details.motorcycles.forEach((motorcycle: any) => {
       if (motorcycle && (motorcycle.Motorcycle_Make || motorcycle.Motorcycle_Model || motorcycle.Motorcycle_VIN)) {
+        const make = capitalizeWords(motorcycle.Motorcycle_Make || '');
+        const model = capitalizeWords(motorcycle.Motorcycle_Model || '');
+        const year = motorcycle.Motorcycle_Year?.toString() || '';
         vehicleData.push({
-          name: `${capitalizeWords(motorcycle.Motorcycle_Make || '')} ${capitalizeWords(motorcycle.Motorcycle_Model || '')}`,
-          make: capitalizeWords(motorcycle.Motorcycle_Make || ''),
-          model: capitalizeWords(motorcycle.Motorcycle_Model || ''),
-          year: motorcycle.Motorcycle_Year?.toString() || '',
+          name: `${make} ${model}`,
+          make,
+          model,
+          year,
           color: motorcycle.Motorcycle_Style || 'N/A',
           vin: motorcycle.Motorcycle_VIN || '',
           licNumber: motorcycle.LIC_NUMBER || '',
           licState: motorcycle.LIC_STATE || '',
-          image: '/red-car.png',
+          image: getVehicleImageUrl(make, model, year),
           vehicleType: 'motorcycle',
         });
       }
@@ -121,16 +131,19 @@ export function VehicleOwnership({ isEditable = false, isDrawer, details }: Vehi
     // Fallback: if motorcycles is a single object, convert to array format
     const motorcycle = details.motorcycles;
     if (motorcycle.Motorcycle_Make || motorcycle.Motorcycle_Model || motorcycle.Motorcycle_VIN) {
+      const make = capitalizeWords(motorcycle.Motorcycle_Make || '');
+      const model = capitalizeWords(motorcycle.Motorcycle_Model || '');
+      const year = motorcycle.Motorcycle_Year?.toString() || '';
       vehicleData.push({
-        name: `${capitalizeWords(motorcycle.Motorcycle_Make || '')} ${capitalizeWords(motorcycle.Motorcycle_Model || '')}`,
-        make: capitalizeWords(motorcycle.Motorcycle_Make || ''),
-        model: capitalizeWords(motorcycle.Motorcycle_Model || ''),
-        year: motorcycle.Motorcycle_Year?.toString() || '',
+        name: `${make} ${model}`,
+        make,
+        model,
+        year,
         color: motorcycle.Motorcycle_Style || 'N/A',
         vin: motorcycle.Motorcycle_VIN || '',
         licNumber: motorcycle.LIC_NUMBER || '',
         licState: motorcycle.LIC_STATE || '',
-        image: '/red-car.png',
+        image: getVehicleImageUrl(make, model, year),
         vehicleType: 'motorcycle',
       });
     }
@@ -141,16 +154,19 @@ export function VehicleOwnership({ isEditable = false, isDrawer, details }: Vehi
     // If rv is an array, map through each RV
     details.rv.forEach((rv: any) => {
       if (rv && (rv.Make || rv.Model || rv.VIN)) {
+        const make = capitalizeWords(rv.Make || '');
+        const model = capitalizeWords(rv.Model || '');
+        const year = rv.MYear?.toString() || '';
         vehicleData.push({
-          name: `${capitalizeWords(rv.Make || '')} ${capitalizeWords(rv.Model || '')}`,
-          make: capitalizeWords(rv.Make || ''),
-          model: capitalizeWords(rv.Model || ''),
-          year: rv.MYear?.toString() || '',
+          name: `${make} ${model}`,
+          make,
+          model,
+          year,
           color: 'N/A', // RVs don't typically have color in this format
           vin: rv.VIN || '',
           licNumber: rv.LIC_NUMBER || '',
           licState: rv.LIC_STATE || '',
-          image: '/red-car.png',
+          image: getVehicleImageUrl(make, model, year),
           vehicleType: 'rv',
         });
       }
@@ -159,16 +175,19 @@ export function VehicleOwnership({ isEditable = false, isDrawer, details }: Vehi
     // Fallback: if rv is a single object, convert to array format
     const rv = details.rv;
     if (rv.Make || rv.Model || rv.VIN) {
+      const make = capitalizeWords(rv.Make || '');
+      const model = capitalizeWords(rv.Model || '');
+      const year = rv.MYear?.toString() || '';
       vehicleData.push({
-        name: `${capitalizeWords(rv.Make || '')} ${capitalizeWords(rv.Model || '')}`,
-        make: capitalizeWords(rv.Make || ''),
-        model: capitalizeWords(rv.Model || ''),
-        year: rv.MYear?.toString() || '',
+        name: `${make} ${model}`,
+        make,
+        model,
+        year,
         color: 'N/A', // RVs don't typically have color in this format
         vin: rv.VIN || '',
         licNumber: rv.LIC_NUMBER || '',
         licState: rv.LIC_STATE || '',
-        image: '/red-car.png',
+        image: getVehicleImageUrl(make, model, year),
         vehicleType: 'rv',
       });
     }
@@ -195,7 +214,7 @@ export function VehicleOwnership({ isEditable = false, isDrawer, details }: Vehi
             vin: '',
             licNumber: license.LIC_NUMBER || '',
             licState: license.LIC_STATE || '',
-            image: '/red-car.png',
+            image: getVehicleImageUrl('', '', ''),
             vehicleType: 'car',
           });
         }
@@ -221,7 +240,7 @@ export function VehicleOwnership({ isEditable = false, isDrawer, details }: Vehi
           vin: '',
           licNumber: license.LIC_NUMBER || '',
           licState: license.LIC_STATE || '',
-          image: '/red-car.png',
+          image: getVehicleImageUrl('', '', ''),
           vehicleType: 'car',
         });
       }

@@ -117,7 +117,7 @@ export function SearchInput({ onTextSearch, onImageSearch, onNewChat, startTrans
             }
           }}
           placeholder="Ask me anything.... "
-          className="w-full min-h-[64px] sm:min-h-[64px] px-2 sm:px-4 py-3 pr-10 sm:pr-16 text-base sm:text-base bg-transparent border-0 focus:outline-none resize-none rounded-[14px] box-border max-w-full"
+          className="w-full min-h-[125px] sm:min-h-[125px] px-2 sm:px-4 py-3 pr-10 sm:pr-16 text-base sm:text-base bg-transparent border-0 focus:outline-none resize-none rounded-[14px] box-border max-w-full"
           rows={1}
           style={{ fontSize: '16px' }}
           onInput={(e) => {

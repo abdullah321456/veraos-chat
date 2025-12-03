@@ -36,6 +36,30 @@ module.exports = {
                 hostname: '*.console.aws.amazon.com',
                 port: '',
                 pathname: '/**',
+            },
+            {
+                protocol: 'http',
+                hostname: 'localhost',
+                port: '',
+                pathname: '/**',
+            },
+            {
+                protocol: 'http',
+                hostname: '127.0.0.1',
+                port: '',
+                pathname: '/**',
+            },
+            {
+                protocol: 'http',
+                hostname: '192.168.18.7',
+                port: '3000',
+                pathname: '/**',
+            },
+            {
+                protocol: 'http',
+                hostname: '192.168.18.7',
+                port: '',
+                pathname: '/**',
             }
         ],
     },

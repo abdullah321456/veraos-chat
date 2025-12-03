@@ -1550,7 +1550,7 @@ export function Conversation() {
                 </div>
             )}
             <div ref={scrollRef}
-                 className="h-[calc(100vh-200px)] sm:h-[calc(100vh-170px)] overflow-y-auto overflow-x-hidden flex flex-col space-y-2 sm:space-y-4 w-full min-w-0 max-w-full box-border">
+                 className="h-[calc(100vh-260px)] sm:h-[calc(100vh-225px)] overflow-y-auto overflow-x-hidden flex flex-col space-y-2 sm:space-y-4 w-full min-w-0 max-w-full box-border">
                 {isLoading || isExecutingQuery ? (
                     <div className="flex justify-center items-center h-full">
                         <LoadingDots />
