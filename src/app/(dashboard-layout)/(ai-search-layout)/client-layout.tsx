@@ -1,7 +1,7 @@
 'use client';
 
 import {Sidebar} from './sidebar';
-import {createContext, useContext, useState} from 'react';
+import {createContext, useContext, useState, Suspense} from 'react';
 import {IsExpandedType} from '@/lib/hooks/use-sidebar-expand';
 import {useSearchParams} from 'next/navigation';
 import cn from '@/lib/utils/cn';
@@ -26,7 +26,7 @@ interface ClientLayoutProps {
     isExpanded: IsExpandedType;
 }
 
-export function ClientLayout({children, isExpanded}: ClientLayoutProps) {
+function ClientLayoutContent({children, isExpanded}: ClientLayoutProps) {
     const [lastMessage, setLastMessage] = useState<{ chatId: string; message: string } | null>(null);
     const [newChatId, setNewChatId] = useState<string | null>(null);
     const searchParams = useSearchParams();
@@ -71,5 +71,22 @@ export function ClientLayout({children, isExpanded}: ClientLayoutProps) {
                     </div>
                 </div>
         </MessageContext.Provider>
+    );
+}
+
+export function ClientLayout({children, isExpanded}: ClientLayoutProps) {
+    return (
+        <Suspense fallback={
+            <div className="w-full overflow-x-hidden sm:border sm:border-transparent sm:rounded-[20px] sm:relative sm:overflow-hidden sm:-mt-[15px] min-h-[calc(100vh-80px)] max-h-[calc(100vh-80px)] sm:min-h-[calc(100vh-90px)] sm:max-h-[calc(100vh-90px)]"
+                 style={{ background:"white" }}>
+                <div className="flex items-center justify-center h-full">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                </div>
+            </div>
+        }>
+            <ClientLayoutContent isExpanded={isExpanded}>
+                {children}
+            </ClientLayoutContent>
+        </Suspense>
     );
 } 

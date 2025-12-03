@@ -1,10 +1,10 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, Suspense } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { pageview } from '@/lib/gtag';
 
-export default function PageTracker() {
+function PageTrackerContent() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -22,4 +22,12 @@ export default function PageTracker() {
   }, [pathname, searchParams]);
 
   return null; // This component doesn't render anything
+}
+
+export default function PageTracker() {
+  return (
+    <Suspense fallback={null}>
+      <PageTrackerContent />
+    </Suspense>
+  );
 }

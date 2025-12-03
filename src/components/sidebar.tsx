@@ -16,13 +16,13 @@ import { PaperIcon } from './atom/icons/side-bar/paper';
 import { QuestionIcon } from './atom/icons/side-bar/question';
 import { SettingIcon } from './atom/icons/side-bar/setting';
 import { authUtils } from '@/lib/utils/auth';
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, Suspense } from 'react';
 
 type Props = {
   isExpanded: IsExpandedType;
 };
 
-export function DashboardSidebar({ isExpanded }: Props) {
+function DashboardSidebarContent({ isExpanded }: Props) {
   const { queryParams } = useQueryParams();
   const { isExpanded: isExpandedState, toggle } = useSidebarExpand(isExpanded);
   const IS_SIDEBAR_EXPANDED = getIsSidebarExpandedOnClient(isExpanded, isExpandedState);
@@ -252,5 +252,25 @@ export function DashboardSidebar({ isExpanded }: Props) {
           })}
         </div>
       </aside>
+  );
+}
+
+export function DashboardSidebar({ isExpanded }: Props) {
+  return (
+    <Suspense fallback={
+      <aside
+        style={{ width: '76px' }}
+        className={cn(
+          'fixed duration-300 transition-[width,background-color] z-30 left-0 top-0 bottom-0 h-screen bg-[#0F141E] w-[100px] flex flex-col px-2 sm:px-3 py-3 sm:py-4',
+          'hidden sm:flex'
+        )}
+      >
+        <div className="flex items-center justify-center h-full">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+        </div>
+      </aside>
+    }>
+      <DashboardSidebarContent isExpanded={isExpanded} />
+    </Suspense>
   );
 }

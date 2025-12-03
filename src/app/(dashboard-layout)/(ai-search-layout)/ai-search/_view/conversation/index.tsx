@@ -1,6 +1,6 @@
 'use client';
 
-import React, {useRef, useState, useTransition, useEffect} from 'react';
+import React, {useRef, useState, useTransition, useEffect, Suspense} from 'react';
 import {SearchInput} from './search-input';
 import {SingleConversation} from './single-conversation';
 import {AIResponseDetail, ConversationData, OnImageSearchHandlerParam, SenderOption} from './type';
@@ -8,6 +8,7 @@ import {apiService} from '@/services/apiService';
 import {useSearchParams} from 'next/navigation';
 import useQueryParams from '@/lib/hooks/use-query-params';
 import { useMessageContext } from '@/app/(dashboard-layout)/(ai-search-layout)/client-layout';
+import { LoadingSpinner } from '@/components/atom/loading-spinner';
 import { toast } from 'sonner';
 import { useModal } from '@/components/modal-views/use-modal';
 import { Button } from '@/components/atom/button';
@@ -350,7 +351,7 @@ function TermsOfUseModal() {
     );
 }
 
-export function Conversation() {
+function ConversationContent() {
     // Helper function to check if the query is asking for help
     const isHelpQuery = (query: string): boolean => {
         const normalizedQuery = query.toLowerCase().trim();
@@ -1587,5 +1588,10 @@ export function Conversation() {
     );
 }
 
-
-
+export function Conversation() {
+    return (
+        <Suspense fallback={<LoadingSpinner size="lg" className="h-64" />}>
+            <ConversationContent />
+        </Suspense>
+    );
+}
