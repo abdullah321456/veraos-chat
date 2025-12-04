@@ -20,12 +20,12 @@ export function useVehicleImageUrl(
 
   useEffect(() => {
     // If we got the default image, try to load vehicle info and update
-    const baseUrl = process.env.NEXT_PUBLIC_VEHICLE_IMAGES_BASE_URL || process.env.NEXT_PUBLIC_API_URL?.replace('/api', '') || '';
-    const defaultImageUrl = baseUrl ? `${baseUrl}/vehicles/ZZdefaultnocar` : '/vehicles/ZZdefaultnocar';
+    const defaultImageUrl = '/default-car.png';
     
-    if ((imageUrl === '/vehicles/ZZdefaultnocar' || imageUrl === defaultImageUrl) && make && model && year) {
+    if (imageUrl === defaultImageUrl && make && model && year) {
       // Dynamically import and use async function
       import('@/lib/utils/vehicle-image').then(({ getVehicleImageFileNameAsync, getVehicleImageUrl: getUrl }) => {
+        const baseUrl = process.env.NEXT_PUBLIC_VEHICLE_IMAGES_BASE_URL || process.env.NEXT_PUBLIC_API_URL?.replace('/api', '') || '';
         getVehicleImageFileNameAsync(make, model, year).then((fileName) => {
           if (fileName) {
             const newUrl = baseUrl ? `${baseUrl}/vehicles/${fileName}` : `/vehicles/${fileName}`;

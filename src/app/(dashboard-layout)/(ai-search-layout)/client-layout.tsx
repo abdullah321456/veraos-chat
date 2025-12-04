@@ -5,6 +5,7 @@ import {createContext, useContext, useState, Suspense} from 'react';
 import {IsExpandedType} from '@/lib/hooks/use-sidebar-expand';
 import {useSearchParams} from 'next/navigation';
 import cn from '@/lib/utils/cn';
+import { useDarkMode } from '@/lib/contexts/dark-mode-context';
 
 interface MessageContextType {
     onNewMessage: (message: { chatId: string; message: string }) => void;
@@ -32,6 +33,7 @@ function ClientLayoutContent({children, isExpanded}: ClientLayoutProps) {
     const searchParams = useSearchParams();
     const chatId = searchParams.get('chatId');
     const query = searchParams.get('query');
+    const { isDarkMode } = useDarkMode();
 
     const onNewMessage = (message: { chatId: string; message: string }) => {
         setLastMessage(message);
@@ -45,13 +47,19 @@ function ClientLayoutContent({children, isExpanded}: ClientLayoutProps) {
     const showSidebarFullScreen = !chatId && !query;
     const showConversation = chatId || query;
 
+    const backgroundStyle = isDarkMode 
+        ? { background: 'linear-gradient(143.11deg, #22252A 4.37%, #1F2736 78.56%)' }
+        : { background: 'white' };
+
+    console.log("ClientLayoutContent = ",isDarkMode)
+
     return (
         <MessageContext.Provider value={{
             onNewMessage,
             onNewChat
         }}>
             <div className="w-full overflow-x-hidden sm:border sm:border-transparent sm:rounded-[20px] sm:relative sm:overflow-hidden sm:-mt-[15px] min-h-[calc(100vh-80px)] max-h-[calc(100vh-80px)] sm:min-h-[calc(100vh-90px)] sm:max-h-[calc(100vh-90px)]"
-                 style={{ background:"white" }}>
+                 style={backgroundStyle}>
                     {/* Sidebar - full screen on mobile when no conversation selected, normal on desktop */}
                     <div className={showSidebarFullScreen ? 'block sm:block' : 'hidden sm:block'}>
                         <Sidebar
@@ -78,7 +86,7 @@ export function ClientLayout({children, isExpanded}: ClientLayoutProps) {
     return (
         <Suspense fallback={
             <div className="w-full overflow-x-hidden sm:border sm:border-transparent sm:rounded-[20px] sm:relative sm:overflow-hidden sm:-mt-[15px] min-h-[calc(100vh-80px)] max-h-[calc(100vh-80px)] sm:min-h-[calc(100vh-90px)] sm:max-h-[calc(100vh-90px)]"
-                 style={{ background:"white" }}>
+                 style={{ background: 'white' }}>
                 <div className="flex items-center justify-center h-full">
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
                 </div>

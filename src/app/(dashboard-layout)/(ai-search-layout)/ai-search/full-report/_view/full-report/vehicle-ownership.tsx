@@ -3,12 +3,13 @@ import { Input } from '@/components/atom/form-elements/input';
 import cn from '@/lib/utils/cn';
 import { getVehicleImageUrl } from '@/lib/utils/vehicle-image';
 import Image from 'next/image';
-import { Dispatch, SetStateAction, SVGProps, useState } from 'react';
+import { Dispatch, SetStateAction, SVGProps, useState, useEffect } from 'react';
 import { PiTrash } from 'react-icons/pi';
 import { toast } from 'sonner';
 import { AccordionActionButton } from '../../../_components/accordion-action-button';
 import { Accordion } from '../../_components/accordion';
 import { AIResponseDetail } from '../../../_view/conversation/type';
+import { useDarkMode } from '@/lib/contexts/dark-mode-context';
 
 // Utility function to capitalize first letter of each word
 const capitalizeWords = (str: string): string => {
@@ -285,7 +286,7 @@ export function VehicleOwnership({ isEditable = false, isDrawer, details }: Vehi
       </div>
       {!newVehicle && editable && (
         <div className="mt-3">
-          <button onClick={() => setNewVehicle(true)} className="text-primary text-xs">
+          <button onClick={() => setNewVehicle(true)} className="text-xs" style={{ color: '#C0AEFF' }}>
             + Add New Vehicle
           </button>
         </div>
@@ -293,6 +294,49 @@ export function VehicleOwnership({ isEditable = false, isDrawer, details }: Vehi
     </Accordion>
   );
 }
+
+// Helper to get dark mode from localStorage
+const getDarkModeFromStorage = () => {
+  if (typeof window !== 'undefined') {
+    try {
+      const saved = localStorage.getItem('darkMode');
+      return saved === 'true';
+    } catch {
+      return false;
+    }
+  }
+  return false;
+};
+
+// Hook to use dark mode with localStorage fallback
+const useDarkModeWithFallback = () => {
+  const darkModeContext = useDarkMode();
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+    const storageValue = getDarkModeFromStorage();
+    const contextValue = darkModeContext.isDarkMode;
+    return contextValue === true ? true : storageValue;
+  });
+
+  useEffect(() => {
+    const updateDarkMode = () => {
+      const storageValue = getDarkModeFromStorage();
+      const contextValue = darkModeContext.isDarkMode;
+      const newValue = contextValue === true ? true : storageValue;
+      setIsDarkMode(newValue);
+    };
+
+    updateDarkMode();
+    window.addEventListener('storage', updateDarkMode);
+    const interval = setInterval(updateDarkMode, 100);
+    
+    return () => {
+      window.removeEventListener('storage', updateDarkMode);
+      clearInterval(interval);
+    };
+  }, [darkModeContext.isDarkMode]);
+
+  return isDarkMode;
+};
 
 function RenderExistingVehicle({
   name,
@@ -309,10 +353,16 @@ function RenderExistingVehicle({
   isDrawer,
   carNumber,
 }: Car & { isEditable: boolean; isDrawer?: boolean; carNumber?: number }) {
+  const isDarkMode = useDarkModeWithFallback();
+  const cardBgStyle = isDarkMode 
+    ? { background: '#404652', borderColor: 'rgba(255, 255, 255, 0.1)' }
+    : { background: '#F9FAFB', borderColor: '#E5E7EB' };
+  const textColorStyle = isDarkMode ? { color: '#FFFFFF' } : { color: '#000000' };
+
   return (
-    <div className="border border-gray-200 rounded-lg bg-gray-50 p-4 w-full">
+    <div className="border rounded-lg p-4 w-full" style={cardBgStyle}>
       <div className="flex items-center justify-between mb-3">
-        <p className="text-sm font-semibold text-black">Car {carNumber}</p>
+        <p className="text-sm font-semibold" style={textColorStyle}>Car {carNumber}</p>
         {isEditable && (
           <button className="text-red-500">
             <PiTrash />
@@ -322,27 +372,27 @@ function RenderExistingVehicle({
       <div className="flex items-start justify-between gap-4">
         <div className="flex-1 space-y-2">
           {make && (
-            <p className="text-black font-medium text-xs leading-5">
-              Make: <span className="text-black text-xs font-normal leading-4">{make}</span>
+            <p className="font-medium text-xs leading-5" style={textColorStyle}>
+              Make: <span className="text-xs font-normal leading-4" style={textColorStyle}>{make}</span>
             </p>
           )}
           {model && (
-            <p className="text-black font-medium text-xs leading-5">
-              Model: <span className="text-black text-xs font-normal leading-4">{model}</span>
+            <p className="font-medium text-xs leading-5" style={textColorStyle}>
+              Model: <span className="text-xs font-normal leading-4" style={textColorStyle}>{model}</span>
             </p>
           )}
           {year && (
-            <p className="text-black font-medium text-xs leading-5">
-              Year: <span className="text-black text-xs font-normal leading-4">{year}</span>
+            <p className="font-medium text-xs leading-5" style={textColorStyle}>
+              Year: <span className="text-xs font-normal leading-4" style={textColorStyle}>{year}</span>
             </p>
           )}
           {vin && (
-            <p className="text-black font-medium text-xs leading-5">
-              VIN Number: <span className="text-black text-xs font-normal leading-4">{vin}</span>
+            <p className="font-medium text-xs leading-5" style={textColorStyle}>
+              VIN Number: <span className="text-xs font-normal leading-4" style={textColorStyle}>{vin}</span>
             </p>
           )}
         </div>
-        {(vin || make || model) && (
+        {image && (
           <div className="flex-shrink-0">
             <Image src={image} alt={name || 'vehicle'} width={202} height={118} className="object-contain" />
           </div>
@@ -353,8 +403,13 @@ function RenderExistingVehicle({
 }
 
 function AddNewVehicleForm({ setNewVehicle }: { setNewVehicle: Dispatch<SetStateAction<boolean>> }) {
+  const isDarkMode = useDarkModeWithFallback();
+  const formBgStyle = isDarkMode 
+    ? { background: '#404652', borderColor: 'rgba(255, 255, 255, 0.1)' }
+    : { background: undefined, borderColor: undefined };
+
   return (
-    <div className="p-3 border rounded-lg">
+    <div className="p-3 border rounded-lg" style={formBgStyle}>
       <div className="grid grid-cols-3 gap-3 mb-3">
         <div className="col-span-2 grid grid-cols-2 gap-3">
           <Input placeholder="Make" />

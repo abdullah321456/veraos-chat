@@ -14,6 +14,7 @@ type DropdownMenuProps = {
   as?: 'ul' | 'div';
   className?: string;
   gap?: { x?: number; y?: number };
+  style?: React.CSSProperties;
 };
 
 export function DropdownMenu({
@@ -21,6 +22,7 @@ export function DropdownMenu({
   className,
   children,
   gap = { x: 0, y: 0 },
+  style,
 }: React.PropsWithChildren<DropdownMenuProps>) {
   const { inPortal, refs, strategy, x, y } = useDropdown();
   const TransitionComponent: React.ElementType = Transition;
@@ -45,7 +47,7 @@ export function DropdownMenu({
           data-testid="dropdown-menu"
           className={cn(
             `dropdown-menu rounded-md`,
-            'w-48',
+            'w-48 z-[9999]',
             dropdownStyles.base,
             className
           )}
@@ -53,6 +55,8 @@ export function DropdownMenu({
             position: strategy,
             top: (y ?? 0) + (gap?.y ?? 0),
             left: (x ?? 0) + (gap?.x ?? 0),
+            zIndex: 9999,
+            ...style,
           }}
         >
           {children}

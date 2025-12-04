@@ -13,10 +13,12 @@ import { useRouter as useNProgressRouter } from 'next-nprogress-bar';
 import { useRouter } from 'next/navigation';
 import { apiService } from '@/services/apiService';
 import { authUtils } from '@/lib/utils/auth';
+import { useDarkMode } from '@/lib/contexts/dark-mode-context';
 
 export function LoginForm() {
     const router = useNProgressRouter();
     const nextRouter = useRouter();
+    const { isDarkMode } = useDarkMode();
     const form = useForm<LoginFormInputType>({
         resolver: zodResolver(LoginFormSchema),
         defaultValues: {
@@ -103,7 +105,7 @@ export function LoginForm() {
                 </div>
                 <div className="space-y-2">
                     <div className="flex justify-between items-center">
-                        <label className="block text-sm font-medium text-black">
+                        <label className="block text-sm font-medium" style={{ color: isDarkMode ? '#FFFFFF' : '#000000' }}>
                             Password <span className="text-red-500">*</span>
                         </label>
                         <Link href={ROUTES.AUTH.FORGOT_PASSWORD} className="text-xs sm:text-sm font-normal underline text-primary">
@@ -113,7 +115,11 @@ export function LoginForm() {
                     <PasswordInput isRequired {...register('password')} placeholder="Enter your password" error={errors.password?.message} />
                 </div>
                 <div>
-                    <Checkbox label="Remember Password" labelClassName="select-none" />
+                    <Checkbox 
+                        label="Remember Password" 
+                        labelClassName="select-none"
+                        style={isDarkMode ? { color: '#FFFFFF' } : undefined}
+                    />
                 </div>
                 <div className="pt-2 sm:pt-4 space-y-3 sm:space-y-4">
                     <Button 
@@ -125,7 +131,7 @@ export function LoginForm() {
                         {isSubmitting ? 'Logging in...' : 'Login'}
                     </Button>
                     <p className="text-center text-xs sm:text-sm md:text-base px-2 break-words">
-                        <span className="text-gray-600">Don&apos;t have an account? </span>
+                        <span style={{ color: isDarkMode ? '#A7A7A7' : '#6B7280' }}>Don&apos;t have an account? </span>
                         <Link className="underline text-primary font-semibold break-words" href={ROUTES.AUTH.SIGNUP}>
                             Create a new one
                         </Link>

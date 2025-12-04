@@ -1,12 +1,13 @@
 "use client";
 import cn from "@/lib/utils/cn";
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import {toast} from "sonner";
 import {AccordionActionButton} from "../../../_components/accordion-action-button";
 import {InputDataCell} from "../../../_components/input-data-cell";
 import {Accordion} from "../../_components/accordion";
 import {AIResponseDetail} from "../../../_view/conversation/type";
 import {toEnhancedTitleCase} from '@/lib/utils/title-case';
+import { useDarkMode } from '@/lib/contexts/dark-mode-context';
 
 // Utility function to capitalize first letter of each word
 const capitalizeWords = (str: string | number | any): string => {
@@ -34,8 +35,64 @@ export function PersonalInfo({
                                  isDrawer,
                                  details
                              }: PersonalInfoProps) {
+    const darkModeContext = useDarkMode();
     const [isLocalEdit] = useState(isEditable);
     const [editable, setEditable] = useState(false);
+    
+    // Helper to get dark mode from localStorage
+    const getDarkModeFromStorage = () => {
+        if (typeof window !== 'undefined') {
+            try {
+                const saved = localStorage.getItem('darkMode');
+                return saved === 'true';
+            } catch {
+                return false;
+            }
+        }
+        return false;
+    };
+
+    // Always read from localStorage as source of truth (works even in portals)
+    // Also sync with context if it's available and true
+    const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+        if (typeof window === 'undefined') return false;
+        const storageValue = getDarkModeFromStorage();
+        const contextValue = darkModeContext.isDarkMode;
+        // Use context if it's explicitly true, otherwise trust localStorage
+        return contextValue === true ? true : storageValue;
+    });
+
+    // Sync dark mode from context and localStorage
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+        
+        const updateDarkMode = () => {
+            const storageValue = getDarkModeFromStorage();
+            const contextValue = darkModeContext.isDarkMode;
+            // Prefer context if it's true, otherwise use storage
+            const newValue = contextValue === true ? true : storageValue;
+            setIsDarkMode(newValue);
+        };
+
+        // Initial update immediately
+        updateDarkMode();
+
+        // Listen to storage events (from other tabs)
+        const handleStorageChange = (e: StorageEvent) => {
+            if (e.key === 'darkMode') {
+                updateDarkMode();
+            }
+        };
+        window.addEventListener('storage', handleStorageChange);
+        
+        // Poll localStorage frequently for same-tab changes (more aggressive polling)
+        const interval = setInterval(updateDarkMode, 50);
+        
+        return () => {
+            window.removeEventListener('storage', handleStorageChange);
+            clearInterval(interval);
+        };
+    }, [darkModeContext.isDarkMode]);
 
     const calculateAge = (birthdate: string) => {
         if (!birthdate) return null;
@@ -110,6 +167,11 @@ export function PersonalInfo({
 
     if (!hasAny) return null;
 
+
+    // Debug: Log dark mode state
+    useEffect(() => {
+        console.log("PersonalInfo - isDarkMode:", isDarkMode, "isDrawer:", isDrawer, "storage:", getDarkModeFromStorage(), "context:", darkModeContext.isDarkMode);
+    }, [isDarkMode, isDrawer, darkModeContext.isDarkMode]);
     return (
         <Accordion
             translateButton={isEditable}
@@ -128,25 +190,43 @@ export function PersonalInfo({
                                    ((details as any)?.criminals && (details as any).criminals.length > 0 && (details as any).criminals[0]?.Death_Record);
                 
                 if (deathRecord) {
+                    const containerBg = isDarkMode ? '#4A1F1F' : '#FDF2F8';
+                    const containerBorder = isDarkMode ? 'rgba(239, 68, 68, 0.3)' : '#EF4444';
+                    const dividerBorder = isDarkMode ? 'rgba(239, 68, 68, 0.3)' : '#EF4444';
+                    const labelColor = isDarkMode ? '#FFFFFF' : '#374151';
+                    const valueColor = isDarkMode ? '#FFFFFF' : '#111827';
+                    
                     return (
-                        <div className="mb-4 border border-red-500 bg-pink-50 rounded-md overflow-hidden">
+                        <div 
+                            className="mb-4 border rounded-md overflow-hidden"
+                            style={{
+                                backgroundColor: containerBg,
+                                borderColor: containerBorder
+                            }}
+                        >
                             <div className="flex flex-col sm:flex-row">
                                 {deathRecord.Death_Index_Match !== undefined && (
-                                    <div className="flex-1 px-4 py-3 border-b border-red-500 sm:border-b-0 sm:border-r last:border-b-0 last:border-r-0">
-                                        <div className="text-xs font-medium text-gray-700 mb-1">Death Index Match</div>
-                                        <div className="text-sm text-gray-900 font-semibold">{deathRecord.Death_Index_Match ? "Yes" : "No"}</div>
+                                    <div 
+                                        className="flex-1 px-4 py-3 border-b sm:border-b-0 sm:border-r last:border-b-0 last:border-r-0"
+                                        style={{ borderColor: dividerBorder }}
+                                    >
+                                        <div className="text-xs font-medium mb-1" style={{ color: labelColor }}>Death Index Match</div>
+                                        <div className="text-sm font-semibold" style={{ color: valueColor }}>{deathRecord.Death_Index_Match ? "Yes" : "No"}</div>
                                     </div>
                                 )}
                                 {deathRecord.Death_Date && (
-                                    <div className="flex-1 px-4 py-3 border-b border-red-500 sm:border-b-0 sm:border-r last:border-b-0 last:border-r-0">
-                                        <div className="text-xs font-medium text-gray-700 mb-1">Death Date</div>
-                                        <div className="text-sm text-gray-900 font-semibold">{deathRecord.Death_Date}</div>
+                                    <div 
+                                        className="flex-1 px-4 py-3 border-b sm:border-b-0 sm:border-r last:border-b-0 last:border-r-0"
+                                        style={{ borderColor: dividerBorder }}
+                                    >
+                                        <div className="text-xs font-medium mb-1" style={{ color: labelColor }}>Death Date</div>
+                                        <div className="text-sm font-semibold" style={{ color: valueColor }}>{deathRecord.Death_Date}</div>
                                     </div>
                                 )}
                                 {deathRecord.Cause_of_Death && (
                                     <div className="flex-1 px-4 py-3">
-                                        <div className="text-xs font-medium text-gray-700 mb-1">Death Cause</div>
-                                        <div className="text-sm text-gray-900 font-semibold">{deathRecord.Cause_of_Death}</div>
+                                        <div className="text-xs font-medium mb-1" style={{ color: labelColor }}>Death Cause</div>
+                                        <div className="text-sm font-semibold" style={{ color: valueColor }}>{deathRecord.Cause_of_Death}</div>
                                     </div>
                                 )}
                             </div>

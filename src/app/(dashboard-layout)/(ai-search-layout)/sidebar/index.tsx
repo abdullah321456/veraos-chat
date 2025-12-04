@@ -16,6 +16,7 @@ import { Button } from '@/components/atom/button';
 import useQueryParams from '@/lib/hooks/use-query-params';
 import { parsePathnameWithQuery } from '@/lib/utils/parse-pathname-with-query';
 import { apiService } from '@/services/apiService';
+import { useDarkMode } from '@/lib/contexts/dark-mode-context';
 
 interface ApiConversation {
   _id: string;
@@ -125,6 +126,7 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
   const hasCreatedChatForThisSession = useRef(false);
   const router = useRouter();
   const pathname = usePathname();
+  const { isDarkMode } = useDarkMode();
 
 
   const fetchConversations = async () => {
@@ -388,10 +390,18 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
   }, [conversations, groupedConversations]);
 
 
+  const sidebarBgStyle = isDarkMode 
+    ? { background: 'linear-gradient(143.11deg, #22252A 4.37%, #1F2736 78.56%)' }
+    : { background: '#FFFFFF' };
+  const textColorStyle = isDarkMode ? { color: '#FFFFFF' } : {};
+  const borderColorStyle = isDarkMode 
+    ? { borderRightColor: 'rgba(255, 255, 255, 0.1)' }
+    : { borderRightColor: 'rgba(97, 97, 102, 0.1)' };
+
   return (
       <div
           className={cn(
-            'h-[calc(100vh-64px)] sm:h-full duration-300 bg-white fixed sm:absolute p-4',
+            'h-[calc(100vh-64px)] sm:h-full duration-300 fixed sm:absolute p-3',
             'top-16 sm:top-0',
             'w-full sm:w-[320px]',
             'left-0 sm:left-0',
@@ -400,33 +410,37 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
             'sm:border-r-2'
           )}
           style={{
-            borderRightColor: 'rgba(97, 97, 102, 0.1)'
+            ...sidebarBgStyle,
+            ...borderColorStyle
           }}
       >
         {/* Header with Overwatch AI and Edit icon - only show on small devices */}
-        <div className="flex sm:hidden items-center gap-3 pb-3 mb-2 border-b border-gray-200">
+        <div className="flex sm:hidden items-center gap-3 pb-3 mb-2 border-b" style={isDarkMode ? { borderBottomColor: 'rgba(255, 255, 255, 0.1)' } : { borderBottomColor: '#E5E7EB' }}>
           {!isSelectable ? (
               <>
-                <h2 className="text-base font-bold text-gray-900">Overwatch AI</h2>
+                <h2 className="text-base font-bold" style={isDarkMode ? { color: '#FFFFFF' } : { color: '#111827' }}>Overwatch AI</h2>
                 <button
                     onClick={() => {
                       clearSelection();
                       setIsSelectable(true);
                     }}
-                    className="p-1 hover:bg-gray-100 rounded transition-colors ml-auto"
+                    className="p-1 rounded transition-colors ml-auto"
+                    style={isDarkMode ? { color: '#FFFFFF' } : {}}
+                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = isDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#F3F4F6'}
+                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                 >
-                  <PiPencilLine className="w-5 h-5 text-gray-500" />
+                  <PiPencilLine className="w-5 h-5" style={isDarkMode ? { color: '#FFFFFF' } : { color: '#6B7280' }} />
                 </button>
               </>
           ) : (
               <>
-                <h2 className="text-base font-bold text-gray-900">Overwatch AI</h2>
+                <h2 className="text-base font-bold" style={isDarkMode ? { color: '#FFFFFF' } : { color: '#111827' }}>Overwatch AI</h2>
                 <div className="flex items-center justify-between gap-2 flex-1">
                   <button
                       onClick={() => setIsSelectable(false)}
                       className="px-3 py-1.5 rounded transition-colors"
                       style={{ 
-                        color: '#5C39D9', 
+                        color: isDarkMode ? '#C0AEFF' : '#5C39D9', 
                         background: 'transparent', 
                         border: '1px solid transparent',
                         fontSize: '12px'
@@ -439,7 +453,7 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
                       disabled={selectedIds.length === 0 || isDeleting}
                       className="px-3 py-1.5 flex items-center gap-1.5 justify-center transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                       style={{ 
-                        background: '#D50A581A', 
+                        background: isDarkMode ? 'rgba(213, 10, 88, 0.2)' : '#D50A581A', 
                         borderColor: '#D50A58',
                         borderRadius: '6px',
                         border: '1px solid #D50A58',
@@ -448,10 +462,10 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
                       }}
                   >
                     {isDeleting ? (
-                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-[#D50A58]"></div>
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2" style={{ borderColor: isDarkMode ? '#FF6B6B' : '#D50A58' }}></div>
                     ) : (
                         <>
-                          <PiTrash className="w-4 h-4" />
+                          <PiTrash className="w-4 h-4" style={{ color: isDarkMode ? '#FF6B6B' : '#D50A58' }} />
                           <span>Delete</span>
                         </>
                     )}
@@ -472,7 +486,7 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
             {firstGroupKey ? (
               <div
                 className="font-medium"
-                style={{ fontSize: '14px', color: '#000000', marginLeft: '7px' }}
+                style={{ fontSize: '14px', color: isDarkMode ? '#FFFFFF' : '#000000', marginLeft: '7px' }}
               >
                 {groupLabels[firstGroupKey]}
               </div>
@@ -483,7 +497,20 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
           </div>
         </div>
 
-        <div className="overflow-y-auto overflow-x-hidden h-[calc(100vh-200px)] pb-24 sm:pb-16 pl-2">
+        <div 
+          className={cn(
+            "overflow-y-auto overflow-x-hidden h-[calc(100vh-200px)] pb-24 sm:pb-16 pr-2",
+            isDarkMode 
+              ? "[&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:bg-white/30 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent"
+              : "[&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:bg-black/20 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent"
+          )}
+          style={{
+            scrollbarWidth: 'thin',
+            scrollbarColor: isDarkMode 
+              ? 'rgba(255, 255, 255, 0.3) transparent' 
+              : 'rgba(0, 0, 0, 0.2) transparent'
+          }}
+        >
 
           {Object.entries(groupedConversations).map(([key, conversations]) =>
                   conversations.length > 0 && (
@@ -491,7 +518,7 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
                         {key !== firstGroupKey && (
                           <div
                               className="text-xs font-medium mt-2 mb-1"
-                              style={{ color: (key === 'yesterday') ? '#000000' : '#6B7280' }}
+                              style={{ color: isDarkMode ? '#FFFFFF' : ((key === 'yesterday') ? '#000000' : '#6B7280') }}
                           >
                             {groupLabels[key as keyof typeof groupLabels]}
                             {(key !== 'today' && key !== 'yesterday') && ` (${conversations.length})`}
@@ -506,20 +533,24 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
 
           {/* Debug: Show if no conversations */}
           {conversations.length === 0 && (
-              <div className="text-xs text-gray-400 text-center mt-4">
+              <div className="text-xs text-center mt-4" style={isDarkMode ? { color: '#FFFFFF' } : { color: '#9CA3AF' }}>
                 No conversations found
               </div>
           )}
         </div>
 
         {isSelectable && (
-            <div style={{ marginLeft: '25px' }} className={cn('hidden sm:block fixed bottom-0 w-full sm:w-[280px] bg-white p-4 border-t border-gray-200 left-0 sm:left-auto', IS_SIDEBAR_EXPANDED ? 'sm:left-[76px]' : 'sm:left-[200px]')}>
+            <div style={{ 
+              marginLeft: '25px',
+              ...(isDarkMode ? { background: 'linear-gradient(143.11deg, #22252A 4.37%, #1F2736 78.56%)' } : { background: 'white' }),
+              borderTopColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#E5E7EB'
+            }} className={cn('hidden sm:block fixed bottom-0 w-full sm:w-[280px] p-4 border-t left-0 sm:left-auto', IS_SIDEBAR_EXPANDED ? 'sm:left-[76px]' : 'sm:left-[200px]')}>
               <div className="flex justify-between gap-2 w-full sm:max-w-[280px]">
                 <button
                     onClick={() => setIsSelectable(false)}
                     className="px-3 py-1.5 rounded transition-colors"
                     style={{ 
-                      color: '#5C39D9', 
+                      color: isDarkMode ? '#C0AEFF' : '#5C39D9', 
                       background: 'transparent', 
                       border: '1px solid transparent',
                       fontSize: '12px'
@@ -532,7 +563,7 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
                     disabled={selectedIds.length === 0 || isDeleting}
                     className="px-3 py-1.5 flex items-center gap-1.5 justify-center transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     style={{ 
-                      background: '#D50A581A', 
+                      background: isDarkMode ? 'rgba(213, 10, 88, 0.2)' : '#D50A581A', 
                       borderColor: '#D50A58',
                       borderRadius: '6px',
                       border: '1px solid #D50A58',
@@ -542,12 +573,12 @@ export function Sidebar({ isExpanded, lastMessage, newChatId }: Props) {
                 >
                   {isDeleting ? (
                       <div className="flex items-center gap-2">
-                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-[#D50A58]"></div>
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2" style={{ borderColor: isDarkMode ? '#FF6B6B' : '#D50A58' }}></div>
                         Deleting...
                       </div>
                   ) : (
                       <>
-                        <PiTrash className="w-4 h-4" />
+                        <PiTrash className="w-4 h-4" style={{ color: isDarkMode ? '#FF6B6B' : '#D50A58' }} />
                         <span>Delete</span>
                       </>
                   )}
@@ -586,14 +617,23 @@ const navigationMenus = [
 function NavigationElement() {
   const pathname = usePathname();
   const { queryParams } = useQueryParams();
+  const { isDarkMode } = useDarkMode();
   const activeClassName = 'text-primary font-medium ';
+  const navBgStyle = isDarkMode 
+    ? { backgroundColor: '#404652' }
+    : { backgroundColor: '#F3F3F5' };
+  const navBorderStyle = isDarkMode
+    ? { borderColor: 'rgba(255, 255, 255, 0.1)' }
+    : { borderColor: '#F3F4F6' };
+  
   return (
-      <div className="rounded-[10px] p-1 grid grid-cols-2 shadow-lg shadow-gray-200 border border-gray-100" style={{ backgroundColor: '#F3F3F5' }}>
+      <div className="rounded-[10px] p-1 grid grid-cols-2 shadow-lg border" style={{ ...navBgStyle, ...navBorderStyle, boxShadow: isDarkMode ? 'none' : '0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
         {navigationMenus.map(({ name, href, activePathnames, isVersion }) => (
             isVersion ? (
                 <span
                     key={name}
                     className={cn('px-3 py-3 text-xs text-center rounded-[10px] duration-300')}
+                    style={isDarkMode ? { color: '#A7A7A7' } : { color: '#A7A7A7' }}
                 >
                   {name}
                 </span>
@@ -602,7 +642,10 @@ function NavigationElement() {
                     key={name}
                     href={parsePathnameWithQuery(href || '', queryParams)}
                     className={cn('px-3 py-3 text-xs text-center rounded-[10px] duration-300', activePathnames?.includes(pathname) && activeClassName)}
-                    style={activePathnames?.includes(pathname) ? { backgroundColor: 'white' } : {}}
+                    style={activePathnames?.includes(pathname) 
+                      ? { backgroundColor: isDarkMode ? '#858991' : '#FFFFFF', color: isDarkMode ? '#FFFFFF' : '#5C39D9' }
+                      : { backgroundColor: 'transparent', color: isDarkMode ? '#FFFFFF' : '#6B7280' }
+                    }
                 >
                   {name}
                 </Link>
@@ -615,6 +658,7 @@ function NavigationElement() {
 
 function ToolbarContent({ inboxNavigationData, onNewChat }: { inboxNavigationData: InboxNavigationData[]; onNewChat: (isManualClick?: boolean) => void }) {
   const { isSelectable, setIsSelectable, selectMultiple, clearSelection } = useConversationSidebarSelectionState();
+  const { isDarkMode } = useDarkMode();
 
   const allIds = inboxNavigationData?.map((item) => item.id);
 
@@ -627,6 +671,9 @@ function ToolbarContent({ inboxNavigationData, onNewChat }: { inboxNavigationDat
     }
   }
 
+  const buttonBgStyle = { backgroundColor: '#6161661A' };
+  const buttonTextStyle = { color: isDarkMode ? '#858991' : '#000000' };
+
   return (
       <>
         {!isSelectable ? (
@@ -634,17 +681,25 @@ function ToolbarContent({ inboxNavigationData, onNewChat }: { inboxNavigationDat
               <button onClick={() => {
                 clearSelection();
                 setIsSelectable(true);
-              }} className="flex items-center gap-1 px-3 py-1.5 rounded-[6px] border border-transparent" style={{ backgroundColor: '#6161661A' }}>
+              }} className="flex items-center gap-1 px-3 py-1.5 rounded-[6px] border border-transparent" style={{ ...buttonBgStyle, ...buttonTextStyle }}>
                 <PiPencilLine /> Edit
               </button>
               {/*<span className="w-px h-4 bg-gray-400" />*/}
-              <button className="text-primary flex items-center gap-1 px-3 py-1.5 rounded-[6px] border border-transparent" style={{ backgroundColor: '#6161661A' }} onClick={() => onNewChat(true)}>
+              <button className="flex items-center gap-1 px-3 py-1.5 rounded-[6px] border border-transparent" style={{ ...buttonBgStyle, ...(isDarkMode ? { color: '#C0AEFF' } : { color: '#5C39D9' }) }} onClick={() => onNewChat(true)}>
                 <PiPlus /> New Chat
               </button>
             </div>
         ) : (
             <span className="flex items-center gap-3">
-          <Checkbox labelClassName="text-xs" label="Select all" onChange={handleChangeCheckbox} />
+          <Checkbox 
+            labelClassName="text-xs" 
+            label="Select all" 
+            onChange={handleChangeCheckbox}
+            className={isDarkMode 
+              ? '[&_.checkbox-label]:text-white [&_.checkbox-span_span]:border-white/50 [&_.checkbox-span_span]:ring-white/30' 
+              : '[&_.checkbox-label]:text-black [&_.checkbox-span_span]:border-[#858d9d] [&_.checkbox-span_span]:ring-[#858d9d]'
+            }
+          />
         </span>
         )}
       </>

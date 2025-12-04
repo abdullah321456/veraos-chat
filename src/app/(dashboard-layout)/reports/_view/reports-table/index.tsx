@@ -12,6 +12,7 @@ import { useModal } from '@/components/modal-views/use-modal';
 import { ConfirmModal } from '@/components/atom/confirm-modal';
 import { PiTrash } from 'react-icons/pi';
 import { toast } from 'sonner';
+import { useDarkMode } from '@/lib/contexts/dark-mode-context';
 
 export type Report = {
   _id: string;
@@ -33,6 +34,7 @@ export type Report = {
 
 
 export const ReportsTable = React.memo(function ReportsTable() {
+  const { isDarkMode } = useDarkMode();
   const router = useRouter();
   const { openModal, closeModal } = useModal();
   const [renderReports, setRenderReports] = useState(true);
@@ -127,11 +129,32 @@ export const ReportsTable = React.memo(function ReportsTable() {
     );
   }
 
+  const headingStyle = isDarkMode
+    ? { backgroundColor: '#404652', color: '#FFFFFF' }
+    : { backgroundColor: 'white', color: '#111827' };
+
+  const containerStyle = isDarkMode
+    ? { backgroundColor: '#404652' }
+    : { backgroundColor: 'white' };
+
+  const tableClassName = isDarkMode
+    ? 'border-0 bg-[#404652] p-0 border-gray-50 h-full flex flex-col'
+    : 'border-0 bg-white p-0 border-gray-50 h-full flex flex-col';
+
+  const rowClassName = isDarkMode
+    ? 'py-1 cursor-pointer hover:bg-[#505662]'
+    : 'py-1 cursor-pointer hover:bg-gray-50';
+
   return (
     <>
-      <div className="w-full sm:pr-6 h-full flex flex-col">
+      <div className="w-full h-full flex flex-col">
         <div className="flex justify-between items-center mb-2 flex-shrink-0 w-full">
-          <h2 className="text-lg font-bold -mb-1 px-2 py-0 sm:p-4 bg-transparent sm:bg-white rounded-tl-lg rounded-tr-lg w-full">Reports</h2>
+          <h2 
+            className="text-lg font-bold -mb-1 px-2 py-0 sm:p-4 bg-transparent sm:rounded-tl-lg sm:rounded-tr-lg w-full"
+            style={headingStyle}
+          >
+            Reports
+          </h2>
           {/*{reports.length > 0 && (*/}
           {/*  <Button */}
           {/*    onClick={handleClearAll} */}
@@ -145,17 +168,19 @@ export const ReportsTable = React.memo(function ReportsTable() {
           {/*  </Button>*/}
           {/*)}*/}
         </div>
-        <div className="flex-1 min-h-[calc(100vh-155px)] max-h-[calc(100vh-130px)]
-        sm:max-h-[calc(100vh-160px)] flex flex-col rounded-b-[20px] overflow-hidden"
-        style={{background:"white"}}>
+        <div 
+          className="flex-1 min-h-[calc(100vh-155px)] max-h-[calc(100vh-130px)]
+          sm:max-h-[calc(100vh-160px)] flex flex-col rounded-b-[20px] overflow-hidden"
+          style={containerStyle}
+        >
           <div className="flex-1 overflow-y-auto pb-6" style={{paddingRight: '0px'}}>
             <Table<Report>
               key={String(renderReports)}
-              columns={createColumns(handleOpenModal)}
+              columns={createColumns(handleOpenModal, isDarkMode)}
               data={reports || []}
               size={10}
-              rowClassName="py-1 cursor-pointer hover:bg-gray-50"
-              className="border-0 bg-white p-0 border-gray-50 h-full flex flex-col"
+              rowClassName={rowClassName}
+              className={tableClassName}
               onRowClick={handleOpenModal}
             />
           </div>

@@ -1,4 +1,7 @@
+'use client';
+
 import { FadeAnimation } from "@/components/atom/fade-animatation";
+import { useDarkMode } from "@/lib/contexts/dark-mode-context";
 
 type FaqItem = {
   question: string;
@@ -30,17 +33,36 @@ const faqList: FaqItem[] = [
   },
 ];
 export default function Page() {
+  const { isDarkMode } = useDarkMode();
+  
+  const headingColor = isDarkMode ? '#FFFFFF' : '#000000';
+  const questionColor = isDarkMode ? '#FFFFFF' : 'rgba(0, 0, 0, 0.8)';
+  const answerColor = isDarkMode ? '#FFFFFF' : '#000000';
+
   return (
     <>
       <FadeAnimation>
-        <h1 className="text-black text-lg font-bold text-center my-6">
+        <h1 
+          className="text-lg font-bold text-center my-6"
+          style={{ color: headingColor }}
+        >
           Commonly Asked Questions
         </h1>
         <div className="space-y-5 w-full max-w-full sm:max-w-[450px] mx-auto">
           {faqList.map((faq, index) => (
             <article key={index} className="">
-              <h2 className="text-black/80 text-base font-semibold">{faq.question}</h2>
-              <p className="text-black text-xs font-normal mt-2">{faq.answer}</p>
+              <h2 
+                className="text-base font-semibold"
+                style={{ color: questionColor }}
+              >
+                {faq.question}
+              </h2>
+              <p 
+                className="text-xs font-normal mt-2"
+                style={{ color: answerColor }}
+              >
+                {faq.answer}
+              </p>
             </article>
           ))}
         </div>

@@ -11,6 +11,7 @@ import { FullReportOverlay } from './full-report-overlay';
 import { AIResponseDetail } from './type';
 import { useDrawer } from '@/components/drawer-views/use-drawer';
 import { FullReport } from '../../full-report/_view/full-report';
+import { useDarkMode } from '@/lib/contexts/dark-mode-context';
 
 type ConversationCtaProps = {
   message?: string | ReactNode;
@@ -129,6 +130,64 @@ export function ConversationCta({ message, onShowFullReport, fullReportDetails }
 export function DrawerHeader({ details }: { details?: any } = {}) {
   const { closeDrawer } = useDrawer();
   const { queryParams, removeQueryParams } = useQueryParams();
+  const darkModeContext = useDarkMode();
+  const [isSmallDevice, setIsSmallDevice] = useState(false);
+  
+  // Helper to get dark mode from localStorage
+  const getDarkModeFromStorage = () => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem('darkMode');
+        // The context saves as String(isDarkMode), so it's 'true' or 'false'
+        return saved === 'true';
+      } catch {
+        return false;
+      }
+    }
+    return false;
+  };
+
+  // Always read from localStorage as source of truth (works even in portals)
+  // Also sync with context if it's available and true
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+    const storageValue = getDarkModeFromStorage();
+    const contextValue = darkModeContext.isDarkMode;
+    // Use context if it's explicitly true, otherwise trust localStorage
+    return contextValue === true ? true : storageValue;
+  });
+
+  useEffect(() => {
+    const checkDevice = () => {
+      setIsSmallDevice(window.innerWidth < 640);
+    };
+    checkDevice();
+    window.addEventListener('resize', checkDevice);
+    return () => window.removeEventListener('resize', checkDevice);
+  }, []);
+
+  useEffect(() => {
+    const updateDarkMode = () => {
+      const storageValue = getDarkModeFromStorage();
+      const contextValue = darkModeContext.isDarkMode;
+      // Prefer context if it's true, otherwise use storage
+      const newValue = contextValue === true ? true : storageValue;
+      setIsDarkMode(newValue);
+    };
+
+    // Initial update
+    updateDarkMode();
+
+    // Listen to storage events (from other tabs)
+    window.addEventListener('storage', updateDarkMode);
+    
+    // Poll localStorage frequently for same-tab changes
+    const interval = setInterval(updateDarkMode, 100);
+    
+    return () => {
+      window.removeEventListener('storage', updateDarkMode);
+      clearInterval(interval);
+    };
+  }, [darkModeContext.isDarkMode]);
 
   function handleClose() {
     if (queryParams?.open_current_record_drawer) {
@@ -149,12 +208,40 @@ export function DrawerHeader({ details }: { details?: any } = {}) {
     }
   }
 
+  // Use gradient for dark mode on small devices, solid color for large devices
+  const headerBg = isDarkMode 
+    ? (isSmallDevice 
+        ? 'linear-gradient(143.11deg, #22252A 4.37%, #1F2736 78.56%)' 
+        : '#404652')
+    : '#F3F4F6';
+  
+  const textColor = isDarkMode ? '#FFFFFF' : '#4B5563';
+  const hoverTextColor = isDarkMode ? '#C0AEFF' : '#111827';
+  const borderColor = isDarkMode ? 'rgba(255, 255, 255, 0.3)' : '#6B7280';
+  const expandIconColor = isDarkMode ? '#FFFFFF' : '#4B5563';
+  const expandIconHoverColor = isDarkMode ? '#C0AEFF' : '#111827';
+
+  // Use 'background' for gradients, 'backgroundColor' for solid colors
+  const headerStyle = typeof headerBg === 'string' && headerBg.startsWith('linear-gradient')
+    ? { background: headerBg }
+    : { backgroundColor: headerBg };
+
   return (
-    <div className="h-14 bg-gray-100 flex items-center justify-between px-3 sm:px-4 py-2">
+    <div 
+      className="h-14 flex items-center justify-between px-3 sm:px-4 py-2"
+      style={headerStyle}
+    >
       <button
         type="button"
         onClick={handleClose}
-        className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+        className="flex items-center gap-2 transition-colors"
+        style={{ color: textColor }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.color = hoverTextColor;
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.color = textColor;
+        }}
       >
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -162,11 +249,43 @@ export function DrawerHeader({ details }: { details?: any } = {}) {
         <span className="text-sm font-medium">Back to Previous Results</span>
       </button>
       <div className="flex items-center gap-3 sm:gap-5">
-        <Link href={parsePathnameWithQuery(ROUTES.AI_SEARCH.FULL_REPORT, queryParams)} onClick={handleExpand} className="hidden sm:block">
-          <DrawerHeaderExpandIcon className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" />
+        <Link 
+          href={parsePathnameWithQuery(ROUTES.AI_SEARCH.FULL_REPORT, queryParams)} 
+          onClick={handleExpand} 
+          className="hidden sm:block transition-colors"
+          style={{ color: expandIconColor }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.color = expandIconHoverColor;
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.color = expandIconColor;
+          }}
+        >
+          <DrawerHeaderExpandIcon 
+            className="w-4 h-4 sm:w-5 sm:h-5" 
+            style={{ color: 'currentColor' }}
+          />
         </Link>
-        <button onClick={handleClose} className="border-2 border-gray-500 rounded-full">
-          <ModalCloseIcon />
+        <button 
+          onClick={handleClose} 
+          className="border-2 rounded-full transition-colors"
+          style={{ borderColor: borderColor }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.borderColor = isDarkMode ? 'rgba(255, 255, 255, 0.5)' : '#111827';
+            const icon = e.currentTarget.querySelector('svg');
+            if (icon) {
+              icon.style.color = hoverTextColor;
+            }
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.borderColor = borderColor;
+            const icon = e.currentTarget.querySelector('svg');
+            if (icon) {
+              icon.style.color = textColor;
+            }
+          }}
+        >
+          <ModalCloseIcon style={{ color: textColor }} />
         </button>
       </div>
     </div>

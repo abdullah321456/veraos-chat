@@ -9,6 +9,21 @@ import { toast } from 'sonner';
 import { z } from 'zod';
 import { userService } from '@/services/userService';
 import { authUtils } from '@/lib/utils/auth';
+import { useDarkMode } from '@/lib/contexts/dark-mode-context';
+import { useState, useEffect } from 'react';
+
+// Helper to get dark mode from localStorage
+const getDarkModeFromStorage = () => {
+  if (typeof window !== 'undefined') {
+    try {
+      const saved = localStorage.getItem('darkMode');
+      return saved === 'true';
+    } catch {
+      return false;
+    }
+  }
+  return false;
+};
 
 const ForgotPasswordSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -17,6 +32,34 @@ const ForgotPasswordSchema = z.object({
 type ForgotPasswordInputType = z.infer<typeof ForgotPasswordSchema>;
 
 export function ForgotPasswordForm() {
+  const darkModeContext = useDarkMode();
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    const storageValue = getDarkModeFromStorage();
+    const contextValue = darkModeContext.isDarkMode;
+    return contextValue === true ? true : storageValue;
+  });
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const updateDarkMode = () => {
+      const storageValue = getDarkModeFromStorage();
+      const contextValue = darkModeContext.isDarkMode;
+      const newValue = contextValue === true ? true : storageValue;
+      setIsDarkMode(newValue);
+    };
+    updateDarkMode();
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'darkMode') updateDarkMode();
+    };
+    window.addEventListener('storage', handleStorageChange);
+    const interval = setInterval(updateDarkMode, 50);
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      clearInterval(interval);
+    };
+  }, [darkModeContext.isDarkMode]);
+
   const form = useForm<ForgotPasswordInputType>({
     resolver: zodResolver(ForgotPasswordSchema),
     defaultValues: {
@@ -57,7 +100,7 @@ export function ForgotPasswordForm() {
         placeholder="Enter your email" 
         error={errors.email?.message} 
       />
-      <p className="text-xs sm:text-sm mt-2 text-gray-600 px-1">We&apos;ll send you a reset instruction via email</p>
+      <p className="text-xs sm:text-sm mt-2 px-1" style={{ color: isDarkMode ? '#A7A7A7' : '#6B7280' }}>We&apos;ll send you a reset instruction via email</p>
       <div className="pt-4 sm:pt-6 space-y-4 sm:space-y-5">
         <Button 
           type="submit" 
@@ -68,7 +111,7 @@ export function ForgotPasswordForm() {
           {isSubmitting ? 'Sending...' : 'Send Link'}
         </Button>
         <p className="text-center">
-          <Link className="hover:underline text-gray-600 font-normal text-xs sm:text-sm" href={ROUTES.AUTH.LOGIN}>
+          <Link className="hover:underline font-normal text-xs sm:text-sm" style={{ color: isDarkMode ? '#A7A7A7' : '#6B7280' }} href={ROUTES.AUTH.LOGIN}>
             Back to Login
           </Link>
         </p>

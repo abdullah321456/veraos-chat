@@ -46,6 +46,7 @@ import {VehicleOwnership} from './vehicle-ownership';
 import {AIResponseDetail} from "../../../_view/conversation/type";
 import { useState, useEffect } from 'react';
 import { toEnhancedTitleCase } from '@/lib/utils/title-case';
+import { useDarkMode } from '@/lib/contexts/dark-mode-context';
 
 type Props = {
     editable?: boolean;
@@ -58,12 +59,71 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
     const pathname = usePathname();
     const router = useRouter();
     const {openModal, closeModal} = useModal();
+    const darkModeContext = useDarkMode();
     const [showTooltip, setShowTooltip] = useState(false);
     const [localDetails, setLocalDetails] = useState<AIResponseDetail | undefined>(details);
     const [reportMessage, setReportMessage] = useState<string>('');
     const [reportId, setReportId] = useState<string>('');
     const [reportUser, setReportUser] = useState<any>(null);
     const [reportCreatedAt, setReportCreatedAt] = useState<string>('');
+    const [isSmallDevice, setIsSmallDevice] = useState(false);
+    
+    // Helper to get dark mode from localStorage
+    const getDarkModeFromStorage = () => {
+        if (typeof window !== 'undefined') {
+            try {
+                const saved = localStorage.getItem('darkMode');
+                return saved === 'true';
+            } catch {
+                return false;
+            }
+        }
+        return false;
+    };
+
+    // Always read from localStorage as source of truth (works even in portals)
+    // Also sync with context if it's available and true
+    const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+        const storageValue = getDarkModeFromStorage();
+        const contextValue = darkModeContext.isDarkMode;
+        // Use context if it's explicitly true, otherwise trust localStorage
+        return contextValue === true ? true : storageValue;
+    });
+
+    // Detect small devices
+    useEffect(() => {
+        const checkDevice = () => {
+            setIsSmallDevice(window.innerWidth < 640);
+        };
+        checkDevice();
+        window.addEventListener('resize', checkDevice);
+        return () => window.removeEventListener('resize', checkDevice);
+    }, []);
+
+    // Sync dark mode from context and localStorage
+    useEffect(() => {
+        const updateDarkMode = () => {
+            const storageValue = getDarkModeFromStorage();
+            const contextValue = darkModeContext.isDarkMode;
+            // Prefer context if it's true, otherwise use storage
+            const newValue = contextValue === true ? true : storageValue;
+            setIsDarkMode(newValue);
+        };
+
+        // Initial update
+        updateDarkMode();
+
+        // Listen to storage events (from other tabs)
+        window.addEventListener('storage', updateDarkMode);
+        
+        // Poll localStorage frequently for same-tab changes
+        const interval = setInterval(updateDarkMode, 100);
+        
+        return () => {
+            window.removeEventListener('storage', updateDarkMode);
+            clearInterval(interval);
+        };
+    }, [darkModeContext.isDarkMode]);
 
     // Close tooltip when clicking outside on mobile
     useEffect(() => {
@@ -74,10 +134,10 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
                     setShowTooltip(false);
                 }
             };
-            
+
             document.addEventListener('click', handleClickOutside);
             document.addEventListener('touchstart', handleClickOutside);
-            
+
             return () => {
                 document.removeEventListener('click', handleClickOutside);
                 document.removeEventListener('touchstart', handleClickOutside);
@@ -158,6 +218,9 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
         }
     }
 
+
+    console.log("is dark mode = ",isDarkMode)
+
     function handleInfoClick() {
         openModal({
             view: (
@@ -194,10 +257,15 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
             containerClassName: ConfirmModal.containerClassName,
         });
     }
-    console.log("report message111 = ",localDetails)
+    console.log("report message111 = ",isDarkMode)
 
     return (
-        <div className={cn('p-2 sm:p-4 pb-6 sm:pb-8 w-full max-w-full overflow-visible sm:overflow-hidden', isDrawer ? 'p-4 pb-6 sm:pb-8 mr-0 border-0 rounded-none' : 'border border-gray-50 rounded-[10px] sm:max-w-[500px] md:max-w-[650px] mx-auto')}>
+        <div
+            className={cn('p-2 sm:p-4 pb-6 sm:pb-8 w-full max-w-full overflow-visible sm:overflow-hidden', isDrawer ? 'p-4 pb-6 sm:pb-8 mr-0 border-0 rounded-none' : 'border rounded-[10px] sm:max-w-[500px] md:max-w-[650px] mx-auto')}
+            style={!isDrawer ? {
+                borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#F9FAFB'
+            } : {}}
+        >
             {!isDrawer && (
                 <>
                     {isDossierAssistantTop ? (
@@ -207,8 +275,9 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
                     ) : (
                         <>
                             <div
-                                className="flex items-center justify-between border-b border-b-gray-300 -mx-2 xs:-mx-3 sm:-mx-6 px-2 xs:px-3 sm:px-6 pb-3 xs:pb-4 sm:pb-6">
-                                <h4 className="text-black text-sm xs:text-base sm:text-lg md:text-[22px] font-bold">Full Report</h4>
+                                className="flex items-center justify-between border-b -mx-2 xs:-mx-3 sm:-mx-6 px-2 xs:px-3 sm:px-6 pb-3 xs:pb-4 sm:pb-6"
+                                style={{ borderBottomColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#D1D5DB' }}>
+                                <h4 className="text-sm xs:text-base sm:text-lg md:text-[22px] font-bold" style={{ color: isDarkMode ? '#FFFFFF' : '#000000' }}>Full Report</h4>
                                 <button
                                     type="button"
                                     onClick={(e) => {
@@ -218,7 +287,7 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
                                     }}
                                     className="cursor-pointer flex-shrink-0"
                                 >
-                                    <CrossIcon className="w-4 h-4 xs:w-5 xs:h-5 sm:w-6 sm:h-6" />
+                                    <CrossIcon className={cn("w-4 h-4 xs:w-5 xs:h-5 sm:w-6 sm:h-6", isDarkMode && "brightness-0 invert")} />
                                 </button>
                             </div>
                         </>
@@ -228,27 +297,27 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
 
             <div className={cn('flex flex-row justify-between items-start mt-3 sm:mt-4 gap-2 sm:gap-4 px-2 sm:px-0', isDrawer && 'mt-0')}>
                 <div className="flex gap-2 sm:gap-3 md:gap-6 items-start flex-1 min-w-0 pr-2 sm:pr-0">
-                    <Image 
+                    <Image
                         src={localDetails?.PhotoName ||
                             (localDetails?.criminals && localDetails?.criminals.length>0 && localDetails?.criminals[0].PhotoName)
                             || "/men.png"}
-                        alt="men" 
-                        width={124} 
+                        alt="men"
+                        width={124}
                         height={124}
                         className={cn('w-16 h-16 sm:w-20 sm:h-20 md:w-[124px] md:h-[124px] aspect-square rounded-full flex-shrink-0 object-cover', isDrawer && 'w-24 h-24')}
                     />
                     <div className="min-w-0 flex-1">
-                        <h1 className="text-black text-sm sm:text-base md:text-lg font-bold leading-tight sm:leading-6 break-words">{`${toEnhancedTitleCase(localDetails?.FIRST || '')} ${toEnhancedTitleCase(localDetails?.MID || '')} ${toEnhancedTitleCase(localDetails?.LAST || '')}`.trim() || 'N/A'}</h1>
+                        <h1 className="text-sm sm:text-base md:text-lg font-bold leading-tight sm:leading-6 break-words" style={{ color: isDarkMode ? '#FFFFFF' : '#000000' }}>{`${toEnhancedTitleCase(localDetails?.FIRST || '')} ${toEnhancedTitleCase(localDetails?.MID || '')} ${toEnhancedTitleCase(localDetails?.LAST || '')}`.trim() || 'N/A'}</h1>
                         <div className="flex items-start gap-2 sm:gap-2 mt-1">
-                            <LocationIcon className="mt-0.5 flex-shrink-0 w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5"/>
-                            <p className="text-[#616166] text-[10px] sm:text-xs font-normal leading-relaxed break-words flex-1">
+                            <LocationIcon className={cn("mt-0.5 flex-shrink-0 w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5", isDarkMode && "brightness-0 invert")} />
+                            <p className="text-[10px] sm:text-xs font-normal leading-relaxed break-words flex-1" style={{ color: isDarkMode ? '#FFFFFF' : '#616166' }}>
                                 {getLocations().length > 0 ? (
                                     <span className="flex flex-wrap gap-0.5">
                                         {getLocations().map((location, index) => (
                                             <span key={index} className="inline-block">
                                                 {location}
                                                 {index < getLocations().length - 1 && (
-                                                    <span className="mx-1 text-gray-400">|</span>
+                                                    <span className="mx-1" style={{ color: isDarkMode ? '#FFFFFF' : '#9CA3AF' }}>|</span>
                                                 )}
                                             </span>
                                         ))}
@@ -264,7 +333,7 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
                     </div>
                 </div>
                 <div className="flex gap-2 sm:gap-3 flex-shrink-0 self-start pl-2 sm:pl-0" data-tooltip-container>
-                    <div 
+                    <div
                         className="relative flex items-center justify-center gap-1.5 sm:gap-2"
                         onMouseEnter={() => setShowTooltip(true)}
                         onMouseLeave={() => setShowTooltip(false)}
@@ -284,11 +353,14 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
                             className="hover:cursor-pointer w-6 h-6 sm:w-16 sm:h-16 flex-shrink-0"
                         />
                         <ExclamationIcon
-                            className="hover:cursor-pointer w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4 flex-shrink-0"
+                            className={cn("hover:cursor-pointer w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4 flex-shrink-0", isDarkMode && "brightness-0 invert")}
                         />
                         {showTooltip && (
-                            <div 
-                                className="absolute z-[9999] right-0 sm:right-0 top-full sm:top-[-10px] mt-2 sm:mt-0 sm:transform sm:translate-x-0 px-3 sm:px-4 py-2 bg-gray-900 text-white text-xs sm:text-sm rounded-lg shadow-lg w-[200px] sm:w-[220px] md:w-[250px]"
+                            <div
+                                className="absolute z-[9999] right-0 sm:right-0 top-full sm:top-[-10px] mt-2 sm:mt-0 sm:transform sm:translate-x-0 px-3 sm:px-4 py-2 text-white text-xs sm:text-sm rounded-lg shadow-lg w-[200px] sm:w-[220px] md:w-[250px]"
+                                style={{
+                                    backgroundColor: isDarkMode ? '#505662' : '#111827'
+                                }}
                                 onMouseEnter={() => setShowTooltip(true)}
                                 onMouseLeave={() => setShowTooltip(false)}
                                 onClick={(e) => e.stopPropagation()}
@@ -301,19 +373,25 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
                     </div>
                 </div>
             </div>
-            
+
             {/* Report Message Section */}
             {reportMessage && (
-                <div className="mt-3 xs:mt-4 sm:mt-6 p-2 xs:p-3 sm:p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                    <h3 className="text-[10px] xs:text-xs sm:text-sm font-semibold text-blue-900 mb-1 xs:mb-2">AI Analysis Summary</h3>
-                    <p className="text-blue-800 text-[10px] xs:text-xs sm:text-sm leading-relaxed break-words">{reportMessage}</p>
+                <div
+                    className="mt-3 xs:mt-4 sm:mt-6 p-2 xs:p-3 sm:p-4 border rounded-lg"
+                    style={isDarkMode
+                        ? { background: '#404652', borderColor: 'rgba(255, 255, 255, 0.1)' }
+                        : { background: '#EFF6FF', borderColor: '#BFDBFE' }
+                    }
+                >
+                    <h3 className="text-[10px] xs:text-xs sm:text-sm font-semibold mb-1 xs:mb-2" style={{ color: isDarkMode ? '#FFFFFF' : '#1E3A8A' }}>AI Analysis Summary</h3>
+                    <p className="text-[10px] xs:text-xs sm:text-sm leading-relaxed break-words" style={{ color: isDarkMode ? '#FFFFFF' : '#1E40AF' }}>{reportMessage}</p>
                     {reportUser && (
-                        <div className="mt-2 sm:mt-3 pt-2 sm:pt-3 border-t border-blue-200">
-                            <p className="text-[10px] xs:text-xs text-blue-700 break-words">
+                        <div className="mt-2 sm:mt-3 pt-2 sm:pt-3" style={{ borderTopColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#BFDBFE' }}>
+                            <p className="text-[10px] xs:text-xs break-words" style={{ color: isDarkMode ? '#FFFFFF' : '#1D4ED8' }}>
                                 <span className="font-medium">Generated by:</span> {reportUser.full_name} ({reportUser.email})
                             </p>
                             {reportCreatedAt && (
-                                <p className="text-[10px] xs:text-xs text-blue-700">
+                                <p className="text-[10px] xs:text-xs" style={{ color: isDarkMode ? '#FFFFFF' : '#1D4ED8' }}>
                                     <span className="font-medium">Created:</span> {new Date(reportCreatedAt).toLocaleDateString()}
                                 </p>
                             )}
@@ -321,7 +399,7 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
                     )}
                 </div>
             )}
-            
+
             {/* {editable && (
         <div className="flex justify-end">
           <Button onClick={handleArchive} size="sm" variant="outline" color="danger">
@@ -344,17 +422,17 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
                 {/*<SocialAndWeb isEditable={editable} isDrawer={isDrawer}/>*/}
                 {/*<PhotographicArchive isEditable={editable} isDrawer={isDrawer}/>*/}
                 {((localDetails as any)?._index === 'criminals' || (localDetails as any)?._index === 'criminals_small'
-                     || ((localDetails as any)?._index === 'vets' && localDetails?.VETERAN==='Y')
+                    || ((localDetails as any)?._index === 'vets' && localDetails?.VETERAN==='Y')
                     || ((localDetails as any)?._index === 'drunk-drivings' && localDetails?.ACCIDENTS==='Y')
                     || ((localDetails as any)?.criminals && (localDetails as any).criminals.length>0)
                 ) && (
-                  <CriminalAndLegal isEditable={editable} isDrawer={isDrawer} details={localDetails} />
+                    <CriminalAndLegal isEditable={editable} isDrawer={isDrawer} details={localDetails} />
                 )}
-                
+
                 {/* Social Media Accounts Section */}
                 {localDetails?.SOCIAL_LINK && Array.isArray(localDetails.SOCIAL_LINK) && localDetails.SOCIAL_LINK.length > 0 && (
-                    <div className="bg-white border border-gray-200 rounded-lg p-4">
-                        <h3 className="text-lg font-semibold text-gray-900 mb-4">Social Media Accounts</h3>
+                    <>
+                        <h3 className="text-lg font-semibold mb-4" style={{ color: isDarkMode ? '#FFFFFF' : '#111827' }}>Social Media Accounts</h3>
                         <div className="grid grid-cols-1 gap-3">
                             {localDetails.SOCIAL_LINK.map((link: string, index: number) => {
                                 // Determine the platform based on the link
@@ -407,7 +485,14 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
                                 const finalUrl = link.startsWith('http') ? link : `${platform.baseUrl}${link.replace('@', '')}`;
 
                                 return (
-                                    <div key={index} className="flex items-center p-3 bg-gray-50 rounded-lg border overflow-hidden">
+                                    <div
+                                        key={index}
+                                        className="flex items-center p-3 rounded-lg border overflow-hidden"
+                                        style={isDarkMode
+                                            ? { background: '#404652', borderColor: 'rgba(255, 255, 255, 0.1)' }
+                                            : { background: '#F9FAFB', borderColor: 'transparent' }
+                                        }
+                                    >
                                         <div className="flex items-center gap-3 min-w-0 flex-1">
                                             <div className={`w-8 h-8 ${platform.bgColor} rounded-full flex items-center justify-center flex-shrink-0`}>
                                                 <span className={platform.iconColor}>
@@ -415,8 +500,8 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
                                                 </span>
                                             </div>
                                             <div className="min-w-0 flex-1 overflow-hidden">
-                                                <p className="text-sm font-medium text-gray-900 truncate">{platform.name} Profile</p>
-                                                <a 
+                                                <p className="text-sm font-medium truncate" style={{ color: isDarkMode ? '#FFFFFF' : '#111827' }}>{platform.name} Profile</p>
+                                                <a
                                                     href={finalUrl}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
@@ -431,9 +516,9 @@ export function FullReport({editable = false, isDrawer, details}: Props) {
                                 );
                             })}
                         </div>
-                    </div>
+                    </>
                 )}
-                
+
                 <AssociationsConnection isEditable={editable} isDrawer={isDrawer} details={localDetails}/>
                 {/*<HighRisk isEditable={editable} isDrawer={isDrawer}/>*/}
                 {/*<GeospatialTrace isEditable={editable} isDrawer={isDrawer}/>*/}

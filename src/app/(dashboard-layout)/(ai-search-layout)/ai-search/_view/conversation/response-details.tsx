@@ -11,6 +11,7 @@ import {toEnhancedTitleCase} from '@/lib/utils/title-case';
 import {normalizeMergeResponse} from "../../../../../../types";
 import {apiService} from '@/services/apiService';
 import { useState, useEffect } from 'react';
+import { useDarkMode } from '@/lib/contexts/dark-mode-context';
 
 
 const capitalizeState = (str: string): string => {
@@ -44,17 +45,66 @@ export function AiResponseDetails({detailsData}: { detailsData: (AIResponseDetai
     const [showFullReport, setShowFullReport] = useState(false);
     const [fullReportDetails, setFullReportDetails] = useState<AIResponseDetail | null>(null);
     const [isLargeDevice, setIsLargeDevice] = useState(false);
+    const [isSmallDevice, setIsSmallDevice] = useState(false);
     const {openDrawer} = useDrawer();
+    const darkModeContext = useDarkMode();
+    
+    // Helper to get dark mode from localStorage
+    const getDarkModeFromStorage = () => {
+        if (typeof window !== 'undefined') {
+            try {
+                const saved = localStorage.getItem('darkMode');
+                return saved === 'true';
+            } catch {
+                return false;
+            }
+        }
+        return false;
+    };
+
+    // Always read from localStorage as source of truth (works even in portals)
+    // Also sync with context if it's available and true
+    const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+        const storageValue = getDarkModeFromStorage();
+        const contextValue = darkModeContext.isDarkMode;
+        // Use context if it's explicitly true, otherwise trust localStorage
+        return contextValue === true ? true : storageValue;
+    });
 
     useEffect(() => {
         const checkDeviceSize = () => {
             setIsLargeDevice(window.innerWidth >= 640);
+            setIsSmallDevice(window.innerWidth < 640);
         };
         
         checkDeviceSize();
         window.addEventListener('resize', checkDeviceSize);
         return () => window.removeEventListener('resize', checkDeviceSize);
     }, []);
+
+    useEffect(() => {
+        const updateDarkMode = () => {
+            const storageValue = getDarkModeFromStorage();
+            const contextValue = darkModeContext.isDarkMode;
+            // Prefer context if it's true, otherwise use storage
+            const newValue = contextValue === true ? true : storageValue;
+            setIsDarkMode(newValue);
+        };
+
+        // Initial update
+        updateDarkMode();
+
+        // Listen to storage events (from other tabs)
+        window.addEventListener('storage', updateDarkMode);
+        
+        // Poll localStorage frequently for same-tab changes
+        const interval = setInterval(updateDarkMode, 100);
+        
+        return () => {
+            window.removeEventListener('storage', updateDarkMode);
+            clearInterval(interval);
+        };
+    }, [darkModeContext.isDarkMode]);
 
     function handleFullReport(props: AIResponseDetail) {
         if (isLargeDevice) {
@@ -63,11 +113,24 @@ export function AiResponseDetails({detailsData}: { detailsData: (AIResponseDetai
             setShowFullReport(true);
         } else {
             // Use drawer for small devices
+            // Use gradient for dark mode on small devices, solid color for large devices
+            const drawerBg = isDarkMode 
+                ? (isSmallDevice 
+                    ? 'linear-gradient(143.11deg, #22252A 4.37%, #1F2736 78.56%)' 
+                    : '#404652')
+                : undefined;
+            
+            const drawerStyle = drawerBg
+                ? typeof drawerBg === 'string' && drawerBg.startsWith('linear-gradient')
+                    ? { background: drawerBg }
+                    : { backgroundColor: drawerBg }
+                : {};
+
             openDrawer({
                 closeOnPathnameChange: true,
                 containerClassName: 'w-full sm:w-[470px]',
                 view: (
-                    <div className="h-screen">
+                    <div className="h-screen" style={drawerStyle}>
                         <DrawerHeader details={props}/>
                         <div className="h-[calc(100vh-56px)] overflow-y-auto">
                             <FullReport isDrawer details={props}/>
@@ -98,6 +161,54 @@ export function AiResponseDetails({detailsData}: { detailsData: (AIResponseDetai
 }
 
 function SingleDetails(props: AIResponseDetail & { onFullReport?: (details: AIResponseDetail) => void }) {
+    const darkModeContext = useDarkMode();
+    
+    // Helper to get dark mode from localStorage
+    const getDarkModeFromStorage = () => {
+        if (typeof window !== 'undefined') {
+            try {
+                const saved = localStorage.getItem('darkMode');
+                return saved === 'true';
+            } catch {
+                return false;
+            }
+        }
+        return false;
+    };
+
+    // Always read from localStorage as source of truth (works even in portals)
+    // Also sync with context if it's available and true
+    const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+        const storageValue = getDarkModeFromStorage();
+        const contextValue = darkModeContext.isDarkMode;
+        // Use context if it's explicitly true, otherwise trust localStorage
+        return contextValue === true ? true : storageValue;
+    });
+
+    // Sync dark mode from context and localStorage
+    useEffect(() => {
+        const updateDarkMode = () => {
+            const storageValue = getDarkModeFromStorage();
+            const contextValue = darkModeContext.isDarkMode;
+            // Prefer context if it's true, otherwise use storage
+            const newValue = contextValue === true ? true : storageValue;
+            setIsDarkMode(newValue);
+        };
+
+        // Initial update
+        updateDarkMode();
+
+        // Listen to storage events (from other tabs)
+        window.addEventListener('storage', updateDarkMode);
+        
+        // Poll localStorage frequently for same-tab changes
+        const interval = setInterval(updateDarkMode, 100);
+        
+        return () => {
+            window.removeEventListener('storage', updateDarkMode);
+            clearInterval(interval);
+        };
+    }, [darkModeContext.isDarkMode]);
 
     const calculateAge = (birthdate: string) => {
         const today = new Date();
@@ -312,15 +423,31 @@ function SingleDetails(props: AIResponseDetail & { onFullReport?: (details: AIRe
         (props.criminals && props.criminals.length>0) ||
         (props.criminals_small && props.criminals_small.length>0);
 
+    const cardStyle = isCriminal 
+        ? {
+            boxShadow: isDarkMode 
+                ? '0px -1px 8.1px 0px rgba(255, 99, 99, 0.25) inset' 
+                : '0px -1px 8.1px 0px #C6C4E840 inset',
+            background: isDarkMode 
+                ? 'linear-gradient(302.79deg, #4A1F1F 20.81%, #2A1F1F 91.35%)' 
+                : 'linear-gradient(302.79deg, #FFF3F3 20.81%, #FBFBFC 91.35%)'
+        }
+        : {
+            boxShadow: isDarkMode 
+                ? '0px -1px 8.1px 0px rgba(255, 255, 255, 0.05) inset' 
+                : undefined,
+            background: isDarkMode ? '#404652' : undefined
+        };
+
     return (
-        <div className={cn(
-            "px-2 sm:px-3 py-2 sm:py-3 shadow-lg shadow-gray-200/70 border rounded-[8px] relative",
-            isCriminal ? 'border-gray-200' : 'border-gray-100'
-        )}
-        style={{ 
-            boxShadow: '0px -1px 8.1px 0px #C6C4E840 inset',
-            background: isCriminal ? 'linear-gradient(302.79deg, #FFF3F3 20.81%, #FBFBFC 91.35%)' : undefined
-        }}
+        <div 
+            className={cn(
+                "px-2 sm:px-3 py-2 sm:py-3 border rounded-[8px] relative",
+                isCriminal 
+                    ? (isDarkMode ? 'border-red-500/30' : 'border-gray-200')
+                    : (isDarkMode ? 'border-white/10' : 'border-gray-100')
+            )}
+            style={cardStyle}
         >
             {isCriminal && (
                 <div 
@@ -336,37 +463,46 @@ function SingleDetails(props: AIResponseDetail & { onFullReport?: (details: AIRe
           Exact Match
         </span>
                     {isCriminal && (
-                        <span className="text-red-600 text-[10px] sm:text-xs py-1 sm:py-1.5 px-2 sm:px-2.5 bg-red-100 rounded-md">
+                        <span 
+                            className="text-[10px] sm:text-xs py-1 sm:py-1.5 px-2 sm:px-2.5 rounded-md"
+                            style={{
+                                color: isDarkMode ? '#FF6363' : '#DC2626',
+                                background: isDarkMode ? 'rgba(255, 99, 99, 0.2)' : '#FEE2E2'
+                            }}
+                        >
                             Criminal
                         </span>
                     )}
                 </div>
             </div>
-            <div className="text-[10px] sm:text-xs space-y-2 sm:space-y-2.5">
+            <div className="text-[10px] sm:text-xs space-y-2 sm:space-y-2.5" style={isDarkMode ? { color: '#FFFFFF' } : {}}>
                 <div className="flex items-end gap-1.5 sm:gap-2">
                     <CalendarIcon
-                        className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0"/> <span>Age: {(props.DOB || (props.criminals && props.criminals.length>0)) ?
+                        className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" style={isDarkMode ? { color: '#FFFFFF' } : {}}/> <span>Age: {(props.DOB || (props.criminals && props.criminals.length>0)) ?
                     `${calculateAge(props.DOB || props.criminals[0].DOB)} Years Old` : ' N/A'}</span>
                 </div>
                 <div className="flex items-end gap-1.5 sm:gap-2">
-                    <LocationIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0"/>
+                    <LocationIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" style={isDarkMode ? { color: '#FFFFFF' } : {}}/>
                     <div className="text-[10px] sm:text-xs break-words">
                         {getLocations().length > 0 ? getLocations().join(' | ') : 'No location data'}
                     </div>
                 </div>
-                <div className="flex flex-col gap-2 sm:gap-3 text-[10px] sm:text-[11px]">
+                <div className="flex flex-col gap-2 sm:gap-3 text-[10px] sm:text-[11px]" style={isDarkMode ? { color: '#FFFFFF' } : {}}>
                     <div className="flex items-end gap-1.5 sm:gap-2">
-                        <CellPhoneIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0"/> <span>{getPhoneCount()} Mobile Numbers</span>
+                        <CellPhoneIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" style={isDarkMode ? { color: '#FFFFFF' } : {}}/> <span>{getPhoneCount()} Mobile Numbers</span>
                     </div>
                     <div className="flex items-end gap-1.5 sm:gap-2">
-                        <EnvelopIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0"/> <span>{getEmailCount()} Email Addresses</span>
+                        <EnvelopIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" style={isDarkMode ? { color: '#FFFFFF' } : {}}/> <span>{getEmailCount()} Email Addresses</span>
                     </div>
                 </div>
             </div>
             <button onClick={handleFullReportClick}
                     className="inline-flex gap-1 font-normal text-[10px] sm:text-xs cursor-pointer items-center mt-2 sm:mt-3 px-3 py-2.5 rounded-[6px]"
-                    style={{ backgroundColor: '#5C39D91A', color: '#5C39D9' }}>
-                View Report <PiArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" style={{ color: '#5C39D9' }}/>
+                    style={isDarkMode 
+                        ? { backgroundColor: '#C8BAF72B', color: '#C0AEFF' }
+                        : { backgroundColor: '#5C39D91A', color: '#5C39D9' }
+                    }>
+                View Report <PiArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" style={isDarkMode ? { color: '#C0AEFF' } : { color: '#5C39D9' }}/>
             </button>
         </div>
     );
@@ -409,7 +545,7 @@ const LocationIcon = (props: SVGProps<SVGSVGElement>) => (
 const CellPhoneIcon = (props: SVGProps<SVGSVGElement>) => (
     <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 16 16" fill="none" {...props}>
         <path
-            fill="#000"
+            fill="currentColor"
             fillRule="evenodd"
             d="m2.192 2.725.049-.05C3.525 1.39 4.362 1.049 5.255 1.563c.257.147.498.354.825.686l1.004 1.042c.555.605.681 1.186.5 1.866l-.024.09-.028.09-.134.393c-.288.883-.168 1.382.855 2.404 1.063 1.063 1.559 1.15 2.51.817l.17-.059.205-.066.09-.025c.723-.193 1.333-.04 1.98.608l.81.781.238.235c.264.269.438.482.567.708.51.892.17 1.729-1.152 3.046l-.126.127c-.198.19-.382.327-.653.455-.455.216-.992.298-1.616.21-1.538-.213-3.49-1.427-5.962-3.899a34.407 34.407 0 0 1-.578-.591l-.358-.382C1.025 6.455.728 4.217 2.103 2.814l.09-.089Zm3.079.13c-.218-.215-.375-.346-.514-.426-.308-.176-.64-.102-1.255.427l-.193.173a9.97 9.97 0 0 0-.104.097l-.221.216-.02.025-.15.15c-.363.371-.535.824-.387 1.602.243 1.276 1.356 3.008 3.594 5.246 2.333 2.332 4.11 3.438 5.393 3.616.747.104 1.129-.077 1.517-.475l.297-.3a7.96 7.96 0 0 0 .358-.397l.137-.173c.35-.466.382-.745.232-1.007-.057-.1-.14-.209-.26-.342l-.164-.173-.096-.097-1.021-.985c-.341-.315-.574-.36-.928-.265l-.103.03-.422.143c-1.227.396-2.112.204-3.415-1.099-1.35-1.35-1.508-2.25-1.056-3.548l.029-.083.08-.242.04-.154c.07-.336-.01-.57-.37-.93l-.05-.05-.948-.98Z"
             clipRule="evenodd"

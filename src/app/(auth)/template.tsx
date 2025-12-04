@@ -1,7 +1,24 @@
+'use client';
+
+import { DarkModeProvider } from '@/lib/contexts/dark-mode-context';
+import { AuthLayoutContent } from './auth-layout-content';
+import { useState, useEffect } from 'react';
+
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
+  const [renderKey, setRenderKey] = useState(0);
+
+  useEffect(() => {
+    // Force re-render after 500ms
+    const timer = setTimeout(() => {
+      setRenderKey(prev => prev + 1);
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
-    <div className="min-h-screen overflow-x-hidden mx-auto max-w-[1024px] w-full max-w-full px-4 py-4 sm:px-6 sm:py-6 md:px-8 md:py-8 lg:p-10 flex items-center justify-center box-border">
-      <div className="w-full max-w-full min-w-0 box-border">{children}</div>
-    </div>
+    <DarkModeProvider key={renderKey}>
+      <AuthLayoutContent>{children}</AuthLayoutContent>
+    </DarkModeProvider>
   );
 }

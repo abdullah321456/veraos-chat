@@ -7,8 +7,13 @@ import { Select } from '@/components/atom/select';
 import cn from '@/lib/utils/cn';
 import { useUser } from '@/lib/hooks/use-user';
 import { useState, useEffect } from 'react';
+import { useDarkMode } from '@/lib/contexts/dark-mode-context';
 
-const labelClassName = cn('block text-[#6D6F73]', inputLabelStyles.color.black, inputLabelStyles.size.md, inputLabelStyles.weight.medium);
+const getLabelClassName = (isDarkMode: boolean) => 
+  cn('block', inputLabelStyles.size.md, inputLabelStyles.weight.medium, {
+    'text-[#6D6F73]': !isDarkMode,
+    'text-[#FFFFFF]': isDarkMode,
+  });
 
 const countryOptions = [
   {
@@ -29,6 +34,7 @@ const countryOptions = [
 ];
 
 export function BillingAddress() {
+  const { isDarkMode } = useDarkMode();
   const { userData, loading, error, updateProfile, updating } = useUser();
   const [formData, setFormData] = useState({
     address: '',
@@ -39,6 +45,13 @@ export function BillingAddress() {
     country: '',
     phoneNumber: '',
   });
+
+  const labelClassName = getLabelClassName(isDarkMode);
+  const cardBg = isDarkMode ? '#505662' : 'white';
+  const borderColor = isDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#F3F4F6';
+  const pulseBg = isDarkMode ? '#404652' : '#E5E7EB';
+  const errorTextColor = isDarkMode ? '#FF6B6B' : '#EF4444';
+  const errorSubtextColor = isDarkMode ? '#A7A7A7' : '#6B7280';
 
   // Update form data when userData changes
   useEffect(() => {
@@ -80,13 +93,31 @@ export function BillingAddress() {
 
   if (loading) {
     return (
-      <div className="shadow-lg p-3 sm:p-4 border border-gray-100 rounded-[10px]">
+      <div 
+        className="shadow-lg p-3 sm:p-4 border rounded-[10px]"
+        style={{
+          backgroundColor: cardBg,
+          borderColor: borderColor
+        }}
+      >
         <div className="animate-pulse">
-          <div className="h-6 bg-gray-200 rounded w-1/4 mb-4"></div>
+          <div 
+            className="h-6 rounded w-1/4 mb-4"
+            style={{ backgroundColor: pulseBg }}
+          ></div>
           <div className="space-y-4">
-            <div className="h-10 bg-gray-200 rounded"></div>
-            <div className="h-10 bg-gray-200 rounded"></div>
-            <div className="h-10 bg-gray-200 rounded"></div>
+            <div 
+              className="h-10 rounded"
+              style={{ backgroundColor: pulseBg }}
+            ></div>
+            <div 
+              className="h-10 rounded"
+              style={{ backgroundColor: pulseBg }}
+            ></div>
+            <div 
+              className="h-10 rounded"
+              style={{ backgroundColor: pulseBg }}
+            ></div>
           </div>
         </div>
       </div>
@@ -95,20 +126,43 @@ export function BillingAddress() {
 
   if (error) {
     return (
-      <div className="shadow-lg p-3 sm:p-4 border border-gray-100 rounded-[10px]">
-        <div className="text-red-500 text-center py-6 sm:py-8">
+      <div 
+        className="shadow-lg p-3 sm:p-4 border rounded-[10px]"
+        style={{
+          backgroundColor: cardBg,
+          borderColor: borderColor
+        }}
+      >
+        <div className="text-center py-6 sm:py-8" style={{ color: errorTextColor }}>
           <p className="text-sm sm:text-base">Failed to load billing information</p>
-          <p className="text-xs sm:text-sm text-gray-500 mt-2 break-words">{error}</p>
+          <p 
+            className="text-xs sm:text-sm mt-2 break-words"
+            style={{ color: errorSubtextColor }}
+          >
+            {error}
+          </p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="shadow-lg p-3 sm:p-4 border border-gray-100 rounded-[10px]">
+    <div 
+      className="shadow-lg p-3 sm:p-4 border rounded-[10px]"
+      style={{
+        backgroundColor: cardBg,
+        borderColor: borderColor
+      }}
+    >
       <div className="space-y-4">
         <div className="col-span-full">
-          <CustomInputLabel label="Billing Address" isRequired />
+          <p 
+            className={cn(labelClassName, "col-span-full")}
+            style={{ color: isDarkMode ? '#FFFFFF' : '#6D6F73' }}
+          >
+            Billing Address
+            <span className="text-red-500">*</span>
+          </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <Input 
               isRequired 

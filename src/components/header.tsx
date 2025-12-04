@@ -14,12 +14,14 @@ import { PaperIcon } from './atom/icons/side-bar/paper';
 import { QuestionIcon } from './atom/icons/side-bar/question';
 import { SettingIcon } from './atom/icons/side-bar/setting';
 import { authUtils } from '@/lib/utils/auth';
+import { useDarkMode } from '@/lib/contexts/dark-mode-context';
 
 type Props = {
   isExpanded?: IsExpandedType;
 };
 
 export function DashboardHeader({ isExpanded }: Props = {}) {
+  const { isDarkMode } = useDarkMode();
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSmallDevice, setIsSmallDevice] = useState(false);
@@ -48,10 +50,22 @@ export function DashboardHeader({ isExpanded }: Props = {}) {
 
   const currentPageTitle = getCurrentPageTitle();
 
+  const headerStyle = isSmallDevice
+    ? {
+        backgroundColor: '#0F141E'
+      }
+    : isDarkMode
+    ? {
+        background: '#0F141E'
+      }
+    : {
+        backgroundColor: 'transparent'
+      };
+
   return (
     <div 
-      className="fixed top-0 left-0 right-0 z-20 h-16 flex justify-between items-center px-4 sm:px-6 border-gray-200 bg-white sm:bg-white"
-      style={{ backgroundColor: isSmallDevice ? '#0F141E' : 'transparent' }}
+      className="fixed top-0 left-0 right-0 z-20 h-16 flex justify-between items-center px-4 sm:px-6"
+      style={headerStyle}
     >
       <div className="flex items-center gap-3">
         {/* Logo - only show on small devices */}
@@ -63,24 +77,37 @@ export function DashboardHeader({ isExpanded }: Props = {}) {
               width={120}
               height={40}
               quality={100}
-              className="h-6 w-auto object-contain"
+              className="h-6 w-auto object-contain brightness-0 invert"
             />
           </Link>
         </div>
         {/* Page title - show on large devices */}
-        <h1 className={cn(
-          "hidden sm:block text-base sm:text-lg md:text-xl font-bold text-gray-900 ml-0 truncate pr-2",
-          IS_EXPANDED ? "sm:ml-[80px]" : "sm:ml-[200px]"
-        )}>{currentPageTitle}</h1>
+        <h1 
+          className={cn(
+            "hidden sm:block text-base sm:text-lg md:text-xl font-bold ml-0 truncate pr-2",
+            IS_EXPANDED ? "sm:ml-[80px]" : "sm:ml-[200px]"
+          )}
+          style={{ color: isDarkMode ? '#FFFFFF' : '#111827' }}
+        >{currentPageTitle}</h1>
       </div>
       <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
         {/* Mobile Menu Toggle - only show on small screens */}
         <button
           onClick={() => setIsMobileMenuOpen(true)}
-          className="block sm:hidden p-2 hover:bg-gray-800 rounded-lg transition-colors"
+          className="block sm:hidden p-2 rounded-lg transition-colors"
+          style={{
+            color: '#FFFFFF',
+            backgroundColor: 'transparent'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = 'transparent';
+          }}
           aria-label="Toggle menu"
         >
-          <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: '#FFFFFF' }}>
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>
@@ -259,18 +286,38 @@ function MobileDashboardMenu({ onClose }: { onClose: () => void }) {
 }
 
 function AdvanceSwitch({ positiveIconSrc, negativeIconSrc }: { positiveIconSrc: string; negativeIconSrc: string }) {
-  const [isChecked, setIsChecked] = useState(true);
-  const activeClassName = 'text-primary bg-white shadow-lg';
+  // Use dark mode hook - will return defaults if not in provider
+  const { isDarkMode, toggleDarkMode } = useDarkMode();
+  
+  const containerClassName = 'inline-flex gap-1 select-none cursor-pointer items-center justify-center h-7 rounded-full p-0.5';
+
+  const containerStyle = isDarkMode
+    ? { backgroundColor: 'rgba(255, 255, 255, 0.1)' }
+    : { backgroundColor: 'white' };
+  
+  // Active state styling - white background with shadow
+  const activeStyle = {
+    backgroundColor: 'white',
+    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+  };
+  
+  // Inactive state styling
+  const inactiveStyle = isDarkMode
+    ? { backgroundColor: 'transparent' }
+    : { backgroundColor: 'transparent' };
+  
   return (
     <div
-      onClick={() => setIsChecked(!isChecked)}
-      className="inline-flex gap-1 select-none cursor-pointer items-center justify-center h-7 bg-white rounded-full p-0.5"
+      onClick={toggleDarkMode}
+      className={containerClassName}
+      style={containerStyle}
     >
       <span
         className={cn(
-          'text-gray-600 duration-300 rounded-full aspect-square p-1 flex items-center justify-center',
-          isChecked && activeClassName
+          'duration-300 rounded-full aspect-square p-1 flex items-center justify-center',
+          !isDarkMode ? 'text-primary' : 'text-white'
         )}
+        style={!isDarkMode ? activeStyle : inactiveStyle}
       >
         <Image 
           src={positiveIconSrc} 
@@ -282,9 +329,10 @@ function AdvanceSwitch({ positiveIconSrc, negativeIconSrc }: { positiveIconSrc: 
       </span>
       <span
         className={cn(
-          'text-gray-600 duration-300 rounded-full aspect-square p-1 flex items-center justify-center',
-          !isChecked && activeClassName
+          'duration-300 rounded-full aspect-square p-1 flex items-center justify-center',
+          isDarkMode ? 'text-primary' : 'text-gray-600'
         )}
+        style={isDarkMode ? activeStyle : inactiveStyle}
       >
         <Image 
           src={negativeIconSrc} 

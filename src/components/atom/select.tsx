@@ -5,6 +5,7 @@ import { PiCaretDownBold } from 'react-icons/pi';
 
 import cn from '@/lib/utils/cn';
 import { toEnhancedTitleCase } from '@/lib/utils/title-case';
+import { useDarkMode } from '@/lib/contexts/dark-mode-context';
 
 import { Dropdown } from '@/components/atom/dropdown/dropdown';
 
@@ -64,27 +65,48 @@ export function Select({
     onSelect?.(v);
   }
 
+  const { isDarkMode } = useDarkMode();
   const display = formatDisplay ? formatDisplay(selected) : selected?.name;
   
   // Apply title case to label if it's a string
   const processedLabel = typeof label === 'string' ? toEnhancedTitleCase(label) : label;
 
+  const labelColor = isDarkMode ? '#FFFFFF' : '#6D6F73';
+  const dropdownBg = isDarkMode ? '#505662' : '#FFFFFF';
+  const dropdownBorderColor = isDarkMode ? 'rgba(255, 255, 255, 0.1)' : undefined;
+  const buttonTextColor = isDarkMode ? (selected ? '#FFFFFF' : 'rgba(255, 255, 255, 0.7)') : (selected ? '#000000' : undefined);
+  const menuBg = isDarkMode ? '#505662' : '#FFFFFF';
+  const menuTextColor = isDarkMode ? '#FFFFFF' : undefined;
+
   return (
     <>
       <div>
         {label ? (
-          <span className={cn(`input-label`, 'mb-2 block text-xs font-medium text-[#6D6F73]', labelClassName)}>
+          <span 
+            className={cn(`input-label`, 'mb-2 block text-xs font-medium', labelClassName)}
+            style={{ color: labelColor }}
+          >
             {processedLabel} {isRequired && <span className="text-red-500">*</span>}{' '}
           </span>
         ) : null}
         <Dropdown
           inPortal={inPortal}
           className={cn(
-            'flex h-[42px] items-center shadow-md shadow-[#ccd3d94b] border-0 rounded-[10px] ring-[0.6px] ring-[#E1E1E1] bg-white text-sm',
+            'flex h-[42px] items-center shadow-md shadow-[#ccd3d94b] border-0 rounded-[10px] ring-[0.6px] text-sm',
             dropdownClassName,
             error && 'border-red-500 border bg-red-200/20 ',
             disabled && 'pointer-events-none'
           )}
+          style={isDarkMode ? {
+            backgroundColor: dropdownBg,
+            borderColor: dropdownBorderColor,
+            borderWidth: '1px',
+            borderStyle: 'solid',
+            ringColor: dropdownBorderColor,
+          } : {
+            ringColor: '#E1E1E1',
+            backgroundColor: '#FFFFFF',
+          }}
         >
           <Dropdown.Trigger className={cn('w-full h-[42px]', dropdownTriggerClassName)}>
             {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
@@ -95,9 +117,11 @@ export function Select({
                 title={loading ? 'Loading...' : ''}
                 className={cn(
                   'flex h-full w-full items-center justify-between px-3.5 text-sm truncate duration-200',
-                  selected ? 'selected text-black' : 'text-gray-500/80',
+                  !isDarkMode && selected && 'selected text-black',
+                  !isDarkMode && !selected && 'text-gray-500/80',
                   dropdownTriggerButtonClassName
                 )}
+                style={isDarkMode ? { color: buttonTextColor } : undefined}
               >
                 {loading ? loadingPlaceholder : display || placeholder}
                 <PiCaretDownBold className={cn('ml-3 h-auto w-4 opacity-50 duration-200', open && !loading && 'rotate-180')} />
@@ -105,7 +129,10 @@ export function Select({
             )}
           </Dropdown.Trigger>
           {!loading && !disabled && (
-            <Dropdown.Menu className={cn('bg-white text-sm shadow-lg', dropdownMenuClassName)}>
+            <Dropdown.Menu 
+              className={cn('text-sm shadow-lg z-[9999]', dropdownMenuClassName)}
+              style={{ backgroundColor: menuBg, color: menuTextColor, zIndex: 9999 }}
+            >
               {options.map((opt) => {
                 const isSelected = opt === selected;
                 const option = (formatOption ? formatOption(opt) : opt.name) as React.ReactNode;
@@ -118,12 +145,15 @@ export function Select({
                     key={opt.id}
                     onClick={() => handleSelect(opt)}
                     className={cn(
-                      'text-xs hover:bg-primary/10 hover:text-primary-dark',
+                      'text-xs',
+                      !isDarkMode && 'hover:bg-primary/10 hover:text-primary-dark',
+                      isDarkMode && 'hover:bg-white/10',
                       opt.className,
                       isSelected && 'selected',
                       isSelected && opt.selectedClassName,
                       dropdownOptionClassName
                     )}
+                    style={isDarkMode ? { color: menuTextColor } : undefined}
                   >
                     {processedOption}
                   </Dropdown.Item>

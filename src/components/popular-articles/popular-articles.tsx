@@ -1,4 +1,7 @@
+'use client';
+
 import Link from "next/link";
+import { useDarkMode } from "@/lib/contexts/dark-mode-context";
 
 type Article = {
   id: number;
@@ -14,15 +17,27 @@ const articles: Article[] = [
   { id: 5, title: "Managing High-Risk Indicators on the Map", link: "#" },
 ];
 export function PopularArticles() {
+  const { isDarkMode } = useDarkMode();
+  
+  const headingColor = isDarkMode ? '#FFFFFF' : '#000000';
+  const linkColor = isDarkMode ? '#FFFFFF' : '#000000';
+
   return (
     <>
-      <h1 className="text-black text-base font-bold mb-4">Popular Articles</h1>
+      <h1 
+        className="text-base font-bold mb-4"
+        style={{ color: headingColor }}
+      >
+        Popular Articles
+      </h1>
       <ul className="space-y-3">
         {articles.map((article) => (
           <li key={article.id}>
             <Link
               href={article.link}
-              className="underline font-normal text-sm text-black hover:text-primary">
+              className="underline font-normal text-sm hover:text-primary"
+              style={{ color: linkColor }}
+            >
               {article.title}
             </Link>
           </li>

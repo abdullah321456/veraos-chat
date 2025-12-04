@@ -10,8 +10,13 @@ import { useUser } from '@/lib/hooks/use-user';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { useDarkMode } from '@/lib/contexts/dark-mode-context';
 
-const labelClassName = cn('block text-[#6D6F73]', inputLabelStyles.color.black, inputLabelStyles.size.md, inputLabelStyles.weight.medium);
+const getLabelClassName = (isDarkMode: boolean) => 
+  cn('block', inputLabelStyles.size.md, inputLabelStyles.weight.medium, {
+    'text-[#6D6F73]': !isDarkMode,
+    'text-[#FFFFFF]': isDarkMode,
+  });
 
 // Validation schemas
 const UserInfoSchema = z.object({
@@ -71,8 +76,12 @@ const countryOptions = [
 ];
 
 function UserInfo() {
+  const { isDarkMode } = useDarkMode();
   const { userData, updateProfile, updating } = useUser();
   const [isEditing, setIsEditing] = useState(true);
+  
+  const labelClassName = getLabelClassName(isDarkMode);
+  const headingColor = isDarkMode ? '#FFFFFF' : '#000000';
 
   const userForm = useForm({
     resolver: zodResolver(UserInfoSchema),
@@ -140,12 +149,23 @@ function UserInfo() {
   return (
     <div>
       <div className="flex justify-between items-center mb-4 sm:mb-5">
-        <p className="text-sm sm:text-base font-bold">User Information</p>
+        <p 
+          className="text-sm sm:text-base font-bold"
+          style={{ color: headingColor }}
+        >
+          User Information
+        </p>
       </div>
       
       <form onSubmit={handleSaveClick} className="grid grid-cols-1 gap-3 sm:gap-4">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-3 gap-y-3">
-          <CustomInputLabel label="Full Name" isRequired />
+          <p 
+            className={cn(labelClassName, "col-span-full")}
+            style={{ color: isDarkMode ? '#FFFFFF' : '#6D6F73' }}
+          >
+            Full Name
+            <span className="text-red-500">*</span>
+          </p>
           <Input 
             placeholder="First" 
             {...userForm.register('firstName')}
@@ -223,8 +243,12 @@ function UserInfo() {
 }
 
 function OrganizationInfo() {
+  const { isDarkMode } = useDarkMode();
   const { userData, updateProfile, updating } = useUser();
   const [isEditing, setIsEditing] = useState(true);
+  
+  const labelClassName = getLabelClassName(isDarkMode);
+  const headingColor = isDarkMode ? '#FFFFFF' : '#000000';
 
   const orgForm = useForm({
     resolver: zodResolver(OrganizationInfoSchema),
@@ -290,7 +314,12 @@ function OrganizationInfo() {
   return (
     <div>
       <div className="flex justify-between items-center mb-4 sm:mb-5">
-        <p className="text-sm sm:text-base font-bold">Organization Details</p>
+        <p 
+          className="text-sm sm:text-base font-bold"
+          style={{ color: headingColor }}
+        >
+          Organization Details
+        </p>
       </div>
       
       <form onSubmit={handleSaveClick} className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
@@ -402,17 +431,36 @@ function OrganizationInfo() {
 }
 
 export function ProfileInformation() {
+  const { isDarkMode } = useDarkMode();
   const { userData, loading, error } = useUser();
 
+  const hrBorderColor = isDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#E5E7EB';
+  const errorTextColor = isDarkMode ? '#FF6B6B' : '#EF4444';
+  const errorSubtextColor = isDarkMode ? '#A7A7A7' : '#6B7280';
+  const noDataColor = isDarkMode ? '#A7A7A7' : '#6B7280';
+
   if (loading) {
+    const pulseBg = isDarkMode ? '#505662' : '#E5E7EB';
     return (
       <div className="mt-[14px] space-y-6 pb-1">
         <div className="animate-pulse">
-          <div className="h-6 bg-gray-200 rounded w-1/4 mb-4"></div>
+          <div 
+            className="h-6 rounded w-1/4 mb-4"
+            style={{ backgroundColor: pulseBg }}
+          ></div>
           <div className="space-y-4">
-            <div className="h-10 bg-gray-200 rounded"></div>
-            <div className="h-10 bg-gray-200 rounded"></div>
-            <div className="h-10 bg-gray-200 rounded"></div>
+            <div 
+              className="h-10 rounded"
+              style={{ backgroundColor: pulseBg }}
+            ></div>
+            <div 
+              className="h-10 rounded"
+              style={{ backgroundColor: pulseBg }}
+            ></div>
+            <div 
+              className="h-10 rounded"
+              style={{ backgroundColor: pulseBg }}
+            ></div>
           </div>
         </div>
       </div>
@@ -422,9 +470,14 @@ export function ProfileInformation() {
   if (error) {
     return (
       <div className="mt-[14px] space-y-6 pb-1">
-        <div className="text-red-500 text-center py-8">
+        <div className="text-center py-8" style={{ color: errorTextColor }}>
           <p>Failed to load user information</p>
-          <p className="text-sm text-gray-500 mt-2">{error}</p>
+          <p 
+            className="text-sm mt-2"
+            style={{ color: errorSubtextColor }}
+          >
+            {error}
+          </p>
         </div>
       </div>
     );
@@ -433,7 +486,7 @@ export function ProfileInformation() {
   if (!userData) {
     return (
       <div className="mt-[14px] space-y-6 pb-1">
-        <div className="text-gray-500 text-center py-8">
+        <div className="text-center py-8" style={{ color: noDataColor }}>
           <p>No user data available</p>
         </div>
       </div>
@@ -445,7 +498,7 @@ export function ProfileInformation() {
       <UserInfo />
       {userData?.role === 'organization' && (
         <>
-          <hr />
+          <hr style={{ borderColor: hrBorderColor }} />
           <OrganizationInfo />
         </>
       )}

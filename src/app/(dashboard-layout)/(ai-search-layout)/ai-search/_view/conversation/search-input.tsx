@@ -7,6 +7,7 @@ import { Send, Plus } from 'lucide-react';
 import { SVGProps, TransitionStartFunction, useState, useEffect, useRef } from 'react';
 import { toast } from 'sonner';
 import { OnImageSearchHandlerParam } from './type';
+import { useDarkMode } from '@/lib/contexts/dark-mode-context';
 
 type Props = {
   defaultValue?: string;
@@ -20,6 +21,7 @@ export function SearchInput({ onTextSearch, onImageSearch, onNewChat, startTrans
   const [searchValue, setSearchValue] = useState(defaultValue || '');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
+  const { isDarkMode } = useDarkMode();
   
   // Handle Safari mobile - only fix textarea itself, not global viewport
   useEffect(() => {
@@ -100,11 +102,19 @@ export function SearchInput({ onTextSearch, onImageSearch, onNewChat, startTrans
     });
   }
 
+  const searchBoxBackground = isDarkMode 
+    ? { background: '#DED6F91A' }
+    : { background: 'linear-gradient(90deg, rgba(92, 57, 217, 0.1) 0%, rgba(197, 31, 160, 0.1) 100%)' };
+
+  const searchBoxStyle = {
+    ...searchBoxBackground,
+  };
+
   return (
     <form ref={formRef} onSubmit={handleSubmit} className="flex justify-between gap-1 sm:gap-2 w-full min-w-0 box-border max-w-full">
       <div 
         className="w-full min-w-0 max-w-full rounded-[14px] overflow-hidden relative box-border"
-        style={{ background: 'linear-gradient(90deg, rgba(92, 57, 217, 0.1) 0%, rgba(197, 31, 160, 0.1) 100%)' }}
+        style={searchBoxStyle}
       >
         <textarea
           ref={textareaRef}

@@ -1,13 +1,54 @@
 'use client';
 import { Button } from '@/components/atom/button';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { Suspense } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import { ROUTES } from '@/config/routes';
+import { useDarkMode } from '@/lib/contexts/dark-mode-context';
+
+// Helper to get dark mode from localStorage
+const getDarkModeFromStorage = () => {
+  if (typeof window !== 'undefined') {
+    try {
+      const saved = localStorage.getItem('darkMode');
+      return saved === 'true';
+    } catch {
+      return false;
+    }
+  }
+  return false;
+};
 
 function PendingApprovalContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const email = searchParams.get('email') || '';
+  const darkModeContext = useDarkMode();
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    const storageValue = getDarkModeFromStorage();
+    const contextValue = darkModeContext.isDarkMode;
+    return contextValue === true ? true : storageValue;
+  });
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const updateDarkMode = () => {
+      const storageValue = getDarkModeFromStorage();
+      const contextValue = darkModeContext.isDarkMode;
+      const newValue = contextValue === true ? true : storageValue;
+      setIsDarkMode(newValue);
+    };
+    updateDarkMode();
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'darkMode') updateDarkMode();
+    };
+    window.addEventListener('storage', handleStorageChange);
+    const interval = setInterval(updateDarkMode, 50);
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      clearInterval(interval);
+    };
+  }, [darkModeContext.isDarkMode]);
 
   const handleRefreshStatus = () => {
     // Navigate to login page
@@ -42,17 +83,17 @@ function PendingApprovalContent() {
         </div>
 
         {/* Main Heading */}
-        <h1 className="text-[24px] font-bold text-[#2D2A2A] mb-4">
+        <h1 className="text-[24px] font-bold mb-4" style={{ color: isDarkMode ? '#FFFFFF' : '#2D2A2A' }}>
           Your account is pending approval.
         </h1>
 
         {/* First Paragraph */}
-        <p className="text-[14px] text-[#2D2A2A] mb-4">
+        <p className="text-[14px] mb-4" style={{ color: isDarkMode ? '#FFFFFF' : '#2D2A2A' }}>
           Thank you for signing up. Your request is under review. Once approved, return to this page to begin using Overwatch.
         </p>
 
         {/* Second Paragraph */}
-        <p className="text-[14px] text-[#2D2A2A] mb-8">
+        <p className="text-[14px] mb-8" style={{ color: isDarkMode ? '#FFFFFF' : '#2D2A2A' }}>
           For security reasons, all features remain disabled until your account is approved.
         </p>
 
@@ -78,18 +119,19 @@ function PendingApprovalContent() {
 
         {/* Email Notification */}
         {email && (
-          <p className="text-[14px] text-[#2D2A2A] mb-8">
+          <p className="text-[14px] mb-8" style={{ color: isDarkMode ? '#FFFFFF' : '#2D2A2A' }}>
             You&apos;ll receive an email at <span className="font-medium">{email}</span> when your account is approved.
           </p>
         )}
       </div>
 
       {/* Footer - Aligned at bottom */}
-      <p className="text-sm text-gray-500 mt-auto">
+      <p className="text-sm mt-auto" style={{ color: isDarkMode ? '#A7A7A7' : '#6B7280' }}>
         Need help? Contact{' '}
         <a 
           href="mailto:support@veraos.com" 
-          className="underline text-gray-600 hover:text-[#5C39D9] font-bold"
+          className="underline font-bold"
+          style={{ color: isDarkMode ? '#C0AEFF' : '#5C39D9' }}
         >
           support@veraos.com
         </a>

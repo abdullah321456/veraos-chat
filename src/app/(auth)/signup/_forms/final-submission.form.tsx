@@ -14,14 +14,55 @@ import {zodResolver} from '@hookform/resolvers/zod';
 import {FinalSubmissionFormInputType, FinalSubmissionFormSchema} from '../validation';
 import {toast} from 'sonner';
 import {useSignup} from '../../signup/context/signup.context';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import {apiService} from '@/services/apiService';
 import {authUtils} from '@/lib/utils/auth';
 import {ROUTES} from '@/config/routes';
+import { useDarkMode } from '@/lib/contexts/dark-mode-context';
+
+// Helper to get dark mode from localStorage
+const getDarkModeFromStorage = () => {
+  if (typeof window !== 'undefined') {
+    try {
+      const saved = localStorage.getItem('darkMode');
+      return saved === 'true';
+    } catch {
+      return false;
+    }
+  }
+  return false;
+};
 
 export function FinalSubmissionForm() {
     const router = useRouter();
     const {handleNext} = useSignupMultiStep();
+    const darkModeContext = useDarkMode();
+    const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+      if (typeof window === 'undefined') return false;
+      const storageValue = getDarkModeFromStorage();
+      const contextValue = darkModeContext.isDarkMode;
+      return contextValue === true ? true : storageValue;
+    });
+
+    useEffect(() => {
+      if (typeof window === 'undefined') return;
+      const updateDarkMode = () => {
+        const storageValue = getDarkModeFromStorage();
+        const contextValue = darkModeContext.isDarkMode;
+        const newValue = contextValue === true ? true : storageValue;
+        setIsDarkMode(newValue);
+      };
+      updateDarkMode();
+      const handleStorageChange = (e: StorageEvent) => {
+        if (e.key === 'darkMode') updateDarkMode();
+      };
+      window.addEventListener('storage', handleStorageChange);
+      const interval = setInterval(updateDarkMode, 50);
+      return () => {
+        window.removeEventListener('storage', handleStorageChange);
+        clearInterval(interval);
+      };
+    }, [darkModeContext.isDarkMode]);
     const {
         basicInfo,
         dataAccessInfo,
@@ -112,7 +153,7 @@ export function FinalSubmissionForm() {
             <ScrollToTop/>
 
             {/* Document Upload Section */}
-            <div className="bg-white p-4 sm:p-6 rounded-lg shadow-sm w-full">
+            <div className="p-4 sm:p-6 rounded-lg shadow-sm w-full" style={{ background: isDarkMode ? '#404652' : '#FFFFFF' }}>
                 {/*<h3 className="text-base sm:text-lg font-semibold mb-4">Upload Required Documents</h3>*/}
                 <Uploader
                     onUpload={handleDocumentUpload}

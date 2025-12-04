@@ -8,12 +8,22 @@ import { useModal } from '@/components/modal-views/use-modal';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { useUser } from '@/lib/hooks/use-user';
+import { useDarkMode } from '@/lib/contexts/dark-mode-context';
 
 export function PasswordSecurity() {
+  const { isDarkMode } = useDarkMode();
   const { openModal } = useModal();
+  
+  const headingColor = isDarkMode ? '#FFFFFF' : '#000000';
+  
   return (
     <div className="mt-[14px] space-y-3">
-      <h5 className="text-black text-xs font-medium">Password</h5>
+      <h5 
+        className="text-xs font-medium"
+        style={{ color: headingColor }}
+      >
+        Password
+      </h5>
       <button
         onClick={() =>
           openModal({
@@ -31,7 +41,12 @@ export function PasswordSecurity() {
         Change Password
       </button>
       <div className="flex justify-between items-center gap-3">
-        <h5 className="text-black text-xs font-medium">Enable Two-factor Authentication</h5>
+        <h5 
+          className="text-xs font-medium"
+          style={{ color: headingColor }}
+        >
+          Enable Two-factor Authentication
+        </h5>
         <Switch />
       </div>
     </div>

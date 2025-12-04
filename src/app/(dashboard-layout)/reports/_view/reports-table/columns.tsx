@@ -60,14 +60,19 @@ const handleViewDetails = async (report: Report, onOpenModal?: (report: Report) 
   }
 };
 
-export const createColumns = (onOpenModal?: (report: Report) => void): ColumnDef<Report>[] => [
+export const createColumns = (onOpenModal?: (report: Report) => void, isDarkMode?: boolean): ColumnDef<Report>[] => [
   {
     accessorKey: 'title',
     header: 'AI Analysis Summary',
     size: 300,
     cell: ({ row }) => (
       <div className="text-xs">
-        <p className="font-medium mb-1 line-clamp-2">{row.original.title}</p>
+        <p 
+          className="font-medium mb-1 line-clamp-2"
+          style={{ color: isDarkMode ? '#FFFFFF' : '#111827' }}
+        >
+          {row.original.title}
+        </p>
         {/*<p className="text-xs text-gray-600 text-[10px]">*/}
         {/*  Created: {new Date(row.original.createdAt).toLocaleDateString()}*/}
         {/*</p>*/}
@@ -84,10 +89,13 @@ export const createColumns = (onOpenModal?: (report: Report) => void): ColumnDef
       
       return (
         <div className="text-xs">
-          <p className="font-medium">
+          <p 
+            className="font-medium"
+            style={{ color: isDarkMode ? '#FFFFFF' : '#111827' }}
+          >
             {date.toLocaleDateString()}
           </p>
-          <p className="text-gray-500">
+          <p style={{ color: isDarkMode ? '#A7A7A7' : '#6B7280' }}>
             {date.toLocaleTimeString()}
           </p>
         </div>

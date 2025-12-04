@@ -1,16 +1,31 @@
+'use client';
+
 import { Button } from "@/components/atom/button";
 import { FadeAnimation } from "@/components/atom/fade-animatation";
 import { Switch } from "@/components/atom/form-elements/switch";
 import { DefaultSearch } from "./default-search";
+import { useDarkMode } from "@/lib/contexts/dark-mode-context";
 
 export default function Page() {
+  const { isDarkMode } = useDarkMode();
+  
+  const containerBg = isDarkMode ? '#404652' : 'white';
+  const headingColor = isDarkMode ? '#FFFFFF' : '#000000';
+
   return (
     <FadeAnimation>
-      <div className="w-full sm:w-auto sm:rounded-[10px] sm:shadow-lg sm:min-w-[600px] sm:max-w-[700px] sm:border sm:border-gray-50"
-      style={{background:"white"}}>
+      <div 
+        className="w-full sm:w-auto sm:rounded-[10px] sm:shadow-lg sm:min-w-[600px] sm:max-w-[700px]"
+        style={{
+          background: containerBg
+        }}
+      >
         <div>
           <div className="p-4 sm:p-[18px] space-y-3">
-            <h2 className="text-black text-sm sm:text-base font-bold">
+            <h2 
+              className="text-sm sm:text-base font-bold"
+              style={{ color: headingColor }}
+            >
               Search Preferences
             </h2>
             <DefaultSearch/>

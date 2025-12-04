@@ -16,6 +16,7 @@ import { useUser } from '@/lib/hooks/use-user';
 import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/config/routes';
 import Image from 'next/image';
+import { useDarkMode } from '@/lib/contexts/dark-mode-context';
 
 interface ApiMessage {
     _id: string;
@@ -440,6 +441,54 @@ function ConversationContent() {
     const { openModal } = useModal();
     const { userData } = useUser();
     const router = useRouter();
+    const darkModeContext = useDarkMode();
+    
+    // Helper to get dark mode from localStorage
+    const getDarkModeFromStorage = () => {
+        if (typeof window !== 'undefined') {
+            try {
+                const saved = localStorage.getItem('darkMode');
+                return saved === 'true';
+            } catch {
+                return false;
+            }
+        }
+        return false;
+    };
+
+    // Always read from localStorage as source of truth (works even in portals)
+    // Also sync with context if it's available and true
+    const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+        const storageValue = getDarkModeFromStorage();
+        const contextValue = darkModeContext.isDarkMode;
+        // Use context if it's explicitly true, otherwise trust localStorage
+        return contextValue === true ? true : storageValue;
+    });
+
+    // Sync dark mode from context and localStorage
+    useEffect(() => {
+        const updateDarkMode = () => {
+            const storageValue = getDarkModeFromStorage();
+            const contextValue = darkModeContext.isDarkMode;
+            // Prefer context if it's true, otherwise use storage
+            const newValue = contextValue === true ? true : storageValue;
+            setIsDarkMode(newValue);
+        };
+
+        // Initial update
+        updateDarkMode();
+
+        // Listen to storage events (from other tabs)
+        window.addEventListener('storage', updateDarkMode);
+        
+        // Poll localStorage frequently for same-tab changes
+        const interval = setInterval(updateDarkMode, 100);
+        
+        return () => {
+            window.removeEventListener('storage', updateDarkMode);
+            clearInterval(interval);
+        };
+    }, [darkModeContext.isDarkMode]);
 
     const handleTermsClick = () => {
         openModal({
@@ -1532,14 +1581,20 @@ function ConversationContent() {
 
     console.log("previous = ",previousText)
     
+    const textColorStyle = isDarkMode ? { color: '#FFFFFF' } : {};
+    const backButtonBgStyle = isDarkMode 
+        ? { background: '#0F141E' }
+        : { background: '#F6F6F9' };
+
     return (
-        <div className="pr-1 sm:pr-4 md:pr-6 px-1 sm:px-4 md:px-0 w-full min-w-0 max-w-full overflow-x-hidden box-border relative">
+        <div className="pr-1 sm:pr-4 md:pr-6 px-1 sm:px-4 md:px-0 w-full min-w-0 max-w-full overflow-x-hidden box-border relative" style={textColorStyle}>
             {/* Back button with conversation title for mobile - only show when chatId exists */}
             {chatId && (
-                <div className="flex sm:hidden items-center gap-2 pb-3 border-b border-gray-200 mb-2" style={{background:"#F6F6F9"}}>
+                <div className="flex sm:hidden items-center gap-2 pb-3 border-b border-gray-200 mb-2" style={backButtonBgStyle}>
                     <button
                         onClick={() => router.push(ROUTES.AI_SEARCH.INDEX)}
                         className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors min-w-0"
+                        style={isDarkMode ? { color: '#FFFFFF' } : {}}
                     >
                         <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -1551,7 +1606,7 @@ function ConversationContent() {
                 </div>
             )}
             <div ref={scrollRef}
-                 className="h-[calc(100vh-260px)] sm:h-[calc(100vh-210px)] overflow-y-auto overflow-x-hidden flex flex-col space-y-2 sm:space-y-4 w-full min-w-0 max-w-full box-border">
+                 className="h-[calc(100vh-270px)] sm:h-[calc(100vh-210px)] overflow-y-auto overflow-x-hidden flex flex-col space-y-2 sm:space-y-4 w-full min-w-0 max-w-full box-border">
                 {isLoading || isExecutingQuery ? (
                     <div className="flex justify-center items-center h-full">
                         <LoadingDots />

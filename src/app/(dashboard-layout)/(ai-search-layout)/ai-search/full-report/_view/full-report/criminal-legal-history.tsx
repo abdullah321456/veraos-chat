@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { AccordionActionButton } from "../../../_components/accordion-action-button";
 import { InputDataCell } from "../../../_components/input-data-cell";
 import { Accordion } from "../../_components/accordion";
+import { useDarkMode } from '@/lib/contexts/dark-mode-context';
 
 // Utility function to capitalize first letter of each word
 const capitalizeWords = (str: string): string => {
@@ -48,6 +49,7 @@ export function CriminalAndLegal({
   isDrawer,
   details,
 }: CriminalAndLegalProps) {
+  const { isDarkMode } = useDarkMode();
   const [isLocalEdit] = useState(isEditable);
   const [editable, setEditable] = useState(false);
 
@@ -103,7 +105,7 @@ export function CriminalAndLegal({
           {showCriminal && !showSexOffender && (selectedDetails?.Category || selectedDetails?.ChargesFiledDate || selectedDetails?.Court || selectedDetails?.Disposition ||
               selectedDetails?.DispositionDate || selectedDetails?.OFFENDERCA || selectedDetails?.OFFENSEDES || selectedDetails?.SentenceYYYMMDDD) && (
               <div className="mb-4">
-                <h5 className="text-sm font-medium mb-2 text-gray-600 border-b pb-1">National Criminal Records</h5>
+                <h5 className="text-sm font-medium mb-2 border-b pb-1" style={{ color: isDarkMode ? '#FFFFFF' : '#4B5563', borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : undefined }}>National Criminal Records</h5>
                 <div className={cn(isDrawer ? "grid gap-3" : "grid grid-cols-3 gap-4")}>
                   {selectedDetails?.Category && (
                       <InputDataCell
@@ -189,7 +191,7 @@ export function CriminalAndLegal({
           {/* Sex Offender Records Subsection */}
           {showSexOffender && (
               <div className="mb-4">
-                <h5 className="text-sm font-medium mb-2 text-gray-600 border-b pb-1">Sex Offender Records</h5>
+                <h5 className="text-sm font-medium mb-2 border-b pb-1" style={{ color: isDarkMode ? '#FFFFFF' : '#4B5563', borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : undefined }}>Sex Offender Records</h5>
                 <div className={cn(isDrawer ? "grid gap-3" : "grid grid-cols-3 gap-4")}>
                   {selectedDetails?.sourceState && (
                       <InputDataCell
@@ -304,12 +306,18 @@ export function CriminalAndLegal({
           {isDrunkDriving && (
               <div className="mb-4">
                 <div className={cn(isDrawer ? "grid gap-3" : "grid grid-cols-3 gap-4")}>
-                  <div className="ring-[1px] min-h-14 text-xs ring-gray-200 rounded-md px-2.5 py-1.5 border-dashed border-2 border-primary/0">
+                  <div 
+                    className={cn("min-h-14 text-xs rounded-md px-2.5 py-1.5 border-dashed border-2 border-primary/0", isDarkMode ? "ring-[1px] ring-white/10" : "ring-[1px] ring-gray-200")}
+                    style={{
+                      background: isDarkMode ? '#404652' : undefined,
+                      borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : undefined
+                    }}
+                  >
                     <div className="flex justify-between w-full mb-1.5 relative">
-                      <p className="whitespace-nowrap text-gray-600">Drunk Driving Match</p>
+                      <p className="whitespace-nowrap" style={{ color: isDarkMode ? '#FFFFFF' : '#4B5563' }}>Drunk Driving Match</p>
                     </div>
                     <div>
-                      <p className="text-[13px] font-semibold text-red-600 font-bold">YES</p>
+                      <p className="text-[13px] font-semibold font-bold" style={{ color: '#DC2626' }}>YES</p>
                     </div>
                   </div>
                   <InputDataCell
@@ -324,7 +332,7 @@ export function CriminalAndLegal({
           {/* Supplemental Subsection - Only show for veterans */}
           {isVets && (
               <div className="mb-4">
-                <h5 className="text-sm font-medium mb-2 text-gray-600 border-b pb-1">Supplemental</h5>
+                <h5 className="text-sm font-medium mb-2 border-b pb-1" style={{ color: isDarkMode ? '#FFFFFF' : '#4B5563', borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : undefined }}>Supplemental</h5>
                 <div className={cn(isDrawer ? "grid gap-3" : "grid grid-cols-3 gap-4")}>
                   <InputDataCell
                       label="Interpol Data"

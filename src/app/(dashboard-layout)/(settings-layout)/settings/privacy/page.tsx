@@ -7,8 +7,10 @@ import { userService } from "@/services/userService";
 import { authUtils } from "@/lib/utils/auth";
 import { toast } from "sonner";
 import { useState } from "react";
+import { useDarkMode } from "@/lib/contexts/dark-mode-context";
 
 export default function Page() {
+  const { isDarkMode } = useDarkMode();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const handleForceLogoutAllDevices = async () => {
@@ -27,34 +29,56 @@ export default function Page() {
     }
   };
 
+  const containerBg = isDarkMode ? '#404652' : 'white';
+  const headingColor = isDarkMode ? '#FFFFFF' : '#000000';
+  const textColor = isDarkMode ? '#FFFFFF' : '#000000';
+
   return (
     <FadeAnimation>
-      <div className="w-full sm:w-auto sm:rounded-[10px] sm:shadow-lg sm:min-w-[600px] sm:max-w-[600px] sm:border sm:border-gray-50"
-      style={{background:"white"}}>
+      <div 
+        className="w-full sm:w-auto sm:rounded-[10px] sm:shadow-lg sm:min-w-[600px] sm:max-w-[600px]"
+        style={{
+          background: containerBg
+        }}
+      >
         <div className="p-4 sm:p-[18px] space-y-3">
-          <h2 className="text-black text-sm sm:text-base font-bold">Privacy & Security</h2>
-          <h4 className="text-black text-xs sm:text-sm font-bold">
+          <h2 
+            className="text-sm sm:text-base font-bold"
+            style={{ color: headingColor }}
+          >
+            Privacy & Security
+          </h2>
+          <h4 
+            className="text-xs sm:text-sm font-bold"
+            style={{ color: headingColor }}
+          >
             Data Retention Policy
           </h4>
           <div className="flex justify-between items-center py-1">
-            <h5 className="text-xs sm:text-sm font-normal text-black">
+            <h5 
+              className="text-xs sm:text-sm font-normal"
+              style={{ color: textColor }}
+            >
               Auto-delete chats after 90 days
             </h5>
             <Switch />
           </div>
         </div>
         {/* session management  */}
-        <div className="border-t border-b border-gray-100">
-          <div className="px-4 sm:px-[18px] py-4 space-y-3">
-            <h4 className="text-black text-xs sm:text-sm font-bold">Session Management</h4>
-            <button 
-              onClick={handleForceLogoutAllDevices}
-              disabled={isLoggingOut}
-              className="text-white text-xs font-normal bg-[#38366C] rounded-[10px] hover:bg-[#494780] py-3 px-5 disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto"
-            >
-              {isLoggingOut ? 'Logging Out...' : 'Log Out from All Devices'}
-            </button>
-          </div>
+        <div className="px-4 sm:px-[18px] space-y-3">
+          <h4 
+            className="text-xs sm:text-sm font-bold"
+            style={{ color: headingColor }}
+          >
+            Session Management
+          </h4>
+          <button 
+            onClick={handleForceLogoutAllDevices}
+            disabled={isLoggingOut}
+            className="text-white text-xs font-normal bg-[#38366C] rounded-[10px] hover:bg-[#494780] py-3 px-5 disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto"
+          >
+            {isLoggingOut ? 'Logging Out...' : 'Log Out from All Devices'}
+          </button>
         </div>
         {/* Anonymized Queries */}
         {/* <div>

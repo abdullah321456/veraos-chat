@@ -8,6 +8,7 @@ import { Checkbox } from '@/components/atom/form-elements/checkbox';
 import { useEffect } from 'react';
 import { ROUTES } from '@/config/routes';
 import { useRouter } from 'next/navigation';
+import { useDarkMode } from '@/lib/contexts/dark-mode-context';
 
 export function InboxSelection({ data }: { data: InboxNavigationData[] }) {
   const { isSelectable } = useConversationSidebarSelectionState();
@@ -47,6 +48,7 @@ function SingleInboxSelect({ id, title, time, description, onClick }: InboxNavig
   const { queryParams } = useQueryParams();
   const isCurrent = queryParams?.chatId === id.toString();
   const { isSelectable, addOrRemove, selectedIds } = useConversationSidebarSelectionState();
+  const { isDarkMode } = useDarkMode();
 
   function handleClick() {
     if (isSelectable) {
@@ -60,19 +62,35 @@ function SingleInboxSelect({ id, title, time, description, onClick }: InboxNavig
     if (isSelectable) addOrRemove(id);
   }
 
+  const itemStyle = isCurrent 
+    ? (isDarkMode 
+        ? {
+            background: '#404652',
+            borderWidth: '1px',
+            borderColor: '#5C39D9'
+          }
+        : {
+            background: 'linear-gradient(92.09deg, #F3F0FF 3.04%, #EAE6FF 99.55%)',
+            borderWidth: '1px',
+            borderColor: '#5C39D9'
+          })
+    : (isDarkMode
+        ? {
+            background: '#404652',
+            borderWidth: '1px',
+            borderColor: 'transparent'
+          }
+        : {
+            background: '#F7F7FA',
+            borderWidth: '1px',
+            borderColor: 'transparent'
+          });
+
   return (
     <div 
       onClick={handleClick} 
       className={cn('cursor-pointer px-4 py-2 mx-4 mb-2 rounded-[10px] border')}
-      style={isCurrent ? {
-        background: 'linear-gradient(92.09deg, #F3F0FF 3.04%, #EAE6FF 99.55%)',
-        borderWidth: '1px',
-        borderColor: '#5C39D9'
-      } : {
-        background: '#F7F7FA',
-        borderWidth: '1px',
-        borderColor: 'transparent'
-      }}
+      style={itemStyle}
     >
       <div className="flex gap-3 text-sm font-bold mb-2 items-center">
         {isSelectable && (
@@ -80,10 +98,10 @@ function SingleInboxSelect({ id, title, time, description, onClick }: InboxNavig
             <Checkbox checked={selectedIds.includes(id)} onChange={handleChangeCheckbox} />
           </div>
         )}
-        <p className="whitespace-nowrap text-ellipsis overflow-hidden flex-1 min-w-0">{title || 'New Chat'}</p>
-        <span className="text-xs font-medium ml-auto flex-shrink-0" style={{ color: '#616166' }}>{time}</span>
+        <p className="whitespace-nowrap text-ellipsis overflow-hidden flex-1 min-w-0" style={isDarkMode ? { color: '#FFFFFF' } : {}}>{title || 'New Chat'}</p>
+        <span className="text-xs font-medium ml-auto flex-shrink-0" style={{ color: isDarkMode ? '#FFFFFF' : '#616166' }}>{time}</span>
       </div>
-      <p className="whitespace-nowrap text-ellipsis overflow-hidden text-xs text-gray-600 pr-6">{description || 'Start a new conversation'}</p>
+      <p className="whitespace-nowrap text-ellipsis overflow-hidden text-xs pr-6" style={isDarkMode ? { color: '#FFFFFF' } : { color: '#4B5563' }}>{description || 'Start a new conversation'}</p>
     </div>
   );
 }

@@ -5,16 +5,57 @@ import { PasswordInput } from '@/components/atom/form-elements/password-input/pa
 import { GreenTickIcon } from '@/components/atom/icons/green-tick';
 import { ROUTES } from '@/config/routes';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { CustomInputLabel } from '../signup/_forms/account-and-organization-info.form';
 import { useRouter } from 'next-nprogress-bar';
 import { toast } from 'sonner';
+import { useDarkMode } from '@/lib/contexts/dark-mode-context';
+
+// Helper to get dark mode from localStorage
+const getDarkModeFromStorage = () => {
+  if (typeof window !== 'undefined') {
+    try {
+      const saved = localStorage.getItem('darkMode');
+      return saved === 'true';
+    } catch {
+      return false;
+    }
+  }
+  return false;
+};
 
 export function InviteSignupForm() {
   const [password, setPassword] = useState('');
   const [inviteCode, setInviteCode] = useState('');
   const [isValidInviteCode, setIsValidInviteCode] = useState(false);
   const router = useRouter();
+  const darkModeContext = useDarkMode();
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    const storageValue = getDarkModeFromStorage();
+    const contextValue = darkModeContext.isDarkMode;
+    return contextValue === true ? true : storageValue;
+  });
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const updateDarkMode = () => {
+      const storageValue = getDarkModeFromStorage();
+      const contextValue = darkModeContext.isDarkMode;
+      const newValue = contextValue === true ? true : storageValue;
+      setIsDarkMode(newValue);
+    };
+    updateDarkMode();
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'darkMode') updateDarkMode();
+    };
+    window.addEventListener('storage', handleStorageChange);
+    const interval = setInterval(updateDarkMode, 50);
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      clearInterval(interval);
+    };
+  }, [darkModeContext.isDarkMode]);
 
   const handleInviteCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInviteCode(e.target.value);
@@ -81,7 +122,7 @@ export function InviteSignupForm() {
                 <PasswordInput label="Password" placeholder="Enter your password" value={password} onChange={handlePasswordChange} />
 
                 {shouldShowPasswordRequirements && (
-                    <p className="text-[#CAA70B] text-xs font-normal mt-2">Min 8 characters, 1 number, and 1 special character.</p>
+                    <p className="text-xs font-normal mt-2" style={{ color: isDarkMode ? '#FFFFFF' : '#CAA70B' }}>Min 8 characters, 1 number, and 1 special character.</p>
                 )}
               </div>
 
@@ -96,7 +137,7 @@ export function InviteSignupForm() {
         )}
 
         <p className="text-center">
-          <span className="text-gray-600">Already have an account? </span>
+          <span style={{ color: isDarkMode ? '#A7A7A7' : '#6B7280' }}>Already have an account? </span>
           <Link className="underline text-primary font-semibold" href={ROUTES.AUTH.LOGIN}>
             Login
           </Link>

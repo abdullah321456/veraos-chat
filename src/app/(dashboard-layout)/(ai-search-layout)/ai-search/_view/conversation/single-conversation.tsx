@@ -9,6 +9,7 @@ const ConversationCta = dynamic(() => import('./cta').then((mod) => mod.Conversa
 import { AiResponseDetails } from './response-details';
 import { AIResponseDetail, OnImageSearchHandlerParam, Sender } from './type';
 import React from 'react';
+import { useDarkMode } from '@/lib/contexts/dark-mode-context';
 
 type SingleConversationProps = {
   sender: Sender;
@@ -61,6 +62,7 @@ type RenderMessageOrImagesProps = {
 };
 
 function RenderMessageOrImages({ message, isLeft, images }: RenderMessageOrImagesProps) {
+  const { isDarkMode } = useDarkMode();
   const baseClassName = 'max-w-full sm:max-w-[500px] md:max-w-[650px] py-5 px-2 sm:py-4 sm:px-4 text-xs sm:text-sm relative w-full min-w-0 box-border break-words' ;
   const className = cn(
     baseClassName,
@@ -68,16 +70,16 @@ function RenderMessageOrImages({ message, isLeft, images }: RenderMessageOrImage
   );
   
   const leftStyle = isLeft ? {
-    backgroundColor: '#F6F6F9',
-    boxShadow: '0px 2px 16px 0px #191A6024 inset',
+    backgroundColor: isDarkMode ? '#404652' : '#F6F6F9',
+    boxShadow: isDarkMode ? '0px -1px 14.8px 0px #EDECFD40 inset' : '0px 2px 16px 0px #191A6024 inset',
     borderTopRightRadius: '15px',
     borderBottomRightRadius: '15px',
     borderBottomLeftRadius: '15px',
     borderTopLeftRadius: '0px'
   } : {
-    backgroundColor: '#F4F3FF',
-    boxShadow: '0px -4px 8.6px 0px #E2DFF0 inset',
-    color:"#000000",
+    backgroundColor: isDarkMode ? '#404652' : '#F4F3FF',
+    boxShadow: isDarkMode ? '0px -1px 14.8px 0px #EDECFD40 inset' : '0px -4px 8.6px 0px #E2DFF0 inset',
+    color: isDarkMode ? '#FFFFFF' : '#000000',
     borderTopRightRadius: '0px',
     borderBottomRightRadius: '15px',
     borderBottomLeftRadius: '15px',

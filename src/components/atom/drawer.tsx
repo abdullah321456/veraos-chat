@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 
 import { useDocumentScrollbarWidth } from '@/lib/hooks/use-document-scrollbar-width';
 import cn from '@/lib/utils/cn';
+import { useDarkMode } from '@/lib/contexts/dark-mode-context';
 
 export const drawerClasses = {
   overlay: 'fixed inset-0 cursor-pointer bg-black/70 transition-opacity',
@@ -35,6 +36,7 @@ export function Drawer({
 }: React.PropsWithChildren<DrawerProps>) {
   const scrollbarWidth = useDocumentScrollbarWidth();
   const portalRef = useRef<HTMLElement | null>(null);
+  const { isDarkMode } = useDarkMode();
 
   // Create the portal div if it doesn't exist
   useEffect(() => {
@@ -83,7 +85,7 @@ export function Drawer({
       <div
         className={cn(
           `drawer-container`,
-          'bg-gray-200 fixed h-full w-full break-words shadow-xl transition-[right] duration-500',
+          'fixed h-full w-full break-words shadow-xl transition-[right] duration-500',
           placement === 'top' && 'top-0',
           placement === 'right' && 'inset-y-0 right-0',
           placement === 'bottom' && 'bottom-0',
@@ -92,6 +94,9 @@ export function Drawer({
           '-right-full',
           isOpen && 'right-0'
         )}
+        style={{
+          backgroundColor: isDarkMode ? '#404652' : 'white'
+        }}
       >
         <Fragment key={String(isOpen)}>{children}</Fragment>
       </div>

@@ -4,6 +4,7 @@ import React, { forwardRef, useState } from 'react';
 
 import { useInteractiveEvent } from '@/lib/hooks/use-interactive-event';
 import cn from '@/lib/utils/cn';
+import { useDarkMode } from '@/lib/contexts/dark-mode-context';
 
 import { FieldClearButton } from '../field-clear-button';
 import { FieldError } from '../field-error-text';
@@ -136,12 +137,18 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordProps>(
     },
     ref
   ) => {
+    const { isDarkMode } = useDarkMode();
     const [visible, setVisible] = useState(false);
     const { isFocus, isHover, handleOnBlur, handleOnFocus, handleOnMouseEnter, handleOnMouseLeave } = useInteractiveEvent({
       readOnly,
       onBlur,
       onFocus,
     });
+
+    const labelColor = isDarkMode ? '#FFFFFF' : '#6D6F73';
+    const inputBg = isDarkMode ? '#505662' : 'transparent';
+    const inputTextColor = isDarkMode ? '#FFFFFF' : undefined;
+    const inputBorderColor = isDarkMode ? 'rgba(255, 255, 255, 0.1)' : undefined;
 
     return (
       <div className={cn(`password-root`, 'flex flex-col w-full min-w-0 box-border', className)}>
@@ -157,6 +164,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordProps>(
                 disabled && 'text-[#6D6F73]',
                 labelClassName
               )}
+              style={{ color: labelColor }}
             >
               {label} {isRequired && <span className="text-red-500">*</span>}
             </span>
@@ -176,6 +184,10 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordProps>(
               'box-border',
               inputClassName
             )}
+            style={isDarkMode ? {
+              backgroundColor: inputBg,
+              borderColor: inputBorderColor,
+            } : undefined}
             data-focus={isFocus}
             data-hover={isHover}
             onMouseEnter={handleOnMouseEnter}
@@ -203,9 +215,13 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordProps>(
                 disabled && inputFieldStyles.disabled,
                 clearable && inputFieldStyles.clearable,
                 prefix && inputFieldStyles.prefix.size[size],
-                visibilityToggleIcon && inputFieldStyles.suffix.size[size]
+                visibilityToggleIcon && inputFieldStyles.suffix.size[size],
+                isDarkMode && 'dark-mode-input'
               )}
-              style={{ fontSize: 'inherit' }}
+              style={{
+                fontSize: 'inherit',
+                color: inputTextColor,
+              }}
               {...inputProps}
             />
 

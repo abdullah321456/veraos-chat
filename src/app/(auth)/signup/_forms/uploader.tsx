@@ -1,12 +1,28 @@
+'use client';
+
 import { Button } from '@/components/atom/button';
 import cn from '@/lib/utils/cn';
-import { useRef, useState, useTransition } from 'react';
+import { useRef, useState, useTransition, useEffect } from 'react';
 import { PiTrash } from 'react-icons/pi';
 import { CloudIcon } from '../_components/icons';
 import { inputLabelStyles } from '@/components/atom/form-elements/styles/label-styles';
 import { toast } from 'sonner';
+import { useDarkMode } from '@/lib/contexts/dark-mode-context';
 
-const labelClassName = cn('block text-[#6D6F73]', inputLabelStyles.color.black, inputLabelStyles.size.md, inputLabelStyles.weight.medium);
+// Helper to get dark mode from localStorage
+const getDarkModeFromStorage = () => {
+  if (typeof window !== 'undefined') {
+    try {
+      const saved = localStorage.getItem('darkMode');
+      return saved === 'true';
+    } catch {
+      return false;
+    }
+  }
+  return false;
+};
+
+const labelClassName = cn('block', inputLabelStyles.color.black, inputLabelStyles.size.md, inputLabelStyles.weight.medium);
 
 interface UploaderProps {
   onUpload: (file: File) => void;
@@ -19,6 +35,33 @@ export function Uploader({ onUpload, onRemove, uploadedDocuments, error }: Uploa
   const inputRef = useRef<HTMLInputElement>(null);
   const [isPending, startTransition] = useTransition();
   const [fileOnBoard, setFileOnBoard] = useState<boolean>(false);
+  const darkModeContext = useDarkMode();
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    const storageValue = getDarkModeFromStorage();
+    const contextValue = darkModeContext.isDarkMode;
+    return contextValue === true ? true : storageValue;
+  });
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const updateDarkMode = () => {
+      const storageValue = getDarkModeFromStorage();
+      const contextValue = darkModeContext.isDarkMode;
+      const newValue = contextValue === true ? true : storageValue;
+      setIsDarkMode(newValue);
+    };
+    updateDarkMode();
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'darkMode') updateDarkMode();
+    };
+    window.addEventListener('storage', handleStorageChange);
+    const interval = setInterval(updateDarkMode, 50);
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      clearInterval(interval);
+    };
+  }, [darkModeContext.isDarkMode]);
 
   function handleImageFileChange(event: React.ChangeEvent<HTMLInputElement>) {
     const selectedFile = event.target.files?.[0];
@@ -87,7 +130,7 @@ export function Uploader({ onUpload, onRemove, uploadedDocuments, error }: Uploa
 
   return (
     <div className="w-full mt-4">
-      <p className={labelClassName}>Upload your ID</p>
+      <p className={labelClassName} style={{ color: isDarkMode ? '#FFFFFF' : '#6D6F73' }}>Upload your ID</p>
       <div
         onDragOver={handleDragOver}
         onDragLeave={() => setFileOnBoard(false)}
@@ -100,8 +143,8 @@ export function Uploader({ onUpload, onRemove, uploadedDocuments, error }: Uploa
         {uploadedDocuments.length === 0 ? (
           <div className="w-full flex flex-col items-center gap-2">
             <CloudIcon className="w-9 h-9 sm:w-11 sm:h-11" />
-            <p className="font-bold text-xs sm:text-sm">{fileOnBoard ? 'Drop the file here' : 'Upload ID'}</p>
-            <p className="text-center max-w-[48ch] text-[10px] sm:text-xs mb-2 px-2">Add ID by dragging and dropping here to uploading it from your desktop.</p>
+            <p className="font-bold text-xs sm:text-sm" style={{ color: isDarkMode ? '#FFFFFF' : '#000000' }}>{fileOnBoard ? 'Drop the file here' : 'Upload ID'}</p>
+            <p className="text-center max-w-[48ch] text-[10px] sm:text-xs mb-2 px-2" style={{ color: isDarkMode ? '#A7A7A7' : '#6B7280' }}>Add ID by dragging and dropping here to uploading it from your desktop.</p>
             <input 
               id="file-upload" 
               type="file" 
@@ -124,7 +167,7 @@ export function Uploader({ onUpload, onRemove, uploadedDocuments, error }: Uploa
           <div className="flex flex-col items-center gap-4">
             {uploadedDocuments.map((doc, index) => (
               <div key={index} className="flex items-center gap-2">
-                <span className="text-sm">{doc.name}</span>
+                <span className="text-sm" style={{ color: isDarkMode ? '#FFFFFF' : '#000000' }}>{doc.name}</span>
                 <Button size="sm" className="px-3 py-2" variant="outline" onClick={() => onRemove(index)}>
                   <PiTrash className="w-4 h-4 me-1" /> Remove
                 </Button>

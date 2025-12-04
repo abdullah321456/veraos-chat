@@ -1,7 +1,10 @@
+'use client';
+
 import { useInteractiveEvent } from '@/lib/hooks/use-interactive-event';
 import cn from '@/lib/utils/cn';
 import React, { forwardRef } from 'react';
 import { toEnhancedTitleCase } from '@/lib/utils/title-case';
+import { useDarkMode } from '@/lib/contexts/dark-mode-context';
 import { inputLabelStyles } from './styles/label-styles';
 import { FieldHelperText } from './field-helper-text';
 import { FieldError } from './field-error-text';
@@ -111,6 +114,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     },
     ref
   ) => {
+    const { isDarkMode } = useDarkMode();
     const { isFocus, isHover, handleOnBlur, handleOnFocus, handleOnMouseEnter, handleOnMouseLeave } = useInteractiveEvent({
       readOnly,
       onBlur,
@@ -121,6 +125,11 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
 
     // Apply title case to label if it's a string
     const processedLabel = typeof label === 'string' ? toEnhancedTitleCase(label) : label;
+    
+    const labelColor = isDarkMode ? '#FFFFFF' : '#6D6F73';
+    const textareaBg = isDarkMode ? '#505662' : 'transparent';
+    const textareaTextColor = isDarkMode ? '#FFFFFF' : undefined;
+    const textareaBorderColor = isDarkMode ? 'rgba(255, 255, 255, 0.1)' : undefined;
 
     return (
       <div className={cn(`textarea-root`, 'flex flex-col', className)}>
@@ -135,6 +144,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
                 disabled && 'text-muted-foreground',
                 labelClassName
               )}
+              style={{ color: labelColor }}
             >
               {processedLabel} {isRequired && <span className="text-red-500"> *</span>}
             </span>
@@ -170,8 +180,14 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
                 readOnly && 'focus:ring-0',
                 disabled && textareaStyles.disabled,
                 error && textareaStyles.error,
+                isDarkMode && 'dark-mode-input',
                 textareaClassName
               )}
+              style={{
+                backgroundColor: textareaBg,
+                borderColor: textareaBorderColor,
+                color: textareaTextColor,
+              }}
               {...textareaProps}
             />
 

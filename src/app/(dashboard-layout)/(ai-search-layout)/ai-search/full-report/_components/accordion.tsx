@@ -3,7 +3,8 @@
 import { Collapse } from '@/components/atom/collapse';
 import cn from '@/lib/utils/cn';
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { PropsWithChildren, SVGProps } from 'react';
+import { PropsWithChildren, SVGProps, useState, useEffect } from 'react';
+import { useDarkMode } from '@/lib/contexts/dark-mode-context';
 
 type AccordionProps = {
   title: React.ReactNode;
@@ -15,18 +16,75 @@ type AccordionProps = {
 };
 type Props = PropsWithChildren<AccordionProps>;
 export function Accordion({ children, title, actionButton, onClickTranslate, translateButton, className }: Props) {
+  const darkModeContext = useDarkMode();
+  
+  // Helper to get dark mode from localStorage
+  const getDarkModeFromStorage = () => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem('darkMode');
+        return saved === 'true';
+      } catch {
+        return false;
+      }
+    }
+    return false;
+  };
+
+  // Always read from localStorage as source of truth (works even in portals)
+  // Also sync with context if it's available and true
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    const storageValue = getDarkModeFromStorage();
+    const contextValue = darkModeContext.isDarkMode;
+    // Use context if it's explicitly true, otherwise trust localStorage
+    return contextValue === true ? true : storageValue;
+  });
+
+  // Sync dark mode from context and localStorage
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
+    const updateDarkMode = () => {
+      const storageValue = getDarkModeFromStorage();
+      const contextValue = darkModeContext.isDarkMode;
+      // Prefer context if it's true, otherwise use storage
+      const newValue = contextValue === true ? true : storageValue;
+      setIsDarkMode(newValue);
+    };
+
+    // Initial update immediately
+    updateDarkMode();
+
+    // Listen to storage events (from other tabs)
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'darkMode') {
+        updateDarkMode();
+      }
+    };
+    window.addEventListener('storage', handleStorageChange);
+    
+    // Poll localStorage frequently for same-tab changes (more aggressive polling)
+    const interval = setInterval(updateDarkMode, 50);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      clearInterval(interval);
+    };
+  }, [darkModeContext.isDarkMode]);
+  
   return (
     <Collapse
       defaultOpen
       className={className}
       header={({ open, toggle }) => (
         <div className="flex items-center justify-between cursor-pointer mb-4" onClick={toggle}>
-          <p className="text-base text-black font-bold flex gap-2 items-center">
+          <p className="text-base font-bold flex gap-2 items-center" style={{ color: isDarkMode ? '#FFFFFF' : '#000000' }}>
             {title} {translateButton && <TranslateButton onClickTranslate={onClickTranslate} />}
           </p>
           <div className="flex items-center gap-4">
             <span className={cn('invisible', open && 'visible')}>{actionButton}</span>
-            {open ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+            {open ? <ChevronUp size={20} style={{ color: isDarkMode ? '#FFFFFF' : undefined }} /> : <ChevronDown size={20} style={{ color: isDarkMode ? '#FFFFFF' : undefined }} />}
           </div>
         </div>
       )}

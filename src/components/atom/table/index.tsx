@@ -18,6 +18,7 @@ import {
 import isFunction from 'lodash/isFunction';
 
 import cn from '@/lib/utils/cn';
+import { useDarkMode } from '@/lib/contexts/dark-mode-context';
 
 export type SortHandlerParams = {
   sorted: boolean; // if sorted or not
@@ -36,6 +37,7 @@ type TableProps<T> = {
   rowClassName?: string | ((data: T) => string);
   getTable?: (table: Row<T>[]) => void;
   onRowClick?: (row: any) => void;
+  isDarkMode?: boolean;
 };
 
 export function Table<T>({
@@ -50,7 +52,10 @@ export function Table<T>({
 
   getTable,
   onRowClick,
+  isDarkMode: propIsDarkMode,
 }: TableProps<T>) {
+  const { isDarkMode: contextIsDarkMode } = useDarkMode();
+  const isDarkMode = propIsDarkMode ?? contextIsDarkMode;
   const [sorting, setSorting] = useState<SortingState>([]);
 
   useLayoutEffect(() => {
@@ -111,7 +116,13 @@ export function Table<T>({
         >
           {table.getHeaderGroups().map((headerGroup: HeaderGroup<unknown>) => (
             <Fragment key={headerGroup.id}>
-              <div className="flex justify-between bg-[#F6F6F9] sm:bg-[#F6F6F9] py-1 text-xs text-slate-800 sticky top-0 z-10">
+              <div 
+                className="flex justify-between py-1 text-xs sticky top-0 z-10"
+                style={{
+                  backgroundColor: isDarkMode ? '#505662' : '#F6F6F9',
+                  color: isDarkMode ? '#FFFFFF' : '#1E293B'
+                }}
+              >
                 {headerGroup.headers.map((header: Header<unknown, unknown>) => {
                   // @ts-ignore
                   const isSortable = header.column.columnDef.meta?.sortable;
@@ -128,22 +139,25 @@ export function Table<T>({
                           }),
                         }}
                         className={cn(
-                          'px-2 py-2 text-left font-medium text-[#7A7575]',
+                          'px-2 py-2 text-left font-medium',
                           // isFirstRowSelected &&
                           //   'first-of-type:rounded-b-none last-of-type:rounded-b-none',
                           // @ts-expect-error
                           header.column.columnDef.meta?.headerClassName
                         )}
+                        style={{
+                          color: isDarkMode ? '#FFFFFF' : '#7A7575'
+                        }}
                       >
                         {header.isPlaceholder ? null : (
                           <div className="flex w-full cursor-pointer select-none items-center gap-2">
                             {flexRender(header.column.columnDef.header, header.getContext())}{' '}
                             {isSortable
                               ? {
-                                  asc: <SortingIcon state="asc" />,
-                                  desc: <SortingIcon state="desc" />,
+                                  asc: <SortingIcon state="asc" isDarkMode={isDarkMode} />,
+                                  desc: <SortingIcon state="desc" isDarkMode={isDarkMode} />,
                                 }[header.column.getIsSorted() as string] ??
-                                (header.column.columnDef.header !== '' && <SortingIcon />)
+                                (header.column.columnDef.header !== '' && <SortingIcon isDarkMode={isDarkMode} />)
                               : null}
                           </div>
                         )}
@@ -165,12 +179,15 @@ export function Table<T>({
                 <Fragment key={row.id}>
                   <div
                     className={cn(
-                      'flex w-full justify-between border-b border-[#ECECEC]',
+                      'flex w-full justify-between border-b',
                       ROW_CLASS_NAME,
                       onRowClick && 'cursor-pointer'
                       // row.getIsSelected() &&
                       //   'border-slate-500/0 [&_.selected-bg]:!bg-gray-50/50'
                     )}
+                    style={{
+                      borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#ECECEC'
+                    }}
                     onClick={() => handleRowClick(rowData)}
                   >
                     {row.getVisibleCells().map((cell) => {
@@ -222,13 +239,15 @@ function Triangle({ ...props }: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-function SortingIcon({ state }: { state?: 'asc' | 'desc' }) {
+function SortingIcon({ state, isDarkMode }: { state?: 'asc' | 'desc'; isDarkMode?: boolean }) {
   const isAsc = state === 'asc';
   const isDesc = state === 'desc';
+  const activeColor = isDarkMode ? '#FFFFFF' : '#000000';
+  const inactiveColor = isDarkMode ? 'rgba(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.4)';
   return (
     <span className="relative z-0 flex flex-col items-center gap-px">
-      <Triangle className={isAsc ? 'text-black' : 'text-black/40'} />
-      <Triangle className={cn('rotate-180', isDesc ? 'text-black' : 'text-black/40')} />
+      <Triangle style={{ color: isAsc ? activeColor : inactiveColor }} />
+      <Triangle className="rotate-180" style={{ color: isDesc ? activeColor : inactiveColor }} />
     </span>
   );
 }

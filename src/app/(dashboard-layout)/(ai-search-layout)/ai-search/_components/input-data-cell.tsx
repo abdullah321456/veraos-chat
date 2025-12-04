@@ -2,6 +2,7 @@
 
 import cn from '@/lib/utils/cn';
 import { useEffect, useState } from 'react';
+import { useDarkMode } from '@/lib/contexts/dark-mode-context';
 
 type InputDataCellProps = {
   label: string;
@@ -11,11 +12,67 @@ type InputDataCellProps = {
 };
 
 export function InputDataCell({ label, value, onDone, editable }: InputDataCellProps) {
+  const darkModeContext = useDarkMode();
   const prevValue = value;
   const [isBlank, setIsBlank] = useState(!value);
   const [isDone, setIsDone] = useState(false);
   const [focused, setFocused] = useState(false);
   const [newValue, setNewValue] = useState(value);
+  
+  // Helper to get dark mode from localStorage
+  const getDarkModeFromStorage = () => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem('darkMode');
+        return saved === 'true';
+      } catch {
+        return false;
+      }
+    }
+    return false;
+  };
+
+  // Always read from localStorage as source of truth (works even in portals)
+  // Also sync with context if it's available and true
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    const storageValue = getDarkModeFromStorage();
+    const contextValue = darkModeContext.isDarkMode;
+    // Use context if it's explicitly true, otherwise trust localStorage
+    return contextValue === true ? true : storageValue;
+  });
+
+  // Sync dark mode from context and localStorage
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
+    const updateDarkMode = () => {
+      const storageValue = getDarkModeFromStorage();
+      const contextValue = darkModeContext.isDarkMode;
+      // Prefer context if it's true, otherwise use storage
+      const newValue = contextValue === true ? true : storageValue;
+      setIsDarkMode(newValue);
+    };
+
+    // Initial update immediately
+    updateDarkMode();
+
+    // Listen to storage events (from other tabs)
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'darkMode') {
+        updateDarkMode();
+      }
+    };
+    window.addEventListener('storage', handleStorageChange);
+    
+    // Poll localStorage frequently for same-tab changes (more aggressive polling)
+    const interval = setInterval(updateDarkMode, 50);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      clearInterval(interval);
+    };
+  }, [darkModeContext.isDarkMode]);
 
   const requiredDone = prevValue !== newValue;
 
@@ -62,12 +119,13 @@ export function InputDataCell({ label, value, onDone, editable }: InputDataCellP
   return (
     <div
       className={cn(
-        'ring-[1px] min-h-14 text-xs ring-gray-200 rounded-md px-2.5 py-1.5 border-dashed border-2 border-primary/0',
-        focused && ' border-primary ring-gray-200/0'
+        'ring-[1px] min-h-14 text-xs rounded-md px-2.5 py-1.5 border-dashed border-2 border-primary/0',
+        focused ? 'border-primary ring-gray-200/0' : (isDarkMode ? 'ring-white/10' : 'ring-gray-200')
       )}
+      style={focused && isDarkMode ? { borderColor: 'rgba(255, 255, 255, 0.1)' } : {}}
     >
       <div className="flex justify-between w-full mb-1.5 relative">
-        <p className="whitespace-nowrap text-gray-600">{label}</p>
+        <p className="whitespace-nowrap" style={{ color: isDarkMode ? '#FFFFFF' : '#4B5563' }}>{label}</p>
         {requiredDone && !isDone && (
           <button onClick={handleDone}>
             <svg
@@ -94,9 +152,10 @@ export function InputDataCell({ label, value, onDone, editable }: InputDataCellP
             onBlur={handleBlur}
             onChange={(e) => setNewValue(e.target.value)}
             className="focus:outline-none w-full text-[13px] font-semibold"
+            style={{ color: isDarkMode ? '#FFFFFF' : undefined }}
           />
         ) : (
-          <p className="text-[13px] font-semibold">{newValue || value}</p>
+          <p className="text-[13px] font-semibold" style={{ color: isDarkMode ? '#FFFFFF' : undefined }}>{newValue || value}</p>
         )}
       </div>
     </div>

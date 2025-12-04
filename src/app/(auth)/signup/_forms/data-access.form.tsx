@@ -14,9 +14,23 @@ import { DataAccessFormInputType, DataAccessFormSchema } from '../validation';
 import { toast } from 'sonner';
 import { useState, useEffect } from 'react';
 import { useSignup } from '../../signup/context/signup.context';
+import { useDarkMode } from '@/lib/contexts/dark-mode-context';
+
+// Helper to get dark mode from localStorage
+const getDarkModeFromStorage = () => {
+  if (typeof window !== 'undefined') {
+    try {
+      const saved = localStorage.getItem('darkMode');
+      return saved === 'true';
+    } catch {
+      return false;
+    }
+  }
+  return false;
+};
 
 const labelClassName = cn(
-    'block text-[#6D6F73]',
+    'block',
     inputLabelStyles.color.black,
     inputLabelStyles.size.md,
     inputLabelStyles.weight.medium,
@@ -41,6 +55,33 @@ export function DataAccessForm() {
   const { handleNext } = useSignupMultiStep();
   const [selectedNeeds, setSelectedNeeds] = useState<string[]>([]);
   const { setDataAccessInfo } = useSignup();
+  const darkModeContext = useDarkMode();
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    const storageValue = getDarkModeFromStorage();
+    const contextValue = darkModeContext.isDarkMode;
+    return contextValue === true ? true : storageValue;
+  });
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const updateDarkMode = () => {
+      const storageValue = getDarkModeFromStorage();
+      const contextValue = darkModeContext.isDarkMode;
+      const newValue = contextValue === true ? true : storageValue;
+      setIsDarkMode(newValue);
+    };
+    updateDarkMode();
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'darkMode') updateDarkMode();
+    };
+    window.addEventListener('storage', handleStorageChange);
+    const interval = setInterval(updateDarkMode, 50);
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      clearInterval(interval);
+    };
+  }, [darkModeContext.isDarkMode]);
 
   const form = useForm<DataAccessFormInputType>({
     resolver: zodResolver(DataAccessFormSchema),
@@ -100,6 +141,7 @@ export function DataAccessForm() {
             selectedNeeds={selectedNeeds}
             onNeedSelection={handleNeedSelection}
             error={errors.dataAccessNeeds?.message}
+            isDarkMode={isDarkMode}
         />
         <div className="col-span-full flex flex-col sm:flex-row justify-end gap-3 pt-4">
           <Button variant="outline" onClick={() => router.back()} className="w-full sm:w-auto rounded-[8px] h-[36px]">
@@ -121,15 +163,17 @@ export function DataAccessForm() {
 function DataAccessNeed({
                           selectedNeeds,
                           onNeedSelection,
-                          error
+                          error,
+                          isDarkMode
                         }: {
   selectedNeeds: string[];
   onNeedSelection: (need: string) => void;
   error?: string;
+  isDarkMode: boolean;
 }) {
   return (
       <div>
-        <p className={labelClassName}>Data Access Needs</p>
+        <p className={labelClassName} style={{ color: isDarkMode ? '#FFFFFF' : '#6D6F73' }}>Data Access Needs</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-9 gap-y-3">
           {accessNeeds.map((need, index) => (
               <Checkbox
@@ -138,6 +182,7 @@ function DataAccessNeed({
                   className="col-span-1 sm:col-span-1 lg:col-span-4"
                   checked={selectedNeeds.includes(need)}
                   onChange={() => onNeedSelection(need)}
+                  style={isDarkMode ? { color: '#FFFFFF' } : undefined}
               />
           ))}
         </div>

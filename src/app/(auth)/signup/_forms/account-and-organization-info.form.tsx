@@ -15,10 +15,24 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SignupFormInputType, SignupFormSchema } from "../../signup/validation";
 import { toast } from "sonner";
 import { useSignup } from "../../signup/context/signup.context";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useDarkMode } from "@/lib/contexts/dark-mode-context";
+
+// Helper to get dark mode from localStorage
+const getDarkModeFromStorage = () => {
+  if (typeof window !== 'undefined') {
+    try {
+      const saved = localStorage.getItem('darkMode');
+      return saved === 'true';
+    } catch {
+      return false;
+    }
+  }
+  return false;
+};
 
 const labelClassName = cn(
-    "block text-[#6D6F73]",
+    "block",
     inputLabelStyles.color.black,
     inputLabelStyles.size.md,
     inputLabelStyles.weight.medium
@@ -59,6 +73,33 @@ export function AccountAndOrganizationInfoForm() {
   const router = useRouter();
   const { handleNext } = useSignupMultiStep();
   const { setBasicInfo, basicInfo } = useSignup();
+  const darkModeContext = useDarkMode();
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    const storageValue = getDarkModeFromStorage();
+    const contextValue = darkModeContext.isDarkMode;
+    return contextValue === true ? true : storageValue;
+  });
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const updateDarkMode = () => {
+      const storageValue = getDarkModeFromStorage();
+      const contextValue = darkModeContext.isDarkMode;
+      const newValue = contextValue === true ? true : storageValue;
+      setIsDarkMode(newValue);
+    };
+    updateDarkMode();
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'darkMode') updateDarkMode();
+    };
+    window.addEventListener('storage', handleStorageChange);
+    const interval = setInterval(updateDarkMode, 50);
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      clearInterval(interval);
+    };
+  }, [darkModeContext.isDarkMode]);
 
   const form = useForm<SignupFormInputType>({
     resolver: zodResolver(SignupFormSchema),
@@ -130,13 +171,14 @@ export function AccountAndOrganizationInfoForm() {
   return (
       <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5 w-full max-w-[1020px] mx-auto px-4 sm:px-0">
         <ScrollToTop />
-        <BasicInfoForm register={register} errors={errors} password={password} />
+        <BasicInfoForm register={register} errors={errors} password={password} isDarkMode={isDarkMode} />
         <OrganizationDetailsForm
             register={register}
             errors={errors}
             setValue={setValue}
             selectedOrganizationType={selectedOrganizationType}
             selectedCountry={selectedCountry}
+            isDarkMode={isDarkMode}
         />
         <div className="col-span-full flex flex-col sm:flex-row justify-end gap-3 pt-2">
           <Button variant="outline" onClick={() => router.back()} className="w-full sm:w-auto rounded-[8px] h-[36px]">
@@ -150,10 +192,10 @@ export function AccountAndOrganizationInfoForm() {
   );
 }
 
-function BasicInfoForm({ register, errors, password }: { register: any; errors: any; password: string }) {
+function BasicInfoForm({ register, errors, password, isDarkMode }: { register: any; errors: any; password: string; isDarkMode: boolean }) {
   return (
-      <div className="bg-white shadow-md rounded-lg p-4 sm:p-5 border border-gray-100">
-        <p className="text-base sm:text-lg font-bold mb-4 sm:mb-5">Basic Information</p>
+      <div className="shadow-md rounded-lg p-4 sm:p-5" style={{ background: isDarkMode ? '#404652' : '#FFFFFF', borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#F3F4F6', borderWidth: '1px', borderStyle: 'solid' }}>
+        <p className="text-base sm:text-lg font-bold mb-4 sm:mb-5" style={{ color: isDarkMode ? '#FFFFFF' : '#000000' }}>Basic Information</p>
         <div className="grid grid-cols-1 gap-4">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-3 gap-y-3 sm:gap-y-0">
             <CustomInputLabel label="Full Name" isRequired />
@@ -217,17 +259,19 @@ function OrganizationDetailsForm({
                                    errors,
                                    setValue,
                                    selectedOrganizationType,
-                                   selectedCountry
+                                   selectedCountry,
+                                   isDarkMode
                                  }: {
   register: any;
   errors: any;
   setValue: any;
   selectedOrganizationType: string;
   selectedCountry: string;
+  isDarkMode: boolean;
 }) {
   return (
-      <div className="bg-white shadow-md rounded-lg p-4 sm:p-5 border border-gray-100">
-        <p className="text-base sm:text-lg font-bold mb-4 sm:mb-5">Organization Details</p>
+      <div className="shadow-md rounded-lg p-4 sm:p-5" style={{ background: isDarkMode ? '#404652' : '#FFFFFF', borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : '#F3F4F6', borderWidth: '1px', borderStyle: 'solid' }}>
+        <p className="text-base sm:text-lg font-bold mb-4 sm:mb-5" style={{ color: isDarkMode ? '#FFFFFF' : '#000000' }}>Organization Details</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Input
               {...register('organizationName')}
@@ -318,8 +362,36 @@ export function CustomInputLabel({
   label: string;
   isRequired?: boolean;
 }) {
+  const darkModeContext = useDarkMode();
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    const storageValue = getDarkModeFromStorage();
+    const contextValue = darkModeContext.isDarkMode;
+    return contextValue === true ? true : storageValue;
+  });
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const updateDarkMode = () => {
+      const storageValue = getDarkModeFromStorage();
+      const contextValue = darkModeContext.isDarkMode;
+      const newValue = contextValue === true ? true : storageValue;
+      setIsDarkMode(newValue);
+    };
+    updateDarkMode();
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'darkMode') updateDarkMode();
+    };
+    window.addEventListener('storage', handleStorageChange);
+    const interval = setInterval(updateDarkMode, 50);
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      clearInterval(interval);
+    };
+  }, [darkModeContext.isDarkMode]);
+
   return (
-      <p className={cn(labelClassName, "col-span-full")}>
+      <p className={cn("col-span-full", labelClassName)} style={{ color: isDarkMode ? '#FFFFFF' : '#6D6F73' }}>
         {label}
         <>{isRequired && <span className="text-red-500">*</span>}</>
       </p>

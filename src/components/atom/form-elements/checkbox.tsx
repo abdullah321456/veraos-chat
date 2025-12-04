@@ -90,6 +90,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
       errorClassName,
       helperClassName,
       className,
+      style,
       ...checkboxProps
     },
     ref
@@ -141,6 +142,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
               'mb-0',
               labelClassName
             )}
+            style={style}
           >
             {label}
           </span>

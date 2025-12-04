@@ -5,6 +5,7 @@ import React, { forwardRef } from 'react';
 import { useInteractiveEvent } from '@/lib/hooks/use-interactive-event';
 import cn from '@/lib/utils/cn';
 import { toEnhancedTitleCase } from '@/lib/utils/title-case';
+import { useDarkMode } from '@/lib/contexts/dark-mode-context';
 
 import { FieldClearButton } from './field-clear-button';
 import { FieldError } from './field-error-text';
@@ -125,6 +126,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     },
     ref
   ) => {
+    const { isDarkMode } = useDarkMode();
     const { isFocus, isHover, handleOnBlur, handleOnFocus, handleOnMouseEnter, handleOnMouseLeave } = useInteractiveEvent({
       readOnly,
       onBlur,
@@ -134,6 +136,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     // Apply title case to label if it's a string
     const processedLabel = typeof label === 'string' ? toEnhancedTitleCase(label) : label;
 
+    const labelColor = isDarkMode ? '#FFFFFF' : '#6D6F73';
+    const inputBg = isDarkMode ? '#505662' : 'transparent';
+    const inputTextColor = isDarkMode ? '#FFFFFF' : undefined;
+    const inputBorderColor = isDarkMode ? 'rgba(255, 255, 255, 0.1)' : undefined;
+    const placeholderColor = isDarkMode ? 'rgba(255, 255, 255, 0.5)' : undefined;
+
     return (
       <div className={cn('flex flex-col w-full min-w-0 box-border', className)}>
         <label className="block w-full min-w-0">
@@ -141,13 +149,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             <span
               className={cn(
                 `input-label`,
-                'block text-[#6D6F73]',
+                'block',
                 inputLabelStyles.color.black,
                 inputLabelStyles.size[size],
                 inputLabelStyles.weight[labelWeight],
-                disabled && 'text-[#6D6F73]',
                 labelClassName
               )}
+              style={{ color: labelColor }}
             >
               {processedLabel}
               <>{isRequired && <span className="text-red-500">&nbsp;*</span>}</>
@@ -169,6 +177,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               'box-border',
               inputClassName
             )}
+            style={isDarkMode ? {
+              backgroundColor: inputBg,
+              borderColor: inputBorderColor,
+            } : undefined}
             data-focus={isFocus}
             data-hover={isHover}
             onMouseEnter={handleOnMouseEnter}
@@ -195,9 +207,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                 disabled && inputFieldStyles.disabled,
                 clearable && inputFieldStyles.clearable,
                 prefix && inputFieldStyles.prefix.size[size],
-                suffix && inputFieldStyles.suffix.size[size]
+                suffix && inputFieldStyles.suffix.size[size],
+                isDarkMode && 'dark-mode-input'
               )}
-              style={{ fontSize: 'inherit' }}
+              style={{
+                fontSize: 'inherit',
+                color: inputTextColor,
+              }}
               {...inputProps}
             />
 

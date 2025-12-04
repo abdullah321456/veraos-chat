@@ -7,9 +7,10 @@ export function ModalCloseIcon(props: SVGProps<SVGSVGElement>) {
       width={24}
       height={24}
       fill="none"
-      {...props}>
+      {...props}
+      style={{ color: props.style?.color || '#616166', ...props.style }}>
       <path
-        stroke="#616166"
+        stroke="currentColor"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth={1.5}
