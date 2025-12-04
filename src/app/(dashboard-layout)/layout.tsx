@@ -12,26 +12,27 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [isExpanded] = useState(() => getIsSidebarExpandedOnServer());
   const [renderKey, setRenderKey] = useState(0);
 
-  // useEffect(() => {
-  //   // Check if coming from login
-  //   if (typeof window !== 'undefined') {
-  //     const fromLogin = sessionStorage.getItem('fromLogin');
-  //     if (fromLogin) {
-  //       // Don't trigger re-render when coming from login
-  //       return;
-  //     }
-  //   }
-  //
-  //   // Force re-render after 1 second (only if not coming from login)
-  //   const timer = setTimeout(() => {
-  //     setRenderKey(prev => prev + 1);
-  //   }, 100);
-  //
-  //   return () => clearTimeout(timer);
-  // }, []);
+    useEffect(() => {
+        // Check if coming from login
+        if (typeof window !== 'undefined') {
+            const fromLogin = sessionStorage.getItem('fromLogin');
+            if (fromLogin) {
+                // Clear the flag so future navigations work normally
+                sessionStorage.removeItem('fromLogin');
+                return; // Skip the force re-render this time
+            }
+        }
+
+        // Force re-render after 100ms (only if not coming from login)
+        const timer = setTimeout(() => {
+            setRenderKey(prev => prev + 1);
+        }, 100);
+
+        return () => clearTimeout(timer);
+    }, []);
 
   return (
-    <DarkModeProvider key={renderKey}>
+    <DarkModeProvider>
       <DashboardLayoutWrapper>
         <DashboardSidebar isExpanded={isExpanded} />
         <DashboardHeader isExpanded={isExpanded} />
