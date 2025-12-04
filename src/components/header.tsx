@@ -62,6 +62,8 @@ export function DashboardHeader({ isExpanded }: Props = {}) {
         backgroundColor: 'transparent'
       };
 
+  console.log("DashboardHeader = ",isDarkMode)
+
   return (
     <div 
       className="fixed top-0 left-0 right-0 z-20 h-16 flex justify-between items-center px-4 sm:px-6"
