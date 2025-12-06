@@ -11,25 +11,26 @@ import { useState, useEffect } from 'react';
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
     const [isExpanded] = useState(() => getIsSidebarExpandedOnServer());
     const [renderKey, setRenderKey] = useState(0);
+    const [isReady, setIsReady] = useState(false);
 
     useEffect(() => {
-        // Check if coming from login
-        if (typeof window !== 'undefined') {
-            const fromLogin = sessionStorage.getItem('fromLogin');
-            if (fromLogin) {
-                // Clear the flag so future navigations work normally
-                sessionStorage.removeItem('fromLogin');
-                return; // Skip the force re-render this time
-            }
+        const fromLogin = sessionStorage.getItem('fromLogin');
+        
+        if (fromLogin) {
+            sessionStorage.removeItem('fromLogin');
+            setIsReady(true);
+            return;
         }
 
-        // Force re-render after 100ms (only if not coming from login)
         const timer = setTimeout(() => {
+            setIsReady(true);
             setRenderKey(prev => prev + 1);
         }, 100);
 
         return () => clearTimeout(timer);
     }, []);
+
+    if (!isReady) return null;
 
     return (
         <DarkModeProvider>
