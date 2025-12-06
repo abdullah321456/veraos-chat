@@ -9,8 +9,8 @@ import { DashboardLayoutWrapper } from '@/components/dashboard-layout-wrapper';
 import { useState, useEffect } from 'react';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const [isExpanded] = useState(() => getIsSidebarExpandedOnServer());
-  const [renderKey, setRenderKey] = useState(0);
+    const [isExpanded] = useState(() => getIsSidebarExpandedOnServer());
+    const [renderKey, setRenderKey] = useState(0);
 
     useEffect(() => {
         // Check if coming from login
@@ -31,13 +31,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         return () => clearTimeout(timer);
     }, []);
 
-  return (
-    <DarkModeProvider>
-      <DashboardLayoutWrapper>
-        <DashboardSidebar isExpanded={isExpanded} />
-        <DashboardHeader isExpanded={isExpanded} />
-        <DashboardChildrenWrapper isExpanded={isExpanded}>{children}</DashboardChildrenWrapper>
-      </DashboardLayoutWrapper>
-    </DarkModeProvider>
-  );
+    return (
+        <DarkModeProvider>
+            <DashboardLayoutWrapper>
+                <DashboardSidebar isExpanded={isExpanded} />
+                <DashboardHeader isExpanded={isExpanded} />
+                <DashboardChildrenWrapper isExpanded={isExpanded}>{children}</DashboardChildrenWrapper>
+            </DashboardLayoutWrapper>
+        </DarkModeProvider>
+    );
 }

@@ -308,6 +308,17 @@ function AdvanceSwitch({ positiveIconSrc, negativeIconSrc }: { positiveIconSrc: 
     ? { backgroundColor: 'transparent' }
     : { backgroundColor: 'transparent' };
   
+  // Icon filter styles based on mode
+  // Light mode: sun is purple (active), moon is gray/black (inactive)
+  // Dark mode: sun is white (inactive), moon is purple (active)
+  const sunIconFilter = !isDarkMode 
+    ? {} // Light mode: sun stays purple (no filter needed)
+    : { filter: 'brightness(0) saturate(100%) invert(1)' }; // Dark mode: sun becomes white
+  
+  const moonIconFilter = !isDarkMode
+    ? { filter: 'brightness(0) saturate(100%)' } // Light mode: moon becomes black/gray
+    : { filter: 'brightness(0) saturate(100%) invert(27%) sepia(91%) saturate(2476%) hue-rotate(243deg) brightness(95%) contrast(89%)' }; // Dark mode: moon becomes purple (#5C39D9)
+  
   return (
     <div
       onClick={toggleDarkMode}
@@ -327,6 +338,7 @@ function AdvanceSwitch({ positiveIconSrc, negativeIconSrc }: { positiveIconSrc: 
           width={18} 
           height={18} 
           className="w-[18px] h-[18px] object-contain" 
+          style={sunIconFilter}
         />
       </span>
       <span
@@ -342,6 +354,7 @@ function AdvanceSwitch({ positiveIconSrc, negativeIconSrc }: { positiveIconSrc: 
           width={18} 
           height={18} 
           className="w-[18px] h-[18px] object-contain" 
+          style={moonIconFilter}
         />
       </span>
     </div>
