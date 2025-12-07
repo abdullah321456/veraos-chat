@@ -18,6 +18,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
         if (fromLogin) {
             sessionStorage.removeItem('fromLogin');
+            setIsReady(true);
+            //return;
         }
 
         const timer = setTimeout(() => {
@@ -28,7 +30,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         return () => clearTimeout(timer);
     }, []);
 
-    //if (!isReady) return null;
+    if (!isReady) return null;
 
     return (
         <DarkModeProvider>

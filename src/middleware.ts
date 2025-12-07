@@ -5,6 +5,7 @@ import { ROUTES } from '@/config/routes.ts'; // adjust path to your file
 export function middleware(request: NextRequest) {
     const token = request.cookies.get('token')?.value;
 
+    //console.log("token = ",token)
     // Public routes
     const publicPaths = [
         ROUTES.AUTH.LOGIN,

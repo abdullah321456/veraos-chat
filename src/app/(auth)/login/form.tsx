@@ -41,6 +41,14 @@ export function LoginForm() {
                 // Save the access token
                 authUtils.setToken(response.access_token);
 
+                // Verify token was set (for debugging)
+                const tokenSet = authUtils.getToken();
+                if (!tokenSet) {
+                    console.error('Failed to set token in cookie');
+                    toast.error('Failed to save authentication token');
+                    return;
+                }
+
                 // Set flag to indicate coming from login
                 sessionStorage.setItem('fromLogin', 'true');
 
@@ -48,7 +56,13 @@ export function LoginForm() {
                     duration: 2000,
                     position: 'top-right',
                 });
-                router.push(ROUTES.HOME);
+                
+                // Use window.location.href instead of router.push to ensure cookie is sent with request
+                // This ensures the middleware can read the token on the next request
+                // Small delay to ensure cookie is fully set before navigation
+                setTimeout(() => {
+                    window.location.href = ROUTES.HOME;
+                }, 100);
             } else {
                 toast.error(response.message || 'Invalid credentials');
             }
