@@ -224,22 +224,32 @@ function SingleDetails(props: AIResponseDetail & { onFullReport?: (details: AIRe
     };
 
 
-    function getCitiesAndStates(addresses: any) {
-        return addresses.map((addr: any) => {
+    function getCitiesAndStates(addresses: string[], limit: number = 3): string[] {
+        const cityStateSet = new Set<string>();
+
+        for (const addr of addresses) {
+            let cityState: string | null = null;
+
             // Case 1: format like "New York, NY 10065"
             let match = addr.match(/,\s*([^,]+?),?\s*([A-Z]{2})\b/);
             if (match) {
-                return `${match[1].trim()} ${match[2]}`;
+                cityState = `${match[1].trim()} ${match[2]}`;
+            } else {
+                // Case 2: format like "Yreka CA 96097" or "City State ZIP"
+                match = addr.match(/([A-Za-z\s]+)\s+([A-Z]{2})\b/);
+                if (match) {
+                    cityState = `${match[1].trim()} ${match[2]}`;
+                }
             }
 
-            // Case 2: format like "Yreka CA 96097"
-            match = addr.match(/([A-Za-z\s]+)\s+([A-Z]{2})\b/);
-            if (match) {
-                return `${match[1].trim()} ${match[2]}`;
+            if (cityState) {
+                cityStateSet.add(cityState);
             }
 
-            return addr; // fallback if no match
-        });
+            if (cityStateSet.size >= limit) break; // stop when reaching the limit
+        }
+
+        return Array.from(cityStateSet);
     }
 
     const getLocations = () => {

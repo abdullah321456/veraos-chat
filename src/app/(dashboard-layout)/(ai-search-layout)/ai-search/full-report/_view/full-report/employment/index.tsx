@@ -63,11 +63,15 @@ type Props = {
   details?: AIResponseDetail;
 };
 
-type DataType = EmploymentFormInputType & { id: number };
+type DataType = EmploymentFormInputType & { 
+  id: number;
+  _originalStartDate?: Date | null;
+  _originalEndDate?: Date | null;
+};
 
-// Helper function to parse date string to Date object
-const parseEmploymentDate = (dateString: string): Date => {
-  if (!dateString) return new Date();
+// Helper function to parse date string to Date object, returns null if no valid date
+const parseEmploymentDate = (dateString: string): Date | null => {
+  if (!dateString || !dateString.trim()) return null;
   
   // Handle various date formats like "2011 – 2012", "May 2013", "April 2015 – July 2015"
   const dateMatch = dateString.match(/([A-Za-z]+\s+)?(\d{4})/);
@@ -88,7 +92,7 @@ const parseEmploymentDate = (dateString: string): Date => {
     return new Date(year, 0);
   }
   
-  return new Date();
+  return null;
 };
 
 export function Employment({ isEditable = false, isDrawer, details }: Props) {
@@ -107,15 +111,21 @@ export function Employment({ isEditable = false, isDrawer, details }: Props) {
         // Parse the Dates field (e.g., "2011 – 2012", "May 2013 – May 2013")
         const dates = record.Dates?.split('–') || record.Dates?.split('-') || [];
         const startDateStr = dates[0]?.trim() || '';
-        const endDateStr = dates[1]?.trim() || dates[0]?.trim() || '';
+        const endDateStr = dates[1]?.trim() || '';
+        
+        const parsedStartDate = parseEmploymentDate(startDateStr);
+        const parsedEndDate = parseEmploymentDate(endDateStr);
         
         return {
           id: index + 1,
           companyName: record.Employer || '',
           position: record.Position || '',
-          startDate: parseEmploymentDate(startDateStr),
-          endDate: parseEmploymentDate(endDateStr),
+          startDate: parsedStartDate || new Date(), // Use current date as fallback for form validation
+          endDate: parsedEndDate || new Date(), // Use current date as fallback for form validation
           responsibilities: record.Location ? `Located in ${record.Location}` : '',
+          // Store original parsed dates for display purposes
+          _originalStartDate: parsedStartDate,
+          _originalEndDate: parsedEndDate,
         };
       });
     }
@@ -217,7 +227,29 @@ type SingleProps = {
 
 function Single({ data, title, editable, handleOpenEditModal, handleRemoveField }: SingleProps) {
   const isDarkMode = useDarkModeWithFallback();
-  const date = dayJs(data.startDate).format('MMM DD, YYYY') + ' - ' + dayJs(data.endDate).format('MMM DD, YYYY');
+  
+  // Check if original dates exist (null means no date in original data, undefined means newly added item)
+  // For original data: use _originalStartDate/_originalEndDate if they're not null
+  // For newly added items: use startDate/endDate from form (since _originalStartDate will be undefined)
+  const startDate = data._originalStartDate !== undefined 
+    ? (data._originalStartDate !== null ? data._originalStartDate : null)
+    : data.startDate;
+  const endDate = data._originalEndDate !== undefined 
+    ? (data._originalEndDate !== null ? data._originalEndDate : null)
+    : data.endDate;
+  
+  const hasStartDate = startDate !== null && dayJs(startDate).isValid();
+  const hasEndDate = endDate !== null && dayJs(endDate).isValid();
+  
+  let dateDisplay = '';
+  if (hasStartDate && hasEndDate) {
+    dateDisplay = dayJs(startDate).format('MMM DD, YYYY') + ' - ' + dayJs(endDate).format('MMM DD, YYYY');
+  } else if (hasStartDate) {
+    dateDisplay = dayJs(startDate).format('MMM DD, YYYY');
+  } else if (hasEndDate) {
+    dateDisplay = dayJs(endDate).format('MMM DD, YYYY');
+  }
+  
   const cardBgStyle = isDarkMode 
     ? { background: '#404652', borderColor: 'rgba(255, 255, 255, 0.1)' }
     : { background: undefined, borderColor: undefined };
@@ -243,12 +275,16 @@ function Single({ data, title, editable, handleOpenEditModal, handleRemoveField 
         <p>
           <span>Company:</span> {data.companyName}
         </p>
-        <p>
-          <span>Position:</span> {data.position}
-        </p>
-        <p>
-          <span>Date Employed:</span> {date}
-        </p>
+        {data.position && (
+          <p>
+            <span>Position:</span> {data.position}
+          </p>
+        )}
+        {(hasStartDate || hasEndDate) && (
+          <p>
+            <span>Date Employed:</span> {dateDisplay}
+          </p>
+        )}
         <p>
           <span>Responsibilities:</span> {data.responsibilities}
         </p>
