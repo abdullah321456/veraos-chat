@@ -85,7 +85,7 @@ export function IdentificationAndContact({
     const getLocations = () => {
         if (!details) return [];
 
-        if(details.Known_Addresses){
+        if(details.Known_Addresses  && details.Known_Addresses.length>0){
             return details.Known_Addresses
         }
 
@@ -139,7 +139,7 @@ export function IdentificationAndContact({
         records.forEach(record => {
             if (!record) return;
 
-            if(record.Known_Addresses){
+            if(record.Known_Addresses && record.Known_Addresses.length>0){
 
                 record.Known_Addresses.forEach(address => {
                     if (address && typeof address === 'string') {
@@ -182,7 +182,7 @@ export function IdentificationAndContact({
 
         if (!details) return [];
 
-        if(details.Know_Emails){
+        if(details.Know_Emails && details.Know_Emails.length>0){
             return details.Know_Emails
         }
 
@@ -230,7 +230,7 @@ export function IdentificationAndContact({
     const getPhones = () => {
         if (!details) return [];
 
-        if(details.Known_PHONE){
+        if(details.Known_PHONE && details.Known_PHONE.length>0){
             return formatPhoneNumbers(Array.from(details.Known_PHONE))
         }
 
@@ -373,7 +373,7 @@ export function IdentificationAndContact({
     const getIpAddresses = () => {
         if (!details) return [];
 
-        if(details.Known_IPAddresses){
+        if(details.Known_IPAddresses && details.Known_IPAddresses.length>0){
             return details.Known_IPAddresses
         }
 
