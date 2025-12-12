@@ -532,7 +532,7 @@ function ConversationContent() {
                                             </button>
                                             <div class="relative w-full" style="padding-bottom: 56.25%;">
                                                 <iframe 
-                                                    src="https://www.youtube.com/embed/7s14tEmr2Nw?autoplay=1" 
+                                                    src="https://www.youtube.com/embed/3ZAlRCMzqPM?autoplay=1" 
                                                     class="absolute top-0 left-0 w-full h-full rounded-lg"
                                                     frameborder="0" 
                                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
@@ -551,7 +551,7 @@ function ConversationContent() {
                                 className="relative block w-64 group"
                             >
                                 <img 
-                                    src="https://img.youtube.com/vi/7s14tEmr2Nw/maxresdefault.jpg" 
+                                    src="https://img.youtube.com/vi/3ZAlRCMzqPM/maxresdefault.jpg" 
                                     alt="Overwatch Introduction Video" 
                                     className="w-full rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer"
                                 />
@@ -855,7 +855,7 @@ function ConversationContent() {
                                             </button>
                                             <div class="relative w-full" style="padding-bottom: 56.25%;">
                                                 <iframe 
-                                                    src="https://www.youtube.com/embed/7s14tEmr2Nw?autoplay=1" 
+                                                    src="https://www.youtube.com/embed/3ZAlRCMzqPM?autoplay=1" 
                                                     class="absolute top-0 left-0 w-full h-full rounded-lg"
                                                     frameborder="0" 
                                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
@@ -874,7 +874,7 @@ function ConversationContent() {
                                 className="relative block w-64 group"
                             >
                                 <img 
-                                    src="https://img.youtube.com/vi/7s14tEmr2Nw/maxresdefault.jpg" 
+                                    src="https://img.youtube.com/vi/3ZAlRCMzqPM/maxresdefault.jpg" 
                                     alt="Overwatch Introduction Video" 
                                     className="w-full rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer"
                                 />
